@@ -32,3 +32,37 @@
     following: []
   }]
 }
+
+
+
+var dice = 3;
+var sides = 6;
+var query = `
+query RollDice(user: Object!) {
+  rollDice(where: user, numSides: $sides)
+}
+`
+
+
+
+
+fetch('/graphql', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+    },
+    body: JSON.stringify({
+      query,
+      variables: {
+        user: {
+          friends: {
+            amount: 'x => x > 3',
+            edges: { nodes: { user: 'x => x === "carlos"' } }
+          }
+        }
+      },
+    })
+  })
+  .then(r => r.json())
+  .then(data => console.log('data returned:', data));
