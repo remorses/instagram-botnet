@@ -1,8 +1,8 @@
-  - set:
-      external.url:                             url
-      phone.amount:                             {{ bot.phone }}
-      username:                                 username
-      full.name:                                first.name
-      biography:                                biography
-      email:                                    email
-      gender:                                   gender
+- set:
+    external.url:                             url
+    phone.amount:                             {{ bot.phone }}
+    username:                                 username
+    full.name:                                first.name
+    biography:                                biography
+    email:                                    email
+    gender:                                   gender

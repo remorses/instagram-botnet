@@ -1,0 +1,26 @@
+
+
+
+partitionable:
+  bots: |
+    every bot is part of a category, bots with same interests, age,
+    platform, objective (role) are grouped and partitioned.
+  tasks: |
+    tasks bot execute belong to different categories, for example
+    - increase reach (followers, likes ...)
+    - find people by location, hashtag, relations
+    - message people and handle responses
+
+
+partitions:
+
+  Workers: |
+    workers have a partition of the total bots, every worker has an objective
+    for example only message people with prs bots
+    but the same bots have to increase reach so same bots are shared among
+    workers based on time, so bots need to be on a db with bookings, requested
+    from other bots.
+    workers get work based on data accessible locally, for example a bot that fetch all followers of A
+    and then we need the feed of every followers, will get the feed by himself instead
+    of propagate to other workers.
+    obviosly the worker will use different bots to retrieve the data to not exceed api limits

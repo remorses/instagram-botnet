@@ -4,11 +4,11 @@ from edges import Edges
 from methods import methods
 
 
-def make_edges(edges: str) -> Callable:
-    to_pipe = []
-    for edge in edges.split('->'):
-        to_pipe.append(Edges[edge.strip()])
-    return pipe(*to_pipe)
+# def make_edges(edges: str) -> Callable:
+#     to_pipe = []
+#     for edge in edges.split('->'):
+#         to_pipe.append(Edges[edge.strip()])
+#     return pipe(*to_pipe)
 
 
 def identity(method):

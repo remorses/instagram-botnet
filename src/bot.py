@@ -16,6 +16,9 @@ class Bot(Thread):
         self.acts = Acts()
         self.accumulator = []
 
+
+
+
     def start(self, method, arg):
         if method in self.edges:
             next_arg = self.edges[edge](arg)
@@ -24,3 +27,4 @@ class Bot(Thread):
             self.acts[act](arg)
 
     def like(self, users):
+        return self.start('like', users)
