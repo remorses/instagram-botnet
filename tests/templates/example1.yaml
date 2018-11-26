@@ -13,14 +13,14 @@ bots:
 filter:
   nodes:
     Media:
-      likers:                                     'x > 50 || x < 2000'
+      likers:                                   'x > 50 || x < 2000'
     User:
       following:
-        amount:                                   'x < 2000 & x > 60'
+        amount:                                 'x < 2000 & x > 60'
       followers:
-        amount:                                   'x < 2000 & x > 60'
+        amount:                                 'x < 2000 & x > 60'
   edges:
-    hashtag_feed:                                 'x != 34563'
+    hashtag_feed:                               'x != 34563'
 
 execute:
 
@@ -65,16 +65,12 @@ execute:
 
 
 
-
+  # send messages to 20 likers of every photo of hashtag feed
   - send:
       from_nodes:                               [hashtag1, hashtag4, pizza]
       via_edges:
-          - users:                              [user2, user5]
-          - feed:
-              where:                            { feed_media_amount: 'x < 3000'} # only edges with some property
-              take:                             1
-          - likers:                             20 # send messages to 20 likers of every photo
-      to_nodes:                                 { where: { id: 'x == 23430 || x > 30234'} } # only nodes with some property
+          - feed:                               1
+          - likers:                             20
       messages:                                 # list of lists
         -
           - image:                              url
@@ -122,7 +118,6 @@ execute:
 
 
   - follow:
-      amount:                                   456
       users:
 
   - send:

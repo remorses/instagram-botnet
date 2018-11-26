@@ -15,23 +15,24 @@ def is_right_input(input, type):
         return False
 
 
-def assert_input_type(fun):
-    def wrapper(*args, **nargs):
-        input_type = fun.__annotations__.input
-        if(not is_right_input(input, input_type)):
-            error = "wrong edge, " + fun.__name__ + \
-                "accepts only " + input_type
-            raise Exception(error)
-        return fun(*args, **nargs)
+# def assert_input_type(fun):
+#     def wrapper(*args, **nargs):
+#         input_type = fun.__annotations__.input
+#         if(not is_right_input(input, input_type)):
+#             error = "wrong edge, " + fun.__name__ + \
+#                 "accepts only " + input_type
+#             raise Exception(error)
+#         return fun(*args, **nargs)
 
 
-class Edges:
+class Edges():
 
-    def __init__(self):
+    def __init__(self, bot):
+        self.bot = bot
         pass
 
     def user_followers(self, input: Input[User]) -> List[User]:
-        pass
+        self.bot.api.get_total_followers(...)
 
     def user_following(self, user: Input[User]) -> List[User]:
         pass
