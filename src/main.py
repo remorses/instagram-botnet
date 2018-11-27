@@ -1,20 +1,12 @@
 from .bot import Bot
 
-workers = {}
+bots = []
 script = {}
-
-
-class Task():
-    def __init__(self, bot, id):
-        self.bot = bot
-        self.acc = bot.acc
-        self.id = id
+threads = []
 
 
 for i, credentials in enumerate(script['bots']):
-    workers[i] = Task(Bot(**credentials), id=i)
-
-threads = []
+    bots[i] = Bot(**credentials)
 
 
 def wait_bots(threads):
@@ -35,28 +27,28 @@ if 'distributed' in script['mode']:
         if 'nodes' in options:
 
             for i, node in options['nodes']:
-                workers[i % len(workers)].acc += [node]
+                bots[i % len(bots)].acc += [node]
 
-            for i, worker in workers.items():
-                threads.append(worker.bot.start(method,
-                                                worker.acc, options['args']))
+            for bot in bots:
+                threads.append(bot.start(method,
+                                         bot.acc, options['args']))
 
             wait_bots(threads)
 
         elif 'from_nodes' in options:
 
             for i, node in enumerate(options['from_nodes']):
-                workers[i % len(workers)].acc += [node]
+                bots[i % len(bots)].acc += [node]
 
             # scrape the nodes from edges relations
             if 'via_edges' in options:
 
                 for edge in options['via_edges']:
 
-                    for i, worker in workers.items():
+                    for bot in bots:
 
-                        threads.append(worker.bot.start(
-                            edge, worker.acc, options['args']))
+                        threads.append(bot.start(
+                            edge, bot.acc, options['args']))
 
                     wait_bots(threads)
             else:
@@ -64,10 +56,10 @@ if 'distributed' in script['mode']:
                     'script using from_nodes must also use via_edges, in action {}'.format(action))
 
             # execute the final action: like, follow ...
-            for i, worker in workers.items():
+            for bot in bots:
 
-                threads.append(worker.bot.start(
-                    method, worker.acc, options['args']))
+                threads.append(bot.start(
+                    method, bot.acc, options['args']))
 
             wait_bots(threads)
 
