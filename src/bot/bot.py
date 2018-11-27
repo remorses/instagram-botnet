@@ -7,6 +7,10 @@ from .edges import Edges
 from .acts import Acts
 
 
+class BotException(Exception):
+    pass
+
+
 class Bot(Thread):
 
     def __init__(self, username, password):
@@ -23,4 +27,4 @@ class Bot(Thread):
         elif method in self.acts:
             self.acts[method](arg)
         else:
-            raise Exception("methd {} not supported".format(method))
+            raise BotException("method {} not supported".format(method))
