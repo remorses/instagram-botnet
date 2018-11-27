@@ -5,17 +5,22 @@ script = {}
 
 
 class Task():
-    def __init__(self, bot, id, acc=[]):
+    def __init__(self, bot, id):
         self.bot = bot
-        self.acc = acc
+        self.acc = bot.acc
         self.id = id
 
 
 for i, credentials in enumerate(script['bots']):
     workers[i] = Task(Bot(**credentials), id=i)
 
-
 threads = []
+
+
+def wait_bots(threads):
+    for t in threads:
+        t.join()
+
 
 if 'distributed' in script['mode']:
 
@@ -29,27 +34,33 @@ if 'distributed' in script['mode']:
                 workers[i % len(workers)].acc += [node]
 
             for i, worker in workers:
-                worker.bot.start(options['nodes'], method,
-                                 worker.acc, **options)
+                threads.append(worker.bot.start(method,
+                                                worker.acc, options['args']))
 
-            for i, worker in workers.items():
-                worker.acc.clear()
+            wait_bots(threads)
 
         elif 'from_nodes' in options:
 
             for i, node in enumerate(options['from_nodes']):
                 workers[i % len(workers)].acc += [node]
 
-            for i, worker in workers.items():
+            if 'via_edges' in options:
+
                 for edge in options['via_edges']:
-                    threads.append(workers[i].bot.start(
-                        method, workers[i].acc, **options))
 
-                for t in threads:
-                    t.join()
+                    for worker in workers:
 
-                for i, worker in workers.items():
-                    worker.acc.clear()
+                        threads.append(worker.bot.start(
+                            edge, worker.acc, options['args']))
+
+                    wait_bots(threads)
+
+            for i, worker in workers:
+
+                threads.append(worker.bot.start(
+                    method, worker.acc, options['args']))
+
+            wait_bots(threads)
 
 elif 'unison' in script['mode']:
     pass

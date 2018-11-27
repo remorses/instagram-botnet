@@ -1,6 +1,6 @@
 
 
-
+- [method]: {options: { from_nodes, via_edges, ...other}}
 
 # the simplest form, like some images
 - like:

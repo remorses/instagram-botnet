@@ -4,22 +4,23 @@
       via_edges:
           - feed:                               1
           - likers:                             20
-      messages:                                 # list of lists
-        -
-          - image:                              url
-          - link:                               url
-          - text:                               do you like?
-          - text:                               answer if you like
-        -
-          - image:                              url
-          - location:                           latlong
-          - profile:                            user
-          - photo:                              url
-          - like:
-          - hashtag:                            tag
-          - reaction:                           type
-        -
-          - text:                               heyyy scrivo solo una cazzata
+      args:
+        messages:                                 # list of lists
+          -
+            - image:                              url
+            - link:                               url
+            - text:                               do you like?
+            - text:                               answer if you like
+          -
+            - image:                              url
+            - location:                           latlong
+            - profile:                            user
+            - photo:                              url
+            - like:
+            - hashtag:                            tag
+            - reaction:                           type
+          -
+            - text:                               heyyy scrivo solo una cazzata
 
 
 
