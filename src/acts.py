@@ -5,6 +5,7 @@ from typings import List
 class Acts():
     def __init__(self, bot):
         self.bot = bot
+        self.api = bot.api
 
     def like(self, medias: List[Media]):
         for media in medias:

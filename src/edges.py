@@ -29,10 +29,23 @@ class Edges():
 
     def __init__(self, bot):
         self.bot = bot
-        pass
+        self.api = self.bot.api
+
+    def accumulate(self, x):
+        self.bot.acc.append(x)
 
     def user_followers(self, input: Input[User]) -> List[User]:
-        self.bot.api.get_total_followers(...)
+        for user in input:
+            self.api.get_total_followers(...)
+            self.accumulate()
+
+    def media_author(self, media_id):
+        self.api.media_info(media_id)
+        try:
+            author = str(self.api.last_json["items"][0]["user"]["pk"])
+            self.accumulate(author)
+        except Exception as ex:
+            return False
 
     def user_following(self, user: Input[User]) -> List[User]:
         pass
