@@ -33,7 +33,7 @@ if 'distributed' in script['mode']:
             for i, node in options['nodes']:
                 workers[i % len(workers)].acc += [node]
 
-            for i, worker in workers:
+            for i, worker in workers.items():
                 threads.append(worker.bot.start(method,
                                                 worker.acc, options['args']))
 
@@ -44,18 +44,20 @@ if 'distributed' in script['mode']:
             for i, node in enumerate(options['from_nodes']):
                 workers[i % len(workers)].acc += [node]
 
+            # scrape the nodes from edges relations
             if 'via_edges' in options:
 
                 for edge in options['via_edges']:
 
-                    for worker in workers:
+                    for i, worker in workers.items():
 
                         threads.append(worker.bot.start(
                             edge, worker.acc, options['args']))
 
                     wait_bots(threads)
 
-            for i, worker in workers:
+            # execute the final action: like, follow ...
+            for i, worker in workers.items():
 
                 threads.append(worker.bot.start(
                     method, worker.acc, options['args']))
