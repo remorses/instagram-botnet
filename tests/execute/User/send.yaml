@@ -29,4 +29,5 @@
       via_edges:
           - hashtag_feed:                       1
           - likers:                             20
-      messages:                                 {{ messages }}
+      args:
+        messages:                                 {{ messages }}

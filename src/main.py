@@ -55,6 +55,9 @@ if 'distributed' in script['mode']:
                             edge, worker.acc, options['args']))
 
                     wait_bots(threads)
+            else:
+                raise Exception(
+                    'script using from_nodes must also use via_edges, in action {}'.format(action))
 
             # execute the final action: like, follow ...
             for i, worker in workers.items():
@@ -63,6 +66,10 @@ if 'distributed' in script['mode']:
                     method, worker.acc, options['args']))
 
             wait_bots(threads)
+
+        else:
+            raise Exception(
+                'script action must use at least nodes or from_nodes options, in action {}'.format(action))
 
 elif 'unison' in script['mode']:
     pass
