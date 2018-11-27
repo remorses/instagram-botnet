@@ -22,6 +22,10 @@ def wait_bots(threads):
         t.join()
 
 
+class ScriptException(Exception):
+    pass
+
+
 if 'distributed' in script['mode']:
 
     for action in script['execute']:
@@ -56,7 +60,7 @@ if 'distributed' in script['mode']:
 
                     wait_bots(threads)
             else:
-                raise Exception(
+                raise ScriptException(
                     'script using from_nodes must also use via_edges, in action {}'.format(action))
 
             # execute the final action: like, follow ...
@@ -68,7 +72,7 @@ if 'distributed' in script['mode']:
             wait_bots(threads)
 
         else:
-            raise Exception(
+            raise ScriptException(
                 'script action must use at least nodes or from_nodes options, in action {}'.format(action))
 
 elif 'unison' in script['mode']:
