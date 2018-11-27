@@ -1,47 +1,55 @@
 from .bot import Bot
 
-bots = {}
+workers = {}
 script = {}
-distributed = True
 
-if 'mode' in script:
-    if script['mode'] != 'distributed':
-        distributed = False
+
+class Task():
+    def __init__(self, bot, id):
+        self._bot = bot
+        self.acc = bot.acc
+        self.id = id
+
 
 for i, credentials in enumerate(script['bots']):
-    bots[i] = {'bot': Bot(credentials), 'id': i, 'acc': []}
+    workers[i] = Task(Bot(**credentials), id=i)
 
 
 threads = []
 
-for action in script['execute']:
+if 'distributed' in script['mode']:
 
-    method, options = action.items()[0]
+    for action in script['execute']:
 
-    if 'nodes' in options:
+        method, options = action.items()[0]
 
-        for i, node in options['nodes']:
-            bots[i % len(bots)]['bot'].acc += [node]
+        if 'nodes' in options:
 
-        for i, bot in bots:
-            bot['bot'].start(options['nodes'], method,
-                             bot['bot'].acc, **options)
+            for i, node in options['nodes']:
+                workers[i % len(workers)].acc += [node]
 
-        for i, bot in bots.items():
-            bot['bot'].acc.clear()
+            for i, worker in workers:
+                worker.bot.start(options['nodes'], method,
+                                 worker.bot.acc, **options)
 
-    elif 'from_nodes' in options:
+            for i, worker in workers.items():
+                worker.bot.acc.clear()
 
-        for i, node in enumerate(options['from_nodes']):
-            bots[i % len(bots)]['bot'].acc += [node]
+        elif 'from_nodes' in options:
 
-        for i, bot in bots.items():
-            for edge in options['via_edges']:
-                threads.append(bots[i]['bot'].start(
-                    method, bots[i]['bot'].acc, **options))
+            for i, node in enumerate(options['from_nodes']):
+                workers[i % len(workers)].bot.acc += [node]
 
-            for t in threads:
-                t.join()
+            for i, worker in workers.items():
+                for edge in options['via_edges']:
+                    threads.append(workers[i].bot.start(
+                        method, workers[i].bot.acc, **options))
 
-            for i, bot in bots.items():
-                bot['bot'].acc.clear()
+                for t in threads:
+                    t.join()
+
+                for i, worker in workers.items():
+                    worker.bot.acc.clear()
+
+elif 'unison' in script['mode']:
+    pass
