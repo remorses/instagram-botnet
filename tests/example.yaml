@@ -1,30 +1,38 @@
 
-version:                                        1
-mode:                                           distributed
+version:          1
+mode:             distributed
 
-use_cache:                                      ./cache.json
+use_cache:        ./cache.json
 
 
 bots:
   -
-    username:                                   dsfg
-    password:                                   sdfg
+    username:     dsfg
+    password:     sdfg
   -
-    username:                                   sdfg
-    password:                                   sdfg
+    username:     sdfg
+    password:     sdfg
 
 
 execute:
 
 
   - like:
-      from_nodes:                               [user1, user2, ***REMOVED***, ***REMOVED***]
+      from_nodes: [user1, user2, ***REMOVED***, ***REMOVED***]
       via_edges:
-          - user_followers:                     20
-          - user_feed:                          4
+          - user_followers: 20
+          - user_feed: 4
 
   - follow:
-      from_nodes:                               [user1, dfg, ***REMOVED***, dfg.sd]
+      from_nodes: [user1, dfg, ***REMOVED***, dfg.sd]
       via_edges:
-          - user_followers:                     20
-          - user_feed:                          4
+          - user_followers: 20
+          - user_feed: 4
+
+  - export:
+      from_nodes: [user1, dfg, ***REMOVED***, dfg.sd]
+      via_edges:
+          - user_followers: 20
+          - user_feed: 4
+      args:
+        to:       'https://collect-media'

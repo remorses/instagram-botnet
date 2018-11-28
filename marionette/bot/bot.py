@@ -25,7 +25,7 @@ class Bot:
             t.start()
             return t
         elif method in self.acts:
-            t = Thread(target=self.edges[method], args=(self.acc, arg))
+            t = Thread(target=self.acts[method], args=(self.acc, arg))
             t.start()
             return t
         else:
