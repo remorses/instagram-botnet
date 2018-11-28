@@ -2,7 +2,7 @@ from nodes import User, Media, Hashtag, Geotag, Usertag
 from typings import List
 
 
-class Acts():
+class Interactions:
     def __init__(self, bot):
         self.bot = bot
         self.api = bot.api

@@ -1,7 +1,7 @@
 from threading import Thread
 from instabot import API
 from .edges import Edges
-from .acts import Acts
+from .interactions import Interactions
 
 
 class BotException(Exception):
@@ -17,7 +17,7 @@ class Bot:
         self.acc = []
 
         self._edges = Edges(self)
-        self._acts = Acts(self)
+        self._interactions = Interactions(self)
 
     def accumulate(self, x):
             self.acc = x
@@ -27,8 +27,8 @@ class Bot:
             t = Thread(target=self._edges[method], args=(self.acc, arg))
             t.start()
             return t
-        elif method in self._acts:
-            t = Thread(target=self._acts[method], args=(self.acc, arg))
+        elif method in self._interactions:
+            t = Thread(target=self._interactions[method], args=(self.acc, arg))
             t.start()
             return t
         else:

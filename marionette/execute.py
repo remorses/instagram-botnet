@@ -63,12 +63,12 @@ def execute(script, threads):
 
         for action in script['execute']:
 
-            method, options = list(action.items())[0]
+            interaction_method, options = list(action.items())[0]
 
             if not 'args' in options:
                 options['args'] = []
 
-            print('doing action {}'.format(method))
+            print('doing action {}'.format(interaction_method))
 
             if 'nodes' in options:
 
@@ -78,7 +78,7 @@ def execute(script, threads):
                     bots[i % len(bots)].acc += [node]
 
                 for bot in bots:
-                    threads.append(bot.do(method, options['args']))
+                    threads.append(bot.do(interaction_method, options['args']))
 
                 wait_bots(threads)
 
@@ -103,10 +103,10 @@ def execute(script, threads):
                     raise ScriptException(
                         'script using from_nodes must also use via_edges, in action {}'.format(action))
 
-                # execute the final action: like, follow ...
+                # execute the final interaction: like, follow ...
                 for bot in bots:
 
-                    threads.append(bot.do(method, options['args']))
+                    threads.append(bot.do(interaction_method, options['args']))
 
                 wait_bots(threads)
 
