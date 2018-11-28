@@ -11,6 +11,14 @@ class Acts():
         for media in medias:
             self.bot.api.like(media)
 
+    def media_author(self, medias: List[Media]) -> List[User]:
+        result = []
+        for media in medias:
+            if self.api.media_info(media.id):
+                author_id = str(self.api.last_json["items"][0]["user"]["pk"])
+                result += [User(id=author_id)]
+        self.bot.acc = []
+
     def comment(self, users: List[Media]):
         pass
 

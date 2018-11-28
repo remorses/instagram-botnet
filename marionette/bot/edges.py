@@ -25,27 +25,26 @@ def is_right_input(input, type):
 #         return fun(*args, **nargs)
 
 
+class EdgeException(Exception):
+    pass
+
+
 class Edges():
 
     def __init__(self, bot):
         self.bot = bot
         self.api = self.bot.api
 
-    def accumulate(self, x):
-        self.bot.acc.append(x)
+    def _accumulate(self, x):
+        self.bot.acc = x
 
-    def user_followers(self, input: Input[User]) -> List[User]:
-        for user in input:
-            self.api.get_total_followers(...)
-            self.accumulate()
-
-    def media_author(self, media_id):
-        self.api.media_info(media_id)
-        try:
-            author = str(self.api.last_json["items"][0]["user"]["pk"])
-            self.accumulate(author)
-        except Exception as ex:
-            return False
+    def media_author(self, medias: List[Media]) -> List[User]:
+        result = []
+        for media in medias:
+            if self.api.media_info(media.id):
+                author_id = str(self.api.last_json["items"][0]["user"]["pk"])
+                result += [User(id=author_id)]
+        self._accumulate(result)
 
     def user_following(self, user: Input[User]) -> List[User]:
         pass
