@@ -14,7 +14,8 @@ class Interactions:
             if not isinstance(media, Media):
                 id = media.id
             else:
-                id = media
+                url = media
+                id = Media.get_media_id_from_link(url)
 
             if self.api.like(id):
                 print('liked media %d.' % id)
