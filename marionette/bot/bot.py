@@ -1,6 +1,4 @@
 from threading import Thread
-from functoolz import reduce
-
 from instabot import API
 from .edges import Edges
 from .acts import Acts

@@ -26,13 +26,13 @@ class Bot:
 class Edges:
 
     def __init__(self, bot):
-        self.acc = bot.acc
+        self.bot = bot
         self.idx = bot.idx
 
     def like(self, method, arg):
             time.sleep(1)
-            print('{} did {}'.format(self.idx, self.acc))
-            self.acc = [(random() * 10) * 100 / 100]
+            print('{} did {}'.format(self.idx, self.bot.acc))
+            self.bot.acc = [round(random() * 10)]
 
 
 class ScriptException(Exception):
@@ -42,7 +42,7 @@ class ScriptException(Exception):
 def wait_bots(threads):
     for t in threads:
         t.join()
-    threads.empty()
+    threads = []
 
 
 def execute(script, threads):
@@ -59,8 +59,11 @@ def execute(script, threads):
         for action in script['execute']:
 
             method, options = list(action.items())[0]
+
             if not 'args' in options:
                 options['args'] = []
+
+            print('doing action {}'.format(method))
 
             if 'nodes' in options:
 
@@ -73,6 +76,10 @@ def execute(script, threads):
                 wait_bots(threads)
 
             elif 'from_nodes' in options:
+
+                # TODO
+                for bot in bots:
+                    bot.acc = []
 
                 for i, node in enumerate(options['from_nodes']):
                     bots[i % len(bots)].acc += [node]
