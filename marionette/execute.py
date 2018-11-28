@@ -74,7 +74,7 @@ def execute(script, threads):
 
                 reset(bots)
 
-                for i, node in options['nodes']:
+                for i, node in enumerate(options['nodes']):
                     bots[i % len(bots)].acc += [node]
 
                 for bot in bots:
