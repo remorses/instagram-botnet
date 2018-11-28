@@ -17,7 +17,7 @@ class Bot:
         Bot.idx += 1
         self.edges = Edges(self)
 
-    def run(self, method, arg):
+    def do(self, method, arg):
         t = Thread(target=self.edges.like, args=(method, arg))
         t.start()
         return t
@@ -78,7 +78,7 @@ def execute(script, threads):
                     bots[i % len(bots)].acc += [node]
 
                 for bot in bots:
-                    threads.append(bot.run(method, options['args']))
+                    threads.append(bot.do(method, options['args']))
 
                 wait_bots(threads)
 
@@ -96,7 +96,7 @@ def execute(script, threads):
 
                         for bot in bots:
 
-                            threads.append(bot.run(edge, options['args']))
+                            threads.append(bot.do(edge, options['args']))
 
                         wait_bots(threads)
                 else:
@@ -106,7 +106,7 @@ def execute(script, threads):
                 # execute the final action: like, follow ...
                 for bot in bots:
 
-                    threads.append(bot.run(method, options['args']))
+                    threads.append(bot.do(method, options['args']))
 
                 wait_bots(threads)
 

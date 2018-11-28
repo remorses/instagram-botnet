@@ -19,7 +19,7 @@ class Bot:
         self.edges = Edges(self)
         self.acts = Acts(self)
 
-    def start(self, method, arg=[]):
+    def do(self, method, arg=[]):
         if method in self.edges:
             t = Thread(target=self.edges[method], args=(self.acc, arg))
             t.start()
