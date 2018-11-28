@@ -16,16 +16,19 @@ class Bot:
         self.api.login(username, password)
         self.acc = []
 
-        self.edges = Edges(self)
-        self.acts = Acts(self)
+        self._edges = Edges(self)
+        self._acts = Acts(self)
+
+    def accumulate(self, x):
+            self.acc = x
 
     def do(self, method, arg=[]):
-        if method in self.edges:
-            t = Thread(target=self.edges[method], args=(self.acc, arg))
+        if method in self._edges:
+            t = Thread(target=self._edges[method], args=(self.acc, arg))
             t.start()
             return t
-        elif method in self.acts:
-            t = Thread(target=self.acts[method], args=(self.acc, arg))
+        elif method in self._acts:
+            t = Thread(target=self._acts[method], args=(self.acc, arg))
             t.start()
             return t
         else:

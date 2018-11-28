@@ -5,7 +5,8 @@ class Node:
 
 
 class User(Node):
-    pass
+    def __init__(self, id):
+        self.id = id
 
 
 class Geotag(Node):
