@@ -7,22 +7,22 @@ use_cache:        ./cache.json
 
 bots:
   -
-    username:     dsfg
-    password:     sdfg
-  -
-    username:     sdfg
-    password:     sdfg
+    username:     ***REMOVED***
+    password:     ***REMOVED***
+  # -
+  #   username:     sdfg
+  #   password:     sdfg
 
 
 execute:
 
 
   - like:
-      nodes: [user1, user2, ***REMOVED***, ***REMOVED***]
+      nodes: []
 
 
-  - like:
-      nodes: [user1, user2, ***REMOVED***, ***REMOVED***]
+  # - like:
+  #     nodes: []
 
   # - like:
   #     from_nodes: [user1, user2, ***REMOVED***, ***REMOVED***]

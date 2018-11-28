@@ -3,21 +3,33 @@ from typings import List
 
 
 class Interactions:
+
     def __init__(self, bot):
-        self.bot = bot
+        self._accumulate = bot.accumulate
         self.api = bot.api
 
-    def like(self, medias: List[Media]):
-        for media in medias:
-            self.bot.api.like(media)
+    def like(self, medias):
 
-    def media_author(self, medias: List[Media]) -> List[User]:
-        result = []
         for media in medias:
-            if self.api.media_info(media.id):
-                author_id = str(self.api.last_json["items"][0]["user"]["pk"])
-                result += [User(id=author_id)]
-        self.bot.acc = []
+            if not isinstance(media, Media):
+                id = media.id
+            else:
+                id = media
+
+            if self.api.like(id):
+                print('liked media %d.' % id)
+            else:
+                print('can\'t like')
+
+        self._accumulate([])
+
+    # def media_author(self, medias: List[Media]) -> List[User]:
+    #     result = []
+    #     for media in medias:
+    #         if self.api.media_info(media.id):
+    #             author_id = str(self.api.last_json["items"][0]["user"]["pk"])
+    #             result += [User(id=author_id)]
+    #     self._accumulate([])
 
     def comment(self, users: List[Media]):
         pass
