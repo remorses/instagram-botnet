@@ -40,7 +40,7 @@ class Bot:
             t.start()
             return t
         elif method in methods(Interactions):
-            print('doing an interaction {} with arg {} and acc {}'.format(
+            print('doing a {} interaction with arg {} and acc {}'.format(
                 method, arg, self.acc))
             t = Thread(target=self._interactions[method], args=(arg,))
             t.start()
