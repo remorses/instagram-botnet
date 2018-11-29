@@ -8,6 +8,10 @@ class User(Node):
     def __init__(self, id):
         self.id = id
 
+    @staticmethod
+    def get_user_id():
+        pass
+
 
 class Geotag(Node):
     pass

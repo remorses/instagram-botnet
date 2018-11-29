@@ -18,7 +18,8 @@ interaction_delays = {'like': 10,
                       'comment': 60,
                       'block': 30,
                       'unblock': 30,
-                      'message': 60
+                      'message': 60,
+
                       }
 
 
