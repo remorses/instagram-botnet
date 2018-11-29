@@ -1,8 +1,8 @@
 from threading import Thread
 from types import FunctionType
 from instabot import API
-from .edges import Edges
-from .interactions import Interactions
+from .extents import Edges
+from .extents import Interactions
 
 
 def methods(cls):
@@ -26,10 +26,10 @@ class Bot:
         self._interactions = Interactions(self)
 
     def accumulate(self, x):
-            self._acc.append(x)
+            self.acc.append(x)
 
     def reset(self):
-            self._acc = []
+            self.acc = []
 
     def do(self, method, arg=[]):
         print('doing {}'.format(method))

@@ -1,6 +1,6 @@
 # Edges
 from typing import List
-
+from .connection import Connection
 from .nodes import User, Media, Comment, Hashtag, Usertag, Geotag
 
 
@@ -18,7 +18,7 @@ class EdgeException(Exception):
     pass
 
 
-class Edges:
+class Edges(Connection):
 
     def __init__(self, bot):
         self._acc = bot.acc
