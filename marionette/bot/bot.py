@@ -32,7 +32,7 @@ class Bot:
         self.delays = interaction_delays
         self.max_per_day = max_interactions_per_day
 
-        print('logged as {} {}'.format(username, password))
+        self.logger.info('logged as {} {}'.format(username, password))
 
         self._edges = Edges(self)
         self._interactions = Interactions(self)
@@ -44,15 +44,15 @@ class Bot:
             self.acc = []
 
     def do(self, method, arg=[]):
-        print('doing {}'.format(method))
+        self.logger.info('doing {}'.format(method))
         if method in methods(Edges):
-            print('doing a edge scrape {} with arg {} and acc {}'.format(
+            self.logger.info('doing a edge scrape {} with arg {} and acc {}'.format(
                 method, arg, self.acc))
             t = Thread(target=self._edges[method], args=(arg,))
             t.start()
             return t
         elif method in methods(Interactions):
-            print('doing an interaction {} with arg {} and acc {}'.format(
+            self.logger.info('doing an interaction {} with arg {} and acc {}'.format(
                 method, arg, self.acc))
             t = Thread(target=self._interactions[method], args=(arg,))
             t.start()
