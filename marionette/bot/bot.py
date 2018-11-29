@@ -20,17 +20,16 @@ class Bot:
         self.api = API(device=device)
         self.api.login(username, password)
         print('logged as {} {}'.format(username, password))
-        self._acc = []
+        self.acc = []
 
         self._edges = Edges(self)
         self._interactions = Interactions(self)
 
     def accumulate(self, x):
-            self._acc = x
+            self._acc.append(x)
 
-    @property
-    def acc(self):
-        return self._acc
+    def reset(self, x):
+            self._acc = x
 
     def do(self, method, arg=[]):
         print('doing {}'.format(method))

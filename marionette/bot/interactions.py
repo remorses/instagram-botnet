@@ -6,6 +6,7 @@ class Interactions:
 
     def __init__(self, bot):
         self._accumulate = bot.accumulate
+        self._reset = bot.reset
         self._bot = bot
         self._api = bot.api
 
@@ -17,9 +18,9 @@ class Interactions:
 
     def like(self, args):
 
-        print('medias: ', self._bot._acc)
+        print('medias: ', self._bot.acc)
 
-        for media in self._bot._acc:
+        for media in self._bot.acc:
             if isinstance(media, Media):
                 id = media.id
             else:
@@ -32,7 +33,7 @@ class Interactions:
             else:
                 print('can\'t like')
 
-        self._accumulate([])
+        self._reset()
 
     # def media_author(self, medias: List[Media]) -> List[User]:
     #     result = []

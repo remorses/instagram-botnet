@@ -47,7 +47,7 @@ def wait_bots(threads):
 
 def reset(bots):
     for bot in bots:
-        bot.accumulate([])
+        bot.reset()
 
 
 def execute(script, threads):
@@ -68,14 +68,12 @@ def execute(script, threads):
             if not 'args' in options:
                 options['args'] = []
 
-            # print('doing action {}'.format(interaction_method))
-
             if 'nodes' in options:
 
                 reset(bots)
 
                 for i, node in enumerate(options['nodes']):
-                    bots[i % len(bots)]._acc += [node]
+                    bots[i % len(bots)].accumulate(node)
 
                 for bot in bots:
                     print('bot: ', bot)
@@ -89,7 +87,7 @@ def execute(script, threads):
                 reset(bots)
 
                 for i, node in enumerate(options['from_nodes']):
-                    bots[i % len(bots)]._acc += [node]
+                    bots[i % len(bots)].accumulate(node)
 
                 # scrape the nodes from edges relations
                 if 'via_edges' in options:
