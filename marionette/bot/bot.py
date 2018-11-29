@@ -1,20 +1,11 @@
 from threading import Thread
 from types import FunctionType
 import datetime
-
-
 from instabot import API
+
 from .edges import Edges
 from .interactions import Interactions
 from .settings import interaction_delays, total_interactions, max_interactions_per_day
-
-
-def methods(cls):
-    return [x for x, y in cls.__dict__.items() if type(y) == FunctionType]
-
-
-class BotException(Exception):
-    pass
 
 
 class Bot:
@@ -71,3 +62,11 @@ class Bot:
         for k in self.total:
             self.total[k] = 0
         self.start_time = datetime.datetime.now()
+
+
+def methods(cls):
+    return [x for x, y in cls.__dict__.items() if type(y) == FunctionType]
+
+
+class BotException(Exception):
+    pass
