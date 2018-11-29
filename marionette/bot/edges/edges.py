@@ -7,15 +7,6 @@ from .user_feed import user_feed
 from .geotag_feed import geotag_feed
 from .hashtag_feed import hashtag_feed
 
-# def assert_List_type(fun):
-#     def wrapper(*args, **nargs):
-#         List_type = fun.__annotations__.List
-#         if(not is_right_List(List, List_type)):
-#             error = "wrong edge, " + fun.__name__ + \
-#                 "accepts only " + List_type
-#             raise Exception(error)
-#         return fun(*args, **nargs)
-
 
 class EdgeException(Exception):
     pass
