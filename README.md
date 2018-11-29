@@ -31,4 +31,4 @@ Hashtag edges
 - [ ] feed
 
 Geotag feed
--[ ] feed
+- [ ] feed
