@@ -20,10 +20,8 @@ class Bot:
         self.acc = []
 
         self.total = total_interactions
-        self.delays = interaction_delays
+        self.delay = interaction_delays
         self.max_per_day = max_interactions_per_day
-
-        self.logger.info('logged as {} {}'.format(username, password))
 
         self._edges = Edges(self)
         self._interactions = Interactions(self)
