@@ -5,6 +5,13 @@ from ..extent import Extent
 
 from .like import like
 from .send import send
+from .comment import comment
+from .report import report
+from .follow import follow
+from .block import block
+from .export_user import export_user
+from .export_media import export_media
+
 
 
 class Interactions(Extent):
@@ -25,36 +32,25 @@ class Interactions(Extent):
     def like(self, args):
         like(self)
 
-    # def media_author(self, medias: List[Media]) -> List[User]:
-    #     result = []
-    #     for media in medias:
-    #         if self._api.media_info(media.id):
-    #             author_id = str(self._api.last_json["items"][0]["user"]["pk"])
-    #             result += [User(id=author_id)]
-    #     self._accumulate([])
+    def comment(self, args):
+        comment(self, comments=args['comments'])
 
-    def comment(self, users: List[Media]):
-        pass
+    def report(self, args):
+        report(self)
 
-    def report(self, users: List[Media]):
-        pass
+    def follow(self, args):
+        follow(self)
 
-    def follow(self, medias: List[User]):
-        pass
-
-    def block(self, medias: List[User]):
-        pass
+    def block(self, args):
+        block(self)
 
     def send(self, args):
-        send(self, args)
+        send(self, messages=args['messages'])
+    
+    def export(self, args):
+        if isinstance(self._acc[-1], Media)
+            export_media(self._acc[-1], args)
+        elif isinstance(self._acc, User):
+            export_user(self._acc[-1], args)
 
 
-# methods = {
-#     'like': like,
-#     'comment': comment,
-#     'report': report,
-#
-#     'follow': follow,
-#     'send': send,
-#     'block': block
-# }
