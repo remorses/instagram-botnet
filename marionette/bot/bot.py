@@ -1,8 +1,13 @@
 from threading import Thread
 from types import FunctionType
+import datetime
+
+
 from instabot import API
 from .extents import Edges
 from .extents import Interactions
+from .settings import total
+from .settings import interaction_delays, total_interactions, max_interactions_per_day
 
 
 def methods(cls):
@@ -17,10 +22,17 @@ class Bot:
 
     def __init__(self, username, password, device=None):
 
+        self.start_time = datetime.datetime.now()
+
         self.api = API(device=device)
         self.api.login(username, password)
-        print('logged as {} {}'.format(username, password))
         self.acc = []
+
+        self.total = total_interactions
+        self.delays = interaction_delays
+        self.max_per_day = max_interactions_per_day
+
+        print('logged as {} {}'.format(username, password))
 
         self._edges = Edges(self)
         self._interactions = Interactions(self)

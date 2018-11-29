@@ -39,7 +39,7 @@ class ScriptException(Exception):
     pass
 
 
-def wait_bots(threads):
+def wait(threads):
     for t in threads:
         t.join()
     threads = []
@@ -52,7 +52,7 @@ def reset(bots):
 
 def execute(script, threads):
 
-    wait_bots(threads)
+    wait(threads)
 
     bots = []
 
@@ -80,7 +80,7 @@ def execute(script, threads):
                     print('acc: ', bot.acc)
                     threads += [bot.do(interaction_method, options['args'])]
 
-                wait_bots(threads)
+                wait(threads)
 
             elif 'from_nodes' in options:
 
@@ -97,7 +97,7 @@ def execute(script, threads):
                         for bot in bots:
                             threads += [bot.do(edge, options['args'])]
 
-                        wait_bots(threads)
+                        wait(threads)
                 else:
                     raise ScriptException(
                         'script using from_nodes must also use via_edges, in action {}'.format(action))
@@ -107,7 +107,7 @@ def execute(script, threads):
 
                     threads.append(bot.do(interaction_method, options['args']))
 
-                wait_bots(threads)
+                wait(threads)
 
             else:
                 raise ScriptException(
