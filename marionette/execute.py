@@ -1,38 +1,38 @@
-# from .bot import Bot
+from .bot import Bot
 import time
 from threading import Thread
 from random import random
 
 
-class Bot:
-
-    idx = 0
-
-    def __init__(self, username, password):
-        Thread.__init__(self)
-        print('init')
-
-        self.acc = []
-        self.id = id
-        Bot.idx += 1
-        self.edges = Edges(self)
-
-    def do(self, method, arg):
-        t = Thread(target=self.edges.like, args=(method, arg))
-        t.start()
-        return t
-
-
-class Edges:
-
-    def __init__(self, bot):
-        self.bot = bot
-        self.idx = bot.idx
-
-    def like(self, method, arg):
-            time.sleep(1)
-            print('{} did {}'.format(self.idx, self.bot.acc))
-            self.bot.acc = [round(random() * 10)]
+# class Bot:
+#
+#     idx = 0
+#
+#     def __init__(self, username, password):
+#         Thread.__init__(self)
+#         print('init')
+#
+#         self.acc = []
+#         self.id = id
+#         Bot.idx += 1
+#         self.edges = Edges(self)
+#
+#     def do(self, method, arg):
+#         t = Thread(target=self.edges.like, args=(method, arg))
+#         t.start()
+#         return t
+#
+#
+# class Edges:
+#
+#     def __init__(self, bot):
+#         self.bot = bot
+#         self.idx = bot.idx
+#
+#     def like(self, method, arg):
+#             time.sleep(1)
+#             print('{} did {}'.format(self.idx, self.bot.acc))
+#             self.bot.acc = [round(random() * 10)]
 
 
 class ScriptException(Exception):
@@ -47,7 +47,7 @@ def wait_bots(threads):
 
 def reset(bots):
     for bot in bots:
-        bot.acc = []
+        bot.accumulate([])
 
 
 def execute(script, threads):
@@ -68,17 +68,19 @@ def execute(script, threads):
             if not 'args' in options:
                 options['args'] = []
 
-            print('doing action {}'.format(interaction_method))
+            # print('doing action {}'.format(interaction_method))
 
             if 'nodes' in options:
 
                 reset(bots)
 
                 for i, node in enumerate(options['nodes']):
-                    bots[i % len(bots)].acc += [node]
+                    bots[i % len(bots)]._acc += [node]
 
                 for bot in bots:
-                    threads.append(bot.do(interaction_method, options['args']))
+                    print('bot: ', bot)
+                    print('acc: ', bot.acc)
+                    threads += [bot.do(interaction_method, options['args'])]
 
                 wait_bots(threads)
 
@@ -87,7 +89,7 @@ def execute(script, threads):
                 reset(bots)
 
                 for i, node in enumerate(options['from_nodes']):
-                    bots[i % len(bots)].acc += [node]
+                    bots[i % len(bots)]._acc += [node]
 
                 # scrape the nodes from edges relations
                 if 'via_edges' in options:
@@ -95,8 +97,7 @@ def execute(script, threads):
                     for edge in options['via_edges']:
 
                         for bot in bots:
-
-                            threads.append(bot.do(edge, options['args']))
+                            threads += [bot.do(edge, options['args'])]
 
                         wait_bots(threads)
                 else:
@@ -116,3 +117,5 @@ def execute(script, threads):
 
     elif 'unison' in script['mode']:
         pass
+
+    time.sleep(3)

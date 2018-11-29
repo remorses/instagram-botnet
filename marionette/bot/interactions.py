@@ -1,23 +1,33 @@
-from nodes import User, Media, Hashtag, Geotag, Usertag
-from typings import List
+from .nodes import User, Media, Hashtag, Geotag, Usertag
+from typing import List
 
 
 class Interactions:
 
     def __init__(self, bot):
         self._accumulate = bot.accumulate
-        self.api = bot.api
+        self._bot = bot
+        self._api = bot.api
 
-    def like(self, medias):
+    def __getitem__(self, method):
+        func = getattr(self, method, False)
+        if not func:
+            print('not found {}'.format(method))
+        return func
 
-        for media in medias:
-            if not isinstance(media, Media):
+    def like(self, args):
+
+        print('medias: ', self._bot._acc)
+
+        for media in self._bot._acc:
+            if isinstance(media, Media):
                 id = media.id
             else:
                 url = media
                 id = Media.get_media_id_from_link(url)
+                print('id: {}'.format(id))
 
-            if self.api.like(id):
+            if self._api.like(id):
                 print('liked media %d.' % id)
             else:
                 print('can\'t like')

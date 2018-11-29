@@ -1,7 +1,7 @@
 # Edges
-from typings import List
+from typing import List
 
-from nodes import User, Media, Comment, Hashtag, Usertag, Geotag
+from .nodes import User, Media, Comment, Hashtag, Usertag, Geotag
 
 
 # def assert_List_type(fun):
@@ -18,15 +18,19 @@ class EdgeException(Exception):
     pass
 
 
-class Edges():
+class Edges:
 
     def __init__(self, bot):
+        self._acc = bot.acc
         self._accumulate = bot.accumulate
         self._api = bot.api
 
-    def media_author(self, medias: List[Media]) -> List[User]:
+    def __getitem__(self, method):
+        return getattr(self, method)
+
+    def media_author(self, args) -> List[User]:
         result = []
-        for media in medias:
+        for media in self.acc:
             if self._api.media_info(media.id):
                 author_id = str(self._api.last_json["items"][0]["user"]["pk"])
                 result += [User(id=author_id)]
@@ -36,9 +40,6 @@ class Edges():
         pass
 
     def user_feed(self, user: List[User]) -> List[Media]:
-        pass
-
-    def media_author(self, media: List[Media]) -> List[User]:
         pass
 
     def media_likers(self, media: List[Media]) -> List[User]:
