@@ -3,6 +3,10 @@ from ..extent import Extent
 from ..nodes import User, Media, Comment, Hashtag, Usertag, Geotag
 
 
+from .user_feed import user_feed
+from .geotag_feed import geotag_feed
+from .hashtag_feed import hashtag_feed
+
 # def assert_List_type(fun):
 #     def wrapper(*args, **nargs):
 #         List_type = fun.__annotations__.List
@@ -19,7 +23,7 @@ class EdgeException(Exception):
 
 class Edges(Extent):
 
-    def media_author(self, args) -> List[User]:
+    def author(self, args):
         result = []
         for media in self._acc:
             if self._api.media_info(media.id):
@@ -27,29 +31,30 @@ class Edges(Extent):
                 result += [User(id=author_id)]
         self._accumulate(result)
 
-    def user_following(self, user: List[User]) -> List[User]:
+    def user_following(self, args):
         pass
 
-    def user_feed(self, user: List[User]) -> List[Media]:
+    def feed(self, args):
+        if isinstance(self._acc, User) or 'id' in self._acc:
+            user_feed(self)
+
+        if isinstance(self._acc, Geotag) or 'id' in self._acc:
+            user_feed(self)
+
+        if isinstance(self._acc, Hashtag) or 'id' in self._acc:
+            user_feed(self)
+
+    def likers(self, args):
         pass
 
-    def media_likers(self, media: List[Media]) -> List[User]:
+    def commenters(self, args):
         pass
 
-    def media_commenters(self, media: List[Media]) -> List[User]:
+    def comments(self, args):
         pass
 
-    def media_comments(self, media: List[User]) -> List[Comment]:
+    def hashtags(self, args):
         pass
 
-    def media_hashtags(self, media: List[User]) -> List[Hashtag]:
-        pass
-
-    def media_usertags(self, media: List[Media]) -> List[Usertag]:
-        pass
-
-    def hashtag_feed(self, hashtag: List[Hashtag]) -> List[Media]:
-        pass
-
-    def geotag_feed(self, geotag: List[Geotag]) -> List[Media]:
+    def usertags(self):
         pass
