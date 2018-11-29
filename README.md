@@ -4,7 +4,7 @@ Write readable declarative yaml files to control your botnet
 ## methods to implement
 
 User interactions
-- [x] like
+- [X] like
 - [ ] follow
 - [ ] send
 - [ ] block
@@ -22,7 +22,7 @@ User edges
 
 Media edges
 - [ ] likers
-- [x] author
+- [X] author
 - [ ] hashtags
 - [ ] usertags
 - [ ] comments
