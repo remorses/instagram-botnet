@@ -43,7 +43,11 @@ class Bot:
             t.start()
             return t
         elif method in methods(Interactions):
+<<<<<<< HEAD
             self.logger.info('doing an interaction {} with arg {} and acc {}'.format(
+=======
+            print('doing a {} interaction with arg {} and acc {}'.format(
+>>>>>>> 9b00fb80d932c63bd6a181320040604f3f361857
                 method, arg, self.acc))
             t = Thread(target=self._interactions[method], args=(arg,))
             t.start()
