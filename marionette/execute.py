@@ -59,8 +59,6 @@ def execute(script, threads):
 
             if 'nodes' in options:
 
-                reset(bots)
-
                 init_bots_acc(options['nodes'], bots)
 
                 for bot in bots:
@@ -71,8 +69,6 @@ def execute(script, threads):
                 wait(threads)
 
             elif 'from_nodes' in options:
-
-                reset(bots)
 
                 init_bots_acc(options['from_nodes'], bots)
 
@@ -112,11 +108,8 @@ def wait(threads):
     threads = []
 
 
-def reset(bots):
+def init_bots_acc(acc, bots):
     for bot in bots:
         bot.reset()
-
-
-def init_bots_acc(acc, bots):
-        for i, node in enumerate(acc):
-            bots[i % len(bots)].accumulate(node)
+    for i, node in enumerate(acc):
+        bots[i % len(bots)].accumulate(node)
