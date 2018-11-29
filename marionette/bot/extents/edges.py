@@ -1,6 +1,5 @@
-# Edges
 from typing import List
-from .connection import Connection
+from .extent import Extent
 from .nodes import User, Media, Comment, Hashtag, Usertag, Geotag
 
 
@@ -18,23 +17,16 @@ class EdgeException(Exception):
     pass
 
 
-class Edges(Connection):
+class Edges(Extent):
 
-    def __init__(self, bot):
-        self._acc = bot.acc
-        self._accumulate = bot.accumulate
-        self._api = bot.api
-
-    def __getitem__(self, method):
-        return getattr(self, method)
-
+    
     def media_author(self, args) -> List[User]:
         result = []
-        for media in self.acc:
+        for media in self._acc:
             if self._api.media_info(media.id):
                 author_id = str(self._api.last_json["items"][0]["user"]["pk"])
                 result += [User(id=author_id)]
-        self._accumulate(result)
+        self._accumulate(result)                
 
     def user_following(self, user: List[User]) -> List[User]:
         pass
