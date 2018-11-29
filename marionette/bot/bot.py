@@ -26,6 +26,7 @@ class Bot:
 
         self.api = API(device=device)
         self.api.login(username, password)
+        self.logger = self.api.logger
         self.acc = []
 
         self.total = total_interactions
@@ -59,3 +60,15 @@ class Bot:
             return t
         else:
             raise BotException("method {} not supported".format(method))
+
+    def reached_limit(self, key):
+        current_date = datetime.datetime.now()
+        passed_days = (current_date.date() - self.start_time.date()).days
+        if passed_days > 0:
+            self._reset_counters()
+        return self.max_per_day[key] - self.total[key] < 0
+
+    def _reset_counters(self):
+        for k in self.total:
+            self.total[k] = 0
+        self.start_time = datetime.datetime.now()

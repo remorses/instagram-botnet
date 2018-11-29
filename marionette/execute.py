@@ -62,9 +62,10 @@ def execute(script, threads):
                 init_bots_acc(options['nodes'], bots)
 
                 for bot in bots:
-                    print('bot: ', bot)
-                    print('acc: ', bot.acc)
-                    threads += [bot.do(interaction_method, options['args'])]
+                    bot.logger.info('bot: ', bot)
+                    bot.logger.info('acc: ', bot.acc)
+                    newt = bot.do(interaction_method, options['args'])
+                    threads += [newt]
 
                 wait(threads)
 
@@ -103,13 +104,11 @@ def execute(script, threads):
 
 
 def wait(threads):
-    for t in threads:
-        t.join()
+    [t.join() for t in threads]
     threads = []
 
 
 def init_bots_acc(acc, bots):
-    for bot in bots:
-        bot.reset()
+    [bot.reset() for bot in bots]
     for i, node in enumerate(acc):
         bots[i % len(bots)].accumulate(node)

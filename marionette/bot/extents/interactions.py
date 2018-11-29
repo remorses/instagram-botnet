@@ -7,7 +7,7 @@ class Interactions(Extent):
 
     def like(self, args):
 
-        print('medias: ', self._acc)
+        self.logger.info('medias: ', self._acc)
 
         for media in self._acc:
             if isinstance(media, Media):
@@ -15,20 +15,20 @@ class Interactions(Extent):
             else:
                 url = media
                 id = Media.get_media_id_from_link(url)
-                print('id: {}'.format(id))
+                self.logger.info('id: {}'.format(id))
 
             if self._api.like(id):
-                print('liked media %d.' % id)
+                self.logger.info('liked media %d.' % id)
             else:
-                print('can\'t like')
+                self.logger.error('can\'t like')
 
         self._reset()
 
     # def media_author(self, medias: List[Media]) -> List[User]:
     #     result = []
     #     for media in medias:
-    #         if self.api.media_info(media.id):
-    #             author_id = str(self.api.last_json["items"][0]["user"]["pk"])
+    #         if self._api.media_info(media.id):
+    #             author_id = str(self._api.last_json["items"][0]["user"]["pk"])
     #             result += [User(id=author_id)]
     #     self._accumulate([])
 
@@ -54,7 +54,7 @@ class Interactions(Extent):
             for message in args['messages']:
                 for type, arg in message.items()[0]:
                     if type == 'text':
-                        self._send_message(arg, id)
+                        self._send_text(arg, id)
                     elif type == 'media':
                         pass
                     elif type == 'profile':
@@ -62,7 +62,7 @@ class Interactions(Extent):
                     elif type == 'hashtag':
                         pass
 
-    def _send_message(self, text, user_id, thread_id=None):
+    def _send_text(self, text, user_id, thread_id=None):
         """
         :param self: bot
         :param text: text of message
@@ -71,18 +71,18 @@ class Interactions(Extent):
         """
 
         if not isinstance(text, str) and isinstance(user_id, (str)):
-            self.logger.error(
+            self.logger.info.error(
                 'Text must be an string, user_ids must be an list or string')
             return False
 
         if self.reached_limit('messages'):
-            self.logger.info("Out of messages for today.")
+            self.logger.info.info("Out of messages for today.")
             return False
 
         self.delay('message')
         urls = self.extract_urls(text)
         item_type = 'link' if urls else 'text'
-        if self.api.send_direct_item(
+        if self._api.send_direct_item(
                 item_type,
                 user_id,
                 text=text,
@@ -92,7 +92,7 @@ class Interactions(Extent):
             self.total['messages'] += 1
             return True
 
-        self.logger.info(
+        self.logger.info.info(
             "Message to {user_id} wasn't sent".format(user_id))
         return False
 
