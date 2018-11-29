@@ -1,6 +1,6 @@
 from typing import List
-from .nodes import User, Media, Hashtag, Geotag, Usertag
-from .extent import Extent
+from ..nodes import User, Media, Hashtag, Geotag, Usertag
+from ..extent import Extent
 
 
 class Interactions(Extent):

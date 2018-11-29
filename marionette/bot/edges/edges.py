@@ -1,6 +1,6 @@
 from typing import List
-from .extent import Extent
-from .nodes import User, Media, Comment, Hashtag, Usertag, Geotag
+from ..extent import Extent
+from ..nodes import User, Media, Comment, Hashtag, Usertag, Geotag
 
 
 # def assert_List_type(fun):
@@ -18,7 +18,6 @@ class EdgeException(Exception):
 
 
 class Edges(Extent):
-
 
     def media_author(self, args) -> List[User]:
         result = []
