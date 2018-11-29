@@ -14,6 +14,22 @@ class EdgeException(Exception):
 
 class Edges(Extent):
 
+    input_types = {
+              'following': User,
+              'followers': User,
+              'user_feed': User,
+
+              'author': Media,
+              'comments': Media,
+              'commenters': Media,
+              'hashtags': Media,
+              'geotag': Media,
+              'usertags': Media,
+
+              'geotag_feed': Geotag,
+              'hashtag_feed': Hashtag
+              }
+
     def author(self, args):
         result = []
         for media in self._acc:
@@ -22,7 +38,10 @@ class Edges(Extent):
                 result += [User(id=author_id)]
         self._accumulate(result)
 
-    def user_following(self, args):
+    def following(self, args):
+        pass
+
+    def followers(self, args):
         pass
 
     def feed(self, args):
@@ -34,6 +53,15 @@ class Edges(Extent):
 
         if isinstance(self._acc, Hashtag) or 'id' in self._acc:
             user_feed(self)
+
+    def user_feed(self, args):
+        user_feed(self)
+
+    def geotag_feed(self, args):
+        geotag_feed(self)
+
+    def hashtag_feed(self, args):
+        hashtag_feed(self)
 
     def likers(self, args):
         pass

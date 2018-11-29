@@ -35,7 +35,6 @@ class Bot:
         self.acc = []
 
     def do(self, method, arg=[]):
-        self.logger.info('doing {}'.format(method))
         if method in methods(Edges):
             self.logger.info('doing a edge scrape {} with arg {} and acc {}'.format(
                 method, arg, self.acc))

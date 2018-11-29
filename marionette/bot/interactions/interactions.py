@@ -4,9 +4,23 @@ from ..extent import Extent
 
 
 from .like import like
+from .send import send
 
 
 class Interactions(Extent):
+
+    input_types = {
+              'follow': User,
+              'block': User,
+              'send': User,
+              'export_user': User,
+
+              'like': Media,
+              'comment': Media,
+              'report': Media,
+              'download': Media,
+              'export_media': Media,
+              }
 
     def like(self, args):
         like(self)
@@ -32,56 +46,7 @@ class Interactions(Extent):
         pass
 
     def send(self, args):
-        for user in self._acc:
-            if isinstance(user, User):
-                id = user.id
-            else:
-                id = User.get_user_id(user)
-
-            for message in args['messages']:
-                for type, arg in message.items()[0]:
-                    if type == 'text':
-                        self._send_text(arg, id)
-                    elif type == 'media':
-                        pass
-                    elif type == 'profile':
-                        pass
-                    elif type == 'hashtag':
-                        pass
-
-    def _send_text(self, text, user_id, thread_id=None):
-        """
-        :param self: bot
-        :param text: text of message
-        :param user_ids: list of user_ids for creating group or one user_id for send to one person
-        :param thread_id: thread_id
-        """
-
-        if not isinstance(text, str) and isinstance(user_id, (str)):
-            self.logger.info.error(
-                'Text must be an string, user_ids must be an list or string')
-            return False
-
-        if self.reached_limit('messages'):
-            self.logger.info.info("Out of messages for today.")
-            return False
-
-        self.delay('message')
-        urls = self.extract_urls(text)
-        item_type = 'link' if urls else 'text'
-        if self._api.send_direct_item(
-                item_type,
-                user_id,
-                text=text,
-                thread=thread_id,
-                urls=urls
-                ):
-            self.total['messages'] += 1
-            return True
-
-        self.logger.info.info(
-            "Message to {user_id} wasn't sent".format(user_id))
-        return False
+        send(self, args)
 
 
 # methods = {

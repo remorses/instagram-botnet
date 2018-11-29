@@ -1,7 +1,7 @@
 import time
-from threading import Thread
 from random import random
-
+from typing import FunctionType
+from .bot import Interactions, Edges
 
 # class Bot:
 #
@@ -53,7 +53,8 @@ def execute(script, bots, threads=[]):
 
             if 'nodes' in options:
 
-                init_bots_acc(options['nodes'], bots)
+                init_bots_acc(bots, options['nodes'],
+                              first_method=interaction_method)
 
                 for bot in bots:
                     bot.logger.info('bot: {}'.format(bot))
@@ -102,7 +103,18 @@ def wait(threads):
     threads = []
 
 
-def init_bots_acc(acc, bots):
+def init_bots_acc(bots, acc, first_method):
     [bot.reset() for bot in bots]
-    for i, node in enumerate(acc):
-        bots[i % len(bots)].accumulate(node)
+
+    if first_method in methods(Edges):
+        Cls = Edges.input_nodes[first_method]
+
+    if first_method in methods(Interactions):
+        Cls = Interactions.input_nodes[first_method]
+
+    for i, x in enumerate(acc):
+        bots[i % len(bots)].accumulate(Cls(x))
+
+
+def methods(cls):
+    return [x for x, y in cls.__dict__.items() if type(y) == FunctionType]
