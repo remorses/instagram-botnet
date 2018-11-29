@@ -1,4 +1,3 @@
-from .bot import Bot
 import time
 from threading import Thread
 from random import random
@@ -39,14 +38,9 @@ class ScriptException(Exception):
     pass
 
 
-def execute(script, threads):
+def execute(script, bots, threads=[]):
 
     wait(threads)
-
-    bots = []
-
-    for i, credentials in enumerate(script['bots']):
-        bots += [Bot(**credentials)]
 
     if 'distributed' in script['mode']:
 
