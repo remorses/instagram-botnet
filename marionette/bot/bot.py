@@ -28,8 +28,8 @@ class Bot:
     def accumulate(self, x):
             self._acc.append(x)
 
-    def reset(self, x):
-            self._acc = x
+    def reset(self):
+            self._acc = []
 
     def do(self, method, arg=[]):
         print('doing {}'.format(method))
