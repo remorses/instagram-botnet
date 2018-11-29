@@ -18,7 +18,7 @@ class EdgeException(Exception):
     pass
 
 
-class Edges(Connection):
+class Edges(sdfh):
 
     def __init__(self, bot):
         self._acc = bot.acc
