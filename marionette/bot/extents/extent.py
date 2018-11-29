@@ -5,7 +5,8 @@ class Extent:
         self._accumulate = bot.accumulate
         self._reset = bot.reset
         self._api = bot.api
-        self._logger = bot.api.logger
+
+        self.logger = bot.api.logger
 
     @property
     def _acc(self):

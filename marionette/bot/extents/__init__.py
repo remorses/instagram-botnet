@@ -1,2 +1,2 @@
-from .interaction import Interactions
-from .edges import Interactions
+from .interactions import Interactions
+from .edges import Edges

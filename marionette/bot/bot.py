@@ -6,7 +6,6 @@ import datetime
 from instabot import API
 from .extents import Edges
 from .extents import Interactions
-from .settings import total
 from .settings import interaction_delays, total_interactions, max_interactions_per_day
 
 

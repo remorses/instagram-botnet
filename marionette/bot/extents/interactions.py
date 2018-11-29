@@ -7,7 +7,7 @@ class Interactions(Extent):
 
     def like(self, args):
 
-        self.logger.info('medias: ', self._acc)
+        self.logger.info('medias: {}'.format(self._acc))
 
         for media in self._acc:
             if isinstance(media, Media):

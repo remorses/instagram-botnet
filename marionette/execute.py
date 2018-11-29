@@ -62,8 +62,8 @@ def execute(script, threads):
                 init_bots_acc(options['nodes'], bots)
 
                 for bot in bots:
-                    bot.logger.info('bot: ', bot)
-                    bot.logger.info('acc: ', bot.acc)
+                    bot.logger.info('bot: {}'.format(bot))
+                    bot.logger.info('acc: {}'.format(bot.acc))
                     newt = bot.do(interaction_method, options['args'])
                     threads += [newt]
 
