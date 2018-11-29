@@ -39,17 +39,6 @@ class ScriptException(Exception):
     pass
 
 
-def wait(threads):
-    for t in threads:
-        t.join()
-    threads = []
-
-
-def reset(bots):
-    for bot in bots:
-        bot.reset()
-
-
 def execute(script, threads):
 
     wait(threads)
@@ -72,8 +61,7 @@ def execute(script, threads):
 
                 reset(bots)
 
-                for i, node in enumerate(options['nodes']):
-                    bots[i % len(bots)].accumulate(node)
+                init_bots_acc(options['nodes'], bots)
 
                 for bot in bots:
                     print('bot: ', bot)
@@ -86,8 +74,7 @@ def execute(script, threads):
 
                 reset(bots)
 
-                for i, node in enumerate(options['from_nodes']):
-                    bots[i % len(bots)].accumulate(node)
+                init_bots_acc(options['from_nodes'], bots)
 
                 # scrape the nodes from edges relations
                 if 'via_edges' in options:
@@ -117,3 +104,19 @@ def execute(script, threads):
         pass
 
     time.sleep(3)
+
+
+def wait(threads):
+    for t in threads:
+        t.join()
+    threads = []
+
+
+def reset(bots):
+    for bot in bots:
+        bot.reset()
+
+
+def init_bots_acc(acc, bots):
+        for i, node in enumerate(acc):
+            bots[i % len(bots)].accumulate(node)
