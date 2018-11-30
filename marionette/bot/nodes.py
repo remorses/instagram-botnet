@@ -20,6 +20,9 @@ class Geotag(Node):
 
 class Media(Node):
 
+    def __init__(self, url):
+        self.id = self.get_media_id_from_link(url)
+
     @staticmethod
     def get_media_id_from_link(link):
         if 'instagram.com/p/' not in link:
