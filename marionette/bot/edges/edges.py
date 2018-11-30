@@ -14,7 +14,7 @@ class EdgeException(Exception):
 
 class Edges(Extent):
 
-    input_types = {
+    input_nodes = {
               'following': User,
               'followers': User,
               'user_feed': User,

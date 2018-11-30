@@ -15,7 +15,7 @@ from ..extent import Extent
 
 class Interactions(Extent):
 
-    input_types = {
+    input_nodes = {
               'follow': User,
               'block': User,
               'send': User,
