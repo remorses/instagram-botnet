@@ -9,8 +9,14 @@ def prepare(script, threads=[]):
         bots += [Bot(**credentials)]
 
     for bot in bots:
-        bot.max_per_day = {key: value for key, value in script['max_per_day']}
-        bot.delay = {key: value for key, value in script['delay']}
+        if 'max_per_day' in script:
+            bot.max_per_day = {
+                key: value for key, value in script['max_per_day']}
+        if 'delay' in script:
+            bot.delay = {key: value for key,
+                         value in script['delay']}
+
+    return bots
 
 
 def wait(threads):

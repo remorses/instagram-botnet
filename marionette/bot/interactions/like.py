@@ -1,8 +1,7 @@
 from ..nodes import Media
-from ..bot import Bot
 
 
-def like(self: Bot, args):
+def like(self):
 
     self.logger.info('medias: {}'.format(self._acc))
 

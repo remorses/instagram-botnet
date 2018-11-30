@@ -79,7 +79,7 @@ class HTMLFileHandler(logging.FileHandler):
     properly.
     """
 
-    def __init__(self, title, version='1.0.0', mode='w', *args):
+    def __init__(self, title, *args, file, version='1.0.0', mode='w', ):
         super().__init__(mode, *args)
         assert self.stream is not None
         # Write header
@@ -102,8 +102,8 @@ class HTMLFormatter(logging.Formatter):
                    'CRITICAL': 'err',
                    'ERROR': 'err'}
 
-    def __init__(self):
-        super().__init__()
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
         self._start_time = time.time()
 
     def format(self, record):

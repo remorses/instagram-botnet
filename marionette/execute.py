@@ -1,8 +1,9 @@
 import time
 from random import random
 from types import FunctionType
-from .bot import Interactions, Edges
 
+from .bot.edges import Edges
+from .bot.interactions import Interactions
 # class Bot:
 #
 #     idx = 0
@@ -32,10 +33,6 @@ from .bot import Interactions, Edges
 #             time.sleep(1)
 #             print('{} did {}'.format(self.idx, self.bot.acc))
 #             self.bot.acc = [round(random() * 10)]
-
-
-class ScriptException(Exception):
-    pass
 
 
 def execute(script, bots, threads=[]):
@@ -78,7 +75,7 @@ def execute(script, bots, threads=[]):
 
                         wait(threads)
                 else:
-                    raise ScriptException(
+                    return ScriptException(
                         'script using from_nodes must also use via_edges, in action {}'.format(action))
 
                 # execute the final interaction: like, follow ...
@@ -89,8 +86,10 @@ def execute(script, bots, threads=[]):
                 wait(threads)
 
             else:
-                raise ScriptException(
+                return ScriptException(
                     'script action must use at least nodes or from_nodes options, in action {}'.format(action))
+
+            return True
 
     elif 'unison' in script['mode']:
         pass
@@ -101,6 +100,15 @@ def execute(script, bots, threads=[]):
 def wait(threads):
     [t.join() for t in threads]
     threads = []
+
+
+def methods(cls):
+    return [x for x, y in cls.__dict__.items() if type(y) == FunctionType]
+
+
+class ScriptException(Exception):
+    def __bool__(self):
+        return False
 
 
 def init_bots_acc(bots, acc, first_method):
@@ -114,7 +122,3 @@ def init_bots_acc(bots, acc, first_method):
 
     for i, x in enumerate(acc):
         bots[i % len(bots)].accumulate(Cls(x))
-
-
-def methods(cls):
-    return [x for x, y in cls.__dict__.items() if type(y) == FunctionType]

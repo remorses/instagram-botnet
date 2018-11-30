@@ -2,7 +2,6 @@ from threading import Thread
 from types import FunctionType
 import datetime
 from pathlib import Path
-from instabot import API
 
 from ..api import API
 from .edges import Edges
@@ -12,7 +11,7 @@ from .settings import interaction_delays, total_interactions, max_interactions_p
 
 class Bot:
 
-    def __init__(self, username, password, log_path, cookie_path, proxy=None, device=None):
+    def __init__(self, username, password, log_path='', cookie_path='', proxy=None, device=None):
         if not cookie_path:
             cookie_file = '{}_cookie.json'.format(username)
             cookie_path = str(

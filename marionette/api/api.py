@@ -21,7 +21,7 @@ class API(NOTMYAPI):
 
         # Setup logging
 
-        fh = HTMLFileHandler(title=self.id, filename=log_path, mode='w')
+        fh = HTMLFileHandler(title=self.id, file=log_path, mode='w')
         fh.setLevel(logging.INFO)
         fh.setFormatter(file_formatter())
 

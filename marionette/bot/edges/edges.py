@@ -44,24 +44,24 @@ class Edges(Extent):
     def followers(self, args):
         pass
 
-    def feed(self, args):
-        if isinstance(self._acc, User) or 'id' in self._acc:
-            user_feed(self)
-
-        if isinstance(self._acc, Geotag) or 'id' in self._acc:
-            user_feed(self)
-
-        if isinstance(self._acc, Hashtag) or 'id' in self._acc:
-            user_feed(self)
-
-    def user_feed(self, args):
-        user_feed(self)
-
-    def geotag_feed(self, args):
-        geotag_feed(self)
-
-    def hashtag_feed(self, args):
-        hashtag_feed(self)
+    # def feed(self, args):
+    #     if isinstance(self._acc, User) or 'id' in self._acc:
+    #         user_feed(self)
+    #
+    #     if isinstance(self._acc, Geotag) or 'id' in self._acc:
+    #         user_feed(self)
+    #
+    #     if isinstance(self._acc, Hashtag) or 'id' in self._acc:
+    #         user_feed(self)
+    #
+    # def user_feed(self, args):
+    #     user_feed(self)
+    #
+    # def geotag_feed(self, args):
+    #     geotag_feed(self)
+    #
+    # def hashtag_feed(self, args):
+    #     hashtag_feed(self)
 
     def likers(self, args):
         pass
