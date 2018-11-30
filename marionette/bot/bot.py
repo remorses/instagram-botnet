@@ -18,7 +18,7 @@ class Bot:
                 Path(__file__).parents[1] / 'cache' / cookie_file)
 
         if not log_path:
-            log_file = '{}_logs.log'.format(username)
+            log_file = '{}_logs.html'.format(username)
             log_path = str(Path(__file__).parents[1] / 'logs' / log_file)
 
         self.start_time = datetime.datetime.now()

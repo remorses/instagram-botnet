@@ -79,8 +79,8 @@ class HTMLFileHandler(logging.FileHandler):
     properly.
     """
 
-    def __init__(self, title, *args, file, version='1.0.0', mode='w', ):
-        super().__init__(mode, *args)
+    def __init__(self, title,  file, *args, version='1.0.0', mode='w', ):
+        super().__init__(file, *args, mode=mode)
         assert self.stream is not None
         # Write header
         self.stream.write(_START_OF_DOC_FMT % {"title": title,
