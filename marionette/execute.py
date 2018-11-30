@@ -1,6 +1,6 @@
 import time
 from random import random
-from typing import FunctionType
+from types import FunctionType
 from .bot import Interactions, Edges
 
 # class Bot:

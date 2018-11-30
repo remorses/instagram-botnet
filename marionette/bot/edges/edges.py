@@ -3,9 +3,9 @@ from ..extent import Extent
 from ..nodes import User, Media, Comment, Hashtag, Usertag, Geotag
 
 
-from .user_feed import user_feed
-from .geotag_feed import geotag_feed
-from .hashtag_feed import hashtag_feed
+# from .user_feed import user_feed
+# from .geotag_feed import geotag_feed
+# from .hashtag_feed import hashtag_feed
 
 
 class EdgeException(Exception):

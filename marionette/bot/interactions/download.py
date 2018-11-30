@@ -1,2 +1,2 @@
-from ..node import Media
+from ..nodes import Media
 from ..bot import Bot

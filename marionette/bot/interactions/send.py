@@ -1,4 +1,4 @@
-from ..node import User, Media
+from ..nodes import User, Media
 from ..bot import Bot
 
 

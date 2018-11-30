@@ -8,7 +8,7 @@ from .html_log import HTMLFileHandler, HTMLFormatter
 
 class API(NOTMYAPI):
 
-    def __init__(self, log_to, device=None, id=''):
+    def __init__(self, log_path, device=None, id=''):
         self.id = id
         # Setup device and user_agent
         device = device or devices.DEFAULT_DEVICE
@@ -21,7 +21,7 @@ class API(NOTMYAPI):
 
         # Setup logging
 
-        fh = HTMLFileHandler(title=self.id, filename=log_to, mode='w')
+        fh = HTMLFileHandler(title=self.id, filename=log_path, mode='w')
         fh.setLevel(logging.INFO)
         fh.setFormatter(file_formatter())
 
