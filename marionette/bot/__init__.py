@@ -1,3 +1,3 @@
 from .bot import Bot
-from .interaction import Interactions
+from .interactions import Interactions
 from .edges import Edges
