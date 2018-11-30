@@ -12,11 +12,13 @@ from .settings import interaction_delays, total_interactions, max_interactions_p
 
 class Bot:
 
-    def __init__(self, username, password, proxy=None, device=None):
+    def __init__(self, username, password, log_path, proxy=None, device=None):
         cookie_file = '{}_cookie.json'.format(username)
         cookie_path = str(Path(__file__).parents[1] / 'cache' / cookie_file)
         log_file = '{}_logs.log'.format(username)
-        log_path = str(Path(__file__).parents[1] / 'logs' / log_file)
+
+        if not log_path:
+            log_path = str(Path(__file__).parents[1] / 'logs' / log_file)
 
         self.start_time = datetime.datetime.now()
 
