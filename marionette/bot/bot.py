@@ -1,8 +1,10 @@
 from threading import Thread
 from types import FunctionType
 import datetime
+from pathlib import Path
 from instabot import API
 
+from .api import API
 from .edges import Edges
 from .interactions import Interactions
 from .settings import interaction_delays, total_interactions, max_interactions_per_day
@@ -10,21 +12,27 @@ from .settings import interaction_delays, total_interactions, max_interactions_p
 
 class Bot:
 
-    def __init__(self, username, password, device=None):
+    def __init__(self, username, password, proxy=None, device=None):
+        cookie_file = '{}_cookie.json'.format(username)
+        cookie_path = str(Path(__file__).parents[1] / 'cache' / cookie_file)
+        log_file = '{}_logs.log'.format(username)
+        log_path = str(Path(__file__).parents[1] / 'logs' / log_file)
 
         self.start_time = datetime.datetime.now()
 
-        self.api = API(device=device)
-        self.api.login(username, password)
+        self.api = API(log_to=log_path, device=device)
         self.logger = self.api.logger
-        self.acc = []
 
+        self.acc = []
         self.total = total_interactions
         self.delay = interaction_delays
         self.max_per_day = max_interactions_per_day
 
         self._edges = Edges(self)
         self._interactions = Interactions(self)
+
+        self.api.login(username, password, proxy=proxy,
+                       cookie_fname=cookie_path)
 
     def accumulate(self, x):
         self.acc.append(x)
@@ -34,14 +42,14 @@ class Bot:
 
     def do(self, method, arg=[]):
         if method in methods(Edges):
-            self.logger.info('doing a edge scrape {} with arg {} and acc {}'.format(
-                method, arg, self.acc))
+            # self.logger.info('doing a edge scrape {} with arg {} and acc {}'.format(
+            #     method, arg, self.acc))
             t = Thread(target=self._edges[method], args=(arg,))
             t.start()
             return t
         elif method in methods(Interactions):
-            self.logger.info('doing an interaction {} with arg {} and acc {}'.format(
-                method, arg, self.acc))
+            # self.logger.info('doing an interaction {} with arg {} and acc {}'.format(
+            #     method, arg, self.acc))
             t = Thread(target=self._interactions[method], args=(arg,))
             t.start()
             return t

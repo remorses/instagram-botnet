@@ -13,7 +13,6 @@ from .export_user import export_user
 from .export_media import export_media
 
 
-
 class Interactions(Extent):
 
     input_types = {
@@ -46,11 +45,9 @@ class Interactions(Extent):
 
     def send(self, args):
         send(self, messages=args['messages'])
-    
+
     def export(self, args):
-        if isinstance(self._acc[-1], Media)
+        if isinstance(self._acc[-1], Media):
             export_media(self._acc[-1], args)
         elif isinstance(self._acc, User):
             export_user(self._acc[-1], args)
-
-
