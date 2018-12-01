@@ -34,34 +34,61 @@ def reducer(state, action):
     
     return {'nodes': next_nodes, 'bot': bot}  
 
+# the block of actions below is partitoned around some bots and then executed by a thread per bot
+# but first from the yaml object is derived some actions and the initial state for the reducer function,
+# executed in the thread
+"""
+- follow:
+        from_nodes: [user1, user2]
+        via_edges: 
+                - followers: 10
+"""
+# the yaml above is then parsed in these 2 actions
+actions = [{'method': 'followers', 'amount': 10}, {'method': 'follow', 'amount': 1},]
+# the initial state is set eith the users in from_nodes
+state = {'nodes': from_nodes, 'bot': Bot(u, p)}
 
-
-actions = [{'method': 'like', 'amount': 10},]
-
-
-
+# every gorup of actions is partitioned around some bots, every bot or bot group
+# execute their partition in a separate thread and then main thread wait for them.
+# if the main action is an export then at the end of the thread execution data is stored 
+# in some file or class
 class Executer(Thread):
-    def __init__(self, actions):
+    def __init__(self, state, actions):
         self.actions = actions
     
     def start(self):
-        self.actions.reduce(reducer, 
-        {nodes: from_nodes, bots: [Bot(u, p)]})
+        reduce(reducer, state, actions)
+        
+"""
 
+script is made of Jobs
+A Job is a group of actions
+an action is a search of new nodes from relations to others (edge)
+or an interaction against nodes thatin relation to others (interaction)
 
-action_groups = partitionate_actions(script)
+"""
 
+def partitionate_actions(script, bots):
+        states =  map(make_state, script['execute'])
+        actions = map(make_actions, script['execute'])
+        return zip(states, actions)
 
+map(
 # start all the bots with their partition of work
-threads = []
-for actions in action_group:
-        executer = Executer(actions)
-        threads += [executer]
+action_groups = partitionate_actions(script, bots)
+
+def run_actions(actions, bot) -> Thread:
+        executer = Executer(actions, bot)
         executer.start()
+        return executer
+
+
+threads = action_group.map(lambda actions, bot: run_actions(actions, bot))
 
 # wait for all bots, everyone in his own thread
-for t in threads:
-        t.join()
+wait(threads)
+
+
         
 
 # TODO: how to share data between executers?

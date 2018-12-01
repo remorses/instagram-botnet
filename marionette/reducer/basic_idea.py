@@ -56,6 +56,8 @@ def make_job(group, bots) -> Job:
                 
         return Job(state, actions) 
         
+def identity(*args, **kwargs):
+        raise Exception
 
 def reducer(state, action):
     nodes = state['target_nodes']
@@ -77,7 +79,7 @@ def reducer(state, action):
         
         next_nodes += method(bot, bot_nodes, action['amount'], action['args'])
         
-     return { 'target_nodes': next_nodes, bots: bots }
+     return { 'target_nodes': next_nodes, 'bots': bots }
 
 
 def start(threads): 
