@@ -19,7 +19,7 @@
 
 bots = prepare(script)
 
-jobs = [make_job(group, bots) for group in script['execute']]
+jobs = [make_job(task, bots, i ) for task in script['execute'] for (i, _) in enumerate(bots)]
 
 threads = [Executer(job) for job in jobs]
 
@@ -37,49 +37,64 @@ class Job:
                 self.state = state
                 self.actions = actions
 
-def make_job(group, bots) -> Job:
+def make_job(task, bots, partition) -> Job:
         
-        def make_action(obj): 
-                return { 'method': edge, 'amount': amount  for edge, amount in obj.items()[0]}  
+        def make_action(object): 
+                return { 'method': edge, 'amount': amount  for (edge, amount) in object.items()[0]}  
 
-        interaction, body = group.items()[0]
+        interaction, body = task.items()[0]
+        
         
         if 'from_nodes' in body:
-                state = { 'target_nodes': body['from_nodes'], bots: bots }
-                actions = [ make_action(edge) for edge in body['via_edges'] ]
+        
+                right_partition = lamda i: (i % len(bots)) == partition
+                nodes =  [node for (i, node) in enumerate(body['from_nodes']) if right_partition(i)]
+                
+                state = { 'target_nodes': nodes, bot: bots[partition], 'errors': [] }
+                
+                actions = [ make_action(object) for object in body['via_edges'] ]
                 actions += [{ 'method': interaction, 'amount': 1 }]
+                
         elif 'nodes' in body:
-                state = { 'target_nodes': body['nodes'], bots: bots }
-                actions =  [{ 'method': interaction, 'amount': 1 }]
+        
+                state = { 'target_nodes': body['nodes'], bot: bots[partition], 'errors': [] }
+                
+                actions = [{ 'method': interaction, 'amount': 1 }]
+                
         else:
                 raise Exception
                 
         return Job(state, actions) 
+
+
         
-def identity(*args, **kwargs):
+def raiser(*args, **kwargs):
         raise Exception
 
 def reducer(state, action):
     nodes = state['target_nodes']
     bots = state['bots']
-    next_nodes = []
+    errors = state['errors']
     
-    if state['exception']:
+    if errors:
         send_bot_to_phone_verifier
         change_bot_if_neccessary
         resolve_captcha_if_necessary
         sleep_more
         remove_bot_if_broken
-    
-    for id, bot in enumerate(bots):
-    
-        bot_nodes = [node for i, node in enumerate(nodes) if i % len(bots) == id]
         
-        method = methods.get(action['method'], identity)
+    try:
+        method = methods.get(action['method'], raiser)
+        next_nodes = method(bot, nodes, action['amount'], action['args'])
         
-        next_nodes += method(bot, bot_nodes, action['amount'], action['args'])
+    catch Exception as ex:
+        return { 'target_nodes': nodes, 'bot': bot, 'errors':  errors += [ex]} 
         
-     return { 'target_nodes': next_nodes, 'bots': bots }
+    return { 'target_nodes': next_nodes, 'bot': bot, 'errors': errors }
+
+
+
+
 
 
 def start(threads): 
@@ -89,6 +104,9 @@ def wait(threads):
         [thread.join() for thread in threads]
 
 
+
+
+
 class Executer(Thread):
     def __init__(self, job):
         self.actions = job.actions
@@ -96,6 +114,15 @@ class Executer(Thread):
     
     def start(self):
         reduce(reducer, self.state, self.actions)
+        
+        
+        
+
+def make_jobs(script, bots):
+        
+        for id, bot in enumerate(bots):
+                bot_nodes = [node for (i, node) in enumerate(nodes) if i % len(bots) == id]
+
 
 
 
