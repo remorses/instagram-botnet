@@ -2,6 +2,8 @@ methods = { 'author': author }
 
 def author(bot, nodes, amount, args):
     
+    authors = []
+    
     def author_from_id(id):
             bot.api.media_info(id) 
             user_id = bot.api.last_json["items"][0]["user"]["pk"] 
@@ -11,8 +13,13 @@ def author(bot, nodes, amount, args):
             user_id = Media.id_from_url(url)
             return author_from_id(user_id)
             
-    authors = [author_from_id(node.id) for node in nodes if isinstance(node, Media)]
-    authors += [author_from_url(url) for url in nodes if not isinstance(node, Media)]
+    if isinstance(node, Media):
+            authors += [author_from_id(node.id) for node in nodes]
+            
+    else:
+            authors += [author_from_url(url) for url in nodes]
+            
+    return authors
 
 
 
