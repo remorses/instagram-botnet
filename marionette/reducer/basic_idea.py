@@ -19,13 +19,15 @@
 
 bots = prepare(script)
 
-jobs = [make_job(task, bots, i ) for task in script['execute'] for (i, _) in enumerate(bots)]
+for task in script['execute']:
 
-threads = [Executer(job) for job in jobs]
+    jobs = [make_job(task, bots, i ) for (i, _) in enumerate(bots)]
 
-start(threads)
+    threads = [Executer(job) for job in jobs]
 
-wait(threads)
+    start(threads)
+
+    wait(threads)
 
 
 def prepare(script) -> bots:
