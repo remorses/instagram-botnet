@@ -42,7 +42,7 @@ class Job:
 def make_job(task, bots, partition) -> Job:
         
         def make_action(object): 
-                return { 'method': edge, 'amount': amount  for (edge, amount) in object.items()[0]}  
+                return { 'method': edge, 'amount': amount, 'args': []  for (edge, amount) in object.items()[0]}  
 
         interaction, body = task.items()[0]
         
@@ -58,7 +58,7 @@ def make_job(task, bots, partition) -> Job:
                 state = { 'target_nodes': nodes, bot: bots[partition], 'errors': [] }
                 
                 actions += [ make_action(object) for object in body['via_edges'] ]
-                actions += [{ 'method': interaction, 'amount': 1 }]
+                actions += [{ 'method': interaction, 'amount': 1, 'args': body['args'] }]
                 
         elif 'nodes' in body:
         
