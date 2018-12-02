@@ -17,65 +17,174 @@
  final target nodes (if mode == distributed) or every bot to all the final nodes (if mode == unison)
 """
 
-bots = prepare(script)
+bots = make_bots(script)
 
-for task in script['execute']:
+for data in script['execute']:
 
-    jobs = [make_job(task, bots, i ) for (i, _) in enumerate(bots)]
+    task = make_task(data)
 
+    jobs = [make_job(part, bot) for (part, bot) in partitionate(task, bots)]
+    
     threads = [Executer(job) for job in jobs]
+    
+    threads = start(threads)
 
-    start(threads)
+    threads = wait(threads)
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
 
-    wait(threads)
+bots = make_bots(script)
+
+for data in script['execute']:
+
+    task = make_task(data)
+    threads = []
+    
+    for (task, bot) in partitionate(task, bots):
+        state = make_state(task, bot)
+        actions = make_actions(task)
+        threads += [Reducer(state, actions)]
+
+    threads = start(threads)
+    threads = wait(threads)
+    threads = reset(threads)
+    
+    
+    
+    
+    
+    
+    
+    
+
+
+
+
+def make_bots(script):
+
+    bots = []
+
+    for i, credentials in enumerate(script['bots']):
+        bots += [Bot(**credentials)]
+
+    for bot in bots:
+        if 'max_per_day' in script:
+            bot.max_per_day = {
+                key: value for key, value in script['max_per_day']}
+        if 'delay' in script:
+            bot.delay = {key: value for key,
+                         value in script['delay']}
+
+    return bots
+
+
+
+def make_task(data):
+        
+        nodes = []
+        actions = []
+        args = {}
+        
+        interaction, body = data.items()[0]
+        
+        if 'nodes' in body:
+                nodes += body['nodes']
+                args = body['args']
+                actions += [dict(type=interaction, amount=1)]
+                
+        elif 'from_nodes' in body:
+                nodes += body['from_nodes']
+                args = body['args']
+                edges = body['via_edges']
+                actions += [dict(type=edge, amount=num, args=[]) for (edge, num) in edges)]
+                actions += [dict(type=interaction, amount=1, args=args)]
+        else:
+                raise Exception
+                
+        return Task(nodes=nodes, actions=actions)
+                
+                
 
 
 def prepare(script) -> bots:
- pass
+   pass
+
+
+
+def partitionate(task: Task, bots):
+        
+        couples = []
+
+        for partition, bot in enumerate(bots):
+        
+            _right_partition = lamda i: (i % len(bots)) == partition
+            new_nodes = [node for (i, node) in enumerate(task.nodes) if _right_partition(i)]
+            new_task = Task(nodes=new_nodes, amount=task.amount, args=task.args)
+            result += [(new_task, bot)]
+            
+        return couples   
+
+class Task(dict):
+    """"
+    task:
+        
+        nodes: [node1, node2]
+        
+
+        
+        actions: 
+        
+                - type:   feed
+                  amount: 10
+                  
+                - type:   send
+                  amount: 1
+                  args: 
+                    messages = []
+                    stuff =    whokonws
+    """
+    pass
 
 
 class Job:
         def __init__(self, state, actions):
                 self.state = state
                 self.actions = actions
+            
 
-def make_job(task, bots, partition) -> Job:
-        
-        def make_action(object) -> Action: 
-            edge, amount = object.items()[0]
-            return Action(method=edge, amount=amount, args=[])
+def make_job(task: Task, bot) -> Job:
 
-        interaction, body = task.items()[0]
-        
-        actions = []
-        state = State()
-        
-        
-        if 'from_nodes' in body:
-        
-                right_partition = lamda i: (i % len(bots)) == partition
-                target_nodes = [node for (i, node) in enumerate(body['from_nodes']) if right_partition(i)]
-                
-                state = State(target_nodes=target_nodes, bot=bots[partition], errors=[])
-                
-                actions += [ make_action(object) for object in body['via_edges'] ]
-                actions += [Action(method=interaction, amount=1, args=body['args'] }]
-                
-        elif 'nodes' in body:
-        
-                state = State(target_nodes=body['nodes'], bot=bots[partition], errors=[])
-                
-                actions += [Action(method=interaction, amount=1, args=body['args'])]
-                
-        else:
-                raise Exception
+        state   = make_state(task, bot)
+        actions = make_actions(task)
                 
         return Job(state, actions) 
-
-
         
-def raiser(*args, **kwargs):
-        raise Exception
+
+def make_state(task, bot):
+        state = State(target_nodes=task.nodes, bot=bot, errors=[])
+        return state
+
+
+def _make_action(action) -> Action: 
+        args = action.args if action.args else {}
+        return Action(type=action.type, amount=action.amount, args=args)
+
+def make_actions(task):            
+        actions += [ _make_action(action) for action in task.actions]
+        
+
 
 def reducer(state: State, action: Action):
     nodes = state.target_nodes
@@ -90,11 +199,11 @@ def reducer(state: State, action: Action):
         remove_bot_if_broken
         
     try:
-        method = methods.get(action.method, raiser)
+        method = methods.get(action.type, raiser)
         next_nodes = method(bot, nodes, action.amount, action.args)
         
     catch Exception as ex:
-        return State(target_nodes = nodes, bot = bot, errors = errors += [ex]) 
+        return State(target_nodes = nodes, bot = bot, errors = (errors += [ex])) 
         
     return  State(target_nodes = next_nodes, bot = bot, errors = errors)
     
@@ -110,15 +219,21 @@ class Action(dict):
 
 def start(threads): 
         [thread.start() for thread in threads]
+        return threads
         
 def wait(threads):
         [thread.join() for thread in threads]
+        return threads
+
+def reset(threads):
+        return []
 
 
 
 
 
 class Executer(Thread):
+
     def __init__(self, job):
         self.actions = job.actions
         self.state = job.state
@@ -126,13 +241,21 @@ class Executer(Thread):
     def run(self):
         reduce(reducer, self.state, self.actions)
         
+
+
+
+class Reducer(Thread):
+
+    def __init__(self, state, actions):
+        self.actions = actions
+        self.state = state
+    
+    def run(self):
+        reduce(reducer, self.state, self.actions)
         
         
 
-def make_jobs(script, bots):
-        
-        for id, bot in enumerate(bots):
-                bot_nodes = [node for (i, node) in enumerate(nodes) if i % len(bots) == id]
+
 
 
 

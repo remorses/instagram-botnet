@@ -8,6 +8,8 @@
 
 
 # like one photo from the feed of every user
+
+
 - like:
     from_nodes:                               [user1, user2, user3]
     via_edges:
