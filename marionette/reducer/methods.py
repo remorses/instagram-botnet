@@ -1,4 +1,4 @@
-methods = { 'authors': authors }
+methods = { 'authors': authors, 'followers': followers }
 
 def authors(bot, nodes, amount, args) -> List[User]:
     
@@ -10,15 +10,16 @@ def authors(bot, nodes, amount, args) -> List[User]:
             id = data["pk"] 
             return User(id=id, data=data)
             
-    def _author_from_url(url): 
-            media = Media(url=url)
-            return author(media)
+    for node in nodes:
             
-    if isinstance(node, Media):
-            authors += [_author(node) for node in nodes]
-            
-    else:
-            authors += [_author_from_url(url) for url in nodes]
+            if isinstance(node, Media):
+                        authors += [_author(node)] 
+                        
+            elif isinstance(node, str):
+                        media = Media(url=node)
+                        authors += author(media)]
+            else:
+                        raise Exception('cannot get autor from {}'.format(node)
             
     return authors
 
@@ -33,13 +34,13 @@ def followers(bot, nodes, amount, args) -> List[User]:
     for node in nodes:
     
             if isinstance(node, User):    
-                        result += _followers(node)
+                        result += [_followers(node) for node in nodes]
                         
-            else:
-                        user = User(name=node)
-                        result += _followers(user)
+            elif isinstance(node, str):
+                        user = User(username=node)
+                        result += _followers(user) for user in users
             
-    return [user for user in result][::-1] if result else []
+    return [users for users in result][::-1] if result else []
     
 
 
