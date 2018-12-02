@@ -41,30 +41,31 @@ class Job:
 
 def make_job(task, bots, partition) -> Job:
         
-        def make_action(object): 
-                return { 'method': edge, 'amount': amount, 'args': []  for (edge, amount) in object.items()[0]}  
+        def make_action(object) -> Action: 
+            edge, amount = object.items()[0]
+            return Action(method=edge, amount=amount, args=[])
 
         interaction, body = task.items()[0]
         
         actions = []
-        state = {}
+        state = State()
         
         
         if 'from_nodes' in body:
         
                 right_partition = lamda i: (i % len(bots)) == partition
-                nodes =  [node for (i, node) in enumerate(body['from_nodes']) if right_partition(i)]
+                target_nodes = [node for (i, node) in enumerate(body['from_nodes']) if right_partition(i)]
                 
-                state = { 'target_nodes': nodes, bot: bots[partition], 'errors': [] }
+                state = State(target_nodes=target_nodes, bot=bots[partition], errors=[])
                 
                 actions += [ make_action(object) for object in body['via_edges'] ]
-                actions += [{ 'method': interaction, 'amount': 1, 'args': body['args'] }]
+                actions += [Action(method=interaction, amount=1, args=body['args'] }]
                 
         elif 'nodes' in body:
         
-                state = { 'target_nodes': body['nodes'], bot: bots[partition], 'errors': [] }
+                state = State(target_nodes=body['nodes'], bot=bots[partition], errors=[])
                 
-                actions += [{ 'method': interaction, 'amount': 1 }]
+                actions += [Action(method=interaction, amount=1, args=body['args'])]
                 
         else:
                 raise Exception
@@ -76,10 +77,10 @@ def make_job(task, bots, partition) -> Job:
 def raiser(*args, **kwargs):
         raise Exception
 
-def reducer(state, action):
-    nodes = state['target_nodes']
-    bots = state['bots']
-    errors = state['errors']
+def reducer(state: State, action: Action):
+    nodes = state.target_nodes
+    bots = state.bots
+    errors = state.errors
     
     if errors:
         send_bot_to_phone_verifier
@@ -89,16 +90,21 @@ def reducer(state, action):
         remove_bot_if_broken
         
     try:
-        method = methods.get(action['method'], raiser)
-        next_nodes = method(bot, nodes, action['amount'], action['args'])
+        method = methods.get(action.method, raiser)
+        next_nodes = method(bot, nodes, action.amount, action.args)
         
     catch Exception as ex:
-        return { 'target_nodes': nodes, 'bot': bot, 'errors':  errors += [ex]} 
+        return State(target_nodes = nodes, bot = bot, errors = errors += [ex]) 
         
-    return { 'target_nodes': next_nodes, 'bot': bot, 'errors': errors }
+    return  State(target_nodes = next_nodes, bot = bot, errors = errors)
+    
 
 
+class State(dict):
+    pass
 
+class Action(dict):
+    pass
 
 
 
@@ -117,7 +123,7 @@ class Executer(Thread):
         self.actions = job.actions
         self.state = job.state
     
-    def start(self):
+    def run(self):
         reduce(reducer, self.state, self.actions)
         
         
