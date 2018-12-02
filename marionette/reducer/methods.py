@@ -34,11 +34,11 @@ def followers(bot, nodes, amount, args) -> List[User]:
     for node in nodes:
     
             if isinstance(node, User):    
-                        result += [_followers(node) for node in nodes]
+                        result += _followers(node)
                         
             elif isinstance(node, str):
                         user = User(username=node)
-                        result += _followers(user) for user in users
+                        result += _followers(user)
             
     return [users for users in result][::-1] if result else []
     
