@@ -46,6 +46,9 @@ def make_job(task, bots, partition) -> Job:
 
         interaction, body = task.items()[0]
         
+        actions = []
+        state = {}
+        
         
         if 'from_nodes' in body:
         
@@ -54,14 +57,14 @@ def make_job(task, bots, partition) -> Job:
                 
                 state = { 'target_nodes': nodes, bot: bots[partition], 'errors': [] }
                 
-                actions = [ make_action(object) for object in body['via_edges'] ]
+                actions += [ make_action(object) for object in body['via_edges'] ]
                 actions += [{ 'method': interaction, 'amount': 1 }]
                 
         elif 'nodes' in body:
         
                 state = { 'target_nodes': body['nodes'], bot: bots[partition], 'errors': [] }
                 
-                actions = [{ 'method': interaction, 'amount': 1 }]
+                actions += [{ 'method': interaction, 'amount': 1 }]
                 
         else:
                 raise Exception
