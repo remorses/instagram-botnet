@@ -1,1 +1,1 @@
-from .methods import methods
+from .methods import methods, make_methods

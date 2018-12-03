@@ -1,7 +1,7 @@
 from functools import reduce
 from threading import Thread
-from .actions import make_actions, Action
-from .state import make_state, State
+from .actions import Action
+from .state import State
 from ..methods import methods
 
 
