@@ -1,5 +1,5 @@
 from typing import List
-from .nodes import User, Media
+from ..nodes import User, Media
 
 
 def authors(bot, nodes, amount, args) -> List[User]:

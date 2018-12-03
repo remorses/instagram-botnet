@@ -1,6 +1,6 @@
 
 from typing import List
-from .nodes import User, Media
+from ..nodes import User, Media
 
 
 def following(bot, nodes, amount, args) -> List[User]:

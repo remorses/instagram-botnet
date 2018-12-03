@@ -1,6 +1,6 @@
 
 from typing import List
-from .nodes import User, Media
+from ..nodes import User, Media
 
 
 def user_feed(bot, nodes, amount, args) -> List[Media]:
