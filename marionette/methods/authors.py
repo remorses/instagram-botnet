@@ -1,7 +1,9 @@
 from typing import List
 from ..nodes import User, Media
+from .common import accepts
 
 
+@accepts(Media)
 def authors(bot, nodes, amount, args) -> List[User]:
 
     nodes = bot.filter(nodes)

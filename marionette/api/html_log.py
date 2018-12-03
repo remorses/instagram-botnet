@@ -116,6 +116,8 @@ class HTMLFormatter(logging.Formatter):
 
         # handle '<' and '>' (typically when logging %r)
         msg = record.msg
+        if not isinstance(msg, str):
+            msg = str(msg)
         msg = msg.replace("<", "&#60")
         msg = msg.replace(">", "&#62")
 

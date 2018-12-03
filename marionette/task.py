@@ -5,9 +5,7 @@ class Task(dict):
     """"
     task:
 
-        nodes: [node1, node2]
-
-
+        nodes: [node1, node2] # these are all Node instances
 
         actions:
 
@@ -60,10 +58,10 @@ def make_task(data):
     else:
         raise Exception
 
-    first_method = methods.get(actions[0], None)
+    first_method = methods.get(actions[0]['type'], None)
     assert(first_method)
     Node = first_method.accepts
-    nodes = [Node(node) for node in nodes]
+    nodes = [Node(generic=node) for node in nodes]
 
     return Task(nodes=nodes, actions=actions)
 

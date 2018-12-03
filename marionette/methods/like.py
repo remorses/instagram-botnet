@@ -1,16 +1,16 @@
 from typing import List
+from .common import accepts
 from ..nodes import Node, User, Media
 
 
+@accepts(Media)
 def like(bot, nodes, amount, args):
 
     nodes = bot.filter(nodes)
 
     for node in nodes:
-        if isinstance(node, Media):
-            bot.api.like(node.id)
-
-        else:
-            raise Exception('{} isn\' a Media'.format(node))
+        bot.api.like(node.id)
+        if bot.last['status'] == 'ok':
+            bot.logger.info('liked success')
 
     return

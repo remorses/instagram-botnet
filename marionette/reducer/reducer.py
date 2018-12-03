@@ -9,13 +9,13 @@ class Reducer(Thread):
 
     def __init__(self, state, actions):
         Thread.__init__(self)
-
+        self.logger = state.bot.logger
         self.actions = actions
         self.state = state
         self.result = {}
 
     def run(self):
-        print('reducing...')
+        self.logger.info('reducing...')
         self.result = reduce(_reducer, self.actions, self.state)
 
 
@@ -37,14 +37,15 @@ def _reducer(state: State, action: Action):
         # sleep_more
         # remove_bot_if_broken
 
-    try:
-        method = methods.get(type, None)
-        if not method:
-            raise Exception('can\'t find method {}'.format(type))
-        next_nodes = method(bot, nodes, amount, args)
+    # try:
+    method = methods.get(type, None)
+    if not method:
+        raise Exception('can\'t find method {}'.format(type))
 
-    except Exception as exc:
-        bot.logger.error('error in reducer: {}'.format(exc))
-        return State(target_nodes=nodes, bot=bot, errors=errors + [exc])
+    next_nodes = method(bot, nodes, amount, args)
+
+    # except Exception as exc:
+    #     bot.logger.error('error in method {}: {}'.format(type, exc))
+    #     return State(target_nodes=nodes, bot=bot, errors=errors + [exc])
 
     return State(target_nodes=next_nodes, bot=bot, errors=errors)

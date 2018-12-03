@@ -37,6 +37,10 @@ class Bot:
         self.api.login(username, password, proxy=proxy,
                        cookie_fname=cookie_path)
 
+    @property
+    def last(self):
+        return self.api.last_json
+
     def reached_limit(self, key):
         current_date = datetime.datetime.now()
         passed_days = (current_date.date() - self.start_time.date()).days
@@ -49,7 +53,7 @@ class Bot:
             self.total[k] = 0
         self.start_time = datetime.datetime.now()
 
-    def filter(nodes):
+    def filter(self, nodes):
         """
         this method will be overwritten in the prepare phase
         """
