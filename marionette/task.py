@@ -71,7 +71,7 @@ def partitionate(task: Task, bots):
             return i % len(bots) == partition
         new_nodes = [node for (i, node) in enumerate(
             task.nodes) if _right_partition(i)]
-        new_task = Task(nodes=new_nodes, amount=task.amount, args=task.args)
+        new_task = Task(nodes=new_nodes, actions=task.actions)
         couples += [(new_task, bot)]
 
     return couples
