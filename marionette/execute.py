@@ -7,15 +7,22 @@ from .threads import start, wait
 
 def execute(bots, script):
 
-    for data in script['execute']:
+    try:
 
-        threads = []
-        task = make_task(data)
+        for data in script['execute']:
 
-        for (task, bot) in partitionate(task, bots):
-            state = make_state(task, bot)
-            actions = make_actions(task)
-            threads += [Reducer(state, actions)]
+            threads = []
+            task = make_task(data)
 
-        threads = start(threads)
-        threads = wait(threads)
+            for (task, bot) in partitionate(task, bots):
+                state = make_state(task, bot)
+                actions = make_actions(task)
+                threads += [Reducer(state, actions)]
+
+            threads = start(threads)
+            threads = wait(threads)
+
+        return True
+
+    except Exception as ex:
+        return ex

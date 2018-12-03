@@ -1,3 +1,4 @@
+from .node import Node
 
 
 def username_from_id(id):
