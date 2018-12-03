@@ -1,8 +1,8 @@
 
 from instabot import API as NOT_MY_API
 from instabot.api import config, devices
-import logging
 from colorlog import ColoredFormatter
+import logging
 from .html_log import HTMLFileHandler, HTMLFormatter
 
 
