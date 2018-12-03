@@ -1,16 +1,16 @@
 
 
-from .task import make_task, partitionate, Task
+from .task import make_task, partitionate
 from .reducer import Reducer, make_state, make_actions
-from .threads import start, wait, reset
+from .threads import start, wait
 
 
 def execute(bots, script):
 
     for data in script['execute']:
 
-        threads = reset()
-        task: Task = make_task(data)
+        threads = []
+        task = make_task(data)
 
         for (task, bot) in partitionate(task, bots):
             state = make_state(task, bot)
@@ -19,4 +19,3 @@ def execute(bots, script):
 
         threads = start(threads)
         threads = wait(threads)
-        threads = reset(threads)

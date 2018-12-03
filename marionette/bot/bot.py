@@ -2,7 +2,7 @@ import datetime
 from pathlib import Path
 
 from ..api import API
-from .settings import interaction_delays, total_interactions, max_interactions_per_day
+from .settings import DELAY, TOTAL, MAX_PER_DAY
 
 
 class Bot:
@@ -30,9 +30,9 @@ class Bot:
         self.api = API(log_path=log_path, device=device)
         self.logger = self.api.logger
 
-        self.total = total_interactions
-        self.delay = interaction_delays
-        self.max_per_day = max_interactions_per_day
+        self.total = TOTAL
+        self.delay = DELAY
+        self.max_per_day = MAX_PER_DAY
 
         self.api.login(username, password, proxy=proxy,
                        cookie_fname=cookie_path)
@@ -48,6 +48,12 @@ class Bot:
         for k in self.total:
             self.total[k] = 0
         self.start_time = datetime.datetime.now()
+
+    def filter(nodes):
+        """
+        this method will be overwritten in the prepare phase
+        """
+        return nodes
 
 
 class BotException(Exception):
