@@ -1,12 +1,12 @@
 
-from instabot import API as NOTMYAPI
+from instabot import API as NOT_MY_API
 from instabot.api import config, devices
 import logging
 from colorlog import ColoredFormatter
 from .html_log import HTMLFileHandler, HTMLFormatter
 
 
-class API(NOTMYAPI):
+class API(NOT_MY_API):
 
     def __init__(self, log_path, device=None, id=''):
         self.id = id
