@@ -123,80 +123,80 @@ class HTMLFormatter(logging.Formatter):
                            "msg": msg}
 
 
-class HTMLLogger(logging.Logger):
-    """
-    Log records to html using a custom HTML formatter and a specialised
-    file stream handler.
-    """
-
-    def __init__(self,
-                 name="html_logger",
-                 level=logging.DEBUG,
-                 filename="log.html", mode='w',
-                 title="HTML Logger", version="1.0.0"):
-        super().__init__(name, level)
-        f = HTMLFormatter()
-        h = HTMLFileHandler(title, version, filename, mode)
-        h.setFormatter(f)
-        self.addHandler(h)
-
-
-#: Global logger instance
-_logger = None
-
-
-def setup(title, version, filename="log.html", mode='w', level=logging.DEBUG):
-    """
-    Setup the logger
-    :param title: Title of the html document
-    :param version: Framework/lib/app version
-    :param filename: output filename. Default is "log.html"
-    :param mode: File open mode. Default is 'w'
-    :param level: handler output level. Default is DEBUG
-    """
-    global _logger
-    if _logger is None:
-        _logger = HTMLLogger(filename=filename, mode=mode, title=title,
-                             version=version, level=level)
-
-
-def dbg(msg):
-    """
-    Logs a debug message
-    """
-    global _logger
-    _logger.debug(msg)
-
-
-def info(msg):
-    """
-    Logs an info message
-    """
-    global _logger
-    _logger.info(msg)
-
-
-def warn(msg):
-    """
-    Logs a warning message
-    """
-    global _logger
-    _logger.warning(msg)
-
-
-def err(msg):
-    """
-    Logs an error message
-    """
-    global _logger
-    _logger.error(msg)
-
-
-# Example of usage
-if __name__ == "__main__":
-    setup("Example", "1.0")
-    dbg("A debug message")
-    info("An information message")
-    warn("A warning message")
-    time.sleep(1)
-    err("An error message")
+# class HTMLLogger(logging.Logger):
+#     """
+#     Log records to html using a custom HTML formatter and a specialised
+#     file stream handler.
+#     """
+#
+#     def __init__(self,
+#                  name="html_logger",
+#                  level=logging.DEBUG,
+#                  filename="log.html", mode='w',
+#                  title="HTML Logger", version="1.0.0"):
+#         super().__init__(name, level)
+#         f = HTMLFormatter()
+#         h = HTMLFileHandler(title, version, filename, mode)
+#         h.setFormatter(f)
+#         self.addHandler(h)
+#
+#
+# #: Global logger instance
+# _logger = None
+#
+#
+# def setup(title, version, filename="log.html", mode='w', level=logging.DEBUG):
+#     """
+#     Setup the logger
+#     :param title: Title of the html document
+#     :param version: Framework/lib/app version
+#     :param filename: output filename. Default is "log.html"
+#     :param mode: File open mode. Default is 'w'
+#     :param level: handler output level. Default is DEBUG
+#     """
+#     global _logger
+#     if _logger is None:
+#         _logger = HTMLLogger(filename=filename, mode=mode, title=title,
+#                              version=version, level=level)
+#
+#
+# def dbg(msg):
+#     """
+#     Logs a debug message
+#     """
+#     global _logger
+#     _logger.debug(msg)
+#
+#
+# def info(msg):
+#     """
+#     Logs an info message
+#     """
+#     global _logger
+#     _logger.info(msg)
+#
+#
+# def warn(msg):
+#     """
+#     Logs a warning message
+#     """
+#     global _logger
+#     _logger.warning(msg)
+#
+#
+# def err(msg):
+#     """
+#     Logs an error message
+#     """
+#     global _logger
+#     _logger.error(msg)
+#
+#
+# # Example of usage
+# if __name__ == "__main__":
+#     setup("Example", "1.0")
+#     dbg("A debug message")
+#     info("An information message")
+#     warn("A warning message")
+#     time.sleep(1)
+#     err("An error message")
