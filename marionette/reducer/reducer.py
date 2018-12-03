@@ -8,11 +8,14 @@ from ..methods import methods
 class Reducer(Thread):
 
     def __init__(self, state, actions):
+        super().__init__()
+
         self.actions = actions
         self.state = state
+        self.result = {}
 
     def run(self):
-        reduce(_reducer, self.actions, self.state)
+        self.result = reduce(_reducer, self.actions, self.state)
 
 
 def _reducer(state: State, action: Action):
