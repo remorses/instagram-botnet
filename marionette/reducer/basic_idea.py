@@ -52,24 +52,22 @@ for data in script['execute']:
     task = make_task(data)
     threads = []
     
-    for (task, bot) in partitionate(task, bots):
-        state = make_state(task, bot)
-        actions = make_actions(task)
+    for (task_part, bot) in partitionate(task, bots):
+        state = make_state(task_part, bot)
+        actions = make_actions(task_part)
         threads += [Reducer(state, actions)]
 
     threads = start(threads)
     threads = wait(threads)
     threads = reset(threads)
-    
-    
-    
-    
-    
-    
-    
-    
 
 
+
+
+    
+def identity(*args, **kwargs):
+        others = kwargs.values()
+        return *args, *others
 
 
 def make_bots(script):
@@ -81,16 +79,15 @@ def make_bots(script):
 
     for bot in bots:
         if 'max_per_day' in script:
-            bot.max_per_day = {
-                key: value for key, value in script['max_per_day']}
+            bot.max_per_day = {key: value for (key, value) in script['max_per_day']}
         if 'delay' in script:
-            bot.delay = {key: value for key,
-                         value in script['delay']}
+            bot.delay = {key: value for (key, value) in script['delay']}
+
     for bot in bots:
-         if 'filter' in script:
-                data = script['filter']
-                if bot.username in data['only'] or not data['only']:
-                        bot.filter = make_filter(data)          
+        datas = script['filter'] if ('filter' in script) else []
+        for data in datas:
+                has_filter = bot.username in data['only'] or not data['only']
+                bot.filter = make_filter(data) if has_filter else identity          
 
     return bots
 
@@ -102,13 +99,14 @@ def make_filter(data):
         user:
                 followers: x > 50 and x < 1000
                 following: x < 500
+                business:  x != true
         media:
                 likers:    x < 1000
                 hastags:   not in ['porn', 'sex']
         """
         
         def check(expr, var):
-                return eval(expr, dict(x=var)
+                return eval(expr, dict(x=var))
         
         def is_user(node):
                 return isinstance(node, User)
@@ -117,27 +115,44 @@ def make_filter(data):
                 return isinstance(node, Media)
         
         def user_sieve(node) -> Bool:
+        
                 checks = []
                 
                 if 'followers' in data:
                         checks += [check(data['followers'], node.followers)]
                 if 'following' in data:
                         checks += [check(data['following'], node.following)]
+                if 'business' in data:
+                        checks += [check(data['business'], node.business)]
                 
                 return all(checks)
                         
+
+        def media_sieve(node) -> Bool:
+        
+                checks = []
+                
+                if 'likes' in data:
+                        checks += [check(data['followers'], node.likes_number)]
+                if 'comments' in data:
+                        checks += [check(data['comments'], node.comments_number)]
+                if 'hashtags' in data:
+                        checks += [check(data['business'], node.hashtags_number)]
+                
+                return all(checks)
                         
         
-        def media_sieve(node):
-        
-        def filter(nodes):
+        def _filter(nodes):
                 if is_user(nodes[-1]):
                         return filter(user_sieve, nodes)
                 
-                if is_media(nodes[-1]):
+                elif is_media(nodes[-1]):
                         return filter(media_sieve, nodes)
+                else:
+                        print('nodes passed because neither media or user')
+                        return nodes
                         
-        return filter
+        return _filter
     
     
     
@@ -288,7 +303,7 @@ class Executer(Thread):
         self.state = job.state
     
     def run(self):
-        reduce(reducer, self.state, self.actions)
+        reduce(reducer, self.actions, self.state)
         
 
 
