@@ -1,3 +1,5 @@
+from .methods import methods
+
 
 class Task(dict):
     """"
@@ -57,6 +59,11 @@ def make_task(data):
         actions += [dict(type=interaction, amount=1, args=args)]
     else:
         raise Exception
+
+    first_method = methods.get(actions[0], None)
+    assert(first_method)
+    Node = first_method.accepts
+    nodes = [Node(node) for node in nodes]
 
     return Task(nodes=nodes, actions=actions)
 

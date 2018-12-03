@@ -7,10 +7,12 @@ def username_from_id(id):
 
 class User(Node):
 
-    def __init__(self, *, id=None, username=None, data=None):
+    def __init__(self, *, generic=None, id=None, username=None, data=None):
         self.data = data
         self._id = id
         self._username = username
+        if generic:
+            self._username = generic
 
     @property
     def username(self):

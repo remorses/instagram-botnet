@@ -5,15 +5,25 @@ from .node import Node
 
 class Media(Node):
 
-    def __init__(self, url):
-        self.id = self.get_media_id_from_link(url)
+    def __init__(self, *, generic=None, url=None, id=None, data=None):
 
-    @staticmethod
-    def id_from_link(link):
-        return _get_media_id_from_link(link)
+        self._id = id
+        if generic:
+            self._url = generic
+
+    @property
+    def id(self):
+        if self._url:
+            return id_from_link(self._url)
+        else:
+            raise Exception('can\'t retrieve id, not enought data')
+
+    # @staticmethod
+    # def id_from_link(link):
+    #     return id_from_link(link)
 
 
-def _get_media_id_from_link(link):
+def id_from_link(link):
     if 'instagram.com/p/' not in link:
         # self.logger.error('Unexpected link')
         return False

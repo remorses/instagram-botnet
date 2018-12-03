@@ -1,4 +1,5 @@
 from functools import partial
+from .like import like
 from .authors import authors
 from .followers import followers
 from .following import following
@@ -8,7 +9,7 @@ methods = {'authors': authors,
            'followers': followers,
            'following': following,
            'user_feed': user_feed,
-           # 'like': like,
+           'like': like,
            }
 
 
