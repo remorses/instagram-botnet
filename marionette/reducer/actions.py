@@ -22,5 +22,5 @@ def make_actions(task):
 
 
 def _make_action(action) -> Action:
-        args = action['args'] if action['args'] else {}
+        args = action['args']
         return Action(type=action['type'], amount=action['amount'], args=args)
