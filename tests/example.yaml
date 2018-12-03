@@ -9,34 +9,18 @@ bots:
   -
     username:     ***REMOVED***
     password:     ***REMOVED***
-  # -
-  #   username:     sdfg
-  #   password:     sdfg
 
-filter:
-  - only: [bot1, bot2]
-    user:
-      followers: x > 50 and x < 1000
-      following: x < 500
-    media:
-      likers: x < 1000
-      hastags: not in {{ bad_hashtags }}
-      
-    
+
+# filter:
+#   - only: [bot1, bot2]
+#     user:
+#       followers: x > 50 and x < 1000
+#       following: x < 500
+#     media:
+#       likers: x < 1000
+#       hastags: not in {{ bad_hashtags }}
 
 
 execute:
-
-
   - like:
       nodes: ['https://www.instagram.com/p/Bqp-eokgcqf/']
-
-
-  # - like:
-  #     nodes: []
-
-  # - like:
-  #     from_nodes: [user1, user2, ***REMOVED***, ***REMOVED***]
-  #     via_edges:
-  #         - user_followers: 20
-  #         - user_feed: 4

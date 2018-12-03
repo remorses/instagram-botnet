@@ -1,7 +1,7 @@
 from functools import partial
 from .authors import authors
 from .followers import followers
-from .followinf import following
+from .following import following
 from .user_feed import user_feed
 
 methods = {'authors': authors,

@@ -5,7 +5,7 @@ from .reducer import Reducer, make_state, make_actions
 from .threads import start, wait
 
 
-def execute(bots, script):
+def execute(script, bots):
 
     try:
 
