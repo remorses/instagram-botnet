@@ -8,6 +8,7 @@ methods = {'authors': authors,
            'followers': followers,
            'following': following,
            'user_feed': user_feed,
+           # 'like': like,
            }
 
 

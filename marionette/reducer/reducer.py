@@ -8,23 +8,29 @@ from ..methods import methods
 class Reducer(Thread):
 
     def __init__(self, state, actions):
-        super().__init__()
+        Thread.__init__(self)
 
         self.actions = actions
         self.state = state
         self.result = {}
 
     def run(self):
+        print('reducing...')
         self.result = reduce(_reducer, self.actions, self.state)
 
 
 def _reducer(state: State, action: Action):
+
     nodes = state.target_nodes
     bot = state.bot
     errors = state.errors
 
+    type = action.type
+    amount = action.amount
+    args = action.args
+
     if errors:
-        pass
+        bot.logger.error('trying to solve errors: {}'.format(errors))
         # send_bot_to_phone_verifier
         # change_bot_if_neccessary
         # resolve_captcha_if_necessary
@@ -32,10 +38,13 @@ def _reducer(state: State, action: Action):
         # remove_bot_if_broken
 
     try:
-        method = methods.get(action.type, lambda x: x)
-        next_nodes = method(bot, nodes, action.amount, action.args)
+        method = methods.get(type, None)
+        if not method:
+            raise Exception('can\'t find method {}'.format(type))
+        next_nodes = method(bot, nodes, amount, args)
 
     except Exception as exc:
+        bot.logger.error('error in reducer: {}'.format(exc))
         return State(target_nodes=nodes, bot=bot, errors=errors + [exc])
 
     return State(target_nodes=next_nodes, bot=bot, errors=errors)
