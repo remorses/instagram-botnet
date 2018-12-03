@@ -27,18 +27,18 @@ def make_task(data):
     actions = []
     args = {}
 
-    interaction, body = data.items()[0]
+    interaction, body = list(data.items())[0]
 
     if 'nodes' in body:
         nodes += body['nodes']
-        args = body['args']
+        args = body['args'] if 'args' in body else {}
         actions += [dict(type=interaction, amount=1)]
 
     elif 'from_nodes' in body:
         nodes += body['from_nodes']
-        args = body['args']
+        args = body['args'] if 'args' in body else {}
         edges = body['via_edges']
-        actions += [dict(type=edge, amount=num, args=[])
+        actions += [dict(type=edge, amount=num, args={})
                     for (edge, num) in edges]
         actions += [dict(type=interaction, amount=1, args=args)]
     else:
