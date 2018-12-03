@@ -13,6 +13,17 @@ bots:
   #   username:     sdfg
   #   password:     sdfg
 
+filter:
+  - only: [bot1, bot2]
+    user:
+      followers: x > 50 and x < 1000
+      following: x < 500
+    media:
+      likers: x < 1000
+      hastags: not in {{ bad_hashtags }}
+      
+    
+
 
 execute:
 

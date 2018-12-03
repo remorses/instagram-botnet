@@ -86,8 +86,62 @@ def make_bots(script):
         if 'delay' in script:
             bot.delay = {key: value for key,
                          value in script['delay']}
+    for bot in bots:
+         if 'filter' in script:
+                data = script['filter']
+                if bot.username in data['only'] or not data['only']:
+                        bot.filter = make_filter(data)          
 
     return bots
+
+
+def make_filter(data):
+        """
+        only:              [bot1, bot2]
+        
+        user:
+                followers: x > 50 and x < 1000
+                following: x < 500
+        media:
+                likers:    x < 1000
+                hastags:   not in ['porn', 'sex']
+        """
+        
+        def check(expr, var):
+                return eval(expr, dict(x=var)
+        
+        def is_user(node):
+                return isinstance(node, User)
+                
+        def is_media(node):
+                return isinstance(node, Media)
+        
+        def user_sieve(node) -> Bool:
+                checks = []
+                
+                if 'followers' in data:
+                        checks += [check(data['followers'], node.followers)]
+                if 'following' in data:
+                        checks += [check(data['following'], node.following)]
+                
+                return all(checks)
+                        
+                        
+        
+        def media_sieve(node):
+        
+        def filter(nodes):
+                if is_user(nodes[-1]):
+                        return filter(user_sieve, nodes)
+                
+                if is_media(nodes[-1]):
+                        return filter(media_sieve, nodes)
+                        
+        return filter
+    
+    
+    
+
 
 
 
@@ -114,12 +168,7 @@ def make_task(data):
                 raise Exception
                 
         return Task(nodes=nodes, actions=actions)
-                
-                
 
-
-def prepare(script) -> bots:
-   pass
 
 
 

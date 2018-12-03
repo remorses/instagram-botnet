@@ -1,6 +1,8 @@
 methods = { 'authors': authors, 'followers': followers }
 
 def authors(bot, nodes, amount, args) -> List[User]:
+
+    nodes = bot.filter(nodes)
     
     authors = []
     
