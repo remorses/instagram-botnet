@@ -38,9 +38,9 @@ class API(NOT_MY_API):
 
 
 def colred_formatter():
-    format = '%(asctime)s | %(levelname)8s | %(message)s'
+    format = '%(asctime)s | %(levelname)-8s | %(message)s'
     cformat = '%(log_color)s' + format
-    date_format = '%Y-%m-%d h%H'
+    date_format = '%Y-%m-%d %H.%M'
     return ColoredFormatter(cformat, date_format,
                             log_colors={'DEBUG': 'reset',       'INFO': 'green',
                                         'WARNING': 'yellow', 'ERROR': 'red',
@@ -50,5 +50,5 @@ def colred_formatter():
 def file_formatter():
     format = '%(asctime)s | %(levelname)-8s | %(message)s'
     cformat = '%(log_color)s' + format
-    date_format = '%Y-%m-%d h%H'
+    date_format = '%Y-%m-%d %H:%M'
     return HTMLFormatter(cformat, date_format,)

@@ -15,7 +15,8 @@ class Reducer(Thread):
         self.result = {}
 
     def run(self):
-        self.logger.debug('reducing...')
+        self.logger.debug('{} is reducing the {} interaction'.format(
+            self.state.bot, self.actions[0].type))
         self.result = reduce(_reducer, self.actions, self.state)
 
 

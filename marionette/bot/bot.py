@@ -7,6 +7,8 @@ from .settings import DELAY, TOTAL, MAX_PER_DAY
 
 class Bot:
 
+    id = 0
+
     def __init__(
                  self,
                  username,
@@ -15,6 +17,10 @@ class Bot:
                  cookie_path='',
                  proxy=None,
                  device=None):
+
+        self.id = Bot.id
+        self.username = username
+        Bot.id += 1
 
         if not cookie_path:
             cookie_file = '{}_cookie.json'.format(username)
@@ -37,6 +43,9 @@ class Bot:
         self.api.login(username, password, proxy=proxy,
                        cookie_fname=cookie_path)
 
+    def __repr__(self):
+        return 'Bot(username=\'{}\', id={})'.format(self.username, self.id)
+
     @property
     def last(self):
         return self.api.last_json
@@ -48,16 +57,16 @@ class Bot:
             self._reset_counters()
         return self.max_per_day[key] - self.total[key] < 0
 
-    def _reset_counters(self):
-        for k in self.total:
-            self.total[k] = 0
-        self.start_time = datetime.datetime.now()
-
     def filter(self, nodes):
         """
         this method will be overwritten in the prepare phase
         """
         return nodes
+
+    def _reset_counters(self):
+        for k in self.total:
+            self.total[k] = 0
+        self.start_time = datetime.datetime.now()
 
 
 class BotException(Exception):
