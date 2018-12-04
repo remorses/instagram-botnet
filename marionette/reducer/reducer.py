@@ -12,12 +12,16 @@ class Reducer(Thread):
         self.logger = state.bot.logger
         self.actions = actions
         self.state = state
-        self.data = ['asdf']
+        self._da = []
+
+    @property
+    def da(self):
+        return self._da
 
     def run(self):
         self.logger.debug('{} is reducing the {} interaction'.format(
             self.state.bot, self.actions[0].type))
-        self.data += [reduce(_reducer, self.actions, self.state)]
+        self._da += [reduce(_reducer, self.actions, self.state)]
 
 
 def _reducer(state: State, action: Action):
