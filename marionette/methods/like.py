@@ -13,4 +13,6 @@ def like(bot, nodes, amount, args):
         if bot.last['status'] == 'ok':
             bot.logger.info('liked success')
 
-    return [], {}
+    data = bot.last
+
+    return [], data

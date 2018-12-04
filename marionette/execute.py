@@ -7,9 +7,10 @@ from .threads import start, wait
 
 def execute(script, bots):
 
-        data = []
+        data = dict()
 
         for instruction in script['execute']:
+            interaction = list(instruction.keys())[0]
 
             threads = []
             task = make_task(instruction)
@@ -24,6 +25,8 @@ def execute(script, bots):
 
             threads = start(threads)
             threads = wait(threads)
-            data + [thread.data for thread in threads]
+
+            data[interaction] = {'thread' + thread.name: thread.get_data()
+                                 for thread in threads}
 
         return data
