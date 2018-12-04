@@ -38,15 +38,15 @@ def _reducer(state: State, action: Action):
         # sleep_more
         # remove_bot_if_broken
 
-    # try:
-    method = methods.get(type, None)
-    if not method:
-        raise Exception('can\'t find method {}'.format(type))
+    try:
+        method = methods.get(type, None)
+        if not method:
+            raise Exception('can\'t find method {}'.format(type))
 
-    next_nodes, data = method(bot, nodes, amount, args)
+        next_nodes, data = method(bot, nodes, amount, args)
 
-    # except Exception as exc:
-    #     bot.logger.error('error in method {}: {}'.format(type, exc))
-    #     return State(target_nodes=nodes, bot=bot, errors=errors + [exc])
+    except Exception as exc:
+        bot.logger.error('error in method {}: {}'.format(type, exc))
+        return State(target_nodes=nodes, bot=bot, errors=errors + [exc])
 
     return State(target_nodes=next_nodes, bot=bot, errors=errors, data=data)
