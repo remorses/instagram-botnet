@@ -13,25 +13,15 @@ class Reducer(Thread):
         self.logger = state.bot.logger
         self.actions = actions
         self.state = state
-<<<<<<< HEAD
-=======
-        self._da = []
 
-    @property
-    def da(self):
-        return self._da
->>>>>>> a7f87786c23e87c472def266fb84b65b4613863f
 
     def run(self):
         self.logger.debug('{} is reducing the {} interaction'.format(
             self.state.bot, self.actions[0].type))
-<<<<<<< HEAD
         last_state = reduce(_reducer, self.actions, self.state)
         super().set_data(last_state.data)
         return
-=======
-        self._da += [reduce(_reducer, self.actions, self.state)]
->>>>>>> a7f87786c23e87c472def266fb84b65b4613863f
+
 
 
 def _reducer(state: State, action: Action):
@@ -54,7 +44,7 @@ def _reducer(state: State, action: Action):
         # remove_bot_if_broken
 
     try:
-        
+
         method = methods.get(type, None)
 
         if not method:
