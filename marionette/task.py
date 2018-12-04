@@ -46,7 +46,7 @@ def make_task(data):
     if 'nodes' in body:
         nodes += body['nodes']
         args = body['args'] if 'args' in body else {}
-        actions += [dict(type=interaction, amount=1)]
+        actions += [dict(type=interaction, amount=1, args=args)]
 
     elif 'from_nodes' in body:
         nodes += body['from_nodes']

@@ -26,7 +26,7 @@ def unmask(obj):
 
 
 SCRIPTS = [
-    # parse('tests/like.yml'),
+    parse('tests/like.yml'),
     parse('tests/authors.yml'),
 ]
 
