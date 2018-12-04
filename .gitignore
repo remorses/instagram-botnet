@@ -105,5 +105,5 @@ venv.bak/
 
 .DS_Store
 cookie.txt
-marionette/_cache/*
-merionette/_logs/*
+_cache/
+_logs/
