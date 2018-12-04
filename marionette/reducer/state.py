@@ -16,5 +16,5 @@ class State(dict):
 
 
 def make_state(task, bot):
-        state = State(target_nodes=task.nodes, bot=bot, data=[], errors=[])
+        state = State(target_nodes=task.nodes, bot=bot, data={}, errors=[])
         return state
