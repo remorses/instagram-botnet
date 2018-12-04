@@ -42,6 +42,7 @@ def _reducer(state: State, action: Action):
         # remove_bot_if_broken
 
     try:
+        
         method = methods.get(type, None)
 
         if not method:

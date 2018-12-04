@@ -36,3 +36,15 @@ class User(Node):
             return username_from_id(id)
         elif data:
             return data['user']['username']
+        else:
+            return False
+
+    @property
+    def id(self):
+        username, id, data = attributes(self)
+        if id:
+            return id
+        elif data:
+            return data['user']['username']
+        else:
+            return False

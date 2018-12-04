@@ -1,6 +1,6 @@
 import datetime
 from pathlib import Path
-
+import json
 from ..api import API
 from .settings import DELAY, TOTAL, MAX_PER_DAY
 
@@ -14,6 +14,7 @@ class Bot:
                  username,
                  password,
                  log_path='',
+                 cache_path='',
                  cookie_path='',
                  proxy=None,
                  device=None):
@@ -22,18 +23,23 @@ class Bot:
         self.username = username
         Bot.id += 1
 
+        self.cache_path = cache_path
+
+        if not cache_path:
+            self.cache_path = Path(__file__).parents[1] / '_cache'
+
         if not cookie_path:
             cookie_file = '{}_cookie.json'.format(username)
-            cookie_path = str(
-                Path(__file__).parents[1] / '_cache' / cookie_file)
+            cookie_path = str(self.cache_path / cookie_file)
 
         if not log_path:
-            log_file = '{}_logs.html'.format(username)
-            log_path = str(Path(__file__).parents[1] / '_logs' / log_file)
+            log_path = Path(__file__).parents[1] / '_logs'
 
         self.start_time = datetime.datetime.now()
 
-        self.api = API(log_path=log_path, device=device)
+        log_file = str(log_path / (username + '_logs.html'))
+
+        self.api = API(log_path=log_file, device=device)
         self.logger = self.api.logger
 
         self.total = TOTAL
@@ -42,6 +48,13 @@ class Bot:
 
         self.api.login(username, password, proxy=proxy,
                        cookie_fname=cookie_path)
+
+        with open(str(self.cache_path / (username + '_cache.json')), 'a+') as file:
+            content = file.read()
+            content = content if content else '{}'
+            cache = json.loads(content)
+
+        self.cache = cache
 
     def __repr__(self):
         return 'Bot(username=\'{}\', id={})'.format(self.username, self.id)
@@ -63,10 +76,16 @@ class Bot:
         """
         return nodes
 
+    def save_cache(self):
+        with open(str(self.cache_path / self.username + '_cache.json'), 'w+') as file:
+            content = json.loads(self.cache)
+            file.write(content)
+
     def _reset_counters(self):
         for k in self.total:
             self.total[k] = 0
         self.start_time = datetime.datetime.now()
+
 
 
 class BotException(Exception):

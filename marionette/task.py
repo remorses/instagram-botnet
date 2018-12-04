@@ -51,15 +51,18 @@ def make_task(data):
     elif 'from_nodes' in body:
         nodes += body['from_nodes']
         args = body['args'] if 'args' in body else {}
-        edges = body['via_edges']
-        actions += [dict(type=edge, amount=num, args={})
-                    for (edge, num) in edges]
+
+        edges = [(list(edge.keys())[0], list(edge.values())[0]) for edge in body['via_edges']]
+        actions += [dict(type=edge, amount=num, args={}) for (edge, num) in edges]
+
         actions += [dict(type=interaction, amount=1, args=args)]
     else:
-        raise Exception
+        raise Exception('neither nodes or from_nodes in script')
 
-    first_method = methods.get(actions[0]['type'], None)
-    assert(first_method)
+    print('actions:',actions)
+
+    first_method = methods[actions[0]['type']]
+    print('first_method:', first_method.__name__)
     Node = first_method.accepts
     nodes = [Node(generic=node) for node in nodes]
 
@@ -78,9 +81,13 @@ def partitionate(task: Task, bots):
         new_nodes = [node for (i, node) in enumerate(
             task.nodes) if _right_partition(i)]
 
-        new_actions = [dict(args=[], **action) for action in task.actions]
+        new_actions = [dict(**action) for action in task.actions]
         new_task = Task(nodes=new_nodes, actions=new_actions)
 
         couples += [(new_task, bot)]
 
     return couples
+
+
+def popped(to_pop, dictionary):
+    return {key:value for key, value in dictionary.items() if key != to_pop}

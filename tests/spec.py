@@ -20,15 +20,21 @@ def unmask(obj):
 
     return out.decode('ascii')
 
+################################################################################
 
-scripts = [
-    parse('tests/like.yml'),
+
+SCRIPTS = [
+    # parse('tests/like.yml'),
+    parse('tests/authors.yml'),
 ]
 
+################################################################################
+
 data = {}
-for script in scripts:
+for script in SCRIPTS:
     bots = prepare(script)
     data[script['name']] = execute(script, bots)
+
 
 print(json.dumps(data))
 print('________________________________________________________________________')
