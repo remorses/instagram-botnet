@@ -15,9 +15,9 @@ def execute(script, bots):
             for (task, bot) in partitionate(task, bots):
 
                 state = make_state(task, bot)
-                print(state)
+                bot.logger.debug(state)
                 actions = make_actions(task)
-                print(actions)
+                bot.logger.debug(actions)
                 threads += [Reducer(state, actions)]
 
             threads = start(threads)
