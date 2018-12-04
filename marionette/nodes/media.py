@@ -14,6 +14,15 @@ class Media(Node):
         if generic:
             self._url = generic
 
+    def __repr__(self):
+        url, id, data = attributes(self)
+        if url:
+            return 'Media(url=\'{}\')'.format(url)
+        elif id:
+            return 'Media(id=\'{}\')'.format(id)
+        elif data:
+            return 'Media(data=\'{...}\')'
+
     @property
     def id(self):
 

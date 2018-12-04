@@ -21,7 +21,7 @@ def authors(bot, nodes, amount, args) -> List[User]:
         else:
             raise Exception('cannot get autor from {}'.format(node))
 
-    return authors
+    return authors, {}
 
 
 def _author(bot, media):

@@ -7,10 +7,12 @@ from .threads import start, wait
 
 def execute(script, bots):
 
-        for data in script['execute']:
+        data = []
+
+        for instruction in script['execute']:
 
             threads = []
-            task = make_task(data)
+            task = make_task(instruction)
 
             for (task, bot) in partitionate(task, bots):
 
@@ -22,5 +24,6 @@ def execute(script, bots):
 
             threads = start(threads)
             threads = wait(threads)
+            data + [thread.data for thread in threads]
 
-        return True
+        return data

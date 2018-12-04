@@ -12,12 +12,12 @@ class Reducer(Thread):
         self.logger = state.bot.logger
         self.actions = actions
         self.state = state
-        self.result = {}
+        self.data = ['asdf']
 
     def run(self):
         self.logger.debug('{} is reducing the {} interaction'.format(
             self.state.bot, self.actions[0].type))
-        self.result = reduce(_reducer, self.actions, self.state)
+        self.data += [reduce(_reducer, self.actions, self.state)]
 
 
 def _reducer(state: State, action: Action):
@@ -43,10 +43,10 @@ def _reducer(state: State, action: Action):
     if not method:
         raise Exception('can\'t find method {}'.format(type))
 
-    next_nodes = method(bot, nodes, amount, args)
+    next_nodes, data = method(bot, nodes, amount, args)
 
     # except Exception as exc:
     #     bot.logger.error('error in method {}: {}'.format(type, exc))
     #     return State(target_nodes=nodes, bot=bot, errors=errors + [exc])
 
-    return State(target_nodes=next_nodes, bot=bot, errors=errors)
+    return State(target_nodes=next_nodes, bot=bot, errors=errors, data=data)
