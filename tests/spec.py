@@ -1,7 +1,7 @@
 import sys
 from pathlib import Path
 import json
-from subprocess import check_output
+import subprocess
 
 sys.path += [str(Path(__file__).parents[1])]
 from marionette import execute, prepare
@@ -9,11 +9,15 @@ from tests.parse import parse
 
 
 def unmask(obj):
-    # cat package.json | unmask-json --stream --indents 0
     data = json.dumps(obj)
-    # print('echo {0!r} | unmask-json --stream --indents 0'.format(data))
-    out = check_output(
-        ['echo {0!r} | unmask-json --stream --indents 0'.format(data), ], shell=True)
+    cmd = 'echo {0!r} | unmask-json --stream  '.format(data),
+    ps = subprocess.Popen(
+        cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+    out = ps.communicate()[0]
+
+    # out = subprocess.check_output(
+    #     [cmd ], shell=True, stderr=subprocess.PIPE)
+
     return out.decode('ascii')
 
 
@@ -26,4 +30,7 @@ for script in scripts:
     bots = prepare(script)
     data[script['name']] = execute(script, bots)
 
+print(json.dumps(data))
+print('________________________________________________________________________')
+print('')
 print(unmask(data))
