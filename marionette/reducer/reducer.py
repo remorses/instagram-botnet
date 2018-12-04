@@ -15,7 +15,7 @@ class Reducer(Thread):
         self.result = {}
 
     def run(self):
-        self.logger.info('reducing...')
+        self.logger.debug('reducing...')
         self.result = reduce(_reducer, self.actions, self.state)
 
 
