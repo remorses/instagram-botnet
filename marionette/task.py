@@ -59,10 +59,10 @@ def make_task(data):
     else:
         raise Exception('neither nodes or from_nodes in script')
 
-    print('actions:',actions)
+    # print('actions:',actions)
 
     first_method = methods[actions[0]['type']]
-    print('first_method:', first_method.__name__)
+    # print('first_method:', first_method.__name__)
     Node = first_method.accepts
     nodes = [Node(generic=node) for node in nodes]
 

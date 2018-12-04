@@ -8,7 +8,7 @@ def accepts(Class):
         @wraps(original)
         def enhanced(bot, nodes, amount, args, *others, **kwrgs):
 
-            print('nodes in accepts for {}: {}'.format(original.__name__, nodes))
+            # print('nodes in accepts for {}: {}'.format(original.__name__, nodes))
 
             if any([not isinstance(node, Class) for node in nodes]):
                 raise Exception(

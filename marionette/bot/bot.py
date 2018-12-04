@@ -27,6 +27,8 @@ class Bot:
 
         if not cache_path:
             self.cache_path = Path(__file__).parents[1] / '_cache'
+            if not self.cache_path.exists():
+                self.cache_path.mkdir()
 
         if not cookie_path:
             cookie_file = '{}_cookie.json'.format(username)
@@ -34,6 +36,8 @@ class Bot:
 
         if not log_path:
             log_path = Path(__file__).parents[1] / '_logs'
+            if not log_path.exists():
+                log_path.mkdir()
 
         self.start_time = datetime.datetime.now()
 
