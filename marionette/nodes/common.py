@@ -11,5 +11,4 @@ def attributes(instance):
         if not k.startswith('__') and not k.endswith('__')
         and not isinstance(v, (FunctionType, classmethod, staticmethod))
         ]
-    print(list)
     return tuple(list)
