@@ -20,7 +20,8 @@ def get_author(bot, id):
     bot.api.media_info(id)
     data = bot.last["items"][0]["user"]
     id = data["pk"]
-    return User(id=id, data=data)
+    username = data["username"]
+    return User(id=id, username=username, data=data)
 
 
 def get_id(bot, node):
