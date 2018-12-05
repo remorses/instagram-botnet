@@ -11,7 +11,6 @@ from tests.parse import parse
 def unmask(obj):
     data = json.dumps(obj)
     cmd = 'echo {0!r} | unmask-json --stream --raw'.format(data)
-    print(cmd)
 
     ps = subprocess.Popen(
         cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
@@ -38,8 +37,7 @@ for script in SCRIPTS:
     data[script['name']] = execute(script, bots)
 
 
-print('________________________________________________________________________')
-print('')
+
 
 for name, raw in data.items():
 
