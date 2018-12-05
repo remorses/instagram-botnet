@@ -1,9 +1,9 @@
 {
-    "like": {
-        "thread***REMOVED***": {
-            "like": {
+    "__like_block__": [
+        {
+            "__like__": {
                 "status": "ok"
             }
         }
-    }
+    ]
 }

@@ -1,7 +1,7 @@
 {
-    "follow": {
-        "thread***REMOVED***": {
-            "authors": {
+    "__follow_block__": [
+        {
+            "__authors__": {
                 "items": [
                     {
                         "taken_at": 1543261776,
@@ -192,7 +192,7 @@
                             ]
                         },
                         "can_viewer_save": true,
-                        "organic_tracking_token": "eyJ2ZXJzaW9uIjo1LCJwYXlsb2FkIjp7ImlzX2FuYWx5dGljc190cmFja2VkIjp0cnVlLCJ1dWlkIjoiYmRjMDMwMWE4ODBjNDg5NDliNTYzYzg4OWE2ZmVhMDUxOTIxMzQxNTAwMDgwMzc2NDc5Iiwic2VydmVyX3Rva2VuIjoiMTU0NDAzOTkzMTU5OHwxOTIxMzQxNTAwMDgwMzc2NDc5fDU5NDk0MzMwMzd8ZmMwNDIxMDU1MWM5OTU2MGVkYTM4M2IzYjZhNzU2MDYzNjI3ZDVlMDAzNWNjZWNlM2U2NWViZjFhM2RkMzQ0OSJ9LCJzaWduYXR1cmUiOiIifQ=="
+                        "organic_tracking_token": "eyJ2ZXJzaW9uIjo1LCJwYXlsb2FkIjp7ImlzX2FuYWx5dGljc190cmFja2VkIjp0cnVlLCJ1dWlkIjoiZmNjNGRkZTk3ODdkNGYxMDlhOTZkYTdmMTAzZjg5MzYxOTIxMzQxNTAwMDgwMzc2NDc5Iiwic2VydmVyX3Rva2VuIjoiMTU0NDA0MDI4MDgzOHwxOTIxMzQxNTAwMDgwMzc2NDc5fDU5NDk0MzMwMzd8NDBiNGIzMTI1YjQyYzIyY2IyYTFjMmNkNzBjNzJhNTcxOGI4ZTRkMTA2ODY5YWYxMzBjZDMwNmJiYmM2ZjgwZCJ9LCJzaWduYXR1cmUiOiIifQ=="
                     }
                 ],
                 "num_results": 1,
@@ -200,7 +200,7 @@
                 "auto_load_more_enabled": true,
                 "status": "ok"
             },
-            "follow": {
+            "__follow__": {
                 "friendship_status": {
                     "following": true,
                     "followed_by": false,
@@ -214,5 +214,5 @@
                 "status": "ok"
             }
         }
-    }
+    ]
 }

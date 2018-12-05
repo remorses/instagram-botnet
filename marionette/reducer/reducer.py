@@ -56,7 +56,7 @@ def _reducer(state: State, action: Action):
         bot.logger.error('error in method {}: {}'.format(type, exc))
         return State(target_nodes=nodes, bot=bot, errors=errors + [exc], data=data)
 
-    return State(target_nodes=next_nodes, bot=bot, errors=errors, data=merge(data, {type: next_data}))
+    return State(target_nodes=next_nodes, bot=bot, errors=errors, data=merge(data, {'__{}__'.format(type): next_data}))
 
 
 def merge(a, b):

@@ -1,9 +1,7 @@
 {
-	like {
-		thread***REMOVED*** {
-			like {
-				status
-			}
+	__like_block__[1] {
+		__like__ {
+			status
 		}
 	}
 }
