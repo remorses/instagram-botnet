@@ -10,7 +10,7 @@ from tests.parse import parse
 
 def unmask(obj):
     data = json.dumps(obj)
-    cmd = 'echo {0!r} | unmask-json --stream  '.format(data)
+    cmd = 'echo {0!r} | unmask-json --stream --raw'.format(data)
     print(cmd)
 
     ps = subprocess.Popen(
@@ -38,7 +38,13 @@ for script in SCRIPTS:
     data[script['name']] = execute(script, bots)
 
 
-print(json.dumps(data))
 print('________________________________________________________________________')
 print('')
-print(unmask(data))
+
+for name, raw in data.items():
+
+    with open('tests/outputs/{}.json'.format(name), 'w') as file:
+        file.write(json.dumps(raw, indent=4 ))
+
+    with open('tests/outputs/{}.graphql'.format(name), 'w') as file:
+        file.write(unmask(raw))
