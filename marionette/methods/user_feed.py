@@ -11,7 +11,7 @@ def userget_feed(bot, nodes, amount, args) -> List[Media]:
         result += get_feed(bot, node, amount)
 
 
-    return result
+    return result, bot.last
 
 
 def get_feed(bot, node, amount) -> List[Media]:

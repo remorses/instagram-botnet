@@ -5,18 +5,17 @@ from ..nodes import User, Media
 
 def following(bot, nodes, amount, args) -> List[User]:
 
-    result = []
-
-    def _following(node) -> List[User]:
-            return [User(id=item['pk']) for item in bot.api.get_total_followings(node.id, amount)]
+    data = []
+    users = []
 
     for node in nodes:
 
-            if isinstance(node, User):
-                        result += _following(node)
+        data += get_data(bot, node)
+        users += [User(id=item['pk'], username=item['username']) for item in data]
 
-            elif isinstance(node, str):
-                        user = User(username=node)
-                        result += _following(user)
 
-    return [users for users in result][::-1] if result else []
+    return users[::-1], data
+
+
+def get_data(bot, node, amount) -> List[User]:
+        return [item for item in bot.api.get_total_followings(node.id, amount)]
