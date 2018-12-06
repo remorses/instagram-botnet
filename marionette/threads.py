@@ -15,7 +15,7 @@ def reset():
     return []
 
 
-def better_init(self, group=None, target=None, name=None,
+def custom_init(self, group=None, target=None, name=None,
                 args=(), kwargs=None, *, daemon=None):
 
     self._data = {}
@@ -48,6 +48,6 @@ def get_data(self):
     return self._data
 
 
-Thread.__init__ = better_init
+Thread.__init__ = custom_init
 Thread.set_data = set_data
 Thread.get_data = get_data
