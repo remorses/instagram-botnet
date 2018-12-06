@@ -3,6 +3,7 @@ from pathlib import Path
 import json
 from ..api import API
 from .settings import DELAY, TOTAL, MAX_PER_DAY
+from .cache import Cache
 
 
 class Bot:
@@ -41,8 +42,8 @@ class Bot:
         with open(str(self.cache_path / (username + '_cache.json')), 'a+') as file:
             content = file.read()
             content = content if content else '{}'
-            cache = json.loads(content)
-            self.cache = cache
+            data = json.loads(content)
+            self.cache = Cache(**data)
 
         
         self.id = Bot.id
