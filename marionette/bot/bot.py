@@ -19,7 +19,7 @@ class Bot:
                  cookie_path='',
                  proxy=None,
                  device=None):
-        
+
         self.id = Bot.id
         self.username = username
         Bot.id += 1
@@ -31,13 +31,13 @@ class Bot:
         self.total = TOTAL
         self.delay = DELAY
         self.max_per_day = MAX_PER_DAY
-        
+
         self.cache_file = make_cache_file(self, cache_path)
         self.log_file = make_log_file(self, log_path)
         self.cookie_file = make_cookie_file(self, cookie_path)
 
-        
-        with open(self.cache_file), 'a+') as file:
+
+        with open(self.cache_file, 'a+') as file:
             content = file.read()
             content = content if content else '{}'
             data = json.loads(content)
@@ -45,9 +45,9 @@ class Bot:
 
         self.api.login(username, password, proxy=proxy,
                        cookie_fname=cookie_path)
-        
-        
-    
+
+
+
     def __repr__(self):
         return 'Bot(username=\'{}\', id={})'.format(self.username, self.id)
 
@@ -80,16 +80,16 @@ class Bot:
         self.start_time = datetime.datetime.now()
 
 def make_cache_file(self, cache_path):
-    
+
     if not cache_path:
         cache_path = Path(__file__).parents[1] / '_cache'
 
     cache_path.exists() or cache_path.mkdir()
 
-    return str(cache_path / (self.username + '_cache.json')
+    return str(cache_path / (self.username + '_cache.json'))
 
 def make_log_file(self, log_path):
-                          
+
     if not log_path:
         log_path = Path(__file__).parents[1] / '_logs'
 
@@ -98,14 +98,14 @@ def make_log_file(self, log_path):
     return str(log_path / (self.username + '_logs.html'))
 
 def make_cookie_file(self, cookie_path):
-                          
+
     if not cookie_path:
         cookie_path = Path(__file__).parents[1] / '_cookies'
-      
+
     cookie_path.exists() or cookie_path.mkdir()
 
-    return str(Path(cookie_path) /'{}_cookie.json'.format(username))
-    
+    return str(Path(cookie_path) /'{}_cookie.json'.format(self.username))
+
 
 
 
