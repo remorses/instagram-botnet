@@ -18,17 +18,16 @@ class Bot:
                  cookie_path='',
                  proxy=None,
                  device=None):
-
-        self.id = Bot.id
-        self.username = username
-        Bot.id += 1
-
-        self.cache_path = cache_path
+        
+        # configuration
+        
 
         if not cache_path:
             self.cache_path = Path(__file__).parents[1] / '_cache'
-            if not self.cache_path.exists():
-                self.cache_path.mkdir()
+            self.cache_path.exists() or self.cache_path.mkdir()
+        else:
+            self.cache_path = cache_path
+            self.cache_path.exists() or self.cache_path.mkdir()
 
         if not cookie_path:
             cookie_file = '{}_cookie.json'.format(username)
@@ -36,12 +35,24 @@ class Bot:
 
         if not log_path:
             log_path = Path(__file__).parents[1] / '_logs'
-            if not log_path.exists():
-                log_path.mkdir()
+            log_path.exists() or log_path.mkdir()
+            log_file = str(log_path / (username + '_logs.html'))
+        
+        with open(str(self.cache_path / (username + '_cache.json')), 'a+') as file:
+            content = file.read()
+            content = content if content else '{}'
+            cache = json.loads(content)
+            self.cache = cache
+
+        
+        self.id = Bot.id
+        self.username = username
+        Bot.id += 1
+
+
 
         self.start_time = datetime.datetime.now()
 
-        log_file = str(log_path / (username + '_logs.html'))
 
         self.api = API(log_path=log_file, device=device)
         self.logger = self.api.logger
@@ -52,16 +63,10 @@ class Bot:
 
         self.api.login(username, password, proxy=proxy,
                        cookie_fname=cookie_path)
-
-        with open(str(self.cache_path / (username + '_cache.json')), 'a+') as file:
-            content = file.read()
-            content = content if content else '{}'
-            cache = json.loads(content)
-
-        self.cache = cache
-
+    
     def __repr__(self):
         return 'Bot(username=\'{}\', id={})'.format(self.username, self.id)
+
 
     @property
     def last(self):
