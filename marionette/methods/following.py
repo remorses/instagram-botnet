@@ -1,8 +1,10 @@
 
 from typing import List
 from ..nodes import User, Media
+from .common import accepts
 
 
+@accepts(User)
 def following(bot, nodes, amount, args) -> List[User]:
 
     data = []

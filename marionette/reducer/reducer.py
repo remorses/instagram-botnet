@@ -6,7 +6,7 @@ from ..bot import Bot
 from ..methods import methods
 from ..threads import Thread
 
-class Dont_retry():
+class Dont_retry(Exception):
     """
     this exception doesn't cause a retry of the action method when it is raised.
     Useful when a method is not found in the methods object,
@@ -62,12 +62,12 @@ def _reducer(state: State, action: Action):
         next_data = merge(data, {'__{}__'.format(type): next_data})
 
     except Dont_retry as exc:
-        bot.logger.warn('there was an exception during execution of {}: {}'.format(type, exc.message))
+        bot.logger.warn('there was an exception during execution of {}: {}'.format(type, exc))
         bot.logger.warn('sleeping some time before retrying')
         return State(target_nodes=next_nodes, bot=bot, errors=errors + [exc], data=next_data)
 
     except Exception as exc:
-        bot.logger.warn('there was an exception during execution of {}: {}'.format(type, exc.message))
+        bot.logger.warn('there was an exception during execution of {}: {}'.format(type, exc))
         bot.logger.warn('sleeping some time before retrying')
         time.wait(bot.delay['error'])
 

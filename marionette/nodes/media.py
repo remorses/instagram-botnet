@@ -43,7 +43,7 @@ class Media(Node):
         if url:
             return url
         elif id:
-            id_from_url(id)
+            url_from_id(id)
         elif data:
             return data['media_id']
         else:
