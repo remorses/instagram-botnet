@@ -24,7 +24,7 @@ class User(Node):
         elif id:
             return 'User(id=\'{}\')'.format(id)
         elif data:
-            return 'MediaUser(data=\'{...}\')'
+            return 'User(data=\'{...}\')'
 
     @property
     def username(self):
@@ -44,6 +44,7 @@ class User(Node):
         username, id, data = attributes(self)
         if id:
             return id
+
         elif data:
             return data['user']['username']
         else:

@@ -47,7 +47,8 @@ print(Path(__file__))
 SCRIPTS = [
     # parse('tests/like.yml'),
     # parse('tests/authors.yml'),
-    parse('tests/hashtag_feed.yml'),
+    # parse('tests/hashtag_feed.yml'),
+    parse('tests/followers.yml'),
 ]
 
 ################################################################################

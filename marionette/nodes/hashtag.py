@@ -20,11 +20,11 @@ class Hashtag(Node):
         name, id, data = attributes(self)
 
         if name:
-            return 'User(name=\'{}\')'.format(name)
+            return 'Hashtag(name=\'{}\')'.format(name)
         elif id:
-            return 'User(id=\'{}\')'.format(id)
+            return 'Hashtag(id=\'{}\')'.format(id)
         elif data:
-            return 'MediaUser(data=\'{...}\')'
+            return 'Hashtag(data=\'{...}\')'
 
     @property
     def name(self):
@@ -32,19 +32,19 @@ class Hashtag(Node):
 
         if name:
             return name
-        elif id:
-            return name_from_id(id)
+        # elif id:
+        #     return name_from_id(id)
         elif data:
             return data['user']['name']
         else:
             return False
 
-    @property
-    def id(self):
-        name, id, data = attributes(self)
-        if id:
-            return id
-        elif data:
-            return data['user']['name']
-        else:
-            return False
+    # @property
+    # def id(self):
+    #     name, id, data = attributes(self)
+    #     if id:
+    #         return id
+    #     elif data:
+    #         return data['user']['name']
+    #     else:
+    #         return False

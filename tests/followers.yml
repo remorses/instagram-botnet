@@ -1,0 +1,17 @@
+name:             test_followers
+version:          1
+mode:             distributed
+
+
+
+bots:
+  -
+    username:     ***REMOVED***
+    password:     ***REMOVED***
+
+
+execute:
+  - follow:
+      from_nodes: ['instagram']
+      via_edges:
+        - followers: 1
