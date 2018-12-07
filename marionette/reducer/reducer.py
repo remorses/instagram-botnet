@@ -25,7 +25,7 @@ class Reducer(Thread):
 
 
     def run(self):
-        last_action = self.actions[len(self.action)].type
+        last_action = self.actions[-1].type
         self.logger.debug('{} is reducing the {} interaction'.format(self.state.bot, last_action))
         last_state = reduce(_reducer, self.actions, self.state)
         super().set_data(last_state.data)
@@ -63,18 +63,16 @@ def _reducer(state: State, action: Action):
         next_data = merge(data, {'__{}__'.format(type): next_data})
 
     except Dont_retry as exc:
-        bot.logger.warn('there was an exception during execution of {}: {} {}'.format(type, exc.__name__, exc))
-        bot.logger.warn('sleeping some time before retrying')
+        bot.logger.error('error reducing action {}: {} {}'.format(type, exc.__class__.__name__, exc))
+        bot.logger.error('sleeping some time before retrying')
         return State(target_nodes=next_nodes, bot=bot, errors=errors + [exc], data=next_data)
 
     except Exception as exc:
-        bot.logger.error(exc)
-        bot.logger.warn('there was an exception during execution of {}: {}'.format(type, exc))
+        bot.logger.error('error reducing action {}: {} {}'.format(type, exc.__class__.__name__, exc))
         bot.logger.warn('sleeping some time before retrying')
         time.sleep(bot.delay['error'])
 
         errored_state = merge(state, dict(errors=errors + [exc]))
-        bot.logger.warn('errored state {}'.format(errored_state))
         return _reducer(errored_state, action)
 
     else:

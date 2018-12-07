@@ -1,126 +1,7 @@
 {
 	__like_block__[1] {
-		__hashtag_feed__ {
-			ranked_items[9] {
-				taken_at
-				pk
-				id
-				device_timestamp
-				media_type
-				code
-				client_cache_key
-				filter_type
-				comment_likes_enabled
-				comment_threading_enabled
-				has_more_comments
-				next_max_id
-				max_num_visible_preview_comments
-				preview_comments[2] {
-					pk
-					user_id
-					text
-					type
-					created_at
-					created_at_utc
-					content_type
-					status
-					bit_flags
-					user {
-						pk
-						username
-						full_name
-						is_private
-						profile_pic_url
-						profile_pic_id
-						is_verified
-					}
-					did_report_as_spam
-					share_enabled
-					media_id
-					has_translation
-				}
-				can_view_more_preview_comments
-				comment_count
-				image_versions2 {
-					candidates[2] {
-						width
-						height
-						url
-					}
-				}
-				original_width
-				original_height
-				location {
-					pk
-					name
-					address
-					city
-					short_name
-					lng
-					lat
-					external_source
-					facebook_places_id
-				}
-				lat
-				lng
-				user {
-					pk
-					username
-					full_name
-					is_private
-					profile_pic_url
-					profile_pic_id
-					friendship_status {
-						following
-						outgoing_request
-						is_bestie
-					}
-					has_anonymous_profile_picture
-					reel_auto_archive
-					is_unpublished
-					is_favorite
-				}
-				can_viewer_reshare
-				caption {
-					pk
-					user_id
-					text
-					type
-					created_at
-					created_at_utc
-					content_type
-					status
-					bit_flags
-					user {
-						pk
-						username
-						full_name
-						is_private
-						profile_pic_url
-						profile_pic_id
-						friendship_status {
-							following
-							outgoing_request
-							is_bestie
-						}
-						has_anonymous_profile_picture
-						reel_auto_archive
-						is_unpublished
-						is_favorite
-					}
-					did_report_as_spam
-					share_enabled
-					media_id
-					has_translation
-				}
-				caption_is_edited
-				like_count
-				has_liked
-				photo_of_you
-				can_viewer_save
-				organic_tracking_token
-			}
-			items[84] {
+		__user_feed__ {
+			items[12] {
 				taken_at
 				pk
 				id
@@ -138,6 +19,7 @@
 				}
 				can_view_more_preview_comments
 				comment_count
+				inline_composer_display_condition
 				image_versions2 {
 					candidates[2] {
 						width
@@ -181,11 +63,7 @@
 					is_private
 					profile_pic_url
 					profile_pic_id
-					friendship_status {
-						following
-						outgoing_request
-						is_bestie
-					}
+					is_verified
 					has_anonymous_profile_picture
 					reel_auto_archive
 					is_unpublished
@@ -209,11 +87,7 @@
 						is_private
 						profile_pic_url
 						profile_pic_id
-						friendship_status {
-							following
-							outgoing_request
-							is_bestie
-						}
+						is_verified
 						has_anonymous_profile_picture
 						reel_auto_archive
 						is_unpublished
@@ -226,125 +100,17 @@
 				caption_is_edited
 				like_count
 				has_liked
-				likers[4] {
-					pk
-					username
-					full_name
-					is_private
-					profile_pic_url
-					profile_pic_id
-					is_verified
+				top_likers[0] {
+					...
 				}
 				photo_of_you
 				can_viewer_save
 				organic_tracking_token
 			}
 			num_results
-			next_max_id
 			more_available
+			next_max_id
 			auto_load_more_enabled
-			story {
-				id
-				latest_reel_media
-				expiring_at
-				seen {
-					_
-				}
-				can_reply
-				can_reshare
-				reel_type
-				owner {
-					type
-					pk
-					name
-					profile_pic_url
-					profile_pic_username
-				}
-				items[8] {
-					taken_at
-					pk
-					id
-					device_timestamp
-					media_type
-					code
-					client_cache_key
-					filter_type
-					image_versions2 {
-						candidates[2] {
-							width
-							height
-							url
-						}
-					}
-					original_width
-					original_height
-					caption_position
-					is_reel_media
-					is_dash_eligible
-					video_dash_manifest
-					video_codec
-					number_of_qualities
-					video_versions[3] {
-						type
-						width
-						height
-						url
-						id
-					}
-					has_audio
-					video_duration
-					user {
-						pk
-						username
-						full_name
-						is_private
-						profile_pic_url
-						profile_pic_id
-						is_verified
-						has_anonymous_profile_picture
-						reel_auto_archive
-						is_unpublished
-						is_favorite
-					}
-					caption {
-						_
-					}
-					caption_is_edited
-					photo_of_you
-					can_viewer_save
-					attribution {
-						name
-					}
-					organic_tracking_token
-					expiring_at
-					can_reshare
-					story_hashtags[1] {
-						x
-						y
-						z
-						width
-						height
-						rotation
-						is_pinned
-						is_hidden
-						hashtag {
-							name
-							id
-						}
-					}
-					creative_config {
-						capture_type
-						camera_facing
-						should_render_try_it_on
-					}
-					supports_reel_reactions
-					show_one_tap_fb_share_tooltip
-					has_shared_to_fb
-				}
-				prefetch_count
-				unique_integer_reel_id
-				muted
-			}
 			status
 		}
 		__like__ {

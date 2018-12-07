@@ -5,7 +5,7 @@ from .node import Node
 
 class Media(Node):
 
-    def __init__(self, *, generic=None, url=None, id=None, data=None):
+    def __init__(self, *, generic=False, url=False, id=False, data=False):
 
         self._url = url
         self._id = id
@@ -19,7 +19,7 @@ class Media(Node):
         if url:
             return 'Media(url=\'{}\')'.format(url)
         elif id:
-            return 'Media(id=\'{}\')'.format(id)
+            return 'Media(id={})'.format(id)
         elif data:
             return 'Media(data=\'{...}\')'
 
@@ -43,7 +43,7 @@ class Media(Node):
         if url:
             return url
         elif id:
-            url_from_id(id)
+            return url_from_id(id)
         elif data:
             return data['media_id']
         else:
@@ -76,6 +76,7 @@ def id_from_url(link):
 
 
 def url_from_id(id):
+    id = int(id)
     alphabet = {
         '-': 62, '1': 53, '0': 52, '3': 55, '2': 54, '5': 57, '4': 56,
         '7': 59, '6': 58, '9': 61, '8': 60, 'A': 0, 'C': 2, 'B': 1,

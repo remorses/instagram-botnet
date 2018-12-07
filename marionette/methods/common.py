@@ -23,3 +23,18 @@ def accepts(Class):
         return enhanced
 
     return _accepts
+
+
+def get_user_id(bot, node):
+    if node.id:
+        return node.id
+    if node.username:
+        if node.username not in bot.cache.usernames:
+            bot.api.search_username(node.username)
+            if "user" in bot.api.last_json:
+                bot.cache.usernames[node.username] = str(bot.api.last_json["user"]["pk"])
+            else:
+                return None
+        return str(bot.api.last_json["user"]["pk"])
+    else:
+        raise Exception('username is needed to get the id')

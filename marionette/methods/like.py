@@ -13,6 +13,5 @@ def like(bot, nodes, amount, args):
         if bot.last['status'] == 'ok':
             bot.logger.info('liked media {}'.format(media.url))
 
-    data = bot.last
 
-    return [], data
+    return [], bot.last
