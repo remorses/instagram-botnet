@@ -8,8 +8,12 @@ from .html_log import HTMLFileHandler, HTMLFormatter
 
 class API(NOT_MY_API):
 
-    def __init__(self, log_path, device=None, id=''):
-        self.id = id
+    id = 0
+
+    def __init__(self, log_path, device=None, id=None):
+
+        self.id = API.id if not id else id
+        API.id += 1
         # Setup device and user_agent
         device = device or devices.DEFAULT_DEVICE
         self.device_settings = devices.DEVICES[device]
@@ -34,13 +38,14 @@ class API(NOT_MY_API):
         self.logger.addHandler(ch)
         self.logger.setLevel(logging.DEBUG)
 
+
         self.last_json = None
 
 
 def colred_formatter():
     format = '%(asctime)s | %(levelname)-8s | %(message)s'
     cformat = '%(log_color)s' + format
-    date_format = '%Y-%m-%d %H.%M'
+    date_format = '%Y-%m-%d %H:%M'
     return ColoredFormatter(cformat, date_format,
                             log_colors={'DEBUG': 'reset',       'INFO': 'green',
                                         'WARNING': 'yellow', 'ERROR': 'red',

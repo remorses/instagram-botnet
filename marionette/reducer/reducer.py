@@ -43,7 +43,7 @@ def _reducer(state: State, action: Action):
     amount = action.amount
     args = action.args
 
-    if errors > 1:
+    if len(errors) > 1:
         # tried multiple times
         bot.logger.error('trying to solve errors: {}'.format(errors))
         # send_bot_to_phone_verifier

@@ -14,9 +14,9 @@ class Bot:
                  self,
                  username,
                  password,
-                 log_path='',
-                 cache_path='',
-                 cookie_path='',
+                 log_path=None,
+                 cache_path=None,
+                 cookie_path=None,
                  proxy=None,
                  device=None):
 
@@ -24,17 +24,19 @@ class Bot:
         self.username = username
         Bot.id += 1
 
+        self.cache_file = make_cache_file(self, cache_path)
+        self.log_file = make_log_file(self, log_path)
+        self.cookie_file = make_cookie_file(self, cookie_path)
+
         self.start_time = datetime.datetime.now()
-        self.api = API(log_path=self.log_file, device=device)
+        self.api = API(log_path=self.log_file, id=self.id, device=device)
         self.logger = self.api.logger
+
 
         self.total = TOTAL
         self.delay = DELAY
         self.max_per_day = MAX_PER_DAY
 
-        self.cache_file = make_cache_file(self, cache_path)
-        self.log_file = make_log_file(self, log_path)
-        self.cookie_file = make_cookie_file(self, cookie_path)
 
 
         with open(self.cache_file, 'a+') as file:
@@ -44,7 +46,7 @@ class Bot:
             self.cache = Cache(**data)
 
         self.api.login(username, password, proxy=proxy,
-                       cookie_fname=cookie_path)
+                       cookie_fname=self.cookie_file)
 
 
 
@@ -84,27 +86,36 @@ def make_cache_file(self, cache_path):
     if not cache_path:
         cache_path = Path(__file__).parents[1] / '_cache'
 
-    cache_path.exists() or cache_path.mkdir()
+    file = Path(str(cache_path.resolve()) + '/' + self.username + '_cache.json')
 
-    return str(cache_path / (self.username + '_cache.json'))
+    file.parent.exists() or file.parent.mkdir()
+    file.exists() or file.touch()
+
+    return file.resolve()
 
 def make_log_file(self, log_path):
 
     if not log_path:
         log_path = Path(__file__).parents[1] / '_logs'
 
-    log_path.exists() or log_path.mkdir()
+    file = Path(str(log_path.resolve()) + '/' + self.username + '_logs.html')
 
-    return str(log_path / (self.username + '_logs.html'))
+    file.parent.exists() or file.parent.mkdir()
+    file.exists() or file.touch()
+
+    return file.resolve()
 
 def make_cookie_file(self, cookie_path):
 
     if not cookie_path:
         cookie_path = Path(__file__).parents[1] / '_cookies'
 
-    cookie_path.exists() or cookie_path.mkdir()
+    file = Path(str(cookie_path.resolve()) + '/{}_cookie.json'.format(self.username))
 
-    return str(Path(cookie_path) /'{}_cookie.json'.format(self.username))
+    file.parent.exists() or file.parent.mkdir()
+    file.exists() or file.touch()
+
+    return file.resolve()
 
 
 

@@ -3,7 +3,7 @@ from typing import List
 from ..nodes import User, Media
 
 
-def userget_feed(bot, nodes, amount, args) -> List[Media]:
+def user_feed(bot, nodes, amount, args) -> List[Media]:
 
     result = []
 
