@@ -42,7 +42,7 @@ def get_feed(hashtag, bot , amount) -> List[Media]:
                 done += len(items)
                 return
 
-            if (done + len(items)) >= amount:
+            elif (done + len(items)) >= amount:
                 yield from items[:amount - done]
                 done += len(items)
                 return
