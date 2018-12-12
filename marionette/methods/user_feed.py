@@ -34,10 +34,8 @@ def get_last_user_feed(id, bot, amount, min_timestamp=None):
 
     while True:
 
-
         bot.api.get_user_feed(id, next_max_id, min_timestamp)
         items = bot.last["items"] if 'items' in bot.last else []
-
 
         if len(items) <= amount:
             yield from items
@@ -56,7 +54,5 @@ def get_last_user_feed(id, bot, amount, min_timestamp=None):
         else:
             yield from items
             done += len(items)
-
-
 
         next_max_id = bot.last.get("next_max_id", "")
