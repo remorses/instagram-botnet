@@ -1,43 +1,62 @@
 
 from typing import List
-from functools import reduce
-from operator import concat
+from funcy import  rcompose, flatten, partial, autocurry, fallback, cat, print_calls
 from ..nodes import User, Media
 from .common import accepts, get_user_id
-
 
 @accepts(User)
 def user_feed(bot, nodes, amount, args) -> List[Media]:
 
-    result = []
 
-    ids = [get_user_id(bot, user) for user in nodes]
+    get_items = rcompose(
+        lambda user: get_user_id(user, bot=bot),
+        lambda id: get_last_user_feed(id, bot=bot, amount=amount),
+    )
 
-    result = [get_last_user_feed(bot, id, amount) for id in ids]
+    pack_media = rcompose(
+        lambda data: data['pk'],
+        lambda id: Media(id=id)
+    )
 
-    result = reduce(concat, result, [])
+    result = (pack_media(item) for user in nodes for item in get_items(user))
 
-    result = [Media(id=item['pk']) for item in result]
+    result = list(flatten(result))
 
     return result, bot.last
 
 
 
 
+def get_last_user_feed(id, bot, amount, min_timestamp=None):
 
-def get_last_user_feed(bot, user_id, amount, min_timestamp=None):
-    user_feed = []
     next_max_id = ''
+    done = 0
 
     while True:
-        if len(user_feed) >= amount:
-            return user_feed[:amount]
-        bot.api.get_user_feed(user_id, next_max_id, min_timestamp)
-        last_json = bot.last
-        if 'items' not in last_json:
-            return user_feed[:amount] if len(user_feed) >= amount else user_feed
-        user_feed += last_json["items"]
-        if not last_json.get("more_available"):
-            return user_feed[:amount] if len(user_feed) >= amount else user_feed
 
-        next_max_id = last_json.get("next_max_id", "")
+
+        bot.api.get_user_feed(id, next_max_id, min_timestamp)
+        items = bot.last["items"] if 'items' in bot.last else []
+
+
+        if len(items) <= amount:
+            yield from items
+            done += len(items)
+            return
+
+        if (done + len(items)) >= amount:
+            yield from items[:amount - done]
+            done += len(items)
+            return
+
+        elif not bot.last.get("more_available"):
+            yield from items
+            return
+
+        else:
+            yield from items
+            done += len(items)
+
+
+
+        next_max_id = bot.last.get("next_max_id", "")

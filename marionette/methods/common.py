@@ -1,4 +1,4 @@
-from functools import wraps
+from funcy import wraps, autocurry
 
 
 def accepts(Class):
@@ -24,8 +24,8 @@ def accepts(Class):
 
     return _accepts
 
-
-def get_user_id(bot, node):
+# @autocurry
+def get_user_id(node, bot):
     if node.id:
         return node.id
     if node.username:
