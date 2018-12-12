@@ -9,7 +9,7 @@ def user_feed(bot, nodes, amount, args) -> List[Media]:
 
 
     get_items = rcompose(
-        lambda user: get_user_id(user, bot=bot),
+        lambda user: get_user_id(user, bot=bot) if not user.id else user.id,
         lambda id: get_last_user_feed(id, bot=bot, amount=amount),
     )
 
