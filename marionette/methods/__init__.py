@@ -6,15 +6,20 @@ from .followers import followers
 from .following import following
 from .user_feed import user_feed
 from .hashtag_feed import hashtag_feed
+from .likers import likers
 
-methods = {'authors': authors,
-           'follow': follow,
-           'followers': followers,
-           'following': following,
-           'user_feed': user_feed,
-           'hashtag_feed': hashtag_feed,
-           'like': like,
-           }
+
+
+methods = dict(
+               authors= authors,
+               follow= follow,
+               followers= followers,
+               likers= likers,
+               following= following,
+               user_feed= user_feed,
+               hashtag_feed= hashtag_feed,
+               like= like,
+               )
 
 
 def make_methods(bot):

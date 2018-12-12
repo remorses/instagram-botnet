@@ -1,0 +1,17 @@
+name:             test_likers
+version:          1
+mode:             distributed
+
+
+
+bots:
+  -
+    username:     ***REMOVED***
+    password:     ***REMOVED***
+
+
+execute:
+  - follow:
+      from_nodes: ['https://www.instagram.com/p/BrS3BGPn81X/']
+      via_edges:
+        - likers: 5
