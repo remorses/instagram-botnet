@@ -42,7 +42,7 @@ def get_last_user_feed(id, bot, amount, min_timestamp=None):
             done += len(items)
             return
 
-        if (done + len(items)) >= amount:
+        elif (done + len(items)) >= amount:
             yield from items[:amount - done]
             done += len(items)
             return
