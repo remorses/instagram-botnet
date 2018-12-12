@@ -19,7 +19,9 @@ DELAY = {'like': 10,
          'block': 30,
          'unblock': 30,
          'message': 60,
-         'error': 30
+         'error': 30,
+
+         'usual': 5
          }
 
 
