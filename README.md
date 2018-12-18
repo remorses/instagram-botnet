@@ -4,31 +4,31 @@ Write readable declarative yaml files to control your botnet
 ## methods to implement
 
 User interactions
-- follow
-- send
-- block
+- [X] like
+- [ ] follow
+- [ ] send
+- [ ] block
 
-Redia interactions
-- ~~like~~
-- report
-- comment
-- export
-- download
+Media interactions
+- [ ] report
+- [ ] comment
+- [ ] export
+- [ ] download
 
 User edges
-- followers
-- following
-- feed
+- [ ] followers
+- [ ] following
+- [ ] feed
 
 Media edges
-- likers
-- author
-- hashtags
-- usertags
-- comments
+- [ ] likers
+- [X] author
+- [ ] hashtags
+- [ ] usertags
+- [ ] comments
 
 Hashtag edges
-- feed
+- [ ] feed
 
 Geotag feed
-- feed
+- [ ] feed
