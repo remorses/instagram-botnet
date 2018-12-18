@@ -21,7 +21,7 @@ DELAY = {'like': 10,
          'message': 60,
          'error': 30,
 
-         'usual': 5
+         'usual': 4
          }
 
 
