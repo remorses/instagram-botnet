@@ -35,7 +35,7 @@ def make_bots(script):
 
 def make_filter(data):
     """
-    only:              [bot1, bot2]
+    only:   [bot1, bot2]
 
     user:
             followers: x > 50 and x < 1000
