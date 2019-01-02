@@ -36,8 +36,8 @@ for script in SCRIPTS:
 
 for name, raw in data.items():
 
-    with open('./outputs/{}.json'.format(name), 'w') as file:
+    with open('./artifacts/{}.json'.format(name), 'w') as file:
         file.write(json.dumps(raw, indent=4 ))
 
-    with open('./outputs/{}.graphql'.format(name), 'w') as file:
+    with open('./artifacts/{}.graphql'.format(name), 'w') as file:
         file.write(unmask(raw))
