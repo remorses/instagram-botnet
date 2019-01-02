@@ -51,7 +51,7 @@ class Bot:
 
     @property
     def cache(self):
-        return dataset.connect(make_db_url(self.cache_path, self.username + '_cache.db'))
+        return dataset.connect(make_db_url(self.cache_path, self.username + '_cache.db'), engine_kwargs = {'connect_args': {'check_same_thread' : False}})
 
 
 

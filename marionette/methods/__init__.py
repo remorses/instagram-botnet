@@ -7,6 +7,7 @@ from .following import following
 from .user_feed import user_feed
 from .hashtag_feed import hashtag_feed
 from .likers import likers
+from .hashtags import hashtags
 
 
 
@@ -18,6 +19,7 @@ methods = dict(
                following= following,
                user_feed= user_feed,
                hashtag_feed= hashtag_feed,
+               hashtags=hashtags,
                like= like,
                )
 

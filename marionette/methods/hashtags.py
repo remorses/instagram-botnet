@@ -5,7 +5,7 @@ from .common import accepts
 
 
 @accepts(Media)
-def authors(bot, nodes, amount, args):
+def hashtags(bot, nodes, amount, args):
 
     _hashtags = rcompose(
         lambda node: node.id,
