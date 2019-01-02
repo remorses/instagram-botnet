@@ -24,7 +24,7 @@ def execute(script, bots):
                 actions = make_actions(task)
                 # bot.logger.debug(actions)
                 threads += [Reducer(state, actions)]
-                bot.logger.debug('assigned new task of type {} and new thread, in script {}'.format(interaction, script_name))
+                bot.logger.debug('new task of type {} and new thread, in script {}'.format(interaction, script_name))
 
 
             threads = start(threads)

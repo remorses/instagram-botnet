@@ -5,12 +5,19 @@ from colorlog import ColoredFormatter
 import logging
 from .html_log import HTMLFileHandler, HTMLFormatter
 
+class LoggerAdapter(logging.LoggerAdapter):
+    def __init__(self, logger, prefix):
+        super(LoggerAdapter, self).__init__(logger, {})
+        self.prefix = prefix
+
+    def process(self, msg, kwargs):
+        return '[%s] %s' % (self.prefix, msg), kwargs
 
 class API(NOT_MY_API):
 
     id = 0
 
-    def __init__(self, log_path, device=None, id=None):
+    def __init__(self, log_path, device=None, username=None,  id=None):
 
         self.id = API.id if not id else id
         API.id += 1
@@ -36,7 +43,10 @@ class API(NOT_MY_API):
         self.logger = logging.getLogger('[{}]'.format(self.id))
         self.logger.addHandler(fh)
         self.logger.addHandler(ch)
+
         self.logger.setLevel(logging.DEBUG)
+        self.logger = LoggerAdapter(self.logger, username)
+
 
 
         self.last_json = None
@@ -47,7 +57,7 @@ def colred_formatter():
     cformat = '%(log_color)s' + format
     date_format = '%Y-%m-%d %H:%M'
     return ColoredFormatter(cformat, date_format,
-                            log_colors={'DEBUG': 'reset',       'INFO': 'green',
+                            log_colors={'DEBUG': 'reset', 'INFO': 'green',
                                         'WARNING': 'yellow', 'ERROR': 'red',
                                         'CRITICAL': 'red'})
 

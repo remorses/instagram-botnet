@@ -26,10 +26,10 @@ class Reducer(Thread):
 
     def run(self):
         last_action = self.actions[-1].type
-        self.logger.debug('{} interaction begins, bot: {}'.format( last_action, self.state.bot))
+        self.logger.debug('{} [ interaction begins'.format( last_action, ))
         last_state = reduce(_reducer, self.actions, self.state)
         super().set_data(last_state.data)
-        self.logger.debug('{} interaction ends, bot: {}'.format( last_action, self.state.bot))
+        self.logger.debug('{} ] interaction ends'.format( last_action,))
         return
 
 

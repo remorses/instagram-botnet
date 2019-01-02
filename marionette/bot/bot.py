@@ -29,7 +29,7 @@ class Bot:
         self.cookie_file = make_cookie_file(self, cookie_path)
 
         self.start_time = datetime.datetime.now()
-        self.api = API(log_path=self.log_file, id=self.id, device=device)
+        self.api = API(log_path=self.log_file, id=self.id, username=username, device=device)
         self.logger = self.api.logger
 
 
