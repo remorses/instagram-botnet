@@ -48,13 +48,13 @@ def make_predicate(script, bot):
         bool = True
 
         if isinstance(node, Media):
-            pass
+             pass
         elif isinstance(node, User):
              bool = bool and check(script['user']['followers'], node.get_followers_count(bot))
              bool = bool and check(script['user']['following'], node.get_following_count(bot))
 
         else:
-            return False
+            return True
 
         return bool
 
