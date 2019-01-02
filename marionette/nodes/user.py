@@ -44,8 +44,33 @@ class User(Node):
         username, id, data = attributes(self)
         if id:
             return id
-
         elif data:
             return data['user']['username']
         else:
             return False
+
+    def get_id(self, bot):
+        if self.username:
+            bot.api.search_username(self.username)
+            if "user" in bot.api.last_json:
+                return str(bot.api.last_json["user"]["pk"])
+        else:
+            raise Exception('username is needed to get the id')
+            
+
+    def get_followers_count(self, bot):
+        if self.username:
+            bot.api.get_username_info(self.id)
+            if "user" in bot.api.last_json:
+                return str(bot.api.last_json["user"]["follower_count"])
+        else:
+            raise Exception('id is needed to get the count')
+
+
+    def get_following_count(self, bot):
+        if self.username:
+            bot.api.get_username_info(self.id)
+            if "user" in bot.api.last_json:
+                return str(bot.api.last_json["user"]["following_count"])
+        else:
+            raise Exception('id is needed to get the count')

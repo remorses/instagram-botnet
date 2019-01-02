@@ -9,9 +9,8 @@ def prepare(script):
 
     for bot in bots:
         if 'filter' in script:
-            data = script['filter']
-            has_filter = bot.username in data['only'] or not data['only']
-            bot.filter = make_filter(data) if has_filter else identity
+            # has_filter = bot.username in data['only'] or not data['only']
+            bot.predicates += [make_predicate(script['filter'], bot)]
 
     return bots
 
@@ -33,59 +32,34 @@ def make_bots(script):
     return bots
 
 
-def make_filter(data):
+def make_predicate(script, bot):
     """
-    only:   [bot1, bot2]
+    filter:
 
-    user:
-            followers: x > 50 and x < 1000
-            following: x < 500
-    media:
-            likers:    x < 1000
-            hastags:   not in ['porn', 'sex']
+        user:
+                followers: x > 50 and x < 1000
+                following: x < 500
+        media:
+                likers:    x < 1000
+                hastags:   not in ['porn', 'sex']
     """
+    def predicate(node):
 
-    def _filter(nodes):
-        if is_user(nodes[-1]):
-            return filter(partial(user_sieve, data), nodes)
+        bool = True
 
-        elif is_media(nodes[-1]):
-            return filter(partial(media_sieve, data), nodes)
+        if isinstance(node, Media):
+            pass
+        elif isinstance(node, User):
+             bool = bool and check(script['user']['followers'], node.get_followers_count(bot))
+             bool = bool and check(script['user']['following'], node.get_following_count(bot))
 
         else:
-            raise Exception
+            return False
 
-    return _filter
+        return bool
 
-
-def user_sieve(data, node) -> bool:
-
-    checks = []
-
-    if 'followers' in data:
-        checks += [check(data['followers'], node.followers)]
-    if 'following' in data:
-        checks += [check(data['following'], node.following)]
-
-    return all(checks)
-
-
-def media_sieve(data, node):
-    pass
+    return predicate
 
 
 def check(expr, var):
     return eval(expr, dict(x=var))
-
-
-def is_user(node):
-    return isinstance(node, User)
-
-
-def is_media(node):
-    return isinstance(node, Media)
-
-
-def identity(*args, **kwargs):
-    others = kwargs.values()
-    return (*args, *others)
