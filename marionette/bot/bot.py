@@ -74,6 +74,9 @@ class Bot:
             self.total[k] = 0
         self.start_time = datetime.datetime.now()
 
+
+
+
 def make_cache_file(self, cache_path):
 
     if not cache_path:
@@ -116,7 +119,3 @@ def load_cache(cache_file):
         content = content if content else '{}'
         data = json.loads(content)
         return Cache(**data)
-
-
-class BotException(Exception):
-    pass
