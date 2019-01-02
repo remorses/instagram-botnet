@@ -2,9 +2,10 @@ import datetime
 from pathlib import Path
 import dataset
 import json
+from funcy import partial
 from ..api import API
 from .settings import DELAY, TOTAL, MAX_PER_DAY
-
+from .predicates import not_in_cache
 
 class Bot:
 
@@ -28,6 +29,8 @@ class Bot:
         self.cookie_file = make_cookie_file(cookie_path, username + '_cookie.json')
 
         self.cache = dataset.connect(make_db_url(cache_path, username + '_cache.db'))
+
+        self.predicates = [partial(not_in_cache, self), ]
 
         self.start_time = datetime.datetime.now()
         self.api = API(log_path=self.log_file, id=self.id, username=username, device=device)
@@ -58,10 +61,18 @@ class Bot:
             self._reset_counters()
         return self.max_per_day[key] - self.total[key] < 0
 
+
+
     def filter(self, nodes):
         """
-        this method will be overwritten in the prepare phase
+        this filters every node before an interaction,
+        you can customize this bychanging the predicates.
+        prediacte is a function that takes a node as argument
+        and returns a boolean
         """
+        for predicate in self.predicates:
+            nodes = filter(predicate, nodes)
+
         return nodes
 
 

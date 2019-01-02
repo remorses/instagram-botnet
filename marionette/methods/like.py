@@ -1,7 +1,6 @@
 from typing import List
-from .common import accepts
+from .common import accepts, today
 from ..nodes import Node, User, Media
-
 
 @accepts(Media)
 def like(bot, nodes, amount, args):
@@ -12,6 +11,10 @@ def like(bot, nodes, amount, args):
         bot.api.like(media.id)
         if bot.last['status'] != 'ok':
             bot.logger.warn('request didn\'t return "ok" following {}'.format(media.url))
+        else:
+            bot.cache['liked'].insert(dict(identifier=media.id, url=media.url, time=today()))
+
+
 
 
     return [], bot.last

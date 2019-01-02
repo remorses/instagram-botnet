@@ -1,5 +1,5 @@
 from funcy import wraps, autocurry
-
+from datetime import datetime
 
 def accepts(Class):
 
@@ -38,3 +38,11 @@ def get_user_id(node, bot):
         return str(bot.api.last_json["user"]["pk"])
     else:
         raise Exception('username is needed to get the id')
+
+
+
+def today():
+    return datetime.now().strftime("%Y-%m-%d")
+
+def parse_date(date):
+    return datetime.strptime(date, "%Y-%m-%d" )
