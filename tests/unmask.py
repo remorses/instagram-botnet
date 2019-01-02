@@ -22,7 +22,7 @@ def unmask(obj):
 
     out = ps.communicate()[0]
 
-    # temp_file.unlink()
+    temp_file.unlink()
 
     # out = subprocess.check_output(
     #     [cmd ], shell=True, stderr=subprocess.PIPE)
