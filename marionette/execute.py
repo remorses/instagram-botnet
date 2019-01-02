@@ -24,7 +24,7 @@ def execute(script, bots):
                 actions = make_actions(task)
                 # bot.logger.debug(actions)
                 threads += [Reducer(state, actions)]
-                bot.logger.debug('assigned new task of type {} and new thread, in script {}'.format(task.actions[-1].type, script_name))
+                bot.logger.debug('assigned new task of type {} and new thread, in script {}'.format(interaction, script_name))
 
 
             threads = start(threads)
@@ -36,6 +36,9 @@ def execute(script, bots):
 
     except (KeyboardInterrupt, SystemExit):
         raise
+
+    except Exception as e:
+        raise e
 
     finally:
         return data
