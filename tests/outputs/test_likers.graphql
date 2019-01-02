@@ -15,18 +15,18 @@
 			status
 		}
 		__follow__ {
-			friendship_status {
-				following
-				followed_by
-				blocking
-				muting
+			users[1000] {
+				pk
+				username
+				full_name
 				is_private
-				incoming_request
-				outgoing_request
-				is_bestie
+				profile_pic_url
+				profile_pic_id
+				is_verified
+				latest_reel_media
 			}
+			user_count
 			status
 		}
 	}
 }
-

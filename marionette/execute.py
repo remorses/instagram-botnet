@@ -26,7 +26,7 @@ def execute(script, bots):
             threads = start(threads)
             threads = wait(threads)
 
-            data['__' + interaction + '_block__'] = [thread.get_data() for thread in threads]
+            data['__' + interaction + '_interaction__'] = [thread.get_data() for thread in threads]
             # {'thread' + thread.name: thread.get_data() for thread in threads}
 
         return data
