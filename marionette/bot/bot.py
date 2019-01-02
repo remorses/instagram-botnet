@@ -32,18 +32,11 @@ class Bot:
         self.api = API(log_path=self.log_file, id=self.id, username=username, device=device)
         self.logger = self.api.logger
 
-
         self.total = TOTAL
         self.delay = DELAY
         self.max_per_day = MAX_PER_DAY
 
-
-
-        with open(self.cache_file, 'a+') as file:
-            content = file.read()
-            content = content if content else '{}'
-            data = json.loads(content)
-            self.cache = Cache(**data)
+        self.cache = load_cache(self.cache_file)
 
         self.api.login(username, password, proxy=proxy,
                        cookie_fname=self.cookie_file)
@@ -117,7 +110,12 @@ def make_cookie_file(self, cookie_path):
 
     return file.resolve()
 
-
+def load_cache(cache_file):
+    with open(cache_file, 'a+') as file:
+        content = file.read()
+        content = content if content else '{}'
+        data = json.loads(content)
+        return Cache(**data)
 
 
 class BotException(Exception):
