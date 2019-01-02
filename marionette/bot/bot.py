@@ -23,12 +23,12 @@ class Bot:
 
         self.id = Bot.id
         self.username = username
+        self.cache_path = cache_path
         Bot.id += 1
 
         self.log_file = make_log_file( log_path, username + '_logs.html')
         self.cookie_file = make_cookie_file(cookie_path, username + '_cookie.json')
 
-        self.cache = dataset.connect(make_db_url(cache_path, username + '_cache.db'))
 
         self.predicates = [partial(not_in_cache, self), ]
 
@@ -48,6 +48,11 @@ class Bot:
 
     def __repr__(self):
         return 'Bot(username=\'{}\', id={})'.format(self.username, self.id)
+
+    @property
+    def cache(self):
+        return dataset.connect(make_db_url(self.cache_path, self.username + '_cache.db'))
+
 
 
     @property

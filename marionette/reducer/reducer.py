@@ -79,7 +79,7 @@ def _reducer(state: State, action: Action):
         return State(target_nodes=[], bot=bot, errors=errors + [exc], data=data)
 
     except Exception as exc:
-        bot.logger.error('error reducing action {}: {} {}'.format(type, exc.__class__.__name__, exc))
+        bot.logger.error('error reducing action {}: \"{}\" {}'.format(type, exc.__class__.__name__, exc))
         bot.logger.warn('sleeping some time before retrying')
         time.sleep(bot.delay['error'])
 

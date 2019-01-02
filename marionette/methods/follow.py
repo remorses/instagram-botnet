@@ -11,7 +11,8 @@ def follow(bot: Bot, nodes, amount, args):
         if bot.last['status'] != 'ok':
             bot.logger.warn('request didn\'t return "ok" following {}'.format(user.username))
         else:
-            bot.cache['followed'].insert(dict(identifier=user.id, time=today()))
+            with bot.cache as cache:
+                cache['followed'].insert(dict(identifier=user.id, time=today()))
 
     data = bot.last
 
