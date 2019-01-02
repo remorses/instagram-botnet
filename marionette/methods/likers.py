@@ -3,7 +3,7 @@ from typing import List
 from funcy import  rcompose, flatten, partial, print_calls
 from itertools import islice
 from ..nodes import  Media, User
-from .common import accepts
+from .common import accepts, get_cycled_api
 
 @accepts(Media)
 def likers(bot, nodes, amount, args) -> List[Media]:
@@ -28,20 +28,25 @@ def likers(bot, nodes, amount, args) -> List[Media]:
 
 
 def get_likers(id, bot , amount) -> List[Media]:
-
-    while True:
-        try:
-            bot.api.get_media_likers(id)
-            items = bot.last["users"] if 'users' in bot.last else []
-
-            if len(items) <= amount:
-                yield from items
-                return
-
-            else:
-                yield from items[:amount]
-                return
+     return get_cycled_api(bot, bot.api.get_media_likers, id, 'users', amount)
 
 
-        except Exception:
-            return
+
+# def get_likers(id, bot , amount) -> List[Media]:
+#
+#     while True:
+#         try:
+#             bot.api.get_media_likers(id)
+#             items = bot.last["users"] if 'users' in bot.last else []
+#
+#             if len(items) <= amount:
+#                 yield from items
+#                 return
+#
+#             else:
+#                 yield from items[:amount]
+#                 return
+#
+#
+#         except Exception:
+#             return

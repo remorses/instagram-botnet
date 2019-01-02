@@ -1,5 +1,9 @@
 from funcy import wraps, autocurry
 from datetime import datetime
+from time import time
+from typing import List
+from ..nodes import Node
+
 
 def accepts(Class):
 
@@ -46,3 +50,43 @@ def today():
 
 def parse_date(date):
     return datetime.strptime(date, "%Y-%m-%d" )
+
+
+
+
+
+def get_cycled_api(bot, api_method, identifier, key, amount, ) -> List[Node]:
+
+    next_max_id = ''
+    sleep_track = 0
+    done = 0
+
+    while True:
+        try:
+            api_method(identifier, next_max_id)
+            items = bot.last[key] if key in bot.last else []
+
+            if len(items) <= amount:
+                yield from items
+                done += len(items)
+                return
+
+            elif (done + len(items)) >= amount:
+                yield from items[:amount - done]
+                done += len(items)
+                return
+
+            else:
+                yield from items
+                done += len(items)
+
+        except Exception:
+            return
+
+        if sleep_track > 10:
+            bot.logger.debug('sleeping some time while getting')
+            time.sleep(bot.delay['getter'])
+            sleep_track = 0
+
+        next_max_id = bot.last.get("next_max_id", "")
+        sleep_track += 1
