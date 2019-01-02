@@ -7,6 +7,8 @@ from .threads import start, wait
 
 def execute(script, bots):
 
+    script_name = script['name'] if script['name'] else 'unnmaed script'
+
     data = dict()
 
     try:
@@ -17,12 +19,13 @@ def execute(script, bots):
             task = make_task(instruction)
 
             for (task, bot) in partitionate(task, bots):
-
                 state = make_state(task, bot)
-                bot.logger.debug(str(bot) + ' ' + str(state))
+                # bot.logger.debug(str(bot) + ' ' + str(state))
                 actions = make_actions(task)
                 # bot.logger.debug(actions)
                 threads += [Reducer(state, actions)]
+                bot.logger.debug('assigned new task of type {} and new thread, in script {}'.format(task.actions[-1].type, script_name))
+
 
             threads = start(threads)
             threads = wait(threads)

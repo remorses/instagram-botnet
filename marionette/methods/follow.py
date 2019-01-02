@@ -9,8 +9,8 @@ def follow(bot: Bot, nodes, amount, args):
 
     for user in nodes:
         bot.api.follow(user.id)
-        if bot.last['status'] == 'ok':
-            bot.logger.info('followed user {}'.format(user.username))
+        if bot.last['status'] != 'ok':
+            bot.logger.warn('request didn\'t return "ok" following {}'.format(user.username))
 
     data = bot.last
 

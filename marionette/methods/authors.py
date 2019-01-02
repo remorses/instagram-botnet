@@ -7,7 +7,7 @@ def authors(bot, nodes, amount, args):
 
     nodes = bot.filter(nodes)
 
-    bot.logger.warn('nodes: ' +  str(nodes))
+    # bot.logger.warn('nodes: ' +  str(nodes))
 
     ids = [node.id if node.id else get_id(bot, node) for node in nodes]
 

@@ -26,9 +26,10 @@ class Reducer(Thread):
 
     def run(self):
         last_action = self.actions[-1].type
-        self.logger.debug('{} is reducing the {} interaction'.format(self.state.bot, last_action))
+        self.logger.debug('{} interaction begins, bot: {}'.format( last_action, self.state.bot))
         last_state = reduce(_reducer, self.actions, self.state)
         super().set_data(last_state.data)
+        self.logger.debug('{} interaction ends, bot: {}'.format( last_action, self.state.bot))
         return
 
 
@@ -46,7 +47,7 @@ def _reducer(state: State, action: Action):
 
     if len(errors) > 1:
         # tried multiple times
-        bot.logger.error('trying to solve errors: {}'.format(errors))
+        bot.logger.error('trying to solve errors: {}, bot: {}'.format(errors, bot))
         # send_bot_to_phone_verifier
         # change_bot_if_neccessary
         # resolve_captcha_if_necessary
@@ -60,6 +61,8 @@ def _reducer(state: State, action: Action):
             raise Dont_retry('can\'t find method {}'.format(type))
 
         next_nodes, next_data = method(bot, nodes, amount, args)
+        bot.logger.info('{} did success, with nodes {}'.format(type, nodes))
+
         next_data = merge(data, {'__{}__'.format(type): next_data})
 
         secs = bot.delay[type] if type in bot.delay else bot.delay['usual']

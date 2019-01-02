@@ -10,8 +10,8 @@ def like(bot, nodes, amount, args):
 
     for media in nodes:
         bot.api.like(media.id)
-        if bot.last['status'] == 'ok':
-            bot.logger.info('liked media {}'.format(media.url))
+        if bot.last['status'] != 'ok':
+            bot.logger.warn('request didn\'t return "ok" following {}'.format(media.url))
 
 
     return [], bot.last
