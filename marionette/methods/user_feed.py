@@ -1,6 +1,7 @@
 
 from typing import List
 from funcy import  rcompose, flatten, partial, autocurry, fallback, cat, print_calls
+from itertools import islice
 from ..nodes import User, Media
 from .common import accepts, get_user_id
 
@@ -20,7 +21,9 @@ def user_feed(bot, nodes, amount, args) -> List[Media]:
 
     result = (pack_media(item) for user in nodes for item in get_items(user))
 
-    result = list(flatten(result))
+    result = (node for node in result if bot.suitable(node))
+
+    result = islice(result, amount)
 
     return result, bot.last
 

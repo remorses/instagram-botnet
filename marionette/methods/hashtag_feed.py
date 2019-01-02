@@ -1,6 +1,7 @@
 
 from typing import List
 from funcy import  rcompose, flatten, partial, print_calls
+from itertools import islice
 from ..nodes import  Media, Hashtag
 from .common import accepts
 
@@ -20,7 +21,9 @@ def hashtag_feed(bot, nodes, amount, args) -> List[Media]:
 
     result = (pack_media(item) for user in nodes for item in get_items(user))
 
-    result = list(flatten(result))
+    result = (node for node in result if bot.suitable(node))
+
+    result = islice(result, amount)
 
     return result, bot.last
 

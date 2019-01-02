@@ -13,6 +13,7 @@ def authors(bot, nodes, amount, args):
     )
 
     result = (process(media) for media in nodes if bot.suitable(media))
+    
     result = islice(result, amount)
 
 
