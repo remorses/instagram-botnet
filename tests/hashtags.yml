@@ -1,0 +1,18 @@
+name:             test_hashtags.yaml
+version:          1
+mode:             distributed
+
+
+
+bots:
+  -
+    username:     ***REMOVED***
+    password:     ***REMOVED***
+
+
+execute:
+  - like:
+      from_nodes: ['https://www.instagram.com/p/BsJZN-8g5k6/', 'https://www.instagram.com/p/BsJescbgWhs/']
+      via_edges:
+        - hashtags: 2
+        - hashtag_feed: 2
