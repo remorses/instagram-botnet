@@ -14,13 +14,12 @@ from tests.unmask import unmask
 
 ################################################################################
 
-print(Path(__file__))
 SCRIPTS = [
-    # parse('./like.yml'),
-    # parse('./authors.yml'),
-    # parse('./hashtag_feed.yml'),
-    # parse('./followers.yml'),
-    # parse('./user_feed.yml')
+    parse('./like.yml'),
+    parse('./authors.yml'),
+    parse('./hashtag_feed.yml'),
+    parse('./followers.yml'),
+    parse('./user_feed.yml'),
     parse('./likers.yml')
 ]
 
