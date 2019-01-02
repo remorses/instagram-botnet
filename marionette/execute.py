@@ -7,8 +7,9 @@ from .threads import start, wait
 
 def execute(script, bots):
 
-        data = dict()
+    data = dict()
 
+    try:
         for instruction in script['execute']:
             interaction = list(instruction.keys())[0]
 
@@ -29,4 +30,9 @@ def execute(script, bots):
             data['__' + interaction + '_interaction__'] = [thread.get_data() for thread in threads]
             # {'thread' + thread.name: thread.get_data() for thread in threads}
 
+
+    except (KeyboardInterrupt, SystemExit):
+        raise
+
+    finally:
         return data

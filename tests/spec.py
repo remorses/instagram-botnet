@@ -4,7 +4,7 @@ import json
 import subprocess
 from random import random
 
-sys.path += [str(Path(__file__).parents[1])]
+sys.path += [str(Path(__file__).resolve().parents[1])]
 from marionette import execute, prepare
 from tests.parse import parse
 
@@ -45,12 +45,12 @@ def temporary_file(name, content):
 
 print(Path(__file__))
 SCRIPTS = [
-    # parse('tests/like.yml'),
-    # parse('tests/authors.yml'),
-    # parse('tests/hashtag_feed.yml'),
-    # parse('tests/followers.yml'),
-    # parse('tests/user_feed.yml')
-    parse('tests/likers.yml')
+    # parse('./like.yml'),
+    # parse('./authors.yml'),
+    # parse('./hashtag_feed.yml'),
+    # parse('./followers.yml'),
+    # parse('./user_feed.yml')
+    parse('./likers.yml')
 ]
 
 ################################################################################
@@ -65,8 +65,8 @@ for script in SCRIPTS:
 
 for name, raw in data.items():
 
-    with open('tests/outputs/{}.json'.format(name), 'w') as file:
+    with open('./outputs/{}.json'.format(name), 'w') as file:
         file.write(json.dumps(raw, indent=4 ))
 
-    with open('tests/outputs/{}.graphql'.format(name), 'w') as file:
+    with open('./outputs/{}.graphql'.format(name), 'w') as file:
         file.write(unmask(raw))

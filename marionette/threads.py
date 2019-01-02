@@ -2,6 +2,7 @@ from threading import _newname, current_thread, Event, _sys, _dangling, Thread
 
 
 def start(threads):
+    [thread.setDaemon(True) for thread in threads]
     [thread.start() for thread in threads]
     return threads
 

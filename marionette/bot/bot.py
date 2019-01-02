@@ -84,7 +84,7 @@ class Bot:
 def make_cache_file(self, cache_path):
 
     if not cache_path:
-        cache_path = Path(__file__).parents[1] / '_cache'
+        cache_path = Path('.') / '_cache'
 
     file = Path(str(cache_path.resolve()) + '/' + self.username + '_cache.json')
 
@@ -96,7 +96,7 @@ def make_cache_file(self, cache_path):
 def make_log_file(self, log_path):
 
     if not log_path:
-        log_path = Path(__file__).parents[1] / '_logs'
+        log_path = Path('.') / '_logs'
 
     file = Path(str(log_path.resolve()) + '/' + self.username + '_logs.html')
 
@@ -108,7 +108,7 @@ def make_log_file(self, log_path):
 def make_cookie_file(self, cookie_path):
 
     if not cookie_path:
-        cookie_path = Path(__file__).parents[1] / '_cookies'
+        cookie_path = Path('.') / '_cookies'
 
     file = Path(str(cookie_path.resolve()) + '/{}_cookie.json'.format(self.username))
 
