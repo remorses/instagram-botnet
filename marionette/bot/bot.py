@@ -1,9 +1,9 @@
 import datetime
 from pathlib import Path
+import dataset
 import json
 from ..api import API
 from .settings import DELAY, TOTAL, MAX_PER_DAY
-from .cache import Cache
 
 
 class Bot:
@@ -24,9 +24,10 @@ class Bot:
         self.username = username
         Bot.id += 1
 
-        self.cache_file = make_cache_file(self, cache_path)
-        self.log_file = make_log_file(self, log_path)
-        self.cookie_file = make_cookie_file(self, cookie_path)
+        self.log_file = make_log_file( log_path, username + '_logs.html')
+        self.cookie_file = make_cookie_file(cookie_path, username + '_cookie.json')
+
+        self.cache = dataset.connect(make_db_url(cache_path, username + '_cache.db'))
 
         self.start_time = datetime.datetime.now()
         self.api = API(log_path=self.log_file, id=self.id, username=username, device=device)
@@ -36,7 +37,6 @@ class Bot:
         self.delay = DELAY
         self.max_per_day = MAX_PER_DAY
 
-        self.cache = load_cache(self.cache_file)
 
         self.api.login(username, password, proxy=proxy,
                        cookie_fname=self.cookie_file)
@@ -64,10 +64,6 @@ class Bot:
         """
         return nodes
 
-    def save_cache(self):
-        with open(str(self.cache_path / self.username + '_cache.json'), 'w') as file:
-            content = json.loads(self.cache)
-            file.write(content)
 
     def _reset_counters(self):
         for k in self.total:
@@ -77,53 +73,35 @@ class Bot:
 
 
 
-def make_cache_file(self, cache_path):
-
+def make_db_url(cache_path, name):
     if not cache_path:
         cache_path = Path('.') / '_cache'
 
-    file = Path(str(cache_path.resolve()) + '/' + self.username + '_cache.json')
+    cache_path.exists() or cache_path.mkdir()
+    path = str(cache_path.resolve() / name)
 
-    file.parent.exists() or file.parent.mkdir()
-    file.exists() or file.touch()
+    return 'sqlite:///{}'.format(path)
 
-    return file.resolve()
-
-def make_log_file(self, log_path):
+def make_log_file( log_path, name):
 
     if not log_path:
         log_path = Path('.') / '_logs'
 
-    file = Path(str(log_path.resolve()) + '/' + self.username + '_logs.html')
+    file = Path(str(log_path.resolve()) + '/' + name)
 
     file.parent.exists() or file.parent.mkdir()
     file.exists() or file.touch()
 
     return file.resolve()
 
-def make_cookie_file(self, cookie_path):
+def make_cookie_file( cookie_path, name):
 
     if not cookie_path:
         cookie_path = Path('.') / '_cookies'
 
-    file = Path(str(cookie_path.resolve()) + '/{}_cookie.json'.format(self.username))
+    file = Path(str(cookie_path.resolve() / name))
 
     file.parent.exists() or file.parent.mkdir()
     file.exists() or file.touch()
 
     return file.resolve()
-
-def load_cache(cache_file):
-    with open(cache_file, 'a+') as file:
-        content = file.read()
-        content = content if content else '{}'
-        data = json.loads(content)
-        return Cache(**data)
-
-
-def dump_cache(cache_file):
-    with open(cache_file, 'a+') as file:
-        content = file.read()
-        content = content if content else '{}'
-        data = json.loads(content)
-        return Cache(**data)
