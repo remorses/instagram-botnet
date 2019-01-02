@@ -13,7 +13,7 @@ def followers(bot, nodes, amount, args) -> List[User]:
 
     result = []
 
-    ids = [id if user.id else get_id(bot, user) for user in nodes]
+    ids = [id if user.id else user.get_id(bot) for user in nodes]
 
     result = [get_followers(bot, id, amount) for id in ids]
 
@@ -24,17 +24,6 @@ def followers(bot, nodes, amount, args) -> List[User]:
     return result[::-1], bot.last
 
 
-def get_id(bot, node):
-    if node.username:
-        if node.username not in bot.cache.usernames:
-            bot.api.search_username(node.username)
-            if "user" in bot.api.last_json:
-                bot.cache.usernames[node.username] = str(bot.api.last_json["user"]["pk"])
-            else:
-                return None
-        return str(bot.api.last_json["user"]["pk"])
-    else:
-        raise Exception('username is needed to get the id')
 
 
 def get_followers(bot: Bot, user_id, total) -> List[User]:

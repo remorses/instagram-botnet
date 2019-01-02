@@ -73,7 +73,16 @@ class Bot:
         for predicate in self.predicates:
             nodes = filter(predicate, nodes)
 
-        return nodes
+    def suitable(self, node):
+        """
+        same as filter but only one node, returns True if node in suitable
+        """
+        bool = True
+
+        for predicate in self.predicates:
+            bool = bool and predicate(node)
+
+        return bool
 
 
     def _reset_counters(self):
