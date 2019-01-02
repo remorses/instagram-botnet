@@ -2,6 +2,7 @@
 from typing import List
 from funcy import  rcompose, flatten, partial, print_calls
 from itertools import islice
+from time import time
 from ..nodes import  Media, Hashtag
 from .common import accepts
 
@@ -20,9 +21,7 @@ def hashtag_feed(bot, nodes, amount, args) -> List[Media]:
     )
 
     result = (pack_media(item) for user in nodes for item in get_items(user))
-
     result = (node for node in result if bot.suitable(node))
-
     result = islice(result, amount)
 
     return result, bot.last
@@ -34,6 +33,7 @@ def get_feed(hashtag, bot , amount) -> List[Media]:
 
     next_max_id = ''
     done = 0
+    sleep_track = 0
 
     while True:
         try:
@@ -57,4 +57,10 @@ def get_feed(hashtag, bot , amount) -> List[Media]:
         except Exception:
             return
 
+        if sleep_track > 10:
+            bot.logger.debug('sleeping some time while getting hashtag feed')
+            time.sleep(bot.delay['getter'])
+            sleep_track = 0
+
         next_max_id = bot.last.get("next_max_id", "")
+        sleep_track += 1

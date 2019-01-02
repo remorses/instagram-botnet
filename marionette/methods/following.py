@@ -56,7 +56,7 @@ def get_following( bot ,id,  amount) -> List[User]:
             return
 
         if sleep_track > 10:
-            bot.logger.debug('sleeping some time while getting followers')
+            bot.logger.debug('sleeping some time while getting following')
             time.sleep(bot.delay['getter'])
             sleep_track = 0
 
