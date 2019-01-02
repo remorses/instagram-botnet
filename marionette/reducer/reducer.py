@@ -58,7 +58,7 @@ def _reducer(state: State, action: Action):
         nodes = list(nodes)
 
         if not nodes:
-            raise Dont_retry('no nodes, won\'t  retry')
+            raise Dont_retry('no nodes, {}'.format(nodes))
 
         method = methods.get(type, None)
 
@@ -75,9 +75,8 @@ def _reducer(state: State, action: Action):
         time.sleep(secs)
 
     except Dont_retry as exc:
-        bot.logger.error('error reducing action {}: {} {}'.format(type, exc.__class__.__name__, exc))
-        bot.logger.error('sleeping some time before retrying')
-        return State(target_nodes=next_nodes, bot=bot, errors=errors + [exc], data=next_data)
+        bot.logger.error('error reducing action {}: \"{}\" {}'.format(type, exc.__class__.__name__, exc))
+        return State(target_nodes=[], bot=bot, errors=errors + [exc], data=data)
 
     except Exception as exc:
         bot.logger.error('error reducing action {}: {} {}'.format(type, exc.__class__.__name__, exc))
