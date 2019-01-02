@@ -1,4 +1,4 @@
-from funcy import rcompose
+from funcy import rcompose, take
 from itertools import islice
 from ..nodes import Hashtag, Media
 from .common import accepts
@@ -17,7 +17,7 @@ def hashtags(bot, nodes, amount, args):
 
     result = (pack_hashtag(tag) for media in nodes for tag in _hashtags(media))
     result = (tag for tag in result if bot.suitable(tag))
-    result = islice(result, amount)
+    result = take(amount, result)
 
     return result, bot.last
 

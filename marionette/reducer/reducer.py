@@ -67,7 +67,10 @@ def _reducer(state: State, action: Action):
 
         next_nodes, next_data = method(bot, nodes, amount, args)
 
+        next_nodes = list(next_nodes)
+
         bot.logger.info('{} did success on {}'.format(type, nodes))
+        bot.logger.debug('{} returned {}'.format(type, next_nodes))
 
         next_data = merge(data, {'__{}__'.format(type): next_data})
 
