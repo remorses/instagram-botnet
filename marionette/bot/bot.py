@@ -119,3 +119,11 @@ def load_cache(cache_file):
         content = content if content else '{}'
         data = json.loads(content)
         return Cache(**data)
+
+
+def dump_cache(cache_file):
+    with open(cache_file, 'a+') as file:
+        content = file.read()
+        content = content if content else '{}'
+        data = json.loads(content)
+        return Cache(**data)
