@@ -39,7 +39,6 @@ def get_id(bot, node):
 
 def get_followers(bot: Bot, user_id, total) -> List[User]:
 
-        bot.logger.info('following user_id %s' % user_id)
 
         sleep_track = 0
         result = []
