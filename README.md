@@ -1,6 +1,13 @@
 # instagram-bot
 Write readable declarative yaml files to control your botnet
 ---
+
+## TODO
+
+- use generators in all the methods to not generate too many instances
+- filter the nodes returned from method in a steamed function
+- limit the returned nodes with islice as last step of streamed function (so filtering won't change the amount of returned nodes)
+
 ## methods to implement
 
 User interactions
