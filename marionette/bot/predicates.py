@@ -1,5 +1,5 @@
 
-from ..nodes import Media, User
+from ..nodes import Media, User, Hashtag, Geotag
 
 def not_in_cache(bot, node):
     if isinstance(node, Media):
@@ -11,6 +11,8 @@ def not_in_cache(bot, node):
             return False
         else:
             return True
+
+
     elif isinstance(node, User):
         if bot.cache['followed'].find_one(identifier=node.id):
             return False
@@ -20,5 +22,13 @@ def not_in_cache(bot, node):
             return False
         else:
             return True
+
+
+    elif isinstance(node, Hashtag):
+        return True
+
+    elif isinstance(node, Geotag):
+        return True
+
     else:
         return False
