@@ -7,15 +7,13 @@ from .common import accepts
 @accepts(Media)
 def authors(bot, nodes, amount, args):
 
-    process = rcompose(
+    _author = rcompose(
         lambda node: node.id,
         lambda id: get_author(bot, id),
     )
 
-    result = (process(media) for media in nodes if bot.suitable(media))
-    
+    result = (_author(media) for media in nodes if bot.suitable(media))
     result = islice(result, amount)
-
 
     return result, bot.last
 
