@@ -9,7 +9,7 @@ def geotag(bot, nodes, amount, args) -> Geotag:
 
     _geotag = rcompose(
         lambda node: node.id,
-        lambda id: get_items(bot, id),
+        lambda id: get_item(bot, id),
     )
 
     pack_geotag = rcompose(
