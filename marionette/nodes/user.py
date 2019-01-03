@@ -8,16 +8,18 @@ def username_from_id(id):
 
 class User(Node):
 
-    def __init__(self, *, generic=None, id=None, username=None, data=None):
+    def __init__(self, *, generic=None, id=None, username=None, is_private=None, data=None):
         self._username = username
         self._id = id
-        self.data = data
+        self._data = data
+        self._is_private = is_private
+
 
         if generic:
             self._username = generic
 
     def __repr__(self):
-        username, id, data = attributes(self)
+        username, id, data, *rest = attributes(self)
 
         if username:
             return 'User(username=\'{}\')'.format(username)
@@ -28,7 +30,7 @@ class User(Node):
 
     @property
     def username(self):
-        username, id, data = attributes(self)
+        username, id, data,  *rest = attributes(self)
 
         if username:
             return username
@@ -41,11 +43,20 @@ class User(Node):
 
     @property
     def id(self):
-        username, id, data = attributes(self)
+        username, id, data, *rest = attributes(self)
         if id:
             return id
         elif data:
             return data['user']['username']
+        else:
+            return False
+
+    @property
+    def is_private(self):
+        _, _, _, is_private = attributes(self)
+
+        if is_private:
+            return is_private
         else:
             return False
 
@@ -56,7 +67,7 @@ class User(Node):
                 return str(bot.api.last_json["user"]["pk"])
         else:
             raise Exception('username is needed to get the id')
-            
+
 
     def get_followers_count(self, bot):
         if self.username:
