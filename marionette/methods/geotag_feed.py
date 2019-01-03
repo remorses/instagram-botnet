@@ -7,7 +7,7 @@ from ..nodes import  Media, Hashtag
 from .common import accepts, get_cycled_api
 
 @accepts(Hashtag)
-def hashtag_feed(bot, nodes, amount, args) -> List[Media]:
+def geotag_feed(bot, nodes, amount, args) -> List[Media]:
 
 
     _medias = rcompose(
