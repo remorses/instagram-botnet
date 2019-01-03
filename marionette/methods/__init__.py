@@ -12,6 +12,8 @@ from .usertags import usertags
 from .geotag import geotag
 from .geotag_feed import geotag_feed
 
+from .upload import upload
+
 methods = dict(
                authors=authors,
                followers=followers,
@@ -26,6 +28,7 @@ methods = dict(
 
                follow=follow,
                like=like,
+               upload=upload
               )
 
 #

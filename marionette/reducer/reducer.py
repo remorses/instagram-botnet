@@ -1,5 +1,6 @@
 from functools import reduce
 import time
+import traceback
 from .actions import Action
 from .state import State
 from ..bot import Bot
@@ -78,11 +79,11 @@ def _reducer(state: State, action: Action):
         time.sleep(secs)
 
     except Dont_retry as exc:
-        bot.logger.error('error reducing action {}: \"{}\" {}'.format(type, exc.__class__.__name__, exc))
+        bot.logger.error('error reducing action {}: \"{}\" {}'.format(type, exc.__class__.__name__, traceback.format_exc()))
         return State(target_nodes=[], bot=bot, errors=errors + [exc], data=data)
 
     except Exception as exc:
-        bot.logger.error('error reducing action {}: \"{}\" {}'.format(type, exc.__class__.__name__, exc))
+        bot.logger.error('error reducing action {}: \"{}\" \n {}'.format(type, exc.__class__.__name__, traceback.format_exc()))
         bot.logger.warn('sleeping some time before retrying')
         time.sleep(bot.delay['error'])
 

@@ -2,9 +2,6 @@ from .node import Node
 from .common import attributes
 
 
-def username_from_id(id):
-    pass
-
 
 class User(Node):
 
@@ -34,8 +31,6 @@ class User(Node):
 
         if username:
             return username
-        elif id:
-            return username_from_id(id)
         elif data:
             return data['user']['username']
         else:

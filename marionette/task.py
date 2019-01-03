@@ -8,15 +8,24 @@ class Task(dict):
         nodes: [node1, node2] # these are all Node instances
 
         actions:
+            -   type:   feed
+                amount: 10
 
-                - type:   feed
-                  amount: 10
+            -   type:   send
+                amount: 1
+            args:
+                messages = []
+                stuff =    whokonws
 
-                - type:   send
-                  amount: 1
-                  args:
-                    messages = []
-                    stuff =    whokonws
+        nodes: [url1, url2]
+
+        actions:
+            -   type: upload
+            args:
+                caption: 'text bla bla'
+                location: id
+                usertags: id
+
     """
 
     def __getattr__(self, name):

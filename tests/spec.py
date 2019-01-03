@@ -24,8 +24,10 @@ SCRIPTS = [
     # parse('./hashtag_feed.yml'),
     # parse('./followers.yml'),
     # parse('./user_feed.yml'),
-    # parse('./likers.yml')
-    parse('./complex.yml')
+    # parse('./likers.yml'),
+    # parse('./complex.yml'),
+    parse('./upload.yml'),
+
 ]
 
 ################################################################################

@@ -20,6 +20,9 @@ class Bot:
                  cookie_path=None,
                  proxy=None,
                  device=None):
+                 
+        if not cache_path:
+            cache_path = Path('.') / '_cache'
 
         self.id = Bot.id
         self.username = username

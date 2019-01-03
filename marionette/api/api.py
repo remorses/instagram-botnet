@@ -52,6 +52,29 @@ class API(NOT_MY_API):
         self.last_json = None
 
 
+
+    def get_story_feed(self, user_id):
+        """
+        last_json will have the form:
+        {
+            reel:
+                items: {
+                ...
+                }
+                id
+                user
+                expiring_at
+                location
+                reel_type
+                title
+                ...
+            }
+        }
+        """
+        url = "feed/user/{user_id}/story/".format(user_id=user_id)
+        return self.send_request(url)
+
+
 def colred_formatter():
     format = '%(asctime)s | %(levelname)-8s | %(message)s'
     cformat = '%(log_color)s' + format
