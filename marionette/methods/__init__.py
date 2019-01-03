@@ -12,16 +12,19 @@ from .usertags import usertags
 
 
 methods = dict(
-               authors= authors,
-               follow= follow,
-               followers= followers,
-               likers= likers,
-               following= following,
-               user_feed= user_feed,
-               hashtag_feed= hashtag_feed,
+               authors=authors,
+               followers=followers,
+               likers=likers,
+               following=following,
+               user_feed=user_feed,
+               hashtag_feed=hashtag_feed,
                hashtags=hashtags,
-               like= like,
-               )
+               usertags=usertags,
+
+
+               follow= follow,
+               like=like,
+              )
 
 
 def make_methods(bot):
