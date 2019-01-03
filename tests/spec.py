@@ -15,7 +15,8 @@ from tests.unmask import unmask
 ################################################################################
 
 SCRIPTS = [
-    parse('./hashtags.yml'),
+    # parse('./hashtags.yml'),
+    parse('./usertags.yml'),
     # parse('./like.yml'),
     # parse('./authors.yml'),
     # parse('./hashtag_feed.yml'),
