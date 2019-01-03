@@ -3,10 +3,10 @@ from typing import List
 from funcy import  rcompose, flatten, partial
 from itertools import islice
 from time import time
-from ..nodes import  Media, Hashtag
+from ..nodes import  Media, Geotag
 from .common import accepts, get_cycled_api
 
-@accepts(Hashtag)
+@accepts(Geotag)
 def geotag_feed(bot, nodes, amount, args) -> List[Media]:
 
 
