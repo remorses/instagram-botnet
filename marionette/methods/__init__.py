@@ -13,6 +13,7 @@ from .geotag import geotag
 from .geotag_feed import geotag_feed
 
 from .upload import upload
+from .delete import delete
 
 methods = dict(
                authors=authors,
@@ -28,7 +29,8 @@ methods = dict(
 
                follow=follow,
                like=like,
-               upload=upload
+               upload=upload,
+               delete=delete,
               )
 
 #

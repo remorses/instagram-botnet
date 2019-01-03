@@ -23,6 +23,7 @@ DELAY = {'like': 10,
          'unblock': 30,
          'message': 60,
          'upload': 30,
+         'delete': 30,
          'error': 30,
 
          'usual': 4,
