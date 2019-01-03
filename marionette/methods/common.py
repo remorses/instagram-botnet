@@ -55,7 +55,7 @@ def parse_date(date):
 
 
 
-def get_cycled_api(bot, api_method, identifier, key, amount, ) -> List[Node]:
+def get_cycled_api(bot, api_method, api_argument, key, amount, ) -> List[Node]:
 
     next_max_id = ''
     sleep_track = 0
@@ -63,7 +63,7 @@ def get_cycled_api(bot, api_method, identifier, key, amount, ) -> List[Node]:
 
     while True:
         try:
-            api_method(identifier, next_max_id)
+            api_method(api_argument, next_max_id)
             items = bot.last[key] if key in bot.last else []
 
             if len(items) <= amount:
