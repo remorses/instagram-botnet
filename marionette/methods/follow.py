@@ -2,7 +2,7 @@ from .common import accepts
 from ..nodes import Node, User, Media
 from .common import today
 from ..bot import Bot
-from time import time
+import time
 
 @accepts(User)
 def follow(bot: Bot, nodes, amount, args):
@@ -15,7 +15,8 @@ def follow(bot: Bot, nodes, amount, args):
         else:
             with bot.cache as cache:
                 cache['followed'].insert(dict(identifier=user.id, time=today(), type='user'))
-                
+
+            bot.logger.debug('sleeping some time')
             time.sleep(bot.delay['follow'])
 
     data = bot.last

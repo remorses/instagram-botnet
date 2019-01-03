@@ -1,7 +1,7 @@
 from typing import List
 from .common import accepts, today
 from ..nodes import Node, User, Media
-from time import time
+import time
 @accepts(Media)
 def like(bot, nodes, amount, args):
 
