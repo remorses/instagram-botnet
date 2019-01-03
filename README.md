@@ -21,7 +21,7 @@ Media interactions
 - [X] like 
 - [ ] report
 - [ ] comment
-- [ ] export
+- [ ] upload
 - [ ] download
 
 User edges
