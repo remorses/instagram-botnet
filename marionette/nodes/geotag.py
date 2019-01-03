@@ -31,11 +31,11 @@ class Geotag(Node):
 
         self._name = name
         self._id = id
+        self._data = data
         self._facebook_id = facebook_id
         self._lng = lng
         self._lat = lat
 
-        self._data = data
 
         if generic:
             self._name = generic
@@ -68,5 +68,21 @@ class Geotag(Node):
             return id
         elif data:
             return data['pk']
+        else:
+            return False
+
+    def get_id(self, bot):
+        name, id, _, fb_id, *_ = attributes(self)
+        if id:
+            return id
+        elif fb_id:
+            return fb_id
+        elif name:
+            try:
+                bot.api.search_location(name)
+                return bot.last
+
+            except TypeError:
+                return False
         else:
             return False
