@@ -15,11 +15,10 @@ execute:
   - follow:
       from_nodes: ['lebonwski', 'therealgue']
       via_edges:
-        - followers: 5
-        - following: 5
+        - followers: 200
 
   - like:
       from_nodes: ['lebonwski', 'therealgue']
       via_edges:
         - user_feed: 5
-        - likers: 5
+        - likers: 30

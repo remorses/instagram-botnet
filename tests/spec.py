@@ -17,7 +17,7 @@ from tests.unmask import unmask
 SCRIPTS = [
     # parse('./hashtags.yml'),
     # parse('./geotag_feed.yml'),
-    parse('./geotag.yml'),
+    # parse('./geotag.yml'),
     # parse('./usertags.yml'),
     # parse('./like.yml'),
     # parse('./authors.yml'),
@@ -25,6 +25,7 @@ SCRIPTS = [
     # parse('./followers.yml'),
     # parse('./user_feed.yml'),
     # parse('./likers.yml')
+    parse('./complex.yml')
 ]
 
 ################################################################################
