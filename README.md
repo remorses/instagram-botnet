@@ -14,7 +14,7 @@ Write readable declarative yaml files to control your botnet
 
 User interactions
 - [X] like
-- [ ] follow
+- [X] follow
 - [ ] send
 - [ ] block
 
@@ -25,19 +25,19 @@ Media interactions
 - [ ] download
 
 User edges
-- [ ] followers
-- [ ] following
-- [ ] feed
+- [X] followers
+- [X] following
+- [X] user_feed
 
 Media edges
-- [ ] likers
+- [X] likers
 - [X] author
-- [ ] hashtags
+- [X] hashtags
 - [ ] usertags
 - [ ] comments
 
 Hashtag edges
-- [ ] feed
+- [X] hashtag_feed
 
 Geotag feed
-- [ ] feed
+- [ ] geotag_feed
