@@ -11,7 +11,7 @@ def like(bot, nodes, amount, args):
             bot.logger.warn('request didn\'t return "ok" liking {}'.format(media.url))
         else:
             with bot.cache as cache:
-                cache['liked'].insert(dict(identifier=media.id, url=media.url, time=today()))
+                cache['liked'].insert(dict(identifier=media.id, url=media.url, time=today(), type='media'))
 
 
 
