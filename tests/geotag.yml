@@ -1,4 +1,4 @@
-name:             test_usertags
+name:             test_geotag
 version:          1
 mode:             distributed
 
@@ -12,7 +12,6 @@ bots:
 
 execute:
   - like:
-      from_nodes: ['https://www.instagram.com/p/BsJV8wCA9vi/']
+      from_nodes: ['Kartepe']
       via_edges:
-        - geotag: 2
         - geotag_feed: 2

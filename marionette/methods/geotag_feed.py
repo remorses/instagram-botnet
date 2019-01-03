@@ -11,7 +11,7 @@ def geotag_feed(bot, nodes, amount, args) -> List[Media]:
 
 
     _medias = rcompose(
-        lambda tag: tag.id,
+        lambda tag: tag.id if tag.id else tag.get_id(bot),
         lambda id: get_feed(id, bot=bot, amount=amount),
     )
 
