@@ -15,4 +15,4 @@ execute:
       from_nodes: ['https://www.instagram.com/p/BsJV8wCA9vi/']
       via_edges:
         - geotag: 2
-        - geotag_feed: 2
+        - geotag_feed: 30

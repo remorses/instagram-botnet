@@ -80,8 +80,8 @@ class Geotag(Node):
         elif name:
             try:
                 bot.api.search_location(name)
-                return bot.last
-
+                data = bot.last['items'][0]['location']
+                return data['pk']
             except TypeError:
                 return False
         else:
