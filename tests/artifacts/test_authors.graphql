@@ -1,7 +1,168 @@
 {
-	__follow_interaction__[1] {
+	__follow_block__[1] {
 		__authors__ {
-			_
+			items[1] {
+				taken_at
+				pk
+				id
+				device_timestamp
+				media_type
+				code
+				client_cache_key
+				filter_type
+				comment_likes_enabled
+				comment_threading_enabled
+				has_more_comments
+				next_max_id
+				max_num_visible_preview_comments
+				preview_comments[2] {
+					pk
+					user_id
+					text
+					type
+					created_at
+					created_at_utc
+					content_type
+					status
+					bit_flags
+					user {
+						pk
+						username
+						full_name
+						is_private
+						profile_pic_url
+						is_verified
+					}
+					did_report_as_spam
+					share_enabled
+					media_id
+					parent_comment_id
+				}
+				can_view_more_preview_comments
+				comment_count
+				inline_composer_display_condition
+				image_versions2 {
+					candidates[2] {
+						width
+						height
+						url
+					}
+				}
+				original_width
+				original_height
+				location {
+					pk
+					name
+					address
+					city
+					short_name
+					lng
+					lat
+					external_source
+					facebook_places_id
+				}
+				lat
+				lng
+				user {
+					pk
+					username
+					full_name
+					is_private
+					profile_pic_url
+					friendship_status {
+						following
+						outgoing_request
+						is_bestie
+					}
+					is_verified
+					has_anonymous_profile_picture
+					reel_auto_archive
+					is_unpublished
+					is_favorite
+					latest_reel_media
+				}
+				can_viewer_reshare
+				caption {
+					pk
+					user_id
+					text
+					type
+					created_at
+					created_at_utc
+					content_type
+					status
+					bit_flags
+					user {
+						pk
+						username
+						full_name
+						is_private
+						profile_pic_url
+						friendship_status {
+							following
+							outgoing_request
+							is_bestie
+						}
+						is_verified
+						has_anonymous_profile_picture
+						reel_auto_archive
+						is_unpublished
+						is_favorite
+						latest_reel_media
+					}
+					did_report_as_spam
+					share_enabled
+					media_id
+				}
+				caption_is_edited
+				like_count
+				has_liked
+				top_likers[0] {
+					...
+				}
+				photo_of_you
+				usertags {
+					in[2] {
+						user {
+							pk
+							username
+							full_name
+							is_private
+							profile_pic_url
+							profile_pic_id
+							is_verified
+						}
+						position[2] {
+							...
+						}
+						start_time_in_video_in_sec {
+							_
+						}
+						duration_in_video_in_sec {
+							_
+						}
+					}
+				}
+				can_viewer_save
+				organic_tracking_token
+			}
+			num_results
+			more_available
+			auto_load_more_enabled
+			status
+		}
+		__follow__ {
+			friendship_status {
+				following
+				followed_by
+				blocking
+				muting
+				is_private
+				incoming_request
+				outgoing_request
+				is_bestie
+			}
+			status
 		}
 	}
 }
