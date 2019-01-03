@@ -13,12 +13,12 @@ Write readable declarative yaml files to control your botnet
 ## methods to implement
 
 User interactions
-- [X] like
 - [X] follow
 - [ ] send
 - [ ] block
 
 Media interactions
+- [X] like 
 - [ ] report
 - [ ] comment
 - [ ] export
