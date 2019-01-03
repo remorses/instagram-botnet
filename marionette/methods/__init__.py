@@ -10,6 +10,7 @@ from .likers import likers
 from .hashtags import hashtags
 from .usertags import usertags
 from .geotag import geotag
+from .geotag_feed import geotag_feed
 
 methods = dict(
                authors=authors,
@@ -21,8 +22,9 @@ methods = dict(
                hashtags=hashtags,
                usertags=usertags,
                geotag=geotag,
+               geotag_feed=geotag_feed,
 
-               follow= follow,
+               follow=follow,
                like=like,
               )
 
