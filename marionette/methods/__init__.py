@@ -8,7 +8,7 @@ from .user_feed import user_feed
 from .hashtag_feed import hashtag_feed
 from .likers import likers
 from .hashtags import hashtags
-
+from .usertags import usertags
 
 
 methods = dict(
