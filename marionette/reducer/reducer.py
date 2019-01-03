@@ -60,7 +60,7 @@ def _reducer(state: State, action: Action):
         if not nodes:
             raise Dont_retry('no nodes, {}'.format(nodes))
 
-        method = methods.get(type, None)
+        method = methods.get(type, False)
 
         if not method:
             raise Dont_retry('can\'t find method {}'.format(type))
@@ -90,6 +90,7 @@ def _reducer(state: State, action: Action):
         return _reducer(errored_state, action)
 
     else:
+        # all is right, no exceptions
         return State(target_nodes=next_nodes, bot=bot, errors=[], data=next_data)
 
 

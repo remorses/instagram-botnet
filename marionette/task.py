@@ -61,10 +61,11 @@ def make_task(data):
 
     # print('actions:',actions)
 
-    first_method = methods[actions[0]['type']]
-    # print('first_method:', first_method.__name__)
+    first_method = methods.get(actions[0]['type'], None)
+    if not first_method:
+        raise Exception('can\'t find {} interaction in available methods')
     Node = first_method.accepts
-    nodes = [Node(generic=node) for node in nodes]
+    nodes = [Node(generic=value) for value in nodes]
 
     return Task(nodes=nodes, actions=actions)
 

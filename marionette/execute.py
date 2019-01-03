@@ -34,7 +34,7 @@ def execute(script, bots):
             # {'thread' + thread.name: thread.get_data() for thread in threads}
 
 
-    except (KeyboardInterrupt, SystemExit):
+    except KeyboardInterrupt:
         raise
 
     except Exception as e:

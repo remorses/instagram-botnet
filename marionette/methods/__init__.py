@@ -26,6 +26,6 @@ methods = dict(
                like=like,
               )
 
-
-def make_methods(bot):
-    return {key: partial(value, bot) for (key, value) in methods.items()}
+#
+# def make_methods(bot):
+#     return {key: partial(value, bot) for (key, value) in methods.items()}
