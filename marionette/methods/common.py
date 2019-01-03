@@ -63,16 +63,26 @@ def get_cycled_api(bot, api_method, api_argument, key, amount, ) -> List[Node]:
 
     while True:
         try:
-            api_method(api_argument, next_max_id)
+            api_method(api_argument, max_id=next_max_id)
             items = bot.last[key] if key in bot.last else []
 
-            if len(items) <= amount:
+            if 'next_max_id' not in bot.last:
+                yield from items
+                done += len(items)
+                return
+
+            elif "more_available" in bot.last and not bot.last["more_available"]:
+                yield from items
+                done += len(items)
+                return
+
+            elif "big_list" in bot.last and not bot.last['big_list']:
                 yield from items
                 done += len(items)
                 return
 
             elif (done + len(items)) >= amount:
-                yield from items[:amount - done]
+                yield from items[:(amount - done)]
                 done += len(items)
                 return
 
@@ -80,7 +90,8 @@ def get_cycled_api(bot, api_method, api_argument, key, amount, ) -> List[Node]:
                 yield from items
                 done += len(items)
 
-        except Exception:
+        except Exception as exc:
+            bot.logger.error('exception in get_cycled_api: {}'.format(exc))
             return
 
         if sleep_track > 10:

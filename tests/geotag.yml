@@ -14,4 +14,4 @@ execute:
   - like:
       from_nodes: ['Kartepe']
       via_edges:
-        - geotag_feed: 2
+        - geotag_feed: 30
