@@ -12,7 +12,7 @@ bots:
 
 execute:
   - like:
-      from_nodes: ['https://www.instagram.com/p/BsJescbgWhs/']
+      from_nodes: ['https://www.instagram.com/p/BsJV8wCA9vi/']
       via_edges:
         - usertags: 2
         - user_feed: 2
