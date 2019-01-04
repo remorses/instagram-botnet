@@ -94,7 +94,7 @@ def get_cycled_api(bot, api_method, api_argument, key, amount, ) -> List[Node]:
             bot.logger.error('exception in get_cycled_api: {}'.format(exc))
             return
 
-        if sleep_track > 10:
+        if sleep_track > 2:
             bot.logger.debug('sleeping some time while getting')
             time.sleep(bot.delay['getter'])
             sleep_track = 0
