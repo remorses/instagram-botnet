@@ -62,6 +62,7 @@ def get_cycled_api(bot, api_method, api_argument, key, amount, ) -> List[Node]:
     done = 0
 
     while True:
+        bot.logger.info('new get cycle with %s' % api_method.__name__)
         try:
             api_method(api_argument, max_id=next_max_id)
             items = bot.last[key] if key in bot.last else []

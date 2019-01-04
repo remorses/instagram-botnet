@@ -14,10 +14,11 @@ def follow(bot: Bot, nodes, amount, args):
             time.sleep(bot.delay['error'])
         else:
             with bot.cache as cache:
-                cache['followed'].insert(dict(identifier=user.id, time=today(), type='user'))
+                cache['followed'].insert(dict(identifier=user.id, time=today(), type='user', interaction='follow'))
 
-            bot.logger.debug('sleeping some time')
+            bot.logger.debug('followed %s' % user.id)
             time.sleep(bot.delay['follow'])
+
 
     data = bot.last
 

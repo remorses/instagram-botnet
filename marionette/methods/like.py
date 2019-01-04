@@ -12,9 +12,9 @@ def like(bot, nodes, amount, args):
             time.sleep(bot.delay['error'])
         else:
             with bot.cache as cache:
-                cache['liked'].insert(dict(identifier=media.id, url=media.url, time=today(), type='media'))
+                cache['liked'].insert(dict(identifier=media.id, url=media.url, time=today(), type='media', interaction='like'))
 
-            bot.logger.debug('sleeping some time')
+            bot.logger.debug('liked %s' % media.url)
             time.sleep(bot.delay['like'])
 
 
