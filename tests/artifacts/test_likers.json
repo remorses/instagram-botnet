@@ -1,7 +1,20 @@
 {
     "__follow_interaction__": [
         {
-            "__likers__": null
+            "__likers__": null,
+            "__follow__": {
+                "friendship_status": {
+                    "following": false,
+                    "followed_by": false,
+                    "blocking": false,
+                    "muting": false,
+                    "is_private": true,
+                    "incoming_request": false,
+                    "outgoing_request": true,
+                    "is_bestie": false
+                },
+                "status": "ok"
+            }
         }
     ]
 }

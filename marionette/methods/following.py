@@ -5,14 +5,14 @@ from random import uniform
 import time
 from ..bot import Bot
 from ..nodes import User, Media
-from .common import accepts
+from .common import accepts, get_cycled_api
 
 
 @accepts(User)
 def following(bot, nodes, amount, args) -> List[User]:
 
 
-    pack_user = lambda item: User(id=item['pk'], username=item['username'])
+    pack_user = lambda item: User(id=item['pk'], username=item['username'], data=item)
 
     _following = rcompose(
         lambda user: user.id if user.id else user.get_id(bot),
@@ -28,37 +28,4 @@ def following(bot, nodes, amount, args) -> List[User]:
 
 
 def get_following( bot ,id,  amount) -> List[User]:
-
-    next_max_id = ''
-    sleep_track = 0
-    done = 0
-
-    while True:
-        try:
-            bot.api.get_user_followings(id, next_max_id)
-            items = bot.last["users"] if 'users' in bot.last else []
-
-            if len(items) <= amount:
-                yield from items
-                done += len(items)
-                return
-
-            elif (done + len(items)) >= amount:
-                yield from items[:amount - done]
-                done += len(items)
-                return
-
-            else:
-                yield from items
-                done += len(items)
-
-        except Exception:
-            return
-
-        if sleep_track > 10:
-            bot.logger.debug('sleeping some time while getting following')
-            time.sleep(bot.delay['getter'])
-            sleep_track = 0
-
-        next_max_id = bot.last.get("next_max_id", "")
-        sleep_track += 1
+    return get_cycled_api(bot, bot.api.get_user_followings, id, 'users', amount)
