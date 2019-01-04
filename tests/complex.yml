@@ -1,24 +1,24 @@
-name:             test_complex.yaml
-version:          1
-mode:             distributed
+name:                         test_complex.yaml
+version:                    1
+mode:                         distributed
 
 
 
 bots:
-  -
-    username:     ***REMOVED***
-    password:     ***REMOVED***
+    -
+        username:         ***REMOVED***
+        password:         ***REMOVED***
 
 
 execute:
 
-  - follow:
-      from_nodes: ['lebonwski', 'therealgue']
-      via_edges:
-        - followers: 200
+    - follow:
+            from_nodes: ['lebonwski', 'therealgue']
+            via_edges:
+                - followers: 200
 
-  - like:
-      from_nodes: ['lebonwski', 'therealgue']
-      via_edges:
-        - user_feed: 5
-        - likers: 30
+    - like:
+            from_nodes: ['lebonwski', 'therealgue']
+            via_edges:
+                - user_feed: 5
+                - likers: 30

@@ -1,44 +1,44 @@
-version:                 1
-name:                    test_hashtag_feed
-mode:                    distributed
+version:                                 1
+name:                                        test_hashtag_feed
+mode:                                        distributed
 
-use_cache:               ./cache.json
-use_logs:                ./logs.html
+use_cache:                             ./cache.json
+use_logs:                                ./logs.html
 
 
 bots:
-    -
-        username:         ***REMOVED***
-        password:         ***REMOVED***
+        -
+                username:                 ***REMOVED***
+                password:                 ***REMOVED***
 
 
 # filter:
-#     - only:             [bot1, bot2]
-#         user:
-#             followers: x > 50 and x < 1000
-#             following: x < 500
-#         media:
-#             likers:     x < 1000
-#             hastags:    not in {{ bad_hashtags }}
+#         - only:                         [bot1, bot2]
+#                 user:
+#                         followers: x > 50 and x < 1000
+#                         following: x < 500
+#                 media:
+#                         likers:         x < 1000
+#                         hastags:        not in {{ bad_hashtags }}
 
 
 execute:
-    - like:
-            from_nodes: ['pizza', 'cane']
-            via_edges:
-                - hashtag_feed: 1
+        - like:
+                        from_nodes: ['pizza', 'cane']
+                        via_edges:
+                                - hashtag_feed: 1
 
 
 
 
 
-    # -
-    #     nodes: [node1, node2] # these are all Node instances
-    #     actions:
-    #         - type:     feed
-    #             amount: 10
-    #         - type:     send
-    #             amount: 1
-    #             args:
-    #                 messages = []
-    #                 stuff =        whokonws
+        # -
+        #         nodes: [node1, node2] # these are all Node instances
+        #         actions:
+        #                 - type:         feed
+        #                         amount: 10
+        #                 - type:         send
+        #                         amount: 1
+        #                         args:
+        #                                 messages = []
+        #                                 stuff =                whokonws

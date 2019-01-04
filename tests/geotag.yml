@@ -1,17 +1,17 @@
-name:             test_geotag
-version:          1
-mode:             distributed
+name:                         test_geotag
+version:                    1
+mode:                         distributed
 
 
 
 bots:
-  -
-    username:     ***REMOVED***
-    password:     ***REMOVED***
+    -
+        username:         ***REMOVED***
+        password:         ***REMOVED***
 
 
 execute:
-  - like:
-      from_nodes: ['Kartepe']
-      via_edges:
-        - geotag_feed: 30
+    - like:
+            from_nodes: ['Kartepe']
+            via_edges:
+                - geotag_feed: 30

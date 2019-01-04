@@ -1,29 +1,29 @@
-name:             test_authors
-version:          1
-mode:             distributed
+name:                         test_authors
+version:                    1
+mode:                         distributed
 
-use_cache:        ./cache.json
-use_logs:        ./logs.html
+use_cache:                ./cache.json
+use_logs:                ./logs.html
 
 
 bots:
-  -
-    username:     ***REMOVED***
-    password:     ***REMOVED***
+    -
+        username:         ***REMOVED***
+        password:         ***REMOVED***
 
 
 # filter:
-#   - only:       [bot1, bot2]
-#     user:
-#       followers: x > 50 and x < 1000
-#       following: x < 500
-#     media:
-#       likers:   x < 1000
-#       hastags:  not in {{ bad_hashtags }}
+#     - only:             [bot1, bot2]
+#         user:
+#             followers: x > 50 and x < 1000
+#             following: x < 500
+#         media:
+#             likers:     x < 1000
+#             hastags:    not in {{ bad_hashtags }}
 
 
 execute:
-  - follow:
-      from_nodes: ['https://www.instagram.com/p/Bqp-eokgcqf/']
-      via_edges:
-        - authors: 1
+    - follow:
+            from_nodes: ['https://www.instagram.com/p/Bqp-eokgcqf/']
+            via_edges:
+                - authors: 1
