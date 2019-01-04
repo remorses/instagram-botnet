@@ -28,4 +28,4 @@ def hashtag_feed(bot, nodes, amount, args) -> List[Media]:
 
 
 def get_feed(hashtag, bot , amount) -> List[Media]:
-    return get_cycled_api(bot, bot.api.get_hashtag_feed, hashtag, 'item', amount)
+    return get_cycled_api(bot, bot.api.get_hashtag_feed, hashtag, 'items', amount)
