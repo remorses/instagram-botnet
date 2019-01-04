@@ -1,5 +1,5 @@
 from functools import partial
-from .nodes import Media, User, Geotag, Usertag, Hashtag
+from .nodes import Media, User, Geotag, Hashtag
 from .bot import Bot
 
 
@@ -18,6 +18,7 @@ def make_bots(script):
     """
     cache:                      ./cache.json
     logs:                       ./logs.html
+    cookie:                     ./logs.html
 
     bots:
         -
@@ -44,8 +45,9 @@ def make_bots(script):
 
     for i, credentials in enumerate(script['bots']):
             bots += [Bot(
-                cache_path=script['cache'] if 'cache' in script else None,
-                logs_path=script['logs'] if 'logs' in script else None,
+                cache_file=script['cache'] if 'cache' in script else None,
+                logs_file=script['logs'] if 'logs' in script else None,
+                cookie_file=script['cookie'] if 'cookie' in script else None,
                 **credentials
             )]
 

@@ -1,5 +1,4 @@
 from .node import Node
-from .user import User
 from .geotag import Geotag
 from .hashtag import Hashtag
 from .common import attributes

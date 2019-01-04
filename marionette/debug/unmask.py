@@ -30,9 +30,9 @@ def unmask(obj):
 
 def temporary_file(name, content):
 
-    cache_path = Path(__file__).parent
+    cache_file = Path(__file__).parent
 
-    file = Path(str(cache_path.resolve()) + '/' + name + '_temporary')
+    file = Path(str(cache_file.resolve()) + '/' + name + '_temporary')
 
     file.exists() or file.touch()
 

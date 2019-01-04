@@ -10,7 +10,7 @@ sys.path += [str(Path(__file__).resolve().parents[1])]
 
 def unmask(obj):
     data = json.dumps(obj)
-    temp_file = temporary_file('temp_' + str(random()), data)
+    temp_file = temporary_file('temp' + str(random())[2:], data)
 
     with temp_file.open('w') as file:
         file.write(data)
@@ -33,9 +33,9 @@ def unmask(obj):
 
 def temporary_file(name, content):
 
-    cache_path = Path(__file__).parent / '_temp'
+    temp_path = Path(__file__).parent / '_temp'
 
-    file = Path(str(cache_path.resolve()) + '/' + name + '_temporary')
+    file = Path(str(temp_path.resolve()) + '/' + name )
 
     file.parent.exists() or file.parent.mkdir()
     file.exists() or file.touch()

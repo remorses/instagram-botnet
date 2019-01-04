@@ -15,28 +15,24 @@ class Bot:
                  self,
                  username,
                  password,
-                 logs_path=None,
-                 cache_path=None,
-                 cookie_path=None,
+                 logs_file=None,
+                 cache_file=None,
+                 cookie_file=None,
                  proxy=None,
                  device=None):
 
-        if not cache_path:
-            cache_path = Path('.') / '_cache'
+        self.cache_file = make_cache_file(cache_file, username + '_cache.db')
+        self.logs_file = make_logs_file( logs_file, username + '_logs.html')
+        self.cookie_file = make_cookie_file(cookie_file, username + '_cookie.json')
 
         self.id = Bot.id
         self.username = username
-        self.cache_path = cache_path
         Bot.id += 1
-
-        self.log_file = make_log_file( logs_path, username + '_logs.html')
-        self.cookie_file = make_cookie_file(cookie_path, username + '_cookie.json')
-
 
         self.predicates = [partial(not_in_cache, self), ]
 
         self.start_time = datetime.datetime.now()
-        self.api = API(logs_path=self.log_file, id=self.id, username=username, device=device)
+        self.api = API(logs_file=self.logs_file, id=self.id, username=username, device=device)
         self.logger = self.api.logger
 
         self.total = TOTAL
@@ -54,7 +50,7 @@ class Bot:
 
     @property
     def cache(self):
-        return dataset.connect(make_db_url(self.cache_path, self.username + '_cache.db'), engine_kwargs = {'connect_args': {'check_same_thread' : False}})
+        return dataset.connect(make_db_url(self.cache_file), engine_kwargs = {'connect_args': {'check_same_thread' : False}})
 
 
 
@@ -101,35 +97,26 @@ class Bot:
 
 
 
-def make_db_url(cache_path, name):
-    if not cache_path:
-        cache_path = Path('.') / '_cache'
+def make_db_url( file):
+    return 'sqlite:///{}'.format(str(file.resolve()))
 
-    cache_path.exists() or cache_path.mkdir()
-    path = str(cache_path.resolve() / name)
-
-    return 'sqlite:///{}'.format(path)
-
-def make_log_file( logs_path, name):
-
-    if not logs_path:
-        logs_path = Path('.') / '_logs'
-
-    file = Path(str(logs_path.resolve()) + '/' + name)
-
-    file.parent.exists() or file.parent.mkdir()
+def make_logs_file( file, name):
+    if not file:
+        file = Path(str(Path('.') / '_logs' / name)).resolve()
+        file.parent.exists() or file.parent.mkdir()
     file.exists() or file.touch()
+    return str(file.resolve())
 
+def make_cache_file( file, name):
+    if not file:
+        file = Path(str(Path('.') / '_cache' / name)).resolve()
+        file.parent.exists() or file.parent.mkdir()
+    file.exists() or file.touch()
     return file.resolve()
 
-def make_cookie_file( cookie_path, name):
-
-    if not cookie_path:
-        cookie_path = Path('.') / '_cookies'
-
-    file = Path(str(cookie_path.resolve() / name))
-
-    file.parent.exists() or file.parent.mkdir()
+def make_cookie_file( file, name):
+    if not file:
+        file = Path(str(Path('.') / '_cookies' / name)).resolve()
+        file.parent.exists() or file.parent.mkdir()
     file.exists() or file.touch()
-
-    return file.resolve()
+    return str(file.resolve())

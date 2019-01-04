@@ -2,8 +2,8 @@ name:                         test_authors
 version:                    1
 mode:                         distributed
 
-use_cache:                ./cache.json
-use_logs:                ./logs.html
+cache:                ./cache.json
+logs:                ./logs.html
 
 
 bots:

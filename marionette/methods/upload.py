@@ -30,20 +30,20 @@ def upload(bot, nodes, amount, args):
             media = bot.last['items'][0]
             type = media_type(media)
             if type == 'photo':
-                temp = TempImage(bot.cache_path)
+                temp = TempImage(Path(bot.cache_file).parent)
                 path = bot.api.download_photo(media_id, temp.path, media=media)
             else:
-                temp = TempVideo(bot.cache_path)
+                temp = TempVideo(Path(bot.cache_file).parent)
                 path = bot.api.download_video(media_id, temp.path, media=media)
 
         elif node.value.startswith(('http', 'https')):
             url = node.value
             if url.endswith(('.jpg', '.jpeg')):
                 type = 'photo'
-                temp = TempImage(bot.cache_path)
+                temp = TempImage(Path(bot.cache_file).parent)
             elif url.endswith(('.mp4', '.mov')):
                 type = 'video'
-                temp = TempVideo(bot.cache_path)
+                temp = TempVideo(Path(bot.cache_file).parent)
             else:
                 raise Exception('to use http url it must end with .jpg or .mp4 or .mov to notify file type')
             path = download_media(bot, url, temp.path)
