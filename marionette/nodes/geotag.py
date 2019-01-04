@@ -27,21 +27,17 @@ from .common import attributes
 
 class Geotag(Node):
 
-    def __init__(self, *, generic=None, name=None, id=None, facebook_id=None, lng=None, lat=None, data=None):
+    def __init__(self, *, generic=None, name=None, id=None, data=None):
 
         self._name = name
         self._id = id
         self._data = data
-        self._facebook_id = facebook_id
-        self._lng = lng
-        self._lat = lat
-
 
         if generic:
             self._name = generic
 
     def __repr__(self):
-        name, id, *_ = attributes(self)
+        name, id, data = attributes(self)
 
         if name:
             return 'Geotag(name=\'{}\')'.format(name)
@@ -52,7 +48,7 @@ class Geotag(Node):
 
     @property
     def name(self):
-        name, id, data, *_ = attributes(self)
+        name, id, data = attributes(self)
 
         if name:
             return name
@@ -63,7 +59,7 @@ class Geotag(Node):
 
     @property
     def id(self):
-        name, id, data, *_ = attributes(self)
+        name, id, data = attributes(self)
         if id:
             return id
         elif data:
@@ -71,18 +67,61 @@ class Geotag(Node):
         else:
             return False
 
-    def get_id(self, bot):
-        name, id, _, fb_id, *_ = attributes(self)
-        if id:
-            return id
-        elif fb_id:
-            return fb_id
+    def get_data(self, bot):
+        name, id, data = attributes(self)
+        if data:
+            if 'pk' in data:
+                self._id = data['pk']
+                return self.get_data(bot)
+            else:
+                return False
         elif name:
+            bot.api.search_location(query=name)
             try:
-                bot.api.search_location(name)
+                bot.api.search_location(query=name)
                 data = bot.last['items'][0]['location']
-                return data['pk']
-            except TypeError:
+                self._data = data
+                return data
+            except KeyError:
+                return False
+        elif 'lat' in data and 'lng' in data:
+            bot.api.search_location(lat=data['lat'], lng=data['lng'])
+            try:
+                bot.api.search_location(query=name)
+                data = bot.last['items'][0]['location']
+                self._data = data
+                return data
+            except KeyError:
                 return False
         else:
             return False
+
+
+    def get_id(self, bot):
+        name, id, data = attributes(self)
+        if id:
+            return id
+        elif data:
+            if 'pk' in data:
+                return data['pk']
+        elif name:
+            data = self.get_data(bot)
+            return data['pk']
+        else:
+            return False
+
+    def get_facebook_id(self, bot):
+        _, _, data = attributes(self)
+        if 'facebook_id' in data:
+            return data['facebook_id']
+        else:
+            data = self.get_data(bot)
+            return data['facebook_id']
+
+    def get_coordinates(self, bot):
+        _, _, data = attributes(self)
+        if 'lat' in data and 'lng' in data:
+            return data['lat'], data['lng']
+        else:
+            data = self.get_data(bot)
+            return data['lat'], data['lng']
