@@ -11,7 +11,7 @@ class User(Node):
     def __init__(self, *, generic=None, id=None, username=None, data=None):
         self._username = username
         self._id = id
-        self.data = data
+        self._data = data
 
         if generic:
             self._username = generic
@@ -59,10 +59,14 @@ class User(Node):
             
 
     def get_followers_count(self, bot):
-        if self.username:
+        if 'follower_count' in self._data:
+            return data["follower_count"]
+        elif self.username:
             bot.api.get_username_info(self.id)
             if "user" in bot.api.last_json:
-                return str(bot.api.last_json["user"]["follower_count"])
+                data = bot.last["user"]
+                self._data = data
+                return data["follower_count"]
         else:
             raise Exception('id is needed to get the count')
 
