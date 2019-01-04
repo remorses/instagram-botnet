@@ -130,3 +130,11 @@ class User(Node):
         else:
 	        data = self.get_data(bot)
 	        return data['has_anonymous_profile_picture']
+
+    def get_bio(self, bot):
+	    _, _, data = attributes(self)
+        if 'biography' in data:
+            return data['biography']
+        else:
+	        data = self.get_data(bot)
+	        return data['biography']
