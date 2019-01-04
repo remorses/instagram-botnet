@@ -15,12 +15,12 @@ class Bot:
                  self,
                  username,
                  password,
-                 log_path=None,
+                 logs_path=None,
                  cache_path=None,
                  cookie_path=None,
                  proxy=None,
                  device=None):
-                 
+
         if not cache_path:
             cache_path = Path('.') / '_cache'
 
@@ -29,14 +29,14 @@ class Bot:
         self.cache_path = cache_path
         Bot.id += 1
 
-        self.log_file = make_log_file( log_path, username + '_logs.html')
+        self.log_file = make_log_file( logs_path, username + '_logs.html')
         self.cookie_file = make_cookie_file(cookie_path, username + '_cookie.json')
 
 
         self.predicates = [partial(not_in_cache, self), ]
 
         self.start_time = datetime.datetime.now()
-        self.api = API(log_path=self.log_file, id=self.id, username=username, device=device)
+        self.api = API(logs_path=self.log_file, id=self.id, username=username, device=device)
         self.logger = self.api.logger
 
         self.total = TOTAL
@@ -110,12 +110,12 @@ def make_db_url(cache_path, name):
 
     return 'sqlite:///{}'.format(path)
 
-def make_log_file( log_path, name):
+def make_log_file( logs_path, name):
 
-    if not log_path:
-        log_path = Path('.') / '_logs'
+    if not logs_path:
+        logs_path = Path('.') / '_logs'
 
-    file = Path(str(log_path.resolve()) + '/' + name)
+    file = Path(str(logs_path.resolve()) + '/' + name)
 
     file.parent.exists() or file.parent.mkdir()
     file.exists() or file.touch()

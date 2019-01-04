@@ -17,7 +17,7 @@ class API(NOT_MY_API):
 
     id = 0
 
-    def __init__(self, log_path, device=None, username=None,  id=None):
+    def __init__(self, logs_path, device=None, username=None,  id=None):
 
         self.id = API.id if not id else id
         API.id += 1
@@ -32,7 +32,7 @@ class API(NOT_MY_API):
 
         # Setup logging
 
-        fh = HTMLFileHandler(title=self.id, file=log_path, mode='w')
+        fh = HTMLFileHandler(title=self.id, file=logs_path, mode='w')
         fh.setLevel(logging.INFO)
         fh.setFormatter(file_formatter())
 
