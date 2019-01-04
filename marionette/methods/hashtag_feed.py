@@ -15,9 +15,8 @@ def hashtag_feed(bot, nodes, amount, args) -> List[Media]:
         lambda name: get_feed(name, bot=bot, amount=amount),
     )
 
-    pack_media = rcompose(
-        lambda data: Media(id=data['pk'], data=data)
-    )
+    pack_media = lambda data: Media(id=data['pk'], data=data)
+
 
     result = (pack_media(item) for user in nodes for item in get_items(user))
     result = (node for node in result if bot.suitable(node))
