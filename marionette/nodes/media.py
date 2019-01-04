@@ -1,8 +1,10 @@
 
 from funcy import rcompose
 from .common import attributes
-from ..nodes import Node, User, Geotag, Hashtag
-
+from .node import Node
+from .user import User
+from .geotag import Geotag
+from .hashtag import Hashtag
 
 class Media(Node):
 
