@@ -51,17 +51,18 @@ class User(Node):
             if 'user' in bot.last:
                 self._data = bot.last['user']
                 return self._data
-        elif username:
-            bot.api.search_username(username)
-            if 'user' in bot.last:
-	            self._data = bot.last['user']
-                return self._data
 		elif data:
 			if 'pk' in data:
 				self._id = data['pk']
 				return self.get_data(bot)
 			else:
 				return False
+        elif username:
+            bot.api.search_username(username)
+            if 'user' in bot.last:
+	            self._data = bot.last['user']
+	            self._data = self.get_data(bot)
+                return self._data
 		else:
 			return False
 	    
