@@ -37,11 +37,30 @@ def make_predicate(script, bot):
     filter:
 
         user:
-                followers: x > 50 and x < 1000
-                following: x < 500
+                followers:      x > 50 and x < 1000
+                following:      x < 500
+                bio:            any(s not in ['porn', 'sex'] for s in x)
+                is_private:     x and False
+                is_business:    x and False
+                is_verified:    x and False
+
         media:
-                likers:    x < 1000
-                hastags:   not in ['porn', 'sex']
+                likers:         x < 1000
+                hastags:        any(s not in ['porn', 'sex'] for s in x)
+                likes:          x < 200
+                comments:       x < 100
+                caption:        any(s not in ['porn', 'sex'] for s in x)
+                # geotag not
+                # usertag not
+
+        geotag:
+                name:           any(s not in {{ cities }} for s in x)
+                lat:            x < 1000 and x > 500
+                lng:            x < 1000 and x > 500
+
+        usertag:                true
+
+
     """
     def predicate(node):
 
@@ -52,6 +71,10 @@ def make_predicate(script, bot):
         elif isinstance(node, User):
              bool = bool and check(script['user']['followers'], node.get_followers_count(bot))
              bool = bool and check(script['user']['following'], node.get_following_count(bot))
+             bool = bool and check(script['user']['bio'], node.get_bio(bot))
+             bool = bool and check(script['user']['is_private'], node.get_is_private(bot))
+             bool = bool and check(script['user']['is_business'], node.get_is_business(bot))
+             bool = bool and check(script['user']['is_verified'], node.get_is_verified(bot))
 
         else:
             return True
