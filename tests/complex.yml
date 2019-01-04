@@ -2,8 +2,8 @@ name:                         test_complex
 version:                    1
 mode:                         distributed
 
-cache:                      ./cache.db
-logs:                       ./logs.html
+# cache:                      ./cache.db
+# logs:                       ./logs.html
 cookie:                     ./_cookies/***REMOVED***_cookie.json
 
 bots:
@@ -17,31 +17,31 @@ max_per_day:
         unfollow:               10
 
 delay:
-        likes:                  10
+        like:                  10
         usual:                  2
 
-filter:
-
-        user:
-            followers:      x > 50 and x < 1000
-            following:      x < 500
-            bio:            any(s not in ['porn', 'sex'] for s in x)
-            is_private:     x and False
-            is_business:    x and False
-            is_verified:    x and False
-
-        media:
-            likes:          x < 200
-            comments:       x < 100
-            caption:        any(s not in x for s in ['porn', 'sex'])
-
-        hashtag:
-            name:           not in [porn, sex]
-
-        geotag:
-            name:           not in {{ cities }}
-            lat:            x < 1000 and x > 500
-            lng:            x < 1000 and x > 500
+# filter:
+#
+#         user:
+#             followers:      x > 50 and x < 1000
+#             following:      x < 500
+#             bio:            any(s not in ['porn', 'sex'] for s in x)
+#             is_private:     x and False
+#             is_business:    x and False
+#             is_verified:    x and False
+#
+#         media:
+#             likes:          x < 200
+#             comments:       x < 100
+#             caption:        any(s not in x for s in ['porn', 'sex'])
+#
+#         hashtag:
+#             name:           not in [porn, sex]
+#
+#         geotag:
+#             name:           not in {{ cities }}
+#             lat:            x < 1000 and x > 500
+#             lng:            x < 1000 and x > 500
 
 execute:
 
