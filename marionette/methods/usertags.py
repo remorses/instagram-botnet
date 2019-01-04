@@ -14,7 +14,7 @@ def usertags(bot, nodes, amount, args) -> User:
 
     pack_user = rcompose(
         lambda data: data['user'],
-        lambda data: User(username=data['username'], id=data['pk'], is_private=data['is_private'])
+        lambda data: User(username=data['username'], id=data['pk'], data=data)
     )
 
     result = (pack_user(item) for media in nodes for item in _usertags(media))
