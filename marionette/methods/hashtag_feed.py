@@ -4,7 +4,7 @@ from funcy import  rcompose, flatten, partial
 from itertools import islice
 from time import time
 from ..nodes import  Media, Hashtag
-from .common import accepts
+from .common import accepts, get_cycled_api
 
 @accepts(Hashtag)
 def hashtag_feed(bot, nodes, amount, args) -> List[Media]:
@@ -16,8 +16,7 @@ def hashtag_feed(bot, nodes, amount, args) -> List[Media]:
     )
 
     pack_media = rcompose(
-        lambda data: data['pk'],
-        lambda id: Media(id=id)
+        lambda data: Media(id=data['pk'], data=data)
     )
 
     result = (pack_media(item) for user in nodes for item in get_items(user))
@@ -30,37 +29,4 @@ def hashtag_feed(bot, nodes, amount, args) -> List[Media]:
 
 
 def get_feed(hashtag, bot , amount) -> List[Media]:
-
-    next_max_id = ''
-    done = 0
-    sleep_track = 0
-
-    while True:
-        try:
-            bot.api.get_hashtag_feed(hashtag, next_max_id)
-            items = bot.last["items"] if 'items' in bot.last else []
-
-            if len(items) <= amount:
-                yield from items
-                done += len(items)
-                return
-
-            elif (done + len(items)) >= amount:
-                yield from items[:amount - done]
-                done += len(items)
-                return
-
-            else:
-                yield from items
-                done += len(items)
-
-        except Exception:
-            return
-
-        if sleep_track > 10:
-            bot.logger.debug('sleeping some time while getting hashtag feed')
-            time.sleep(bot.delay['getter'])
-            sleep_track = 0
-
-        next_max_id = bot.last.get("next_max_id", "")
-        sleep_track += 1
+    return get_cycled_api(bot, bot.api.get_hashtag_feed, hashtag, 'item', amount)
