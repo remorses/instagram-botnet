@@ -27,9 +27,10 @@ def likers(bot, nodes, amount, args) -> List[Media]:
 
 
 
-def get_likers(id, bot , amount) -> List[Media]:
-     return get_cycled_api(bot, bot.api.get_media_likers, id, 'users', amount)
-
+def get_likers(id, bot, amount) -> List[Media]:
+    if amount > 1000: amount = 1000
+    bot.api.get_media_likers(id)
+    yield from bot.last['users'][:amount]
 
 
 # def get_likers(id, bot , amount) -> List[Media]:

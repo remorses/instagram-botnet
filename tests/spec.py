@@ -24,10 +24,10 @@ SCRIPTS = [
     # parse('./hashtag_feed.yml'),
     # parse('./followers.yml'),
     # parse('./user_feed.yml'),
-    # parse('./likers.yml'),
+    parse('./likers.yml'),
     # parse('./complex.yml'),
     # parse('./upload.yml'),
-    parse('./delete.yml'),
+    # parse('./delete.yml'),
 
 ]
 
@@ -43,10 +43,10 @@ for script in SCRIPTS:
 
 for name, raw in data.items():
 
-    with open('./artifacts/{}.json'.format(name), 'w') as file:
+    with open('./artifacts/{}.json'.format(name), 'w+') as file:
         if len(raw) > len(file.read()):
             file.write(json.dumps(raw, indent=4 ))
-                
-    with open('./artifacts/{}.graphql'.format(name), 'w') as file:
+
+    with open('./artifacts/{}.graphql'.format(name), 'w+') as file:
         if len(raw) > len(file.read()):
             file.write(unmask(raw))
