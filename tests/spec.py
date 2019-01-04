@@ -25,8 +25,8 @@ SCRIPTS = [
     # parse('./followers.yml'),
     # parse('./user_feed.yml'),
     # parse('./likers.yml'),
-    # parse('./complex.yml'),
-    parse('./upload.yml'),
+    parse('./complex.yml'),
+    # parse('./upload.yml'),
     # parse('./delete.yml'),
 
 ]

@@ -104,6 +104,7 @@ def make_logs_file( file, name):
     if not file:
         file = Path(str(Path('.') / '_logs' / name)).resolve()
         file.parent.exists() or file.parent.mkdir()
+    file = Path(file)
     file.exists() or file.touch()
     return str(file.resolve())
 
@@ -111,6 +112,7 @@ def make_cache_file( file, name):
     if not file:
         file = Path(str(Path('.') / '_cache' / name)).resolve()
         file.parent.exists() or file.parent.mkdir()
+    file = Path(file)
     file.exists() or file.touch()
     return file.resolve()
 
@@ -118,5 +120,6 @@ def make_cookie_file( file, name):
     if not file:
         file = Path(str(Path('.') / '_cookies' / name)).resolve()
         file.parent.exists() or file.parent.mkdir()
+    file = Path(file)
     file.exists() or file.touch()
     return str(file.resolve())

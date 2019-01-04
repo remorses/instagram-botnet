@@ -2,9 +2,9 @@ name:                         test_complex.yaml
 version:                    1
 mode:                         distributed
 
-cache:                      ./cache.json
+cache:                      ./cache.db
 logs:                       ./logs.html
-cookie:                     ./logs.html
+cookie:                     ./_cookies/***REMOVED***_cookie.json
 
 bots:
         -
