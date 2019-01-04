@@ -2,9 +2,6 @@ from .node import Node
 from .common import attributes
 
 
-def username_from_id(id):
-    pass
-
 
 class User(Node):
 
@@ -29,13 +26,10 @@ class User(Node):
     @property
     def username(self):
         username, id, data = attributes(self)
-
         if username:
             return username
-        elif id:
-            return username_from_id(id)
         elif data:
-            return data['user']['username']
+            return data['username']
         else:
             return False
 
@@ -45,36 +39,94 @@ class User(Node):
         if id:
             return id
         elif data:
-            return data['user']['username']
+            return data['pk']
         else:
-            return False
+			return False
+			
+			
+    def get_data(self, bot):
+	    username, id, data = attributes(self)
+        if id:
+            bot.api.get_username_info(id)
+            if 'user' in bot.last:
+                self._data = bot.last['user']
+                return self._data
+        elif username:
+            bot.api.search_username(username)
+            if 'user' in bot.last:
+	            self._data = bot.last['user']
+                return self._data
+		elif data:
+			if 'pk' in data:
+				self._id = data['pk']
+				return self.get_data(bot)
+			else:
+				return False
+		else:
+			return False
+	    
 
     def get_id(self, bot):
-        if self.username:
-            bot.api.search_username(self.username)
-            if "user" in bot.api.last_json:
-                return str(bot.api.last_json["user"]["pk"])
-        else:
-            raise Exception('username is needed to get the id')
+	    username, id, data = attributes(self)
+	    if id:
+		    return id
+	    elif data:
+		    if 'pk' in data:
+			    return data['pk']
+        elif username:
+            data = self.get_data(bot)
+            return data['pk']
+		else:
+            return False
             
 
     def get_followers_count(self, bot):
-        if 'follower_count' in self._data:
-            return data["follower_count"]
-        elif self.username:
-            bot.api.get_username_info(self.id)
-            if "user" in bot.api.last_json:
-                data = bot.last["user"]
-                self._data = data
-                return data["follower_count"]
+	    _, _, data = attributes(self)
+        if 'follower_count' in data:
+            return data['follower_count']
         else:
-            raise Exception('id is needed to get the count')
-
+	        data = self.get_data(bot)
+	        return data['follower_count']
+                        
 
     def get_following_count(self, bot):
-        if self.username:
-            bot.api.get_username_info(self.id)
-            if "user" in bot.api.last_json:
-                return str(bot.api.last_json["user"]["following_count"])
+	    _, _, data = attributes(self)
+        if 'following_count' in data:
+            return data['following_count']
         else:
-            raise Exception('id is needed to get the count')
+	        data = self.get_data(bot)
+	        return data['following_count']
+
+
+    def get_is_private(self, bot):
+	    _, _, data = attributes(self)
+        if 'is_private' in data:
+            return data['is_private']
+        else:
+	        data = self.get_data(bot)
+	        return data['is_private']
+
+
+    def get_is_business(self, bot):
+	    _, _, data = attributes(self)
+        if 'is_business' in data:
+            return data['is_business']
+        else:
+	        data = self.get_data(bot)
+	        return data['is_business']                        
+
+    def get_is_verified(self, bot):
+	    _, _, data = attributes(self)
+        if 'is_verified' in data:
+            return data['is_verified']
+        else:
+	        data = self.get_data(bot)
+	        return data['is_verified']                        
+
+    def get_is_anonymous_picture(self, bot):
+	    _, _, data = attributes(self)
+        if 'has_anonymous_profile_picture' in data:
+            return data['has_anonymous_profile_picture']
+        else:
+	        data = self.get_data(bot)
+	        return data['has_anonymous_profile_picture']
