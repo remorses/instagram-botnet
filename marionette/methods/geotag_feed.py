@@ -23,8 +23,7 @@ def geotag_feed(bot, nodes, amount, args) -> List[Media]:
 
 
     pack_media = rcompose(
-        lambda data: data['pk'],
-        lambda id: Media(id=id)
+        lambda data: Media(id=data['pk'], data=data)
     )
 
     result = (pack_media(item) for user in nodes for item in _medias(user))
