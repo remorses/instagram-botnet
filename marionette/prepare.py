@@ -16,15 +16,26 @@ def prepare(script):
 
 def make_bots(script):
     """
+    cache:                      ./cache.json
+    logs:                       ./logs.html
+
+    bots:
+        -
+            username:           ***REMOVED***
+            password:           *******
+        -
+            username:           givanotti
+            password:           *******
+
     max_per_day:
-        likes:          50
-        follow:         20
-        unfollow:       10
+        likes:                  50
+        follow:                 20
+        unfollow:               10
         ...
 
     delay:
-        likes:          10
-        usual:          2
+        likes:                  10
+        usual:                  2
         ...
 
     """
@@ -32,9 +43,15 @@ def make_bots(script):
     bots = []
 
     for i, credentials in enumerate(script['bots']):
-        bots += [Bot(**credentials)]
+            bots += [Bot(
+                cache_path=script['cache'] if 'cache' in script else None,
+                logs_path=script['logs'] if 'logs' in script else None,
+                **credentials
+            )]
 
     for bot in bots:
+
+
         if 'max_per_day' in script:
             bot.max_per_day = {key: value for key,
                                value in script['max_per_day'].items()}
