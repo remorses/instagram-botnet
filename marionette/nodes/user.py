@@ -2,7 +2,7 @@ from .node import Node
 from .geotag import Geotag
 from .hashtag import Hashtag
 from .common import attributes
-
+import time
 
 
 class User(Node):
@@ -48,6 +48,7 @@ class User(Node):
 
     def get_data(self, bot):
         username, id, data = attributes(self)
+        time.sleep(bot.delay['usual'])
         if id:
             bot.api.get_username_info(id)
             if 'user' in bot.last:

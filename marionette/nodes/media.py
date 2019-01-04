@@ -5,6 +5,7 @@ from .node import Node
 from .user import User
 from .geotag import Geotag
 from .hashtag import Hashtag
+import time
 
 class Media(Node):
 
@@ -49,6 +50,7 @@ class Media(Node):
             raise Exception
 
     def get_data(self, bot):
+        time.sleep(bot.delay['usual'])
         url, id, data = attributes(self)
         if url:
             id = id_from_url(url)

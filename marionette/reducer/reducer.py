@@ -75,8 +75,8 @@ def _reducer(state: State, action: Action):
 
         next_data = merge(data, {'__{}__'.format(type): next_data})
 
-        secs = bot.delay[type] if type in bot.delay else bot.delay['usual']
-        time.sleep(secs)
+        # secs = bot.delay[type] if type in bot.delay else bot.delay['usual']
+        # time.sleep(secs)
 
     except Dont_retry as exc:
         bot.logger.error('error reducing action {}: \"{}\" {}'.format(type, exc.__class__.__name__, exc))
