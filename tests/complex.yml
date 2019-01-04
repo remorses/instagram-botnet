@@ -9,7 +9,7 @@ cookie:                     ./_cookies/***REMOVED***_cookie.json
 bots:
         -
                 username:           ***REMOVED***
-                password:           "*******"
+                password:           ***REMOVED***
 
 max_per_day:
         likes:                  50
