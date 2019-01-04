@@ -1,5 +1,5 @@
 from functools import partial
-from .nodes import Media, User
+from .nodes import Media, User, Geotag, Usertag, Hashtag
 from .bot import Bot
 
 
@@ -45,20 +45,17 @@ def make_predicate(script, bot):
                 is_verified:    x and False
 
         media:
-                likers:         x < 1000
-                hastags:        any(s not in ['porn', 'sex'] for s in x)
                 likes:          x < 200
                 comments:       x < 100
-                caption:        any(s not in ['porn', 'sex'] for s in x)
-                # geotag not
-                # usertag not
+                caption:        any(s not in x for s in ['porn', 'sex'])
+
+        hashtag:
+                name:           not in [porn, sex]
 
         geotag:
-                name:           any(s not in {{ cities }} for s in x)
+                name:           not in {{ cities }}
                 lat:            x < 1000 and x > 500
                 lng:            x < 1000 and x > 500
-
-        usertag:                true
 
 
     """
@@ -67,14 +64,23 @@ def make_predicate(script, bot):
         bool = True
 
         if isinstance(node, Media):
-             pass
+            bool = bool and check(script['media']['likes'], node.get_like_count(bot))
+            bool = bool and check(script['media']['comments'], node.get_comment_count(bot))
+            bool = bool and check(script['media']['hashtags'], node.get_hashtags(bot))
+            bool = bool and check(script['media']['caption'], node.get_caption(bot))
         elif isinstance(node, User):
-             bool = bool and check(script['user']['followers'], node.get_followers_count(bot))
-             bool = bool and check(script['user']['following'], node.get_following_count(bot))
-             bool = bool and check(script['user']['bio'], node.get_bio(bot))
-             bool = bool and check(script['user']['is_private'], node.get_is_private(bot))
-             bool = bool and check(script['user']['is_business'], node.get_is_business(bot))
-             bool = bool and check(script['user']['is_verified'], node.get_is_verified(bot))
+            bool = bool and check(script['user']['followers'], node.get_followers_count(bot))
+            bool = bool and check(script['user']['following'], node.get_following_count(bot))
+            bool = bool and check(script['user']['bio'], node.get_bio(bot))
+            bool = bool and check(script['user']['is_private'], node.get_is_private(bot))
+            bool = bool and check(script['user']['is_business'], node.get_is_business(bot))
+            bool = bool and check(script['user']['is_verified'], node.get_is_verified(bot))
+        elif isinstance(node, Geotag):
+            bool = bool and check(script['geotag']['name'], node.name)
+            bool = bool and check(script['geotag']['lat'], node.get_coordinates(bot)[0])
+            bool = bool and check(script['geotag']['lng'], node.get_coordinates(bot)[1])
+        elif isinstance(node, Hashtag):
+            bool = bool and check(script['hashtag']['name'], node.name)
 
         else:
             return True
