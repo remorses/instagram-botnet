@@ -1,25 +1,23 @@
-version:                    1
-name:                         test_hashtag_feed
-mode:                         distributed
+version:                1
+name:                   test_hashtag_feed
+mode:                   distributed
 
-use_cache:                ./cache.json
-use_logs:                ./logs.html
 
 
 bots:
     -
-        username:         ***REMOVED***
-        password:         ***REMOVED***
+        username:       ***REMOVED***
+        password:       ***REMOVED***
 
 
 # filter:
-#     - only:             [bot1, bot2]
+#     - only:           [bot1, bot2]
 #         user:
 #             followers: x > 50 and x < 1000
 #             following: x < 500
 #         media:
-#             likers:     x < 1000
-#             hastags:    not in {{ bad_hashtags }}
+#             likers:   x < 1000
+#             hastags:  not in {{ bad_hashtags }}
 
 
 execute:
@@ -33,11 +31,11 @@ execute:
 
 
     # -
-    #     nodes: [node1, node2] # these are all Node instances
+    #     nodes:        [node1, node2] # these are all Node instances
     #     actions:
-    #         - type:     feed
+    #         - type:   feed
     #             amount: 10
-    #         - type:     send
+    #         - type:   send
     #             amount: 1
     #             args:
     #                 messages = []

@@ -3,7 +3,6 @@ name:                 test_send
 version:            1
 mode:                 distributed
 
-use_cache:        ./cache.json
 
 
 bots:
@@ -25,11 +24,11 @@ bots:
 execute:
 
     - send:
-            from_nodes: ['instagram']
-            via_edges:
-                - followers: 8
-            args:
-                messages:
-                    - ["heeeeeey    modificato", "come stai?", ]
-                    - ["wooooooo    modificato", "come va?"]
-                    - ["man    man", "come stai?"]
+        from_nodes: ['instagram']
+        via_edges:
+            - followers: 8
+        args:
+            messages:
+                - ["heeeeeey    modificato", "come stai?", ]
+                - ["wooooooo    modificato", "come va?"]
+                - ["man    man", "come stai?"]

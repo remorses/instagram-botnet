@@ -1,18 +1,16 @@
-name:                 test_like
-version:            1
-mode:                 distributed
-
-use_cache:        ./cache.json
+name:              test_like
+version:           1
+mode:              distributed
 
 
 bots:
     -
-        username: ***REMOVED***
-        password: ***REMOVED***
+        username:  ***REMOVED***
+        password:  ***REMOVED***
 
 
 # filter:
-#     - only:     [bot1, bot2]
+#     - only:      [bot1, bot2]
 #         user:
 #             followers: x > 50 and x < 1000
 #             following: x < 500
@@ -23,4 +21,4 @@ bots:
 
 execute:
     - like:
-            nodes:    ['https://www.instagram.com/p/Bqp-eokgcqf/']
+        nodes: ['https://www.instagram.com/p/Bqp-eokgcqf/']

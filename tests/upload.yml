@@ -1,32 +1,31 @@
 
-name:                 test_upload
-version:            1
-mode:                 distributed
+name:                     test_upload
+version:                  1
+mode:                     distributed
 
-use_cache:        ./cache.json
 
 
 bots:
     -
-        username: ***REMOVED***
-        password: ***REMOVED***
+        username:         ***REMOVED***
+        password:         ***REMOVED***
 
 
 # filter:
-#     - only:     [bot1, bot2]
+#     - only:             [bot1, bot2]
 #         user:
-#             followers: x > 50 and x < 1000
-#             following: x < 500
+#             followers:  x > 50 and x < 1000
+#             following:  x < 500
 #         media:
-#             likers: x < 1000
-#             hastags: not in {{ bad_hashtags }}
+#             likers:     x < 1000
+#             hastags:    not in {{ bad_hashtags }}
 
 
 execute:
 
     - upload:
-            nodes: ['https://www.instagram.com/p/BsJKZTZgb7g/']
+            nodes:        ['https://www.instagram.com/p/BsJKZTZgb7g/']
             args:
-                caption: "heeeeeey gente #modificato"
-                geotag:     gesuralemme
+                caption:  "heeeeeey gente #modificato"
+                geotag:   gesuralemme
                 usertags: ['***REMOVED***', 'madonna']

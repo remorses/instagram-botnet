@@ -1,4 +1,4 @@
-name:                         test_complex.yaml
+name:                         test_complex
 version:                    1
 mode:                         distributed
 
