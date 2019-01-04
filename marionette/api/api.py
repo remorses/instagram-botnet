@@ -4,7 +4,10 @@ from instabot.api import config, devices
 from colorlog import ColoredFormatter
 import logging
 from .html_log import HTMLFileHandler, HTMLFormatter
+import json
+from json.decoder import JSONDecodeError
 
+import time
 class LoggerAdapter(logging.LoggerAdapter):
     def __init__(self, logger, prefix):
         super(LoggerAdapter, self).__init__(logger, {})
@@ -52,6 +55,60 @@ class API(NOT_MY_API):
         self.last_json = None
 
 
+    def send_request(self, endpoint, post=None, login=False, with_signature=True):
+            self.logger.info('new request to endpoint %s' % endpoint)
+            if (not self.is_logged_in and not login):
+                msg = "Not logged in!"
+                self.logger.critical(msg)
+                raise Exception(msg)
+
+            self.session.headers.update(config.REQUEST_HEADERS)
+            self.session.headers.update({'User-Agent': self.user_agent})
+            try:
+                self.total_requests += 1
+                if post is not None:  # POST
+                    if with_signature:
+                        # Only `send_direct_item` doesn't need a signature
+                        post = self.generate_signature(post)
+                    response = self.session.post(
+                        config.API_URL + endpoint, data=post)
+                else:  # GET
+                    response = self.session.get(
+                        config.API_URL + endpoint)
+            except Exception as e:
+                self.logger.warning(str(e))
+                return False
+
+            if response.status_code == 200:
+                self.last_response = response
+                try:
+                    self.last_json = json.loads(response.text)
+                    return True
+                except JSONDecodeError:
+                    return False
+            else:
+                self.logger.error("Request returns {} error!".format(response.status_code))
+                if response.status_code == 429:
+                    sleep_minutes = 5
+                    self.logger.warning(
+                        "That means 'too many requests'. I'll go to sleep "
+                        "for {} minutes.".format(sleep_minutes))
+                    time.sleep(sleep_minutes * 60)
+                elif response.status_code == 400:
+                    response_data = json.loads(response.text)
+                    msg = "Instagram's error message: {}"
+                    self.logger.info(msg.format(response_data.get('message')))
+                    if 'error_type' in response_data:
+                        msg = 'Error type: {}'.format(response_data['error_type'])
+                        self.logger.info(msg)
+
+                # For debugging
+                try:
+                    self.last_response = response
+                    self.last_json = json.loads(response.text)
+                except Exception:
+                    pass
+                return False
 
     def get_story_feed(self, user_id):
         """
@@ -90,3 +147,9 @@ def file_formatter():
     cformat = '%(log_color)s' + format
     date_format = '%Y-%m-%d %H:%M'
     return HTMLFormatter(cformat, date_format,)
+
+
+
+def tap(x, function):
+    function()
+    return x

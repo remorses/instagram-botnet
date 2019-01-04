@@ -28,7 +28,7 @@ DELAY = {'like': 10,
 
          'usual': 4,
          'getter': 70
-         }
+    }
 
 
 MAX_PER_DAY = {'likes': 1000,

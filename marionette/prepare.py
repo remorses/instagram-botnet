@@ -58,7 +58,7 @@ def make_bots(script):
             bot.max_per_day = {key: value for key,
                                value in script['max_per_day'].items()}
         if 'delay' in script:
-            bot.delay = {key: value for key, value in script['delay'].items()}
+            bot.delay = {**bot.delay, **{key: value for key, value in script['delay'].items()} }
 
     return bots
 

@@ -46,9 +46,9 @@ delay:
 execute:
 
     - follow:
-            from_nodes: ['lebonwski', 'therealgue']
+            from_nodes: ['therealgue']
             via_edges:
-                - followers: 200
+                - followers: 20
 
     - like:
             from_nodes: ['lebonwski', 'therealgue']
