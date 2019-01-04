@@ -44,9 +44,15 @@ for script in SCRIPTS:
 for name, raw in data.items():
 
     with open('./artifacts/{}.json'.format(name), 'w+') as file:
-        if len(raw) > len(file.read()):
-            file.write(json.dumps(raw, indent=4 ))
+        content = file.read()
+        if len(raw) > len(content):
+            file.write(json.dumps(raw, indent=4))
+        else:
+            file.write(content)
 
     with open('./artifacts/{}.graphql'.format(name), 'w+') as file:
-        if len(raw) > len(file.read()):
+        content = file.read()
+        if len(raw) > len(content):
             file.write(unmask(raw))
+        else:
+            file.write(content)
