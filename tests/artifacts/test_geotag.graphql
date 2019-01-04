@@ -1,179 +1,179 @@
 {
-	__like_interaction__[1] {
-		__geotag_feed__ {
-			items[0] {
-				...
-			}
-			num_results
-			more_available
-			auto_load_more_enabled
-			story {
-				id
-				latest_reel_media
-				expiring_at
-				seen {
-					_
-				}
-				can_reply
-				can_reshare
-				reel_type
-				owner {
-					type
-					pk
-					name
-					profile_pic_url
-					profile_pic_username
-					short_name
-					lng
-					lat
-					location_dict {
-						pk
-						name
-						address
-						city
-						short_name
-						lng
-						lat
-						external_source
-						facebook_places_id
-					}
-				}
-				location {
-					type
-					pk
-					name
-					profile_pic_url
-					profile_pic_username
-					short_name
-					lng
-					lat
-					location_dict {
-						pk
-						name
-						address
-						city
-						short_name
-						lng
-						lat
-						external_source
-						facebook_places_id
-					}
-				}
-				items[20] {
-					taken_at
-					pk
-					id
-					device_timestamp
-					media_type
-					code
-					client_cache_key
-					filter_type
-					image_versions2 {
-						candidates[2] {
-							width
-							height
-							url
-						}
-					}
-					original_width
-					original_height
-					caption_position
-					is_reel_media
-					is_dash_eligible
-					video_dash_manifest
-					video_codec
-					number_of_qualities
-					video_versions[3] {
-						type
-						width
-						height
-						url
-						id
-					}
-					has_audio
-					video_duration
-					user {
-						pk
-						username
-						full_name
-						is_private
-						profile_pic_url
-						profile_pic_id
-						is_verified
-						has_anonymous_profile_picture
-						reel_auto_archive
-						is_unpublished
-						is_favorite
-					}
-					caption {
-						_
-					}
-					caption_is_edited
-					photo_of_you
-					can_viewer_save
-					organic_tracking_token
-					expiring_at
-					imported_taken_at
-					can_reshare
-					story_hashtags[1] {
-						x
-						y
-						z
-						width
-						height
-						rotation
-						is_pinned
-						is_hidden
-						hashtag {
-							name
-							id
-						}
-					}
-					story_locations[1] {
-						x
-						y
-						z
-						width
-						height
-						rotation
-						is_pinned
-						is_hidden
-						location {
-							pk
-							name
-							address
-							city
-							short_name
-							lng
-							lat
-							external_source
-							facebook_places_id
-						}
-					}
-					supports_reel_reactions
-					show_one_tap_fb_share_tooltip
-					has_shared_to_fb
-				}
-				prefetch_count
-				unique_integer_reel_id
-			}
-			media_count
-			location {
-				pk
-				name
-				address
-				city
-				short_name
-				lng
-				lat
-				external_source
-				facebook_places_id
-			}
-			status
-		}
-		__like__ {
-			status
-		}
-	}
+    __like_interaction__[1] {
+        __geotag_feed__ {
+            items[0] {
+                ...
+            }
+            num_results
+            more_available
+            auto_load_more_enabled
+            story {
+                id
+                latest_reel_media
+                expiring_at
+                seen {
+                    _
+                }
+                can_reply
+                can_reshare
+                reel_type
+                owner {
+                    type
+                    pk
+                    name
+                    profile_pic_url
+                    profile_pic_username
+                    short_name
+                    lng
+                    lat
+                    location_dict {
+                        pk
+                        name
+                        address
+                        city
+                        short_name
+                        lng
+                        lat
+                        external_source
+                        facebook_places_id
+                    }
+                }
+                location {
+                    type
+                    pk
+                    name
+                    profile_pic_url
+                    profile_pic_username
+                    short_name
+                    lng
+                    lat
+                    location_dict {
+                        pk
+                        name
+                        address
+                        city
+                        short_name
+                        lng
+                        lat
+                        external_source
+                        facebook_places_id
+                    }
+                }
+                items[20] {
+                    taken_at
+                    pk
+                    id
+                    device_timestamp
+                    media_type
+                    code
+                    client_cache_key
+                    filter_type
+                    image_versions2 {
+                        candidates[2] {
+                            width
+                            height
+                            url
+                        }
+                    }
+                    original_width
+                    original_height
+                    caption_position
+                    is_reel_media
+                    is_dash_eligible
+                    video_dash_manifest
+                    video_codec
+                    number_of_qualities
+                    video_versions[3] {
+                        type
+                        width
+                        height
+                        url
+                        id
+                    }
+                    has_audio
+                    video_duration
+                    user {
+                        pk
+                        username
+                        full_name
+                        is_private
+                        profile_pic_url
+                        profile_pic_id
+                        is_verified
+                        has_anonymous_profile_picture
+                        reel_auto_archive
+                        is_unpublished
+                        is_favorite
+                    }
+                    caption {
+                        _
+                    }
+                    caption_is_edited
+                    photo_of_you
+                    can_viewer_save
+                    organic_tracking_token
+                    expiring_at
+                    imported_taken_at
+                    can_reshare
+                    story_hashtags[1] {
+                        x
+                        y
+                        z
+                        width
+                        height
+                        rotation
+                        is_pinned
+                        is_hidden
+                        hashtag {
+                            name
+                            id
+                        }
+                    }
+                    story_locations[1] {
+                        x
+                        y
+                        z
+                        width
+                        height
+                        rotation
+                        is_pinned
+                        is_hidden
+                        location {
+                            pk
+                            name
+                            address
+                            city
+                            short_name
+                            lng
+                            lat
+                            external_source
+                            facebook_places_id
+                        }
+                    }
+                    supports_reel_reactions
+                    show_one_tap_fb_share_tooltip
+                    has_shared_to_fb
+                }
+                prefetch_count
+                unique_integer_reel_id
+            }
+            media_count
+            location {
+                pk
+                name
+                address
+                city
+                short_name
+                lng
+                lat
+                external_source
+                facebook_places_id
+            }
+            status
+        }
+        __like__ {
+            status
+        }
+    }
 }
 

@@ -2,15 +2,15 @@ from .node import Node
 from .common import attributes
 
 """
-	pk
-	name
-	address
-	city
-	short_name
-	lng
-	lat
-	external_source
-	facebook_places_id
+    pk
+    name
+    address
+    city
+    short_name
+    lng
+    lat
+    external_source
+    facebook_places_id
 """
 
 """

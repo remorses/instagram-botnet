@@ -31,15 +31,15 @@ def geotag(bot, nodes, amount, args) -> Geotag:
 def get_item(bot, id):
     """
     data type:
-		pk
-		name
-		address
-		city
-		short_name
-		lng
-		lat
-		external_source
-		facebook_places_id
+        pk
+        name
+        address
+        city
+        short_name
+        lng
+        lat
+        external_source
+        facebook_places_id
     """
     bot.api.media_info(id)
     try:
