@@ -1,6 +1,7 @@
 
+from funcy import rcompose
 from .common import attributes
-from .node import Node
+from ..nodes import Node, User, Geotag, Hashtag
 
 
 class Media(Node):
@@ -25,9 +26,7 @@ class Media(Node):
 
     @property
     def id(self):
-
         url, id, data = attributes(self)
-
         if id:
             return id
         elif url:
@@ -37,9 +36,7 @@ class Media(Node):
 
     @property
     def url(self):
-
         url, id, data = attributes(self)
-
         if url:
             return url
         elif id:
@@ -48,6 +45,132 @@ class Media(Node):
             return data['media_id']
         else:
             raise Exception
+
+    def get_data(self, bot):
+        url, id, data = attributes(self)
+        if url:
+            id = id_from_url(url)
+            self._id = id
+        if id:
+            bot.api.get_media_info(id)
+            if 'items' in bot.last:
+                self._data = bot.last["items"][0]
+                return self._data
+        elif data:
+            if 'media_id' in data:
+                self._id = data['media_id']
+                return self.get_data(bot)
+            else:
+                return False
+
+        else:
+            return False
+
+
+    def get_author(self, bot):
+        _, _, data = attributes(self)
+        if 'user' in data:
+            user = data["user"]
+            return User(
+                data=user,
+                id=user['pk'],
+                username=user['username']
+            )
+        else:
+            data = self.get_data(bot)
+            user = data["user"]
+            return User(
+                data=user,
+                id=user['pk'],
+                username=user['username']
+            )
+
+    def get_like_count(self, bot):
+        _, _, data = attributes(self)
+        if 'like_count' in data:
+            return data['like_count']
+        else:
+            data = self.get_data(bot)
+            return data['like_count']
+
+    def get_comment_count(self, bot):
+        _, _, data = attributes(self)
+        if 'comment_count' in data:
+            return data['comment_count']
+        else:
+            data = self.get_data(bot)
+            if 'comment_count' in data:
+                return data['comment_count']
+            else:
+                return False
+
+    def get_caption(self, bot):
+        _, _, data = attributes(self)
+        if 'caption' in data:
+            return data['caption']['text']
+        else:
+            if 'location' in data:
+                data = self.get_data(bot)
+                return data['caption']['text']
+            else:
+                return False
+
+    def get_geotag(self, bot):
+        _, _, data = attributes(self)
+        if 'location' in data:
+            return data['location']
+        else:
+            data = self.get_data(bot)
+            if 'location' in data:
+                return  Geotag(
+                    name=data['name'],
+                    id=data['pk'],
+                    data=data
+                )
+            else:
+                return False
+
+    def get_usertags(self, bot):
+        _, _, data = attributes(self)
+        pack_user = rcompose(
+            lambda data: data['user'],
+            lambda data: User(username=data['username'], id=data['pk'], data=data)
+        )
+
+        try:
+            if 'usertags' in data:
+                items =  data["usertags"]["in"]
+                yield from (pack_user(item) for item in items)
+            else:
+                data = self.get_data(bot)
+                if 'usertags' in data:
+                    items =  data["usertags"]["in"]
+                    yield from (pack_user(item) for item in items)
+                else:
+                    return False
+        except KeyError:
+            return False
+
+    def get_hashtags(self, bot):
+        text = self.get_caption(bot)
+        raw_tags = set(part[1:] for part in text.split() if part.startswith('#'))
+        tags = (Hashtag(name=tag) for tag in raw_tags)
+        yield from tags
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 def id_from_url(link):
