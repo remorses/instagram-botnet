@@ -9,7 +9,7 @@ import time
 
 class Media(Node):
 
-    def __init__(self, *, generic=False, url=False, id=False, data=False):
+    def __init__(self, *, generic=False, url=False, id=False, data={}):
 
         self._url = url
         self._id = id
@@ -65,10 +65,10 @@ class Media(Node):
                 self._id = data['media_id']
                 return self.get_data(bot)
             else:
-                return False
+                return {}
 
         else:
-            return False
+            return {}
 
 
     def get_author(self, bot):
