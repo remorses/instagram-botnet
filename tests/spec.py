@@ -28,31 +28,34 @@ SCRIPTS = [
 
 ################################################################################
 
-data = {}
-for script in SCRIPTS:
-    bots = prepare(script)
-    data[script['name']] = execute(script, bots)
+
+if __name__ == '__main__':
+
+    data = {}
+    for script in SCRIPTS:
+        bots = prepare(script)
+        data[script['name']] = execute(script, bots)
 
 
 
 
-for name, raw in data.items():
+    for name, raw in data.items():
 
-    ok = False
+        ok = False
 
-    with open('tests/artifacts/{}.json'.format(name), 'w+') as file:
-        content = file.read()
-        json = json.dumps(raw, indent=4)
-        if len(raw) > len(json):
-            ok = True
-            file.write(data)
-        else:
-            file.write(content)
+        with open('tests/artifacts/{}.json'.format(name), 'w+') as file:
+            content = file.read()
+            json = json.dumps(raw, indent=4)
+            if len(raw) > len(json):
+                ok = True
+                file.write(data)
+            else:
+                file.write(content)
 
-    with open('tests/artifacts/{}.graphql'.format(name), 'w+') as file:
-        content = file.read()
+        with open('tests/artifacts/{}.graphql'.format(name), 'w+') as file:
+            content = file.read()
 
-        if ok:
-            file.write(unmask(raw))
-        else:
-            file.write(content)
+            if ok:
+                file.write(unmask(raw))
+            else:
+                file.write(content)
