@@ -8,7 +8,7 @@ from .common import accepts
 def authors(bot, nodes, amount, args):
 
 
-    result = (media.get_author(bot) for media in nodes if bot.suitable(media))
+    result = (media.get_author(bot) for media in nodes if media)
     result = islice(result, amount)
 
     return result, bot.last

@@ -1,11 +1,37 @@
 from typing import List
-from .common import accepts, today
-from ..nodes import Node, User, Media
+from funcy import take, rcompose
 import time
+from .common import accepts, today, tap
+from ..nodes import Node, User, Media
+
+
+
+
 @accepts(Media)
 def like(bot, nodes, amount, args):
 
-    for media in nodes[:amount]:
+
+    count = 0
+
+    def increment():
+        global count
+        count += 1
+
+    process = rcompose(
+        lambda node: node if bot.suitable(node) else tap(None,
+            lambda: bot.logger.warn('{} not suitable'.format(node))),
+        lambda x: tap(x, increment) if x else None,
+        lambda node: _like(node, bot=bot) \
+            if count <= amount and node else None,
+    )
+
+    [process(node) for node in nodes if node]
+
+    data = bot.last
+    return [], data
+
+
+def _like(media, bot):
         bot.api.like(media.id)
         if bot.last['status'] != 'ok':
             bot.logger.warn('request didn\'t return "ok" liking {}'.format(media.url))
@@ -16,8 +42,3 @@ def like(bot, nodes, amount, args):
 
             bot.logger.debug('liked %s' % media.url)
             time.sleep(bot.delay['like'])
-
-
-
-
-    return [], bot.last

@@ -56,7 +56,10 @@ class Bot:
 
     @property
     def last(self):
-        return self.api.last_json
+        if self.api.last_json:
+            return self.api.last_json
+        else:
+            return {}
 
     def reached_limit(self, key):
         current_date = datetime.datetime.now()
@@ -76,6 +79,8 @@ class Bot:
         """
         for predicate in self.predicates:
             nodes = filter(predicate, nodes)
+
+        return nodes
 
     def suitable(self, node):
         """

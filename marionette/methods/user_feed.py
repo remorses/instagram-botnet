@@ -18,7 +18,8 @@ def user_feed(bot, nodes, amount, args) -> List[Media]:
 
     result = (pack_media(item) for user in nodes for item in get_items(user))
 
-    result = (node for node in result if bot.suitable(node))
+    # result = (node for node in result if bot.suitable(node))
+    result = (node for node in result if node)
 
     result = islice(result, amount)
 

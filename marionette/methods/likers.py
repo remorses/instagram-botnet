@@ -19,7 +19,8 @@ def likers(bot, nodes, amount, args) -> List[Media]:
     pack_user = lambda data: User(id=data['pk'], username=data['username'], data=data)
 
     result = (pack_user(item) for media in nodes for item in get_items(media))
-    result = (media for media in result if bot.suitable(media))
+    # result = (media for media in result if bot.suitable(media))
+    result = (media for media in result if media)
     result = islice(result, amount)
 
     return result, bot.last

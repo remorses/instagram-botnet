@@ -16,17 +16,21 @@ def prepare(script):
 
 def make_bots(script):
     """
-    cache:                      ./cache.json
-    logs:                       ./logs.html
-    cookie:                     ./logs.html
+
 
     bots:
         -
             username:           ***REMOVED***
-            password:           *******
+            password:           qwerty
+            cache:              ./cache.db
+            log:                ./logs.html
+            cookie:             ./cookie.json
         -
-            username:           givanotti
-            password:           *******
+            username:           giovanotti
+            password:           qwerty
+            cache:              ./cache.db
+            log:                ./logs.html
+            cookie:             ./cookie.json
 
     max_per_day:
         likes:                  50
@@ -35,7 +39,7 @@ def make_bots(script):
         ...
 
     delay:
-        likes:                  10
+        like:                   10
         usual:                  2
         ...
 
@@ -43,16 +47,20 @@ def make_bots(script):
 
     bots = []
 
-    for i, credentials in enumerate(script['bots']):
-            bots += [Bot(
-                cache_file=script['cache'] if 'cache' in script else None,
-                logs_file=script['logs'] if 'logs' in script else None,
-                cookie_file=script['cookie'] if 'cookie' in script else None,
-                **credentials
-            )]
+    for data in script['bots']:
+        params = dict(
+            cache_file=data['cache'] if 'cache' in data else None,
+            logs_file=data['logs'] if 'logs' in data else \
+                data['log'] if 'log' in data else None,
+            cookie_file=data['cookie'] if 'cookie' in data else None,
+            username=data['username'] if 'username' in data \
+                else error(Exception('username necessary')),
+            password=data['password'] if 'password' in data \
+                else error(Exception('password necessary')),
+        )
+        bots += [Bot(**params)]
 
     for bot in bots:
-
 
         if 'max_per_day' in script:
             bot.max_per_day = {key: value for key,
@@ -61,6 +69,9 @@ def make_bots(script):
             bot.delay = {**bot.delay, **{key: value for key, value in script['delay'].items()} }
 
     return bots
+
+def error(exception):
+    raise exception
 
 
 def make_predicate(script, bot):
@@ -95,23 +106,64 @@ def make_predicate(script, bot):
         bool = True
 
         if isinstance(node, Media):
-            bool = bool and check(script['media']['likes'], node.get_like_count(bot))
-            bool = bool and check(script['media']['comments'], node.get_comment_count(bot))
-            bool = bool and check(script['media']['hashtags'], node.get_hashtags(bot))
-            bool = bool and check(script['media']['caption'], node.get_caption(bot))
+            bool = bool and check(
+                lambda: script['media']['likes'],
+                lambda: node.get_like_count(bot)
+            )
+            bool = bool and check(
+                lambda: script['media']['comments'],
+                lambda: node.get_comment_count(bot)
+            )
+            bool = bool and check(
+                lambda: script['media']['hashtags'],
+                lambda: node.get_hashtags(bot)
+            )
+            bool = bool and check(
+                lambda: script['media']['caption'],
+                lambda: node.get_caption(bot)
+            )
         elif isinstance(node, User):
-            bool = bool and check(script['user']['followers'], node.get_followers_count(bot))
-            bool = bool and check(script['user']['following'], node.get_following_count(bot))
-            bool = bool and check(script['user']['bio'], node.get_bio(bot))
-            bool = bool and check(script['user']['is_private'], node.get_is_private(bot))
-            bool = bool and check(script['user']['is_business'], node.get_is_business(bot))
-            bool = bool and check(script['user']['is_verified'], node.get_is_verified(bot))
+            bool = bool and check(
+                lambda: script['user']['followers'],
+                lambda: node.get_followers_count(bot)
+            )
+            bool = bool and check(
+                lambda: script['user']['following'],
+                lambda: node.get_following_count(bot)
+            )
+            bool = bool and check(
+                lambda: script['user']['bio'],
+                lambda: node.get_bio(bot)
+            )
+            bool = bool and check(
+                lambda: script['user']['is_private'],
+                lambda: node.get_is_private(bot)
+            )
+            bool = bool and check(
+                lambda: script['user']['is_business'],
+                lambda: node.get_is_business(bot)
+            )
+            bool = bool and check(
+                lambda: script['user']['is_verified'],
+                lambda: node.get_is_verified(bot)
+            )
         elif isinstance(node, Geotag):
-            bool = bool and check(script['geotag']['name'], node.name)
-            bool = bool and check(script['geotag']['lat'], node.get_coordinates(bot)[0])
-            bool = bool and check(script['geotag']['lng'], node.get_coordinates(bot)[1])
+            bool = bool and check(
+                lambda: script['geotag']['name'],
+                lambda: node.name
+            )
+            bool = bool and check(
+                lambda: script['geotag']['lat'],
+                lambda: node.get_coordinates(bot)[0])
+            bool = bool and check(
+                lambda: script['geotag']['lng'],
+                lambda: node.get_coordinates(bot)[1]
+            )
         elif isinstance(node, Hashtag):
-            bool = bool and check(script['hashtag']['name'], node.name)
+            bool = bool and check(
+                lambda: script['hashtag']['name'],
+                lambda: node.name
+            )
 
         else:
             return True
@@ -121,5 +173,12 @@ def make_predicate(script, bot):
     return predicate
 
 
-def check(expr, var):
-    return eval(expr, dict(x=var))
+def check(lazy_expr, lazy_var):
+    try:
+        expr = lazy_expr()
+        var = lazy_var()
+        result = eval(expr, dict(x=var))
+        # print('({})={} with x={}'.format(expr, result, var))
+        return result
+    except KeyError:
+        return True

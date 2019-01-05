@@ -27,7 +27,8 @@ def geotag_feed(bot, nodes, amount, args) -> List[Media]:
     )
 
     result = (pack_media(item) for user in nodes for item in _medias(user))
-    result = (node for node in result if bot.suitable(node))
+    # result = (node for node in result if bot.suitable(node))
+    result = (node for node in result if node)
     result = take(amount, result)
 
     return result, bot.last

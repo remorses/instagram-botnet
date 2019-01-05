@@ -20,7 +20,8 @@ def following(bot, nodes, amount, args) -> List[User]:
     )
 
     result = (pack_user(item) for node in nodes for item in _following(node) )
-    result = (user for user in result if bot.suitable(user))
+    # result = (user for user in result if bot.suitable(user))
+    result = (user for user in result if user)
     result = islice(result, amount)
 
     return result, bot.last

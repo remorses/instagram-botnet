@@ -61,6 +61,7 @@ def get_cycled_api(bot, api_method, api_argument, key, amount, ) -> List[Node]:
     sleep_track = 0
     done = 0
 
+
     while True:
         bot.logger.info('new get cycle with %s' % api_method.__name__)
         try:
@@ -93,6 +94,7 @@ def get_cycled_api(bot, api_method, api_argument, key, amount, ) -> List[Node]:
 
         except Exception as exc:
             bot.logger.error('exception in get_cycled_api: {}'.format(exc))
+            yield from []
             return
 
         if sleep_track > 10:
@@ -103,3 +105,8 @@ def get_cycled_api(bot, api_method, api_argument, key, amount, ) -> List[Node]:
         time.sleep(bot.delay['usual'])
         next_max_id = bot.last.get("next_max_id", "")
         sleep_track += 1
+
+
+def tap(x, lazy_fun):
+    lazy_fun()
+    return x

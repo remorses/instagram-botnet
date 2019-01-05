@@ -74,7 +74,7 @@ def make_task(data):
     if not first_method:
         raise Exception('can\'t find {} interaction in available methods')
     Node = first_method.accepts
-    nodes = [Node(generic=value) for value in nodes]
+    nodes = [Node(generic=value) for value in nodes if value]
 
     return Task(nodes=nodes, actions=actions)
 

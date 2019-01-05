@@ -7,7 +7,7 @@ import time
 
 class User(Node):
 
-    def __init__(self, *, generic=None, id=None, username=None, is_private=None, data=None):
+    def __init__(self, *, generic=None, id=None, username=None, is_private=None, data={}):
         self._username = username
         self._id = id
         self._data = data
@@ -16,7 +16,7 @@ class User(Node):
             self._username = generic
 
     def __repr__(self):
-        username, id, data, *rest = attributes(self)
+        username, id, data = attributes(self)
 
         if username:
             return 'User(username=\'{}\')'.format(username)
@@ -33,7 +33,7 @@ class User(Node):
         elif data:
             return data['username']
         else:
-            return False
+            return None
 
     @property
     def id(self):
@@ -43,7 +43,7 @@ class User(Node):
         elif data:
             return data['pk']
         else:
-            return False
+            return None
 
 
     def get_data(self, bot):
@@ -59,7 +59,7 @@ class User(Node):
                 self._id = data['pk']
                 return self.get_data(bot)
             else:
-                return False
+                return {}
         elif username:
             bot.api.search_username(username)
             if 'user' in bot.last:
@@ -67,17 +67,8 @@ class User(Node):
                 self._data = self.get_data(bot)
                 return self._data
         else:
-            return False
+            return {}
 
-
-    @property
-    def is_private(self):
-        _, _, _, is_private = attributes(self)
-
-        if is_private:
-            return is_private
-        else:
-            return False
 
     def get_id(self, bot):
         username, id, data = attributes(self)
@@ -88,9 +79,9 @@ class User(Node):
                 return data['pk']
         elif username:
             data = self.get_data(bot)
-            return data['pk']
+            return data['pk'] if 'pk' in data else None
         else:
-            return False
+            return None
 
 
     def get_followers_count(self, bot):
@@ -134,7 +125,7 @@ class User(Node):
             return data['is_verified']
         else:
             data = self.get_data(bot)
-            return data['is_verified']
+            return 'is_verified' in data and data['is_verified']
 
     def get_is_anonymous_picture(self, bot):
         _, _, data = attributes(self)
