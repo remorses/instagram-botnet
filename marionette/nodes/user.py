@@ -48,7 +48,6 @@ class User(Node):
 
     def get_data(self, bot):
         username, id, data = attributes(self)
-        time.sleep(bot.delay['usual'])
         if id:
             bot.api.get_username_info(id)
             if 'user' in bot.last:
@@ -61,6 +60,7 @@ class User(Node):
             else:
                 return {}
         elif username:
+            time.sleep(bot.delay['usual'])
             bot.api.search_username(username)
             if 'user' in bot.last:
                 self._data = bot.last['user']

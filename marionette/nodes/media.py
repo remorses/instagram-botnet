@@ -50,13 +50,13 @@ class Media(Node):
             raise Exception
 
     def get_data(self, bot):
-        time.sleep(bot.delay['usual'])
         url, id, data = attributes(self)
         if url:
             id = id_from_url(url)
             self._id = id
         if id:
             bot.api.get_media_info(id)
+            time.sleep(bot.delay['usual'])
             if 'items' in bot.last:
                 self._data = bot.last["items"][0]
                 return self._data
