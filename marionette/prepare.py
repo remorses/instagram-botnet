@@ -3,6 +3,16 @@ from .nodes import Media, User, Geotag, Hashtag
 from .bot import Bot
 
 
+
+class Falsey:
+    def __init__(self, msg=''):
+        self.msg = msg
+    def __bool__(self):
+        return False
+    def __repr__(self):
+        return '"{}" is false'.format(self.msg)
+
+
 def prepare(script):
 
     bots = make_bots(script)
@@ -178,7 +188,7 @@ def check(lazy_expr, lazy_var):
         expr = lazy_expr()
         var = lazy_var()
         result = eval(expr, dict(x=var))
-        # print('({})={} with x={}'.format(expr, result, var))
         return result
+
     except KeyError:
         return True
