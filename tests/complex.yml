@@ -8,9 +8,9 @@ bots:
     -
         username:       ***REMOVED***
         password:       ***REMOVED***
-        cookie:         ./_cookies/***REMOVED***_cookie.json
-        cache:          ./cache.db
-        logs:           ./logs.html
+        cookie:         tests/_cookies/***REMOVED***_cookie.json
+        cache:          tests/cache.db
+        logs:           tests/logs.html
 
 max_per_day:
         likes:          50

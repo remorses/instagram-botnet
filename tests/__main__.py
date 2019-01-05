@@ -10,19 +10,19 @@ from .unmask import unmask
 ################################################################################
 
 SCRIPTS = [
-    # parse('tests/hashtags.yml'),
-    # parse('tests/geotag_feed.yml'),
-    # parse('tests/geotag.yml'),
-    # parse('tests/usertags.yml'),
-    # parse('tests/like.yml'),
-    # parse('tests/authors.yml'),
-    # parse('tests/hashtag_feed.yml'),
-    # parse('tests/followers.yml'),
-    # parse('tests/user_feed.yml'),
-    # parse('tests/likers.yml'),
-    parse('tests/complex.yml'),
-    # parse('tests/upload.yml'),
-    # parse('tests/delete.yml'),
+    # parse('./hashtags.yml'),
+    # parse('./geotag_feed.yml'),
+    # parse('./geotag.yml'),
+    # parse('./usertags.yml'),
+    # parse('./like.yml'),
+    # parse('./authors.yml'),
+    # parse('./hashtag_feed.yml'),
+    # parse('./followers.yml'),
+    # parse('./user_feed.yml'),
+    # parse('./likers.yml'),
+    parse('./complex.yml'),
+    # parse('./upload.yml'),
+    # parse('./delete.yml'),
 
 ]
 
@@ -40,7 +40,7 @@ for name, raw in data.items():
 
     ok = False
 
-    with open('tests/artifacts/{}.json'.format(name), 'w+') as file:
+    with open('./artifacts/{}.json'.format(name), 'w+') as file:
         content = file.read()
         json = json.dumps(raw, indent=4)
         if len(raw) > len(json):
@@ -49,7 +49,7 @@ for name, raw in data.items():
         else:
             file.write(content)
 
-    with open('tests/artifacts/{}.graphql'.format(name), 'w+') as file:
+    with open('./artifacts/{}.graphql'.format(name), 'w+') as file:
         content = file.read()
 
         if ok:
