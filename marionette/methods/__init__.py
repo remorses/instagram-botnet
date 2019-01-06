@@ -11,6 +11,7 @@ from .hashtags import hashtags
 from .usertags import usertags
 from .geotag import geotag
 from .geotag_feed import geotag_feed
+from .filter import filter
 
 from .upload import upload
 from .delete import delete
