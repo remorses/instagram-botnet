@@ -12,6 +12,6 @@ bots:
 
 execute:
     - follow:
-        from_nodes: ['https://www.instagram.com/p/BrS3BGPn81X/']
-        via_edges:
-            - likers: 5
+        nodes: ['https://www.instagram.com/p/BrS3BGPn81X/']
+        edges:
+            - likers

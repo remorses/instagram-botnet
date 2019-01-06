@@ -45,12 +45,12 @@ filter:
 execute:
 
     - follow:
-            from_nodes: ['therealgue']
-            via_edges:
-                - followers: 20
+            nodes: ['therealgue']
+            edges:
+                - followers
 
     - follow:
-            from_nodes: ['lebonwski', 'therealgue']
-            via_edges:
-                - user_feed: 5
-                - likers: 30
+            nodes: ['lebonwski', 'therealgue']
+            edges:
+                - user_feed
+                - likers

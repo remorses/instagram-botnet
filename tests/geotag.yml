@@ -12,6 +12,6 @@ bots:
 
 execute:
     - like:
-        from_nodes: ['Kartepe']
-        via_edges:
-            - geotag_feed: 30
+        nodes: ['Kartepe']
+        edges:
+            - geotag_feed

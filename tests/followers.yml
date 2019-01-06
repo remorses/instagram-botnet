@@ -12,6 +12,6 @@ bots:
 
 execute:
         - follow:
-            from_nodes: ['instagram']
-            via_edges:
-                - followers: 1
+            nodes: ['instagram']
+            edges:
+                - followers

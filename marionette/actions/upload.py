@@ -10,7 +10,7 @@ import time
 
 
 @accepts(Arg)
-def upload(bot, nodes, amount, args):
+def upload(bot, nodes,  args):
 
 
     if len(nodes) == 1:

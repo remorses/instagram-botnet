@@ -37,13 +37,12 @@ class Reducer(Thread):
 
 def _reducer(state: State, action: Action):
 
-    nodes = state.target_nodes
+    nodes = state.nodes
     bot: Bot = state.bot
     errors = state.errors
     data = state.data
 
     type = action.type
-    amount = action.amount
     args = action.args
 
     if len(errors) > 1:
@@ -56,8 +55,6 @@ def _reducer(state: State, action: Action):
         # remove_bot_if_broken
 
     try:
-        nodes = list(nodes)
-
         if not nodes:
             raise Dont_retry('no nodes, {}'.format(nodes))
 
@@ -66,12 +63,10 @@ def _reducer(state: State, action: Action):
         if not method:
             raise Dont_retry('can\'t find method {}'.format(type))
 
-        next_nodes, next_data = method(bot, nodes, amount, args)
-
-        next_nodes = list(next_nodes)
+        next_nodes, next_data = method(bot, nodes,  args)
 
         bot.logger.info('{} did success on {}'.format(type, nodes))
-        bot.logger.debug('{} returned {}'.format(type, next_nodes))
+        # bot.logger.debug('{} returned {}'.format(type, next_nodes))
 
         next_data = merge(data, {'__{}__'.format(type): next_data})
 
@@ -80,7 +75,7 @@ def _reducer(state: State, action: Action):
 
     except Dont_retry as exc:
         bot.logger.error('error reducing action {}: \"{}\" {}'.format(type, exc.__class__.__name__, exc))
-        return State(target_nodes=[], bot=bot, errors=errors + [exc], data=data)
+        return State(nodes=[], bot=bot, errors=errors + [exc], data=data)
 
     except Exception as exc:
         bot.logger.error('error reducing action {}: \"{}\" \n {}'.format(
@@ -95,7 +90,7 @@ def _reducer(state: State, action: Action):
 
     else:
         # all is right, no exceptions
-        return State(target_nodes=next_nodes, bot=bot, errors=[], data=next_data)
+        return State(nodes=next_nodes, bot=bot, errors=[], data=next_data)
 
 
 def merge(a, b):

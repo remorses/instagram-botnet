@@ -15,12 +15,3 @@ class Action(dict):
             del self[name]
         else:
             raise AttributeError("No such attribute: " + name)
-
-
-def make_actions(task):
-        return [_make_action(action) for action in task.actions]
-
-
-def _make_action(action) -> Action:
-        args = action['args']
-        return Action(type=action['type'], amount=action['amount'], args=args)

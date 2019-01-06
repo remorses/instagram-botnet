@@ -9,22 +9,20 @@ class Task(dict):
 
         actions:
             -   type:   feed
-                amount: 10
 
             -   type:   send
-                amount: 1
-            args:
-                messages = []
-                stuff =    whokonws
+                args:
+                    messages = []
+                    stuff =    whokonws
 
         nodes: [url1, url2]
 
         actions:
             -   type: upload
-            args:
-                caption: 'text bla bla'
-                location: id
-                usertags: id
+                args:
+                    caption: 'text bla bla'
+                    location: id
+                    usertags: id
 
     """
 
@@ -54,19 +52,16 @@ def make_task(data):
 
     if 'nodes' in body:
         nodes += body['nodes']
+        edges = body['edges']
         args = body['args'] if 'args' in body else {}
-        actions += [dict(type=interaction, amount=1, args=args)]
+        args['amount'] = body['amount'] if 'amount' in body \
+            else args['amount'] if 'amount' in args \
+            else 1
+        actions += [dict(type=edge, args={}) for edge in edges]
+        actions += [dict(type=interaction, args=args)]
 
-    elif 'from_nodes' in body:
-        nodes += body['from_nodes']
-        args = body['args'] if 'args' in body else {}
-
-        edges = [(list(edge.keys())[0], list(edge.values())[0]) for edge in body['via_edges']]
-        actions += [dict(type=edge, amount=num, args={}) for (edge, num) in edges]
-
-        actions += [dict(type=interaction, amount=1, args=args)]
     else:
-        raise Exception('neither nodes or from_nodes in script')
+        raise Exception('nodes not in script in script')
 
     # print('actions:',actions)
 

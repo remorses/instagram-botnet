@@ -4,24 +4,6 @@ from .bot import Bot
 
 
 
-class Falsey:
-    def __init__(self, msg=''):
-        self.msg = msg
-    def __bool__(self):
-        return False
-    def __repr__(self):
-        return '"{}" is false'.format(self.msg)
-
-
-def prepare(script):
-
-    bots = make_bots(script)
-
-    for bot in bots:
-        if 'filter' in script:
-            bot.predicates += [make_predicate(script['filter'], bot)]
-
-    return bots
 
 
 def make_bots(script):
@@ -77,6 +59,9 @@ def make_bots(script):
                                value in script['max_per_day'].items()}
         if 'delay' in script:
             bot.delay = {**bot.delay, **{key: value for key, value in script['delay'].items()} }
+
+        if 'filter' in script:
+            bot.predicates += [make_predicate(script['filter'], bot)]
 
     return bots
 

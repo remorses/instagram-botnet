@@ -1,11 +1,14 @@
 
 
 from .task import make_task, partitionate
-from .reducer import Reducer, make_state, make_actions
+from .make_bots import make_bots
+from .reducer import Reducer, State, Action
 from .threads import start, wait
 
 
-def execute(script, bots):
+def execute(script,):
+
+    bots = make_bots(script)
 
     script_name = script['name'] if script['name'] else 'unnmaed script'
 
@@ -19,9 +22,9 @@ def execute(script, bots):
             task = make_task(instruction)
 
             for (task, bot) in partitionate(task, bots):
-                state = make_state(task, bot)
+                state = State(nodes=task.nodes, bot=bot, data=dict(), errors=[])
                 # bot.logger.debug(str(bot) + ' ' + str(state))
-                actions = make_actions(task)
+                actions = [Action(type=action['type'], args=action['args']) for action in task.actions]
                 # bot.logger.debug(actions)
                 threads += [Reducer(state, actions)]
                 bot.logger.debug('new task of type {} and new thread, in script {}'.format(interaction, script_name))

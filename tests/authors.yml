@@ -22,6 +22,7 @@ bots:
 
 execute:
     - follow:
-            from_nodes: ['https://www.instagram.com/p/Bqp-eokgcqf/']
-            via_edges:
-                - authors: 1
+        nodes:
+            - 'https://www.instagram.com/p/Bqp-eokgcqf/'
+        edges:
+            - authors

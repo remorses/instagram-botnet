@@ -13,8 +13,3 @@ class State(dict):
             del self[name]
         else:
             raise AttributeError("No such attribute: " + name)
-
-
-def make_state(task, bot):
-        state = State(target_nodes=task.nodes, bot=bot, data=dict(), errors=[])
-        return state

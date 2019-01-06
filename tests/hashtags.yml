@@ -12,7 +12,7 @@ bots:
 
 execute:
     - like:
-            from_nodes: ['https://www.instagram.com/p/BsJescbgWhs/']
-            via_edges:
-                - hashtags: 2
-                - hashtag_feed: 2
+            nodes: ['https://www.instagram.com/p/BsJescbgWhs/']
+            edges:
+                - hashtags
+                - hashtag_feed

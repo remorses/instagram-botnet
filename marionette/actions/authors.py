@@ -5,10 +5,10 @@ from .common import accepts
 
 
 @accepts(Media)
-def authors(bot, nodes, amount, args):
+def authors(bot, nodes,  args):
 
 
     result = (media.get_author(bot) for media in nodes if media)
-    result = islice(result, amount)
+
 
     return result, bot.last

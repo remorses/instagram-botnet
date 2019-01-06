@@ -5,28 +5,29 @@ from random import uniform
 import time
 from ..bot import Bot
 from ..nodes import User, Media
-from .common import accepts, get_cycled_api
+from .common import accepts, cycled_api_call
 
 
 @accepts(User)
-def following(bot, nodes, amount, args) -> List[User]:
-
+def followers(bot, nodes,  args) -> List[User]:
 
     pack_user = lambda item: User(id=item['pk'], username=item['username'], data=item)
 
-    _following = rcompose(
+    _followers = rcompose(
         lambda user: user.id if user.id else user.get_id(bot),
-        lambda id: get_following(bot, id, amount),
+        lambda id: get_followers(bot, id),
     )
 
-    result = (pack_user(item) for node in nodes for item in _following(node) )
+    result = (pack_user(item) for node in nodes for item in _followers(node) )
     # result = (user for user in result if bot.suitable(user))
     result = (user for user in result if user)
-    result = islice(result, amount)
+
 
     return result, bot.last
 
 
 
-def get_following( bot ,id,  amount) -> List[User]:
-    return get_cycled_api(bot, bot.api.get_user_followings, id, 'users', amount)
+
+
+def get_followers( bot ,id) -> List[User]:
+    return cycled_api_call(bot, bot.api.get_user_followers, id, 'users')

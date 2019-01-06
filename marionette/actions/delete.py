@@ -10,7 +10,7 @@ import time
 
 
 @accepts(Media)
-def delete(bot, nodes, amount, args):
+def delete(bot, nodes,  args):
 
 
     for node in nodes:

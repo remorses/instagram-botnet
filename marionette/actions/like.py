@@ -8,7 +8,7 @@ from ..nodes import Node, User, Media
 
 
 @accepts(Media)
-def like(bot, nodes, amount, args):
+def like(bot, nodes,  args):
 
 
     count = 0
@@ -22,7 +22,7 @@ def like(bot, nodes, amount, args):
             lambda: bot.logger.warn('{} not suitable'.format(node))),
         lambda x: tap(x, increment) if x else None,
         lambda node: _like(node, bot=bot) \
-            if count <= amount and node else None,
+            if count <= args['amount'] and node else None,
     )
 
     [process(node) for node in nodes if node]

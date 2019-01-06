@@ -22,9 +22,9 @@ bots:
 
 execute:
     - like:
-        from_nodes:       ['pizza', 'cane']
-        via_edges:
-            - hashtag_feed: 1
+        nodes:       ['pizza', 'cane']
+        edges:
+            - hashtag_feed
 
 
 

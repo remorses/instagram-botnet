@@ -8,7 +8,7 @@ import time
 
 
 @accepts(User)
-def follow(bot: Bot, nodes, amount, args):
+def follow(bot: Bot, nodes,  args):
 
     count = 0
 
@@ -21,7 +21,7 @@ def follow(bot: Bot, nodes, amount, args):
             lambda: bot.logger.warn('{} not suitable'.format(node))),
         lambda x: tap(x, increment) if x else None,
         lambda node: _follow(node, bot=bot) \
-            if (count <= amount) and node else None,
+            if (count <= args['amount']) and node else None,
     )
 
     [process(node) for node in nodes if node]

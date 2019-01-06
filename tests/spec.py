@@ -2,7 +2,7 @@ import sys
 from pathlib import Path
 import json
 
-from marionette import execute, prepare
+from marionette import execute
 from .parse import parse
 from .unmask import unmask
 
@@ -33,8 +33,7 @@ if __name__ == '__main__':
 
     data = {}
     for script in SCRIPTS:
-        bots = prepare(script)
-        data[script['name']] = execute(script, bots)
+        data[script['name']] = execute(script)
 
 
 

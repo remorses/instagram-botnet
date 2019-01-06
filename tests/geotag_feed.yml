@@ -1,18 +1,20 @@
-name:                   test_usertags
-version:                1
-mode:                   distributed
+name:               test_usertags
+version:            1
+mode:               distributed
 
 
 
 bots:
     -
-        username:       ***REMOVED***
-        password:       ***REMOVED***
+        username:   ***REMOVED***
+        password:   ***REMOVED***
 
 
 execute:
     - like:
-        from_nodes: ['https://www.instagram.com/p/BsJV8wCA9vi/']
-        via_edges:
-            - geotag: 2
-            - geotag_feed: 30
+        nodes:      ['https://www.instagram.com/p/BsJV8wCA9vi/']
+        edges:
+            - geotag
+            - geotag_feed
+        args:
+            amount: 10
