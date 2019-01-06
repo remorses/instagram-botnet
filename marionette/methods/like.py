@@ -1,5 +1,5 @@
 from typing import List
-from funcy import take, rcompose
+from funcy import take, rcompose, raiser, ignore
 import time
 from .common import accepts, today, tap
 from ..nodes import Node, User, Media
@@ -17,21 +17,26 @@ def like(bot, nodes,  args):
         global count
         count += 1
 
-    process = rcompose(
-        lambda node: node if bot.suitable(node) else tap(None,
-            lambda: bot.logger.warn('{} not suitable'.format(node))),
-        lambda x: tap(x, increment) if x else None,
-        lambda node: _like(node, bot=bot) \
-            if count <= args['amount'] and node else None,
+    process = ignore(StopIteration)(
+        rcompose(
+            lambda nodes: nodes.next(),
+            lambda node: node \
+                if bot.suitable(node) \
+                else tap(None,lambda: bot.logger.warn('{} not suitable'.format(node))),
+            lambda x: tap(x, increment) if x else None,
+            lambda node: like_media(node, bot=bot) \
+                if node and (count <= args['amount']) \
+                else raiser(StopIteration),
+        )
     )
 
-    [process(node) for node in nodes if node]
-
-    data = bot.last
-    return [], data
+    process(nodes)
 
 
-def _like(media, bot):
+    return [], bot.last
+
+
+def like_media(media, bot):
         bot.api.like(media.id)
         if bot.last['status'] != 'ok':
             bot.logger.warn('request didn\'t return "ok" liking {}'.format(media.url))

@@ -19,8 +19,8 @@ SCRIPTS = [
     # parse('tests/hashtag_feed.yml'),
     # parse('tests/followers.yml'),
     # parse('tests/user_feed.yml'),
-    parse('tests/likers.yml'),
-    # parse('tests/complex.yml'),
+    # parse('tests/likers.yml'),
+    parse('tests/complex.yml'),
     # parse('tests/upload.yml'),
     # parse('tests/delete.yml'),
 

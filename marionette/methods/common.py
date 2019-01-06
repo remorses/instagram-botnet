@@ -1,6 +1,6 @@
 from funcy import wraps, autocurry
 from datetime import datetime
-from time import time
+import time
 from typing import List
 from ..nodes import Node
 
@@ -97,3 +97,7 @@ def cycled_api_call(bot, api_method, api_argument, key,  ) -> List[Node]:
 def tap(x, lazy_fun):
     lazy_fun()
     return x
+
+
+def propagate(exc):
+    raise exc
