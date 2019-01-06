@@ -16,24 +16,20 @@ def follow(bot: Bot, nodes,  args):
         global count
         count += 1
 
-    bot.logger.debug('nodes at follow %s' % list(nodes))
+    stop = raiser(StopIteration)
 
-
-    process = ignore(StopIteration, 'end')(
-        rcompose(
-            lambda: next(nodes),
-            _tap,
+    process = rcompose(
             lambda node: node \
                 if bot.suitable(node) \
                 else tap(None,lambda: bot.logger.warn('{} not suitable'.format(node))),
             lambda x: tap(x, increment) if x else None,
             lambda node: follow_user(node, bot=bot) \
                 if node and (count <= args['amount']) \
-                else raiser(StopIteration),
+                else stop(),
         )
-    )
 
-    process()
+
+    list(map(process, nodes))
 
     return [], bot.last
 
@@ -48,5 +44,5 @@ def follow_user(user, bot):
         with bot.cache as cache:
             cache['followed'].insert(dict(identifier=user.id, time=today(), type='user', interaction='follow'))
 
-        bot.logger.debug('followed %s' % user.id)
+        bot.logger.info('followed %s' % user)
         time.sleep(bot.delay['follow'])

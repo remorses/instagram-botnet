@@ -10,15 +10,11 @@ def accepts(Class):
     def _accepts(original):
 
         @wraps(original)
-        def enhanced(bot, nodes,  args, *others, **kwrgs):
+        def enhanced(bot, nodes,  args):
 
             # print('nodes in accepts for {}: {}'.format(original.__name__, nodes))
 
-            if any([not isinstance(node, Class) for node in nodes]):
-                raise Exception(
-                    'nodes like {} aren\'t instance of {}'.format(nodes[0], Class.__name__))
-
-            result = original(bot, nodes,  args, *others, **kwrgs)
+            result = original(bot, nodes,  args)
 
             return result
 

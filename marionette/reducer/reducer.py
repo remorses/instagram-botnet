@@ -64,7 +64,7 @@ def _reducer(state: dict, action: Action):
         if not method:
             raise Dont_retry('can\'t find method {}'.format(type))
 
-        bot.logger.debug('reducing nodes %s' % nodes)
+        # bot.logger.debug('reducing nodes %s' % list(nodes))
 
         next_nodes, next_data = method(bot, nodes,  args)
 
