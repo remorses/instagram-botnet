@@ -5,7 +5,7 @@ from .common import accepts
 
 
 @accepts(Node)
-def usertags(bot, nodes,  args) -> Node:
+def filter(bot, nodes,  args) -> Node:
 
     nodes = (node for node in nodes if bot.suitable(node))
 
