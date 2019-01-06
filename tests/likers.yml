@@ -12,6 +12,9 @@ bots:
 
 execute:
     - follow:
-        nodes: ['https://www.instagram.com/p/BrS3BGPn81X/']
+        nodes:
+            - 'https://www.instagram.com/p/BrS3BGPn81X/'
         edges:
             - likers
+        args:
+            amount: 30

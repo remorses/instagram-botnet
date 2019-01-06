@@ -8,9 +8,9 @@ from .common import accepts
 def usertags(bot, nodes,  args) -> User:
 
 
-    result = (tag for media in nodes for tag in media.usertags(bot))
+    result = (tag for media in nodes for tag in media.get_usertags(bot))
     # result = (user for user in result if bot.suitable(user))
     result = (user for user in result if user)
-    
+
 
     return result, bot.last

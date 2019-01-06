@@ -58,14 +58,14 @@ def _reducer(state: State, action: Action):
         if not nodes:
             raise Dont_retry('no nodes, {}'.format(nodes))
 
-        method = methods.get(type, False)
+        method = methods.get(type, None)
 
         if not method:
             raise Dont_retry('can\'t find method {}'.format(type))
 
         next_nodes, next_data = method(bot, nodes,  args)
 
-        bot.logger.info('{} did success on {}'.format(type, nodes))
+        # bot.logger.info('{} did success on {}'.format(type, nodes))
         # bot.logger.debug('{} returned {}'.format(type, next_nodes))
 
         next_data = merge(data, {'__{}__'.format(type): next_data})

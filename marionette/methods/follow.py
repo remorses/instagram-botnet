@@ -21,7 +21,7 @@ def follow(bot: Bot, nodes,  args):
             lambda: bot.logger.warn('{} not suitable'.format(node))),
         lambda x: tap(x, increment) if x else None,
         lambda node: _follow(node, bot=bot) \
-            if (count <= args['amount']) and node else None,
+            if node and (count <= args['amount']) else None,
     )
 
     [process(node) for node in nodes if node]
