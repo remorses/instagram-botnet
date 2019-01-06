@@ -27,6 +27,7 @@ methods = dict(
                usertags=usertags,
                geotag=geotag,
                geotag_feed=geotag_feed,
+               filter=filter,
 
                follow=follow,
                like=like,

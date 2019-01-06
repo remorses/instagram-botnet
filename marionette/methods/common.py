@@ -42,7 +42,7 @@ def parse_date(date):
 
 
 
-def cycled_api_call(bot, api_method, api_argument, key,  ) -> List[Node]:
+def cycled_api_call(bot, api_method, api_argument, key,  ):
 
     next_max_id = ''
     sleep_track = 0

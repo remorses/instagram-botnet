@@ -22,12 +22,14 @@ def execute(script,):
             task = make_task(instruction)
 
             for (task, bot) in partitionate(task, bots):
-                state = State(nodes=task.nodes, bot=bot, data=dict(), errors=[])
+                bot.logger.debug('nodes in execute: %s' % task.nodes)
+                state = dict(nodes=task.nodes, bot=bot, data=dict(), errors=[])
                 # bot.logger.debug(str(bot) + ' ' + str(state))
                 actions = [Action(type=action['type'], args=action['args']) for action in task.actions]
                 # bot.logger.debug(actions)
                 threads += [Reducer(state, actions)]
                 bot.logger.debug('new task of type {} and new thread, in script {}'.format(interaction, script_name))
+                bot.logger.debug('actions : {}, nodes: {}'.format(actions, list(state['nodes'])))
 
 
             threads = start(threads)
@@ -38,10 +40,9 @@ def execute(script,):
 
 
     except KeyboardInterrupt:
+        bot.logger.warn('keyboard interrupt')
         raise
 
-    except Exception as e:
-        raise e
 
     finally:
         return data

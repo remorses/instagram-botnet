@@ -2,7 +2,7 @@ from .common import accepts
 from ..nodes import Node, User, Media
 from .common import today, tap
 from ..bot import Bot
-from funcy import take, rcompose, ignore, raiser
+from funcy import take, rcompose, ignore, raiser, tap as _tap
 import time
 
 
@@ -16,10 +16,13 @@ def follow(bot: Bot, nodes,  args):
         global count
         count += 1
 
+    bot.logger.debug('nodes at follow %s' % list(nodes))
 
-    process = ignore(StopIteration)(
+
+    process = ignore(StopIteration, 'end')(
         rcompose(
-            lambda nodes: nodes.next(),
+            lambda: next(nodes),
+            _tap,
             lambda node: node \
                 if bot.suitable(node) \
                 else tap(None,lambda: bot.logger.warn('{} not suitable'.format(node))),
@@ -30,7 +33,7 @@ def follow(bot: Bot, nodes,  args):
         )
     )
 
-    process(nodes)
+    process()
 
     return [], bot.last
 

@@ -19,7 +19,7 @@ SCRIPTS = [
     # parse('tests/hashtag_feed.yml'),
     # parse('tests/followers.yml'),
     # parse('tests/user_feed.yml'),
-    # parse('tests/likers.yml'),
+    #parse('tests/likers.yml'),
     parse('tests/complex.yml'),
     # parse('tests/upload.yml'),
     # parse('tests/delete.yml'),
@@ -44,10 +44,10 @@ if __name__ == '__main__':
 
         with open('tests/artifacts/{}.json'.format(name), 'w+') as file:
             content = file.read()
-            json = json.dumps(raw, indent=4)
-            if len(raw) > len(json):
+            dumped = json.dumps(raw, indent=4)
+            if len(raw) > len(dumped):
                 ok = True
-                file.write(data)
+                file.write(raw)
             else:
                 file.write(content)
 

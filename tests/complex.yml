@@ -45,6 +45,8 @@ filter:
 execute:
 
     - follow:
-            nodes: ['therealgue']
+            nodes: ['***REMOVED***']
             edges:
                 - followers
+            args:
+                amount: 30

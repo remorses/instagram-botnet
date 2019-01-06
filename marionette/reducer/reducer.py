@@ -2,7 +2,7 @@ from functools import reduce
 import time
 import traceback
 from .actions import Action
-from .state import State
+
 from ..bot import Bot
 from ..methods import methods
 from ..threads import Thread
@@ -18,9 +18,9 @@ class Dont_retry(Exception):
 class Reducer(Thread):
 
     def __init__(self, state, actions, name=None):
-        super().__init__(name=state.bot.username)
-        self.name = state.bot.username
-        self.logger = state.bot.logger
+        super().__init__(name=state['bot'].username)
+        self.name = state['bot'].username
+        self.logger = state['bot'].logger
         self.actions = actions
         self.state = state
 
@@ -29,18 +29,18 @@ class Reducer(Thread):
         last_action = self.actions[-1].type
         self.logger.debug('{} interaction begins'.format( last_action, ))
         last_state = reduce(_reducer, self.actions, self.state)
-        super().set_data(last_state.data)
+        super().set_data(last_state['data'])
         self.logger.debug('{} interaction ends'.format( last_action,))
         return
 
 
 
-def _reducer(state: State, action: Action):
+def _reducer(state: dict, action: Action):
 
-    nodes = state.nodes
-    bot: Bot = state.bot
-    errors = state.errors
-    data = state.data
+    nodes = state['nodes']
+    bot: Bot = state['bot']
+    errors = state['errors']
+    data = state['data']
 
     type = action.type
     args = action.args
@@ -55,6 +55,7 @@ def _reducer(state: State, action: Action):
         # remove_bot_if_broken
 
     try:
+
         if not nodes:
             raise Dont_retry('no nodes, {}'.format(nodes))
 
@@ -62,6 +63,8 @@ def _reducer(state: State, action: Action):
 
         if not method:
             raise Dont_retry('can\'t find method {}'.format(type))
+
+        bot.logger.debug('reducing nodes %s' % nodes)
 
         next_nodes, next_data = method(bot, nodes,  args)
 
@@ -75,7 +78,7 @@ def _reducer(state: State, action: Action):
 
     except Dont_retry as exc:
         bot.logger.error('error reducing action {}: \"{}\" {}'.format(type, exc.__class__.__name__, exc))
-        return State(nodes=[], bot=bot, errors=errors + [exc], data=data)
+        return dict(nodes=[], bot=bot, errors=errors + [exc], data=data)
 
     except Exception as exc:
         bot.logger.error('error reducing action {}: \"{}\" \n {}'.format(
@@ -90,7 +93,7 @@ def _reducer(state: State, action: Action):
 
     else:
         # all is right, no exceptions
-        return State(nodes=next_nodes, bot=bot, errors=[], data=next_data)
+        return dict(nodes=next_nodes, bot=bot, errors=[], data=next_data)
 
 
 def merge(a, b):

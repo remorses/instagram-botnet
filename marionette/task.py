@@ -69,7 +69,8 @@ def make_task(data):
     if not first_method:
         raise Exception('can\'t find {} interaction in available methods')
     Node = first_method.accepts
-    nodes = [Node(generic=value) for value in nodes if value]
+
+    nodes = [Node(generic=value) for value in nodes]
 
     return Task(nodes=nodes, actions=actions)
 
@@ -83,11 +84,11 @@ def partitionate(task: Task, bots):
         def _right_partition(i):
             return i % len(bots) == partition
 
-        new_nodes = [node for (i, node) in enumerate(
-            task.nodes) if _right_partition(i)]
+        new_nodes = [node for (i, node) in enumerate(task.nodes) if _right_partition(i)]
 
         new_actions = [dict(**action) for action in task.actions]
         new_task = Task(nodes=new_nodes, actions=new_actions)
+
 
         couples += [(new_task, bot)]
 
