@@ -1,7 +1,5 @@
 from typing import List
-from funcy import rcompose
-from itertools import islice
-from random import uniform
+from funcy import rcompose, ignore
 import time
 from ..bot import Bot
 from ..nodes import User, Media
@@ -9,19 +7,21 @@ from .common import accepts, cycled_api_call
 
 
 @accepts(User)
-def followers(bot, nodes,  args) -> List[User]:
+def followers(bot: Bot, nodes,  args) -> List[User]:
 
     pack_user = lambda item: User(id=item['pk'], username=item['username'], data=item)
 
-    _followers = rcompose(
-        lambda user: user.id if user.id else user.get_id(bot),
-        lambda id: get_followers(bot, id),
+    process = ignore(StopIteration)(
+        rcompose(
+            lambda nodes: nodes.next(),
+            lambda user: user.id if user.id else user.get_id(bot),
+            lambda id: get_followers(bot, id),
+            lambda generator: generator.next(),
+            pack_user
+        )
     )
 
-    result = (pack_user(item) for node in nodes for item in _followers(node) )
-    # result = (user for user in result if bot.suitable(user))
-    result = (user for user in result if user)
-
+    result = process(nodes)
 
     return result, bot.last
 

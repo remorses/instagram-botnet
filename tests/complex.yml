@@ -48,9 +48,3 @@ execute:
             nodes: ['therealgue']
             edges:
                 - followers
-
-    - follow:
-            nodes: ['lebonwski', 'therealgue']
-            edges:
-                - user_feed
-                - likers
