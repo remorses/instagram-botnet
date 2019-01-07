@@ -1,5 +1,4 @@
-from funcy import rcompose, take
-from itertools import islice
+from funcy import rcompose
 from ..nodes import Geotag, Media
 from .common import accepts
 
