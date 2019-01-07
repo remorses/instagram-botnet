@@ -1,5 +1,4 @@
-from funcy import rcompose, take
-from itertools import islice
+from funcy import rcompose, mapcat
 from ..nodes import Hashtag, Media
 from .common import accepts
 
@@ -8,6 +7,6 @@ from .common import accepts
 def hashtags(bot, nodes,  args):
 
     process = lambda media: media.get_hashtags(bot)
-    result = map(process, nodes)
+    result = mapcat(process, nodes)
 
     return result, bot.last
