@@ -8,7 +8,7 @@ from .common import accepts
 def authors(bot, nodes,  args):
 
 
-    result = (media.get_author(bot) for media in nodes if media)
-
+    process = lambda media: media.get_author(bot)
+    result = map(process, nodes)
 
     return result, bot.last
