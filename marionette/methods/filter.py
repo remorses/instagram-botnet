@@ -7,6 +7,6 @@ from .common import accepts
 @accepts(Node)
 def filter(bot, nodes,  args) -> Node:
 
-    nodes = (node for node in nodes if bot.suitable(node))
+    nodes = bot.filter(nodes)
 
     return nodes, bot.last
