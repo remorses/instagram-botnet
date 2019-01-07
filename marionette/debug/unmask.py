@@ -7,7 +7,7 @@ from random import random
 
 def unmask(obj):
     data = json.dumps(obj)
-    temp_file = temporary_file('temp_' + str(random()), data)
+    temp_file = temporary_file('temp_' + str(random())[:2], data)
 
     with temp_file.open('w') as file:
         file.write(data)
@@ -30,9 +30,9 @@ def unmask(obj):
 
 def temporary_file(name, content):
 
-    cache_file = Path(__file__).parent
+    folder = Path(__file__).parent
 
-    file = Path(str(cache_file.resolve()) + '/' + name + '_temporary')
+    file = Path(folder.resolve() / (name + '_temporary'))
 
     file.exists() or file.touch()
 
