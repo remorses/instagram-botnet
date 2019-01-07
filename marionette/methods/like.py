@@ -17,6 +17,8 @@ def like(bot, nodes,  args):
         global count
         count += 1
 
+    stop = raiser(StopIteration)
+
     process = ignore(StopIteration)(
         rcompose(
             lambda nodes: nodes.next(),
