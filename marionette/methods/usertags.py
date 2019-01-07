@@ -7,10 +7,7 @@ from .common import accepts
 @accepts(Media)
 def usertags(bot, nodes,  args) -> User:
 
-
-    result = (tag for media in nodes for tag in media.get_usertags(bot))
-    # result = (user for user in result if bot.suitable(user))
-    result = (user for user in result if user)
-
+    process = lambda media: media.get_usertags(bot)
+    result = map(process, nodes)
 
     return result, bot.last
