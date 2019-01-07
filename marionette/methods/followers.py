@@ -9,9 +9,9 @@ from .common import accepts, cycled_api_call
 @accepts(User)
 def followers(bot: Bot, nodes,  args) -> List[User]:
 
-    bot.logger.debug('nodes at followers %s' % list(nodes)[:3])
-
-    nodes = iter(list(nodes))
+    # bot.logger.debug('nodes at followers %s' % list(nodes)[:3])
+    #
+    # nodes = iter(list(nodes))
 
     pack_user = lambda item: User(id=item['pk'], username=item['username'], data=item)
 
@@ -22,13 +22,6 @@ def followers(bot: Bot, nodes,  args) -> List[User]:
 
         )
 
-
-
-
-
     result = mapcat(process, nodes)
-
-
-
 
     return result, bot.last
