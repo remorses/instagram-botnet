@@ -12,10 +12,10 @@ def following(bot, nodes,  args) -> List[User]:
     pack_user = lambda item: User(id=item['pk'], username=item['username'], data=item)
 
     process = rcompose(
-            lambda user: user.id if user.id else user.get_id(bot),
-            lambda id: cycled_api_call(bot, bot.api.get_user_followings, id, 'users'),
-            lambda gen: map(pack_user, gen)
-        )
+        lambda user: user.id if user.id else user.get_id(bot),
+        lambda id: cycled_api_call(bot, bot.api.get_user_followings, id, 'users'),
+        lambda gen: map(pack_user, gen)
+    )
 
     result = mapcat(process, nodes)
 
