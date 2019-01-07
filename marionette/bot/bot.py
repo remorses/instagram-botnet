@@ -2,6 +2,7 @@ import datetime
 from pathlib import Path
 import dataset
 import json
+import time
 from funcy import partial
 from ..api import API
 from .settings import DELAY, TOTAL, MAX_PER_DAY
@@ -92,6 +93,13 @@ class Bot:
             bool = bool and predicate(node)
 
         return bool
+        
+        
+    def sleep(self, type='usual'):
+        if type in self.delay:
+            time.sleep(self.delay[type])
+        else:
+            time.sleep(self.delay['usual'])
 
 
     def _reset_counters(self):
