@@ -28,12 +28,11 @@ def like(bot, nodes,  args):
             lambda x: tap(x, increment) if x else None,
             lambda node: like_media(node, bot=bot) \
                 if node and (count <= args['amount']) \
-                else raiser(StopIteration),
+                else stop(),
         )
     )
 
-    process(nodes)
-
+    list(map(process, nodes))
 
     return [], bot.last
 
