@@ -1,33 +1,31 @@
 
 from typing import List
-from funcy import  rcompose, flatten, partial, print_calls
-from itertools import islice
+from funcy import  rcompose, mapcat
 from ..nodes import  Media, User
-from .common import accepts, cycled_api_call
+from .common import accepts
 
 @accepts(Media)
 def likers(bot, nodes,  args) -> List[Media]:
-    """
-    get at max 1000 likers
-    """
 
-    get_items = rcompose(
-        lambda media: media.id,
-        lambda id: get_likers(id, bot=bot),
-    )
+    pack_user = lambda item: User(id=item['pk'], username=item['username'], data=item)
 
-    pack_user = lambda data: User(id=data['pk'], username=data['username'], data=data)
+    process = rcompose(
+            lambda media: media.id if media.id else media.get_id(bot),
+            lambda id: get_likers(id, bot),
+            lambda gen: map(pack_user, gen)
+        )
 
-    result = (pack_user(item) for media in nodes for item in get_items(media))
-    # result = (media for media in result if bot.suitable(media))
-    result = (media for media in result if media)
-
+    result = mapcat(process, nodes)
 
     return result, bot.last
 
 
 
 
-def get_likers(id, bot) -> List[Media]:
+
+def get_likers(id, bot):
     bot.api.get_media_likers(id)
-    yield from bot.last['users']
+    if 'users' in bot.last:
+        yield from bot.last['users']
+    else:
+        yield from []
