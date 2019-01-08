@@ -3,6 +3,7 @@ from ..nodes import Node, User, Media
 from ..debug import unmask
 from .common import today, tap
 from ..bot import Bot
+from dataset import connect
 from funcy import rcompose, raiser, tap as _tap
 import time
 
@@ -11,26 +12,60 @@ import time
 @accepts(Node)
 def scrape(bot: Bot, nodes,  args):
 
+    try:
+        amount = args['amount'] or float('inf')
+        database = args['database']
+        table = args['table']
+        model = args['model']
+
+    except KeyError as exc:
+        bot.logger.error('please add all necessary args, {}'.format( exc))
+        return [], {}
+
+
     count = 0
 
     def increment():
         global count
         count += 1
 
-    stop = raiser(StopIteration)
-
-    process = rcompose(
-        # lambda x: tap(x, lambda: bot.logger.warn('{}._data: \n{}'.format(x, unmask(x._data)))),
-        lambda node: node \
-            if bot.suitable(node) \
-            else tap(None,lambda: bot.logger.warn('{} not suitable'.format(node))),
-        lambda node: follow_user(node, bot=bot) \
-            if node else None,
-        lambda x: tap(x, increment) if x else None,
-        lambda x: stop() if x and count >= args['amount'] else None,
+    lazy_database = lambda: connect(
+        database,
+        engine_kwargs = {'connect_args': {'check_same_thread' : False}}
     )
 
+    with lazy_database() as db:
+        for node in nodes:
+            """
+            model:
+                name:      x.full_name
+                id:        x.pk
+                followers: x.followers_count
+            """
+            insertion = dict()
+            for name, expr in model.items():
+                insertion[name] = evaluate(expr, node, bot=bot)
 
-    list(map(process, nodes))
+            if count <= amount:
+                db[table].insert(insertion)
+                increment()
+            else:
+                 break
 
     return [], bot.last
+
+
+
+def evaluate(expr, node, bot):
+    x = node._data or node.get_data(bot)
+    try:
+        value = eval(expr, dict(x=x))
+        if value:
+            return value
+        else:
+            x = node.get_data(bot)
+            value = eval(expr, dict(x=x))
+            return value
+
+    except KeyError:
+        return True
