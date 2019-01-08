@@ -2,7 +2,7 @@
 
 from .make_task import make_task, partitionate
 from .make_bots import make_bots
-from .reducer import Reducer, State, Action
+from .reducer import Reducer
 from .threads import start, wait
 
 
@@ -25,7 +25,7 @@ def execute(script,):
                 bot.logger.debug('nodes in execute: %s' % task.nodes)
                 state = dict(nodes=task.nodes, bot=bot, data=dict(), errors=[])
                 # bot.logger.debug(str(bot) + ' ' + str(state))
-                actions = [Action(type=action['type'], args=action['args']) for action in task.actions]
+                actions = [dict(type=action['type'], args=action['args']) for action in task.actions]
                 # bot.logger.debug(actions)
                 threads += [Reducer(state, actions)]
                 bot.logger.debug('new task of type {} and new thread, in script {}'.format(interaction, script_name))

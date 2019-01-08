@@ -1,7 +1,6 @@
 from functools import reduce
 import time
 import traceback
-from .actions import Action
 
 from ..bot import Bot
 from ..methods import methods
@@ -26,7 +25,7 @@ class Reducer(Thread):
 
 
     def run(self):
-        last_action = self.actions[-1].type
+        last_action = self.actions[-1]['type']
         self.logger.debug('{} interaction begins'.format( last_action, ))
         last_state = reduce(_reducer, self.actions, self.state)
         super().set_data(last_state['data'])
@@ -35,15 +34,15 @@ class Reducer(Thread):
 
 
 
-def _reducer(state: dict, action: Action):
+def _reducer(state: dict, action: dict):
 
     nodes = state['nodes']
     bot: Bot = state['bot']
     errors = state['errors']
     data = state['data']
 
-    type = action.type
-    args = action.args
+    type = action['type']
+    args = action['args']
 
     if len(errors) > 1:
         # tried multiple times
