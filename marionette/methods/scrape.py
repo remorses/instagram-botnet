@@ -4,7 +4,7 @@ from ..debug import unmask
 from .common import today, tap, dotdict
 from ..bot import Bot
 from dataset import connect
-from funcy import rcompose, raiser, tap as _tap
+from funcy import rcompose, ignore, tap as _tap
 import time
 
 
@@ -48,7 +48,7 @@ def scrape(bot: Bot, nodes,  args):
 
             if count <= amount:
                 db[table].insert(insertion)
-                bot.logger.info('added to database node {}'.format(node))
+                bot.logger.info('added to database node {} with insertion {}'.format(node, insertion))
                 increment()
             else:
                  break
@@ -58,15 +58,25 @@ def scrape(bot: Bot, nodes,  args):
 
 
 def evaluate(expr, node, bot):
-    x = node._data or node.get_data(bot)
+    x = node.get_data(bot)
+    x = dotdict(**x)
+
+
     try:
-        value = eval(expr, dict(x=x))
-        if value:
-            return value
-        else:
-            x = node.get_data(bot)
-            value = eval(expr, dict(x=x))
-            return value
+        value = eval(expr, dotdict(x=x))
 
     except (KeyError, AttributeError):
-        return None
+        value = None
+
+    if not value:
+        x = node.get_data(bot)
+        x = dotdict(**x)
+
+        try:
+            value = eval(expr, dotdict(x=x))
+
+        except (KeyError, AttributeError):
+            value = None
+
+    else:
+        return value
