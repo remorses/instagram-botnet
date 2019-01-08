@@ -27,7 +27,7 @@ def follow(bot: Bot, nodes,  args):
         lambda node: follow_user(node, bot=bot) \
             if node else None,
         lambda x: tap(x, increment) if x else None,
-        lambda x: stop() if x and count >= args['amount'] else None,
+        lambda x: stop() if x and count >= float(args['amount']) else None,
     )
 
 

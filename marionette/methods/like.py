@@ -27,7 +27,7 @@ def like(bot, nodes,  args):
         lambda node: like_media(node, bot=bot) \
             if node else None,
         lambda x: tap(x, increment) if x else None,
-        lambda x: stop() if x and count >= args['amount'] else None,
+        lambda x: stop() if x and count >= float(args['amount']) else None,
     )
 
 
@@ -44,7 +44,7 @@ def like_media(media, bot):
         else:
             with bot.cache as cache:
                 cache['liked'].insert(
-                    dict(identifier=media.id, 
+                    dict(identifier=media.id,
                         url=media.url,
                         time=today(),
                         type='media',
