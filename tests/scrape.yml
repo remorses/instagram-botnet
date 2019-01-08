@@ -23,5 +23,5 @@ execute:
 
             model:
                 name:      x.full_name
-                id:        x.pk
+                user_id:        x.pk
                 followers: x.followers_count

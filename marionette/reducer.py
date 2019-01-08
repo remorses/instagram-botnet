@@ -83,7 +83,7 @@ def _reducer(state: dict, action: dict):
         bot.logger.error('error reducing action {}: \"{}\" \n {}'.format(
             type,
             exc.__class__.__name__,
-            traceback.format_exc()))
+            '\n'.join(traceback.format_exc().split('\n')[5:])))
         bot.logger.warn('sleeping some time before retrying')
         time.sleep(bot.delay['error'])
 

@@ -1,7 +1,7 @@
 from .common import accepts
 from ..nodes import Node, User, Media
 from ..debug import unmask
-from .common import today, tap
+from .common import today, tap, dotdict
 from ..bot import Bot
 from dataset import connect
 from funcy import rcompose, raiser, tap as _tap
@@ -26,7 +26,7 @@ def scrape(bot: Bot, nodes,  args):
     count = 0
 
     def increment():
-        global count
+        nonlocal count
         count += 1
 
     lazy_database = lambda: connect(
@@ -42,12 +42,13 @@ def scrape(bot: Bot, nodes,  args):
                 id:        x.pk
                 followers: x.followers_count
             """
-            insertion = dict()
+            insertion = dotdict()
             for name, expr in model.items():
                 insertion[name] = evaluate(expr, node, bot=bot)
 
             if count <= amount:
                 db[table].insert(insertion)
+                bot.logger.info('added to database node {}'.format(node))
                 increment()
             else:
                  break
@@ -67,5 +68,5 @@ def evaluate(expr, node, bot):
             value = eval(expr, dict(x=x))
             return value
 
-    except KeyError:
-        return True
+    except (KeyError, AttributeError):
+        return None
