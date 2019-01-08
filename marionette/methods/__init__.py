@@ -1,6 +1,5 @@
 from functools import partial
-from .like import like
-from .follow import follow
+
 from .authors import authors
 from .followers import followers
 from .following import following
@@ -13,6 +12,8 @@ from .geotag import geotag
 from .geotag_feed import geotag_feed
 from .filter import filter
 
+from .like import like
+from .follow import follow
 from .upload import upload
 from .delete import delete
 from .scrape import scrape
@@ -34,6 +35,7 @@ methods = dict(
                like=like,
                upload=upload,
                delete=delete,
+               scrape=scrape,
               )
 
 #
