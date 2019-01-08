@@ -4,7 +4,7 @@ from ..debug import unmask
 from .common import today, tap, dotdict
 from ..bot import Bot
 from dataset import connect
-from funcy import rcompose, ignore, tap as _tap
+from funcy import rcompose, ignore, retry
 import time
 
 
@@ -58,25 +58,19 @@ def scrape(bot: Bot, nodes,  args):
 
 
 def evaluate(expr, node, bot):
-    x = node.get_data(bot)
+    x = node._data or node.get_data(bot)
     x = dotdict(**x)
-
-
-    try:
-        value = eval(expr, dotdict(x=x))
-
-    except (KeyError, AttributeError):
-        value = None
-
+    value = xeval(expr, x)
     if not value:
         x = node.get_data(bot)
         x = dotdict(**x)
-
-        try:
-            value = eval(expr, dotdict(x=x))
-
-        except (KeyError, AttributeError):
-            value = None
-
+        return xeval(expr, x)
     else:
         return value
+
+def xeval(expr, x):
+    try:
+        return eval(expr, dotdict(x=x))
+
+    except (KeyError, AttributeError):
+        return None
