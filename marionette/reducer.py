@@ -2,9 +2,9 @@ from functools import reduce
 import time
 import traceback
 
-from ..bot import Bot
-from ..methods import methods
-from ..threads import Thread
+from .bot import Bot
+from .methods import methods
+from .threads import Thread
 
 class Dont_retry(Exception):
     """
