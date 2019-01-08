@@ -17,8 +17,11 @@ execute:
             - likers
         args:
             amount:        inf
+
+            database:      sqlite:///tests/scraped.db
+            table:         photo5645_likers
+
             model:
                 name:      x.full_name
                 id:        x.pk
                 followers: x.followers_count
-            database:      sqlite:///tests/scraped.db

@@ -15,6 +15,7 @@ from .filter import filter
 
 from .upload import upload
 from .delete import delete
+from .scrape import scrape
 
 methods = dict(
                authors=authors,

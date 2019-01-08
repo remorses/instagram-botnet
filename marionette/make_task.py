@@ -1,5 +1,5 @@
 from .methods import methods
-
+from .nodes import  Media, User
 
 class Task(dict):
     """"
@@ -62,16 +62,8 @@ def make_task(data):
 
     else:
         raise Exception('nodes not in script in script')
-
-    # print('actions:',actions)
-
-    first_method = methods.get(actions[0]['type'], None)
-    if not first_method:
-        raise Exception('can\'t find {} interaction in available methods')
-    Node = first_method.accepts
-
-    nodes = [Node(generic=value) for value in nodes]
-
+        
+    nodes = initialize_nodes(nodes, actions)
     return Task(nodes=nodes, actions=actions)
 
 
@@ -97,3 +89,15 @@ def partitionate(task: Task, bots):
 
 def popped(to_pop, dictionary):
     return {key:value for key, value in dictionary.items() if key != to_pop}
+
+
+
+def initialize_nodes(nodes, actions, ):
+    first_method = methods.get(actions[0]['type'], None)
+    if not first_method:
+        raise Exception('can\'t find {} interaction in available methods')
+    Class = first_method.accepts
+    Class = Class if Class.__name__ != 'Node' else \
+        Media if 'instagram.com' in nodes[0] else User
+
+    return [Class(generic=value) for value in nodes]

@@ -1,4 +1,4 @@
-from functools import partial
+from funcy import partial
 from .nodes import Media, User, Geotag, Hashtag
 from .bot import Bot
 
