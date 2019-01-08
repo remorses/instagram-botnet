@@ -1,6 +1,6 @@
 
 
-from .task import make_task, partitionate
+from .make_task import make_task, partitionate
 from .make_bots import make_bots
 from .reducer import Reducer, State, Action
 from .threads import start, wait
