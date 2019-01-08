@@ -21,4 +21,4 @@ execute:
                 name:      x.full_name
                 id:        x.pk
                 followers: x.followers_count
-            database:      tests/scraped.db
+            database:      sqlite:///tests/scraped.db
