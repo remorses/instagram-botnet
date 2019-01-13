@@ -59,7 +59,7 @@ actions:
           - filter:
                 media:
                     url: not in {{ already_reposted }}  
-          - make_variables:
+          - to_chain:
                 as: to_repost
                 amount: 300
                 
@@ -69,10 +69,12 @@ actions:
 
 actions:
     - describe: reposter
-      nodes: {{ to_repost }}
+      nodes: {{ random.shuffle(to_repost) }}
       edges:
+          - filter
           - upload:
-                caption:  "heeeeeey gente #modificato"
+                amount:   1
+                caption:  {{ random.choice(captions) }}
                 geotag:   gesuralemme
                 usertags: ['***REMOVED***', 'madonna']
               
