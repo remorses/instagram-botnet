@@ -45,6 +45,7 @@ class Task(dict):
 def make_task(data):
 
     nodes = []
+    edges = []
     actions = []
     args = {}
 
@@ -60,7 +61,7 @@ def make_task(data):
     args['amount'] = body['amount'] if 'amount' in body \
         else args['amount'] if 'amount' in args \
         else 1
-        
+
     actions += [dict(type=edge, args={}) for edge in edges]
     actions += [dict(type=interaction, args=args)]
 
@@ -69,6 +70,7 @@ def make_task(data):
     return Task(nodes=nodes, actions=actions)
 
 
+# TODO this shit suppress my errors
 def partitionate(task: Task, bots):
 
     couples = []
