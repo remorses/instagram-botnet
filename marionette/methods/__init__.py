@@ -17,7 +17,7 @@ from .follow import follow
 from .upload import upload
 from .delete import delete
 from .scrape import scrape
-from .set_prfile import set_profile
+from .set_profile import set_profile
 
 methods = dict(
                authors=authors,

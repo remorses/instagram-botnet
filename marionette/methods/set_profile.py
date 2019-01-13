@@ -1,7 +1,8 @@
 from typing import List
 from funcy import  rcompose, raiser, ignore
-from operator import itemgetter, itemsetter
+from operator import itemgetter
 import time
+from ..debug import unmask
 from .common import accepts, today, tap
 from ..nodes import Node, User, Arg
 
@@ -23,7 +24,6 @@ def set_profile(bot, nodes,  args):
         'biography': pick('biography'),
         'email': pick('email'),
         'gender': pick('gender'),
-        
     }
 
     if mode:
@@ -36,6 +36,8 @@ def set_profile(bot, nodes,  args):
 
     # TODO set default values in edits
     if any([value for value in edits.values()]):
+        bot.api.get_profile_data()
+        print(unmask(bot.last))
         edits = {key: value for key, value in edits.items() if value}
         bot.api.edit_profile(**edits)
 
