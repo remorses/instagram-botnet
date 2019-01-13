@@ -1,0 +1,19 @@
+name:              test_like
+version:           1
+mode:              distributed
+
+
+bots:
+    -   username:  ***REMOVED***
+        password:  ***REMOVED***
+
+
+execute:
+    - set_profile:
+        args:
+            mode: private
+            full_name: oh scemoh
+            # external_url:
+            biography: nessuna vita
+            email: asdf@asdf.it
+            gender: 1 #1 is man 2 is woman
