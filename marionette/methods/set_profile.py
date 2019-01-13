@@ -23,6 +23,7 @@ def set_profile(bot, nodes,  args):
         'biography': pick('biography'),
         'email': pick('email'),
         'gender': pick('gender'),
+        
     }
 
     if mode:
