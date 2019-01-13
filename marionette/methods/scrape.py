@@ -13,7 +13,7 @@ import time
 def scrape(bot: Bot, nodes,  args):
 
     try:
-        amount = args['amount'] or float('inf')
+        amount = float(args['amount'])
         database = args['database']
         table = args['table']
         model = args['model']
