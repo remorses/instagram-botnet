@@ -52,17 +52,19 @@ def make_task(data):
 
     if 'nodes' in body:
         nodes += body['nodes']
-        edges = body['edges']
-        args = body['args'] if 'args' in body else {}
-        args['amount'] = body['amount'] if 'amount' in body \
-            else args['amount'] if 'amount' in args \
-            else 1
-        actions += [dict(type=edge, args={}) for edge in edges]
-        actions += [dict(type=interaction, args=args)]
 
-    else:
-        raise Exception('nodes not in script in script')
+    if 'edges' in body:
+        edges = body['edges']
+
+    args = body['args'] if 'args' in body else {}
+    args['amount'] = body['amount'] if 'amount' in body \
+        else args['amount'] if 'amount' in args \
+        else 1
         
+    actions += [dict(type=edge, args={}) for edge in edges]
+    actions += [dict(type=interaction, args=args)]
+
+
     nodes = initialize_nodes(nodes, actions)
     return Task(nodes=nodes, actions=actions)
 
