@@ -20,25 +20,25 @@ from .scrape import scrape
 from .set_profile import set_profile
 
 methods = dict(
-               authors=authors,
-               followers=followers,
-               likers=likers,
-               following=following,
-               user_feed=user_feed,
-               hashtag_feed=hashtag_feed,
-               hashtags=hashtags,
-               usertags=usertags,
-               geotag=geotag,
-               geotag_feed=geotag_feed,
-               filter=filter,
+   authors=authors,
+   followers=followers,
+   likers=likers,
+   following=following,
+   user_feed=user_feed,
+   hashtag_feed=hashtag_feed,
+   hashtags=hashtags,
+   usertags=usertags,
+   geotag=geotag,
+   geotag_feed=geotag_feed,
+   filter=filter,
 
-               follow=follow,
-               like=like,
-               upload=upload,
-               delete=delete,
-               scrape=scrape,
-               set_profile=set_profile
-              )
+   follow=follow,
+   like=like,
+   upload=upload,
+   delete=delete,
+   scrape=scrape,
+   set_profile=set_profile
+)
 
 #
 # def make_methods(bot):
