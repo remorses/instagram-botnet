@@ -55,8 +55,8 @@ def _reducer(state: dict, action: dict):
 
     try:
 
-        if not nodes:
-            raise Dont_retry('no nodes, {}'.format(nodes))
+        # if not nodes:
+        #     raise Dont_retry('no nodes, {}'.format(nodes))
 
         method = methods.get(type, None)
 

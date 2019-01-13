@@ -1,4 +1,4 @@
-name:              test_like
+name:              test_set_profile
 version:           1
 mode:              distributed
 
@@ -15,5 +15,5 @@ execute:
             full_name: oh scemoh
             # external_url:
             biography: nessuna vita
-            email: asdf@asdf.it
+            email: dfhwpfgmnvoeswf786@asdf.it
             gender: 1 #1 is man 2 is woman

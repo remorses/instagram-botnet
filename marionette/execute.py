@@ -43,6 +43,10 @@ def execute(script,):
         bot.logger.warn('keyboard interrupt')
         raise
 
+    except Exception as exc:
+        bot.logger.error(exc)
+        print(exc)
+        raise
 
     finally:
         return data

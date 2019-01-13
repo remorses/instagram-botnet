@@ -12,15 +12,17 @@ from ..nodes import Node, User, Arg
 @accepts(Arg)
 def set_profile(bot, nodes,  args):
 
-    pick = lambda key: ignore((KeyError, AttributeError), None)(itemgetter(key)(args))
 
+    @ignore((KeyError, AttributeError), None)
+    def pick(key):
+        return args[key]
 
     mode = pick('mode')
     edits = {
-        'url': pick('external_url'),
-        'phone': pick('phone_number'),
+        'external_url': pick('external_url'),
+        'phone_number': pick('phone_number'),
         'username': pick('username'),
-        'first_name': pick('full_name'),
+        'full_name': pick('full_name'),
         'biography': pick('biography'),
         'email': pick('email'),
         'gender': pick('gender'),
@@ -37,8 +39,13 @@ def set_profile(bot, nodes,  args):
     # TODO set default values in edits
     if any([value for value in edits.values()]):
         bot.api.get_profile_data()
-        print(unmask(bot.last))
-        edits = {key: value for key, value in edits.items() if value}
+
+        previous_values = bot.last['user']
+        new_values = {key: value for key, value in edits.items() if value}
+
+        edits = {**previous_values, **new_values}
         bot.api.edit_profile(**edits)
+
+    bot.logger.info('changed profile values')
 
     return [], bot.last
