@@ -25,3 +25,7 @@ actions:
                     followers: x < 400
             - follow:
                 amount:        40
+
+    -   name:  reposter
+        edges:
+            - upload:
