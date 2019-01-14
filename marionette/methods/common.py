@@ -1,6 +1,6 @@
 from funcy import wraps, autocurry
 from datetime import datetime
-from time import time
+import time
 from typing import List
 from ..nodes import Node
 
@@ -10,15 +10,11 @@ def accepts(Class):
     def _accepts(original):
 
         @wraps(original)
-        def enhanced(bot, nodes, amount, args, *others, **kwrgs):
+        def enhanced(bot, nodes,  args):
 
             # print('nodes in accepts for {}: {}'.format(original.__name__, nodes))
 
-            if any([not isinstance(node, Class) for node in nodes]):
-                raise Exception(
-                    'nodes like {} aren\'t instance of {}'.format(nodes[0], Class.__name__))
-
-            result = original(bot, nodes, amount, args, *others, **kwrgs)
+            result = original(bot, nodes,  args)
 
             return result
 
@@ -28,20 +24,7 @@ def accepts(Class):
 
     return _accepts
 
-# @autocurry
-def get_user_id(node, bot):
-    if node.id:
-        return node.id
-    if node.username:
-        if node.username not in bot.cache.usernames:
-            bot.api.search_username(node.username)
-            if "user" in bot.api.last_json:
-                bot.cache.usernames[node.username] = str(bot.api.last_json["user"]["pk"])
-            else:
-                return None
-        return str(bot.api.last_json["user"]["pk"])
-    else:
-        raise Exception('username is needed to get the id')
+
 
 
 
@@ -55,7 +38,7 @@ def parse_date(date):
 
 
 
-def get_cycled_api(bot, api_method, api_argument, key, amount, ) -> List[Node]:
+def cycled_api_call(bot, api_method, api_argument, key,  ):
 
     next_max_id = ''
     sleep_track = 0
@@ -83,17 +66,17 @@ def get_cycled_api(bot, api_method, api_argument, key, amount, ) -> List[Node]:
                 done += len(items)
                 return
 
-            elif (done + len(items)) >= amount:
-                yield from items[:(amount - done)]
-                done += len(items)
-                return
+            # elif (done + len(items)) >= amount:
+            #     yield from items[:(amount - done)]
+            #     done += len(items)
+            #     return
 
             else:
                 yield from items
                 done += len(items)
 
         except Exception as exc:
-            bot.logger.error('exception in get_cycled_api: {}'.format(exc))
+            bot.logger.error('exception in cycled_api_call: {}'.format(exc))
             yield from []
             return
 
@@ -110,3 +93,15 @@ def get_cycled_api(bot, api_method, api_argument, key, amount, ) -> List[Node]:
 def tap(x, lazy_fun):
     lazy_fun()
     return x
+
+
+def propagate(exc):
+    raise exc
+
+
+
+class dotdict(dict):
+    """dot.notation access to dictionary attributes"""
+    __getattr__ = dict.get
+    __setattr__ = dict.__setitem__
+    __delattr__ = dict.__delitem__

@@ -1,11 +1,10 @@
 from functools import reduce
 import time
 import traceback
-from .actions import Action
-from .state import State
-from ..bot import Bot
-from ..methods import methods
-from ..threads import Thread
+
+from .bot import Bot
+from .methods import methods
+from .threads import Thread
 
 class Dont_retry(Exception):
     """
@@ -18,33 +17,32 @@ class Dont_retry(Exception):
 class Reducer(Thread):
 
     def __init__(self, state, actions, name=None):
-        super().__init__(name=state.bot.username)
-        self.name = state.bot.username
-        self.logger = state.bot.logger
+        super().__init__(name=state['bot'].username)
+        self.name = state['bot'].username
+        self.logger = state['bot'].logger
         self.actions = actions
         self.state = state
 
 
     def run(self):
-        last_action = self.actions[-1].type
+        last_action = self.actions[-1]['type']
         self.logger.debug('{} interaction begins'.format( last_action, ))
         last_state = reduce(_reducer, self.actions, self.state)
-        super().set_data(last_state.data)
+        super().set_data(last_state['data'])
         self.logger.debug('{} interaction ends'.format( last_action,))
         return
 
 
 
-def _reducer(state: State, action: Action):
+def _reducer(state: dict, action: dict):
 
-    nodes = state.target_nodes
-    bot: Bot = state.bot
-    errors = state.errors
-    data = state.data
+    nodes = state['nodes']
+    bot: Bot = state['bot']
+    errors = state['errors']
+    data = state['data']
 
-    type = action.type
-    amount = action.amount
-    args = action.args
+    type = action['type']
+    args = action['args']
 
     if len(errors) > 1:
         # tried multiple times
@@ -56,22 +54,21 @@ def _reducer(state: State, action: Action):
         # remove_bot_if_broken
 
     try:
-        nodes = list(nodes)
 
-        if not nodes:
-            raise Dont_retry('no nodes, {}'.format(nodes))
+        # if not nodes:
+        #     raise Dont_retry('no nodes, {}'.format(nodes))
 
-        method = methods.get(type, False)
+        method = methods.get(type, None)
 
         if not method:
             raise Dont_retry('can\'t find method {}'.format(type))
 
-        next_nodes, next_data = method(bot, nodes, amount, args)
+        # bot.logger.debug('reducing nodes %s' % list(nodes))
 
-        next_nodes = list(next_nodes)
+        next_nodes, next_data = method(bot, nodes,  args)
 
-        bot.logger.info('{} did success on {}'.format(type, nodes))
-        bot.logger.debug('{} returned {}'.format(type, next_nodes))
+        # bot.logger.info('{} did success on {}'.format(type, nodes))
+        # bot.logger.debug('{} returned {}'.format(type, next_nodes))
 
         next_data = merge(data, {'__{}__'.format(type): next_data})
 
@@ -80,13 +77,13 @@ def _reducer(state: State, action: Action):
 
     except Dont_retry as exc:
         bot.logger.error('error reducing action {}: \"{}\" {}'.format(type, exc.__class__.__name__, exc))
-        return State(target_nodes=[], bot=bot, errors=errors + [exc], data=data)
+        return dict(nodes=[], bot=bot, errors=errors + [exc], data=data)
 
     except Exception as exc:
         bot.logger.error('error reducing action {}: \"{}\" \n {}'.format(
             type,
             exc.__class__.__name__,
-            traceback.format_exc()))
+            '\n'.join(traceback.format_exc().split('\n')[5:])))
         bot.logger.warn('sleeping some time before retrying')
         time.sleep(bot.delay['error'])
 
@@ -95,7 +92,7 @@ def _reducer(state: State, action: Action):
 
     else:
         # all is right, no exceptions
-        return State(target_nodes=next_nodes, bot=bot, errors=[], data=next_data)
+        return dict(nodes=next_nodes, bot=bot, errors=[], data=next_data)
 
 
 def merge(a, b):

@@ -1,15 +1,12 @@
-from funcy import rcompose, take
-from itertools import islice
+from funcy import rcompose, mapcat
 from ..nodes import Hashtag, Media
 from .common import accepts
 
 
 @accepts(Media)
-def hashtags(bot, nodes, amount, args):
+def hashtags(bot, nodes,  args):
 
-    result = (tag for media in nodes for tag in media.get_hashtags(bot))
-    # result = (tag for tag in result if bot.suitable(tag))
-    result = (tag for tag in result if tag)
-    result = take(amount, result)
+    process = lambda media: media.get_hashtags(bot)
+    result = mapcat(process, nodes)
 
     return result, bot.last

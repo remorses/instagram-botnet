@@ -1,14 +1,13 @@
-from funcy import rcompose
-from itertools import islice
+from funcy import rcompose, mapcat
 from ..nodes import User, Media
 from .common import accepts
 
 
 @accepts(Media)
-def authors(bot, nodes, amount, args):
+def authors(bot, nodes,  args):
 
 
-    result = (media.get_author(bot) for media in nodes if media)
-    result = islice(result, amount)
+    process = lambda media: media.get_author(bot)
+    result = mapcat(process, nodes)
 
     return result, bot.last

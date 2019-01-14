@@ -1,0 +1,28 @@
+name:                      test_usertags
+version:                   1
+mode:                      distributed
+
+
+
+bots:
+    -
+        username:          ***REMOVED***
+        password:          ***REMOVED***
+
+
+execute:
+    - scrape:
+        nodes:             
+            - 'https://www.instagram.com/p/BsJV8wCA9vi/'
+        edges:
+            - likers
+        args:
+            amount:        3
+
+            database:      sqlite:///tests/scraped.db
+            table:         photo5645_likers
+
+            model:
+                name:      x.full_name
+                user_id:   x.pk
+                followers: x.follower_count

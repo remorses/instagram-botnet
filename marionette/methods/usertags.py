@@ -1,16 +1,13 @@
-from funcy import rcompose, take
-from itertools import islice
+from funcy import rcompose, mapcat
+from typing import List
 from ..nodes import User, Media
 from .common import accepts
 
 
 @accepts(Media)
-def usertags(bot, nodes, amount, args) -> User:
+def usertags(bot, nodes,  args) -> List[User]:
 
-
-    result = (tag for media in nodes for tag in media.usertags(bot))
-    # result = (user for user in result if bot.suitable(user))
-    result = (user for user in result if user)
-    result = take(amount, result)
+    process = lambda media: media.get_usertags(bot)
+    result = mapcat(process, nodes)
 
     return result, bot.last

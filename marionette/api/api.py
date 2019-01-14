@@ -110,6 +110,18 @@ class API(NOT_MY_API):
                     pass
                 return False
 
+    def edit_profile(self, external_url, phone_number, full_name, biography, email, gender, **rest):
+        data = self.json_data({
+            'external_url': external_url,
+            'phone_number': phone_number,
+            'username': self.username,
+            'full_name': full_name,
+            'biography': biography,
+            'email': email,
+            'gender': gender,
+        })
+        return self.send_request('accounts/edit_profile/', data)
+
     def get_story_feed(self, user_id):
         """
         last_json will have the form:

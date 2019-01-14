@@ -42,11 +42,41 @@ filter:
             lat:      x < 1000 and x > 500
             lng:      x < 1000 and x > 500
 
-execute:
+actions:
 
-    - follow:
-            nodes: ['***REMOVED***']
-            edges:
-                - followers
-            args:
-                amount: 30
+    - describe: follow_followers
+      nodes: {{ start_point }}
+      edges:
+          - followers
+          - follow:
+               amount: 50
+                     
+    - describe: return_to_reposter
+      nodes: {{ start_point }}
+      edges:
+          - following
+          - user_feed
+          - filter:
+                media:
+                    url: not in {{ already_reposted }}  
+          - to_chain:
+                as: to_repost
+                amount: 300
+                
+--- 
+# in another file
+
+
+actions:
+    - describe: reposter
+      nodes: {{ random.shuffle(to_repost) }}
+      edges:
+          - filter
+          - upload:
+                amount:   1
+                caption:  {{ random.choice(captions) }}
+                geotag:   gesuralemme
+                usertags: ['***REMOVED***', 'madonna']
+              
+
+            

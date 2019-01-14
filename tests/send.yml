@@ -24,9 +24,9 @@ bots:
 execute:
 
     - send:
-        from_nodes: ['instagram']
-        via_edges:
-            - followers: 8
+        nodes: ['instagram']
+        edges:
+            - followers
         args:
             messages:
                 - ["heeeeeey    modificato", "come stai?", ]

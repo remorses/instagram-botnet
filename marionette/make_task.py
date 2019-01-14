@@ -1,5 +1,5 @@
 from .methods import methods
-
+from .nodes import  Media, User
 
 class Task(dict):
     """"
@@ -9,22 +9,20 @@ class Task(dict):
 
         actions:
             -   type:   feed
-                amount: 10
 
             -   type:   send
-                amount: 1
-            args:
-                messages = []
-                stuff =    whokonws
+                args:
+                    messages = []
+                    stuff =    whokonws
 
         nodes: [url1, url2]
 
         actions:
             -   type: upload
-            args:
-                caption: 'text bla bla'
-                location: id
-                usertags: id
+                args:
+                    caption: 'text bla bla'
+                    location: id
+                    usertags: id
 
     """
 
@@ -47,6 +45,7 @@ class Task(dict):
 def make_task(data):
 
     nodes = []
+    edges = []
     actions = []
     args = {}
 
@@ -54,31 +53,24 @@ def make_task(data):
 
     if 'nodes' in body:
         nodes += body['nodes']
-        args = body['args'] if 'args' in body else {}
-        actions += [dict(type=interaction, amount=1, args=args)]
 
-    elif 'from_nodes' in body:
-        nodes += body['from_nodes']
-        args = body['args'] if 'args' in body else {}
+    if 'edges' in body:
+        edges = body['edges']
 
-        edges = [(list(edge.keys())[0], list(edge.values())[0]) for edge in body['via_edges']]
-        actions += [dict(type=edge, amount=num, args={}) for (edge, num) in edges]
+    args = body['args'] if 'args' in body else {}
+    args['amount'] = body['amount'] if 'amount' in body \
+        else args['amount'] if 'amount' in args \
+        else 1
 
-        actions += [dict(type=interaction, amount=1, args=args)]
-    else:
-        raise Exception('neither nodes or from_nodes in script')
+    actions += [dict(type=edge, args={}) for edge in edges]
+    actions += [dict(type=interaction, args=args)]
 
-    # print('actions:',actions)
 
-    first_method = methods.get(actions[0]['type'], None)
-    if not first_method:
-        raise Exception('can\'t find {} interaction in available methods')
-    Node = first_method.accepts
-    nodes = [Node(generic=value) for value in nodes if value]
-
+    nodes = initialize_nodes(nodes, actions)
     return Task(nodes=nodes, actions=actions)
 
 
+# TODO this shit suppress my errors
 def partitionate(task: Task, bots):
 
     couples = []
@@ -88,11 +80,11 @@ def partitionate(task: Task, bots):
         def _right_partition(i):
             return i % len(bots) == partition
 
-        new_nodes = [node for (i, node) in enumerate(
-            task.nodes) if _right_partition(i)]
+        new_nodes = [node for (i, node) in enumerate(task.nodes) if _right_partition(i)]
 
         new_actions = [dict(**action) for action in task.actions]
         new_task = Task(nodes=new_nodes, actions=new_actions)
+
 
         couples += [(new_task, bot)]
 
@@ -101,3 +93,15 @@ def partitionate(task: Task, bots):
 
 def popped(to_pop, dictionary):
     return {key:value for key, value in dictionary.items() if key != to_pop}
+
+
+
+def initialize_nodes(nodes, actions, ):
+    first_method = methods.get(actions[0]['type'], None)
+    if not first_method:
+        raise Exception('can\'t find {} interaction in available methods')
+    Class = first_method.accepts
+    Class = Class if Class.__name__ != 'Node' else \
+        Media if 'instagram.com' in nodes[0] else User
+
+    return [Class(generic=value) for value in nodes]

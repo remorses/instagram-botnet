@@ -1,54 +1,31 @@
 
 from typing import List
-from funcy import  rcompose, flatten, partial, print_calls
-from itertools import islice
+from funcy import  rcompose, mapcat
 from ..nodes import  Media, User
-from .common import accepts, get_cycled_api
+from .common import accepts
 
 @accepts(Media)
-def likers(bot, nodes, amount, args) -> List[Media]:
-    """
-    get at max 1000 likers
-    """
+def likers(bot, nodes,  args) -> List[Media]:
 
-    get_items = rcompose(
-        lambda media: media.id,
-        lambda id: get_likers(id, bot=bot, amount=amount),
-    )
+    pack_user = lambda item: User(id=item['pk'], username=item['username'], data=item)
 
-    pack_user = lambda data: User(id=data['pk'], username=data['username'], data=data)
+    process = rcompose(
+            lambda media: media.id if media.id else media.get_id(bot),
+            lambda id: get_likers(id, bot),
+            lambda gen: map(pack_user, gen)
+        )
 
-    result = (pack_user(item) for media in nodes for item in get_items(media))
-    # result = (media for media in result if bot.suitable(media))
-    result = (media for media in result if media)
-    result = islice(result, amount)
+    result = mapcat(process, nodes)
 
     return result, bot.last
 
 
 
 
-def get_likers(id, bot, amount) -> List[Media]:
-    if amount > 1000: amount = 1000
+
+def get_likers(id, bot):
     bot.api.get_media_likers(id)
-    yield from bot.last['users'][:amount]
-
-
-# def get_likers(id, bot , amount) -> List[Media]:
-#
-#     while True:
-#         try:
-#             bot.api.get_media_likers(id)
-#             items = bot.last["users"] if 'users' in bot.last else []
-#
-#             if len(items) <= amount:
-#                 yield from items
-#                 return
-#
-#             else:
-#                 yield from items[:amount]
-#                 return
-#
-#
-#         except Exception:
-#             return
+    if 'users' in bot.last:
+        yield from bot.last['users']
+    else:
+        yield from []

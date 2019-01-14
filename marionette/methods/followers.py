@@ -1,33 +1,27 @@
 from typing import List
-from funcy import rcompose
-from itertools import islice
-from random import uniform
+from funcy import rcompose, ignore, tap as _tap, partial, mapcat
 import time
 from ..bot import Bot
 from ..nodes import User, Media
-from .common import accepts, get_cycled_api
+from .common import accepts, cycled_api_call
 
 
 @accepts(User)
-def followers(bot, nodes, amount, args) -> List[User]:
+def followers(bot: Bot, nodes,  args) -> List[User]:
+
+    # bot.logger.debug('nodes at followers %s' % list(nodes)[:3])
+    #
+    # nodes = iter(list(nodes))
 
     pack_user = lambda item: User(id=item['pk'], username=item['username'], data=item)
 
-    _followers = rcompose(
-        lambda user: user.id if user.id else user.get_id(bot),
-        lambda id: get_followers(bot, id, amount),
-    )
+    process = rcompose(
+            lambda user: user.id if user.id else user.get_id(bot),
+            lambda id: cycled_api_call(bot, bot.api.get_user_followers, id, 'users'),
+            lambda gen: map(pack_user, gen)
 
-    result = (pack_user(item) for node in nodes for item in _followers(node) )
-    # result = (user for user in result if bot.suitable(user))
-    result = (user for user in result if user)
-    result = islice(result, amount)
+        )
+
+    result = mapcat(process, nodes)
 
     return result, bot.last
-
-
-
-
-
-def get_followers( bot ,id,  amount) -> List[User]:
-    return get_cycled_api(bot, bot.api.get_user_followers, id, 'users', amount)

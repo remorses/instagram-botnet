@@ -2,7 +2,7 @@ import sys
 from pathlib import Path
 import json
 
-from marionette import execute, prepare
+from marionette import execute
 from .parse import parse
 from .unmask import unmask
 
@@ -19,10 +19,12 @@ SCRIPTS = [
     # parse('tests/hashtag_feed.yml'),
     # parse('tests/followers.yml'),
     # parse('tests/user_feed.yml'),
-    # parse('tests/likers.yml'),
-    parse('tests/complex.yml'),
+    #parse('tests/likers.yml'),
+    # parse('tests/complex.yml'),
+    # parse('tests/scrape.yml'),
     # parse('tests/upload.yml'),
     # parse('tests/delete.yml'),
+    parse('tests/set_profile.yml'),
 
 ]
 
@@ -33,8 +35,7 @@ if __name__ == '__main__':
 
     data = {}
     for script in SCRIPTS:
-        bots = prepare(script)
-        data[script['name']] = execute(script, bots)
+        data[script['name']] = execute(script)
 
 
 
@@ -45,10 +46,10 @@ if __name__ == '__main__':
 
         with open('tests/artifacts/{}.json'.format(name), 'w+') as file:
             content = file.read()
-            json = json.dumps(raw, indent=4)
-            if len(raw) > len(json):
+            dumped = json.dumps(raw, indent=4)
+            if len(raw) > len(dumped):
                 ok = True
-                file.write(data)
+                file.write(raw)
             else:
                 file.write(content)
 

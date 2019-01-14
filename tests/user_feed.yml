@@ -22,9 +22,9 @@ bots:
 
 execute:
     - like:
-            from_nodes: ['***REMOVED***', 'instagram']
-            via_edges:
-                - user_feed: 1
+            nodes: ['***REMOVED***', 'instagram']
+            edges:
+                - user_feed
 
 
 
