@@ -25,11 +25,11 @@ def execute(script,):
                 bot.logger.debug('nodes in execute: %s' % task.nodes)
                 state = dict(nodes=task.nodes, bot=bot, data=dict(), errors=[])
                 # bot.logger.debug(str(bot) + ' ' + str(state))
-                actions = [dict(type=action['type'], args=action['args']) for action in task.actions]
-                # bot.logger.debug(actions)
-                threads += [Reducer(state, actions)]
+                edges = [dict(type=edge['type'], args=edge['args']) for edge in task.edges]
+                # bot.logger.debug(edges)
+                threads += [Reducer(state, edges)]
                 bot.logger.debug('new task of type {} and new thread, in script {}'.format(interaction, script_name))
-                bot.logger.debug('actions : {}, nodes: {}'.format(actions, list(state['nodes'])))
+                bot.logger.debug('edges : {}, nodes: {}'.format(edges, list(state['nodes'])))
 
 
             threads = start(threads)

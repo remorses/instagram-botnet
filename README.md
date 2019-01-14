@@ -4,13 +4,13 @@ Write readable declarative yaml files to control your botnet
 
 ## TODO
 
-- use generators in all the methods to not generate too many instances
+- use generators in all the edge_functions to not generate too many instances
 - filter the nodes returned from method in a steamed function
 - limit the returned nodes with islice as last step of streamed function (so filtering won't change the amount of returned nodes)
 - use transactions to batch database io
 
 
-## methods to implement
+## edge_functions to implement
 
 User interactions
 - [X] follow

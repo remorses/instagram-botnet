@@ -8,7 +8,7 @@ from .threads import Thread
 
 class Dont_retry(Exception):
     """
-    this exception doesn't cause a retry of the action method when it is raised.
+    this exception doesn't cause a retry of the edge method when it is raised.
     Useful when a method is not found in the methods object,
     because it would be just a waste of time to retry.
     """
@@ -16,33 +16,33 @@ class Dont_retry(Exception):
 
 class Reducer(Thread):
 
-    def __init__(self, state, actions, name=None):
+    def __init__(self, state, edges, name=None):
         super().__init__(name=state['bot'].username)
         self.name = state['bot'].username
         self.logger = state['bot'].logger
-        self.actions = actions
+        self.edges = edges
         self.state = state
 
 
     def run(self):
-        last_action = self.actions[-1]['type']
+        last_action = self.edges[-1]['type']
         self.logger.debug('{} interaction begins'.format( last_action, ))
-        last_state = reduce(_reducer, self.actions, self.state)
+        last_state = reduce(_reducer, self.edges, self.state)
         super().set_data(last_state['data'])
         self.logger.debug('{} interaction ends'.format( last_action,))
         return
 
 
 
-def _reducer(state: dict, action: dict):
+def _reducer(state: dict, edge: dict):
 
     nodes = state['nodes']
     bot: Bot = state['bot']
     errors = state['errors']
     data = state['data']
 
-    type = action['type']
-    args = action['args']
+    type = edge['type']
+    args = edge['args']
 
     if len(errors) > 1:
         # tried multiple times
@@ -76,11 +76,11 @@ def _reducer(state: dict, action: dict):
         # time.sleep(secs)
 
     except Dont_retry as exc:
-        bot.logger.error('error reducing action {}: \"{}\" {}'.format(type, exc.__class__.__name__, exc))
+        bot.logger.error('error reducing edge {}: \"{}\" {}'.format(type, exc.__class__.__name__, exc))
         return dict(nodes=[], bot=bot, errors=errors + [exc], data=data)
 
     except Exception as exc:
-        bot.logger.error('error reducing action {}: \"{}\" \n {}'.format(
+        bot.logger.error('error reducing edge {}: \"{}\" \n {}'.format(
             type,
             exc.__class__.__name__,
             '\n'.join(traceback.format_exc().split('\n')[5:])))
@@ -88,7 +88,7 @@ def _reducer(state: dict, action: dict):
         time.sleep(bot.delay['error'])
 
         errored_state = merge(state, dict(errors=errors + [exc]))
-        return _reducer(errored_state, action)
+        return _reducer(errored_state, edge)
 
     else:
         # all is right, no exceptions

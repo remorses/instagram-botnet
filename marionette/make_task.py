@@ -1,4 +1,4 @@
-from .methods import methods
+from .edge_functions import edge_functions
 from .nodes import  Media, User
 
 class Task(dict):
@@ -7,7 +7,7 @@ class Task(dict):
 
         nodes: [node1, node2] # these are all Node instances
 
-        actions:
+        edges:
             -   type:   feed
 
             -   type:   send
@@ -17,7 +17,7 @@ class Task(dict):
 
         nodes: [url1, url2]
 
-        actions:
+        edges:
             -   type: upload
                 args:
                     caption: 'text bla bla'
@@ -46,8 +46,7 @@ def make_task(data):
 
     nodes = []
     edges = []
-    actions = []
-    args = {}
+    edges = []
 
     interaction, body = list(data.items())[0]
 
@@ -55,19 +54,14 @@ def make_task(data):
         nodes += body['nodes']
 
     if 'edges' in body:
-        edges = body['edges']
+        for edge in body['edges']:
+            if isinstance(edge, dict):
+                edges += [dict(type=edge.keys()[0], args=edge.values()[0]) for edge in edges]
+            else:
+                edges += [dict(type=edge, args={}) for edge in edges]
 
-    args = body['args'] if 'args' in body else {}
-    args['amount'] = body['amount'] if 'amount' in body \
-        else args['amount'] if 'amount' in args \
-        else 1
-
-    actions += [dict(type=edge, args={}) for edge in edges]
-    actions += [dict(type=interaction, args=args)]
-
-
-    nodes = initialize_nodes(nodes, actions)
-    return Task(nodes=nodes, actions=actions)
+    nodes = initialize_nodes(nodes, edges)
+    return Task(nodes=nodes, edges=edges)
 
 
 # TODO this shit suppress my errors
@@ -82,8 +76,8 @@ def partitionate(task: Task, bots):
 
         new_nodes = [node for (i, node) in enumerate(task.nodes) if _right_partition(i)]
 
-        new_actions = [dict(**action) for action in task.actions]
-        new_task = Task(nodes=new_nodes, actions=new_actions)
+        new_edges = [dict(**edge) for edge in task.edges]
+        new_task = Task(nodes=new_nodes, edges=new_edges)
 
 
         couples += [(new_task, bot)]
@@ -96,10 +90,10 @@ def popped(to_pop, dictionary):
 
 
 
-def initialize_nodes(nodes, actions, ):
-    first_method = methods.get(actions[0]['type'], None)
+def initialize_nodes(nodes, edges, ):
+    first_method = edge_functions.get(edges[0]['type'], None)
     if not first_method:
-        raise Exception('can\'t find {} interaction in available methods')
+        raise Exception('can\'t find {} interaction in available edge_functions')
     Class = first_method.accepts
     Class = Class if Class.__name__ != 'Node' else \
         Media if 'instagram.com' in nodes[0] else User
