@@ -1,5 +1,5 @@
 from .edge_functions import edge_functions
-from .nodes import  Media, User
+from .nodes import  Media, User, Arg
 
 class Task(dict):
     """"
@@ -96,6 +96,6 @@ def initialize_nodes(nodes, edges, ):
         raise Exception('can\'t find {} interaction in available edge_functions')
     Class = first_method.accepts
     Class = Class if Class.__name__ != 'Node' else \
-        Media if 'instagram.com' in nodes[0] else User
+        Media if 'instagram.com' in nodes[0] else Arg
 
     return [Class(generic=value) for value in nodes]
