@@ -14,7 +14,7 @@ def like(bot, nodes,  args):
     count = 0
 
     def increment():
-        global count
+        nonlocal count
         count += 1
 
     stop = raiser(StopIteration)
