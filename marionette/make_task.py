@@ -1,4 +1,4 @@
-from .edge_functions import edge_functions
+from .methods import methods
 from .nodes import  Media, User, Arg
 
 class Task(dict):
@@ -42,23 +42,27 @@ class Task(dict):
             raise AttributeError("No such attribute: " + name)
 
 
-def make_task(data):
+def make_task(body):
 
     nodes = []
     edges = []
     edges = []
 
-    interaction, body = list(data.items())[0]
 
     if 'nodes' in body:
         nodes += body['nodes']
 
     if 'edges' in body:
         for edge in body['edges']:
+
             if isinstance(edge, dict):
-                edges += [dict(type=edge.keys()[0], args=edge.values()[0]) for edge in edges]
+                type = list(edge.keys())[0]
+                args = list(edge.values())[0]
+                edges += [dict(type=type, args=args)]
             else:
-                edges += [dict(type=edge, args={}) for edge in edges]
+                edges += [dict(type=edge, args={})]
+    else:
+        raise Exception('in every action there must be actions')
 
     nodes = initialize_nodes(nodes, edges)
     return Task(nodes=nodes, edges=edges)
@@ -91,9 +95,9 @@ def popped(to_pop, dictionary):
 
 
 def initialize_nodes(nodes, edges, ):
-    first_method = edge_functions.get(edges[0]['type'], None)
+    first_method = methods.get(edges[0]['type'], None)
     if not first_method:
-        raise Exception('can\'t find {} interaction in available edge_functions')
+        raise Exception('can\'t find {} interaction in available methods')
     Class = first_method.accepts
     Class = Class if Class.__name__ != 'Node' else \
         Media if 'instagram.com' in nodes[0] else Arg

@@ -1,8 +1,12 @@
 
 ---
 
-test:
+Root:
     var:   'Boolean'
     arr:   '[Number]'
+    range: 'Range 2 9'
+    nodes: '[Node]'
+
+Node:  Regex /something/
 
 ...

@@ -24,6 +24,7 @@ class Reducer(Thread):
         self.state = state
 
 
+
     def run(self):
         last_action = self.edges[-1]['type']
         self.logger.debug('{} interaction begins'.format( last_action, ))
@@ -31,6 +32,7 @@ class Reducer(Thread):
         super().set_data(last_state['data'])
         self.logger.debug('{} interaction ends'.format( last_action,))
         return
+
 
 
 

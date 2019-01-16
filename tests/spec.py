@@ -3,6 +3,7 @@ from pathlib import Path
 import json
 
 from marionette import execute
+from marionette.debug import Network_logger
 from .parse import parse
 from .unmask import unmask
 
@@ -19,12 +20,12 @@ SCRIPTS = [
     # parse('tests/hashtag_feed.yml'),
     # parse('tests/followers.yml'),
     # parse('tests/user_feed.yml'),
-    #parse('tests/likers.yml'),
+    parse('tests/likers.yml'),
     # parse('tests/complex.yml'),
     # parse('tests/scrape.yml'),
     # parse('tests/upload.yml'),
     # parse('tests/delete.yml'),
-    parse('tests/set_profile.yml'),
+    # parse('tests/set_profile.yml'),
 
 ]
 
@@ -33,30 +34,36 @@ SCRIPTS = [
 
 if __name__ == '__main__':
 
-    data = {}
-    for script in SCRIPTS:
-        data[script['name']] = execute(script)
+    try:
 
+        net_logger = Network_logger()
+        net_logger.daemon = True
+        net_logger.start()
 
+        data = {}
+        for script in SCRIPTS:
+            data[script['name']] = execute(script)
 
+        for name, raw in data.items():
 
-    for name, raw in data.items():
+            ok = False
 
-        ok = False
+            with open('tests/artifacts/{}.json'.format(name), 'w+') as file:
+                content = file.read()
+                dumped = json.dumps(raw, indent=4)
+                if len(raw) > len(dumped):
+                    ok = True
+                    file.write(raw)
+                else:
+                    file.write(content)
 
-        with open('tests/artifacts/{}.json'.format(name), 'w+') as file:
-            content = file.read()
-            dumped = json.dumps(raw, indent=4)
-            if len(raw) > len(dumped):
-                ok = True
-                file.write(raw)
-            else:
-                file.write(content)
+            with open('tests/artifacts/{}.graphql'.format(name), 'w+') as file:
+                content = file.read()
 
-        with open('tests/artifacts/{}.graphql'.format(name), 'w+') as file:
-            content = file.read()
-
-            if ok:
-                file.write(unmask(raw))
-            else:
-                file.write(content)
+                if ok:
+                    file.write(unmask(raw))
+                else:
+                    file.write(content)
+    except Exception as exc:
+        print(exc)
+        raise

@@ -4,7 +4,7 @@ from .make_task import make_task, partitionate
 from .make_bots import make_bots
 from .reducer import Reducer
 from .threads import start, wait
-
+import traceback
 
 def execute(script,):
 
@@ -15,7 +15,7 @@ def execute(script,):
     data = dict()
 
     try:
-        for instruction in script['execute']:
+        for instruction in script['actions']:
             interaction = list(instruction.keys())[0]
 
             threads = []
@@ -44,8 +44,13 @@ def execute(script,):
         raise
 
     except Exception as exc:
-        bot.logger.error(exc)
-        print(exc)
+        print(
+            exc.__class__.__name__,
+            ':',
+            exc,
+            '\n',
+            '\n'.join(traceback.format_exc().split('\n'))
+        )
         raise
 
     finally:

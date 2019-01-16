@@ -10,11 +10,11 @@ bots:
         password:       ***REMOVED***
 
 
-execute:
-    - follow:
+actions:
+    -
         nodes:
             - 'https://www.instagram.com/p/BrS3BGPn81X/'
         edges:
             - likers
-        args:
-            amount: 30
+            - follow:
+                amount: 30
