@@ -12,8 +12,10 @@ import time
 @accepts(Arg)
 def upload(bot, nodes,  args):
 
+    amount = args.get('amount')
 
-    if len(nodes) == 1:
+
+    if not amount or amount == 1:
         type = 'photo'
 
         node = nodes[0]
