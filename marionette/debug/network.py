@@ -1,4 +1,4 @@
-import psutil
+from psutil import net_io_counters
 from threading import Thread
 import time
 from .safe_print import safe_print
@@ -25,14 +25,17 @@ class Network_logger(Thread):
     def __init__(self):
         super().__init__()
         self.elapsed_minutes = 0
+        self.recv = 0
+        self.sent = 0
 
     def run(self):
         try:
             while True:
-                psutil.net_io_counters.cache_clear()
-                net = psutil.net_io_counters()
-                safe_print('[after {} min received {}]'.format(self.elapsed_minutes, bytes2human(net.bytes_recv)))
-                safe_print('[after {} min sent {}]'.format(self.elapsed_minutes, bytes2human(net.bytes_recv)))
+                net_io_counters.cache_clear()
+                net = net_io_counters(nowrap=True)
+                self.recv = net.bytes_recv
+                self.sent =  net.bytes_recv
+                safe_print('[after {} min received {} and sent {}]'.format(self.elapsed_minutes, bytes2human(self.recv), bytes2human(self.sent)))
                 time.sleep(60)
                 self.elapsed_minutes += 1
         except KeyboardInterrupt:

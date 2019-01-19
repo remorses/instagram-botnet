@@ -2,3 +2,5 @@ instabot
 colorlog
 pyyaml
 dataset
+psutil
+funcy
