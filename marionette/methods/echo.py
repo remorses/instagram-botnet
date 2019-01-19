@@ -3,8 +3,9 @@ from ..nodes import Node, User, Media
 from ..debug import unmask
 from .common import today, tap, dotdict
 from ..bot import Bot
+import yaml
 from dataset import connect
-from funcy import rcompose, ignore, retry
+from funcy import rcompose, ignore, mapcat
 import time
 
 
@@ -14,8 +15,6 @@ def scrape(bot: Bot, nodes,  args):
 
     try:
         amount = float(args['amount']) if 'amount' in args else 1
-        database = args['database']
-        table = args['table']
         model = args['model']
 
     except KeyError as exc:
@@ -29,10 +28,6 @@ def scrape(bot: Bot, nodes,  args):
         nonlocal count
         count += 1
 
-    lazy_database = lambda: connect(
-        database,
-        engine_kwargs = {'connect_args': {'check_same_thread' : False}}
-    )
 
     def process(node):
         """
@@ -46,18 +41,16 @@ def scrape(bot: Bot, nodes,  args):
             insertion[name] = evaluate(expr, node, bot=bot)
 
         if count <= amount:
-            db[table].insert(insertion)
-            bot.logger.info('added to database node {} with insertion {}'.format(node, insertion))
+            print()
+            print(yaml.dump(insertion, indent=4))
+            print()
             increment()
             yield node
 
         else:
              return
 
-    with lazy_database() as db:
-        nodes = mapcat(process, nodes)
-
-
+    nodes = mapcat(process, nodes)
     return nodes, bot.last
 
 
