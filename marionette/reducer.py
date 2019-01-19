@@ -26,11 +26,11 @@ class Reducer(Thread):
 
 
     def run(self):
-        last_action = self.edges[-1]['type']
-        self.logger.debug('{} interaction begins'.format( last_action, ))
+        # last_action = self.edges[-1]['type']
+        # self.logger.debug('{} interaction begins'.format( last_action, ))
         last_state = reduce(_reducer, self.edges, self.state)
         super().set_data(last_state['data'])
-        self.logger.debug('{} interaction ends'.format( last_action,))
+        # self.logger.debug('{} interaction ends'.format( last_action,))
         return
 
 
@@ -86,7 +86,6 @@ def _reducer(state: dict, edge: dict):
             type,
             exc.__class__.__name__,
             '\n'.join(traceback.format_exc().split('\n')[5:])))
-        bot.logger.warn('sleeping some time before retrying')
         bot.sleep('error')
 
         errored_state = merge(state, dict(errors=errors + [exc]))
