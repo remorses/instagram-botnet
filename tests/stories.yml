@@ -29,5 +29,5 @@ actions:
                 amount: 1
                 model:
                     expires_at: x.expires_at
-                    image_url: x['image_versions2'][0]['url']
-                    video_url: x['video_versions'][0]['url']
+                    # image_url: x['image_versions2'][0]['url']
+                    # video_url: x['video_versions'][0]['url']

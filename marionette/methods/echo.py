@@ -3,7 +3,7 @@ from ..nodes import Node, User, Media
 from ..debug import unmask
 from .common import today, tap, dotdict
 from ..bot import Bot
-import yaml
+import json
 from dataset import connect
 from funcy import rcompose, ignore, mapcat
 import time
@@ -42,15 +42,16 @@ def echo(bot: Bot, nodes,  args):
 
         if count <= amount:
             print()
-            print(yaml.dump(insertion, indent=4))
+            print(json.dumps(insertion, indent=4))
             print()
             increment()
-            yield node
+            return node
 
         else:
              return
 
-    nodes = mapcat(process, nodes)
+    nodes = map(process, nodes)
+    nodes = filter(lambda x: x, nodes)
     return nodes, bot.last
 
 
