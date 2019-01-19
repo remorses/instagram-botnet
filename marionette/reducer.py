@@ -1,4 +1,5 @@
-from funcy import reduce, ignore
+from funcy import  ignore
+from functools import reduce
 import time
 import traceback
 
