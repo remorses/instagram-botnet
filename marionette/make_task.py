@@ -102,7 +102,7 @@ def popped(to_pop, dictionary):
 def initialize_nodes(nodes, edges, ):
     first_method = methods.get(edges[0]['type'], None)
     if not first_method:
-        raise Exception('can\'t find {} interaction in available methods')
+        raise Exception('can\'t find {} edge in available edges methods')
     Class = first_method.accepts
     Class = Class if Class.__name__ != 'Node' else \
         Media if 'instagram.com' in nodes[0] else Arg

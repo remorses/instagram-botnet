@@ -20,7 +20,7 @@ bots:
 #             hastags:  not in {{ bad_hashtags }}
 
 
-execute:
+actions:
     -
         nodes: ['***REMOVED***', 'instagram']
         edges:

@@ -36,6 +36,7 @@ methods = dict(
    geotag=geotag,
    geotag_feed=geotag_feed,
    filter=filter,
+   user_stories=user_stories,
 
    follow=follow,
    like=like,

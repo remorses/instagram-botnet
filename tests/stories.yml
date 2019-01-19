@@ -1,5 +1,5 @@
 version:                1
-name:                   test_hashtag_feed
+name:                   test_stories
 mode:                   distributed
 
 
@@ -20,7 +20,7 @@ bots:
 #             hastags:  not in {{ bad_hashtags }}
 
 
-execute:
+actions:
     -
         nodes: [ 'instagram']
         edges:
