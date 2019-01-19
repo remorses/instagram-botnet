@@ -2,6 +2,7 @@ from typing import List
 import requests
 from random import random
 from pathlib import Path
+from funcy import take
 from .common import accepts, today
 from ..nodes import Node, Arg, Media
 import time
@@ -13,6 +14,7 @@ import time
 def upload(bot, nodes,  args):
 
     amount = args.get('amount')
+    nodes = take(amount, nodes)
 
 
     if not amount or amount == 1:
