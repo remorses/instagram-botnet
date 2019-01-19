@@ -41,7 +41,7 @@ def like_media(media, bot):
         bot.api.like(media.id)
         if bot.last['status'] != 'ok':
             bot.logger.warn('request didn\'t return "ok" liking {}'.format(media.url))
-            time.sleep(bot.delay['error'])
+            bot.sleep('error')
             return None
         else:
             with bot.cache as cache:
@@ -53,5 +53,5 @@ def like_media(media, bot):
                         interaction='like')
                 )
             bot.logger.debug('liked %s' % media.url)
-            time.sleep(bot.delay['like'])
+            bot.sleep('like')
             return media

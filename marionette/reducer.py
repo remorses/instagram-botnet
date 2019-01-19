@@ -87,7 +87,7 @@ def _reducer(state: dict, edge: dict):
             exc.__class__.__name__,
             '\n'.join(traceback.format_exc().split('\n')[5:])))
         bot.logger.warn('sleeping some time before retrying')
-        time.sleep(bot.delay['error'])
+        bot.sleep('error')
 
         errored_state = merge(state, dict(errors=errors + [exc]))
         return _reducer(errored_state, edge)

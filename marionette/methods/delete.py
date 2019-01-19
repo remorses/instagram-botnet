@@ -30,7 +30,7 @@ def delete(bot, nodes,  args):
             raise Exception('delete needs urls of photos to delete')
 
         bot.logger.debug('sleeping some time')
-        time.sleep(bot.delay['delete'])
+        bot.sleep('delete')
 
 
     return [], bot.last

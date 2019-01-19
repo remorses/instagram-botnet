@@ -43,12 +43,12 @@ def follow_user(user, bot):
     bot.api.follow(user.id)
     if bot.last['status'] != 'ok':
         bot.logger.warn('request didn\'t return "ok" following {}'.format(user.username))
-        time.sleep(bot.delay['error'])
+        bot.sleep('error')
         return None
     else:
         with bot.cache as cache:
             cache['followed'].insert(dict(identifier=user.id, time=today(), type='user', interaction='follow'))
 
         bot.logger.info('followed %s' % user)
-        time.sleep(bot.delay['follow'])
+        bot.sleep('follow')
         return user
