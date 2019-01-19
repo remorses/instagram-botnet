@@ -11,6 +11,8 @@ from ..nodes import Node, User, Media
 def like(bot, nodes,  args):
 
 
+    amount = float(args['amount']) if 'amount' in args else 1
+
     count = 0
 
     def increment():
@@ -26,13 +28,12 @@ def like(bot, nodes,  args):
         lambda node: like_media(node, bot=bot) \
             if node else None,
         lambda x: tap(x, increment) if x else None,
-        lambda x: stop() if x and count >= float(args['amount']) else x,
+        lambda x: stop() if x and count >= amount + 1 else x,
     )
 
 
     liked = map(process, nodes)
     liked = filter(lambda x: x, liked)
-    liked = list(liked)
 
     return liked, bot.last
 

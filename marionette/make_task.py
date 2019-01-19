@@ -64,6 +64,8 @@ def make_task(body):
     else:
         raise Exception('in every action there must be actions')
 
+    edges += [dict(type='evaluate', args={})]
+
     nodes = initialize_nodes(nodes, edges)
     return Task(nodes=nodes, edges=edges)
 

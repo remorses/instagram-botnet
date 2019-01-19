@@ -17,10 +17,19 @@ def upload(bot, nodes,  args):
     nodes = take(amount, nodes)
 
 
+
     if not amount or amount == 1:
         type = 'photo'
 
-        node = nodes[0]
+        node = take(1, nodes)[0]
+
+        if isinstance(node, Arg):
+            value = node.value
+        elif isinstance(node, Media):
+            value = node.url
+        else:
+            value = node
+
         caption = args['caption'] if 'caption' in args else None
         # TODO implement geotag and usertag in uploading
         # geotag = args[geotag] if 'geotag' in args else None
@@ -28,8 +37,8 @@ def upload(bot, nodes,  args):
 
 
 
-        if 'instagram.com' in node.value:
-            media_id = Media(url=node.value).id
+        if 'instagram.com' in value:
+            media_id = Media(url=value).id
             bot.api.media_info(media_id)
             media = bot.last['items'][0]
             type = media_type(media)
@@ -40,8 +49,8 @@ def upload(bot, nodes,  args):
                 temp = TempVideo(Path(bot.cache_file).parent)
                 path = bot.api.download_video(media_id, temp.path, media=media)
 
-        elif node.value.startswith(('http', 'https')):
-            url = node.value
+        elif value.startswith(('http', 'https')):
+            url = value
             if url.endswith(('.jpg', '.jpeg')):
                 type = 'photo'
                 temp = TempImage(Path(bot.cache_file).parent)
@@ -53,7 +62,7 @@ def upload(bot, nodes,  args):
             path = download_media(bot, url, temp.path)
 
         else:
-            path = str(Path(node.value).resolve())
+            path = str(Path(value).resolve())
             if path.endswith(('.jpg', '.jpeg')):
                 type = 'photo'
             elif path.endswith(('.mp4', '.mov')):

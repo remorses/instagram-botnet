@@ -20,6 +20,8 @@ from .scrape import scrape
 from .set_profile import set_profile
 from .shuffle import shuffle
 
+from .evaluate import evaluate
+
 methods = dict(
    authors=authors,
    followers=followers,
@@ -40,6 +42,8 @@ methods = dict(
    scrape=scrape,
    set_profile=set_profile,
    shuffle=shuffle,
+
+   evaluate=evaluate,
 )
 
 #

@@ -54,6 +54,10 @@ class API(NOT_MY_API):
 
         self.last_json = None
 
+    def media_info(self, media_id):
+        url = 'media/{media_id}/info/'.format(media_id=media_id)
+        return self.send_request(url)
+
 
     def send_request(self, endpoint, post=None, login=False, with_signature=True):
             self.logger.info('new request to endpoint %s' % endpoint)

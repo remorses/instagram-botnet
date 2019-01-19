@@ -1,4 +1,4 @@
-from funcy import rcompose
+from funcy import rcompose, take
 import random
 from ..nodes import Node
 from .common import accepts
@@ -9,9 +9,8 @@ def shuffle(bot, nodes,  args) -> Node:
 
     amount = args.get('amount')
     if amount:
-        nodes = list(nodes)[:amount]
-        nodes = random.shuffle(nodes)
-        print(nodes)
+        nodes = take(amount, nodes)
+        nodes = random.sample(nodes, k=amount)
     else:
         bot.logger.warn('to shuffle the amount of output nodes is needed, you can\'t shuffle a generator')
 

@@ -13,7 +13,7 @@ import time
 def scrape(bot: Bot, nodes,  args):
 
     try:
-        amount = float(args['amount'])
+        amount = float(args['amount']) if 'amount' in args else 1
         database = args['database']
         table = args['table']
         model = args['model']
