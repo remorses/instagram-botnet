@@ -126,7 +126,7 @@ class Story(Node):
             url = self.get_url()
             return 'Story(id=\'{}\', url=\'{}\')'.format(self._id, url)
 
-    def get_data(self):
+    def get_data(self, bot):
         return self._data
 
     def get_expiring_at(self):
