@@ -93,12 +93,15 @@ class Bot:
             bool = bool and predicate(node)
 
         return bool
-        
-        
+
+
     def sleep(self, type='usual'):
+
         if type in self.delay:
+            self.logger.debug('sleeping for {} seconds'.format(self.delay[type]))
             time.sleep(self.delay[type])
         else:
+            self.logger.debug('sleeping for {} seconds'.format(self.delay['usual']))
             time.sleep(self.delay['usual'])
 
 
