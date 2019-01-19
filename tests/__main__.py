@@ -20,12 +20,13 @@ SCRIPTS = [
     # parse('tests/hashtag_feed.yml'),
     # parse('tests/followers.yml'),
     # parse('tests/user_feed.yml'),
-    parse('tests/likers.yml'),
+    # parse('tests/likers.yml'),
     # parse('tests/complex.yml'),
     # parse('tests/scrape.yml'),
     # parse('tests/upload.yml'),
     # parse('tests/delete.yml'),
     # parse('tests/set_profile.yml'),
+    parse('tests/network_bandwidth.yml'),
 
 ]
 

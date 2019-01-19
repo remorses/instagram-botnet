@@ -20,20 +20,21 @@ def like(bot, nodes,  args):
     stop = raiser(StopIteration)
 
     process = rcompose(
-        lambda nodes: nodes.next(),
         lambda node: node \
             if bot.suitable(node) \
             else tap(None,lambda: bot.logger.warn('{} not suitable'.format(node))),
         lambda node: like_media(node, bot=bot) \
             if node else None,
         lambda x: tap(x, increment) if x else None,
-        lambda x: stop() if x and count >= float(args['amount']) else None,
+        lambda x: stop() if x and count >= float(args['amount']) else x,
     )
 
 
-    list(map(process, nodes))
+    liked = map(process, nodes)
+    liked = filter(lambda x: x, liked)
+    liked = list(liked)
 
-    return [], bot.last
+    return liked, bot.last
 
 
 def like_media(media, bot):
@@ -41,6 +42,7 @@ def like_media(media, bot):
         if bot.last['status'] != 'ok':
             bot.logger.warn('request didn\'t return "ok" liking {}'.format(media.url))
             time.sleep(bot.delay['error'])
+            return None
         else:
             with bot.cache as cache:
                 cache['liked'].insert(
@@ -52,3 +54,4 @@ def like_media(media, bot):
                 )
             bot.logger.debug('liked %s' % media.url)
             time.sleep(bot.delay['like'])
+            return media

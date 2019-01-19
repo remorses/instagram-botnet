@@ -27,13 +27,15 @@ def follow(bot: Bot, nodes,  args):
         lambda node: follow_user(node, bot=bot) \
             if node else None,
         lambda x: tap(x, increment) if x else None,
-        lambda x: stop() if x and count >= float(args['amount']) else None,
+        lambda x: stop() if x and count >= float(args['amount']) else x,
     )
 
 
-    list(map(process, nodes))
+    followed = map(process, nodes)
+    followed = filter(lambda x: x, followed)
+    followed = list(followed)
 
-    return [], bot.last
+    return followed, bot.last
 
 
 
@@ -42,11 +44,11 @@ def follow_user(user, bot):
     if bot.last['status'] != 'ok':
         bot.logger.warn('request didn\'t return "ok" following {}'.format(user.username))
         time.sleep(bot.delay['error'])
-        return False
+        return None
     else:
         with bot.cache as cache:
             cache['followed'].insert(dict(identifier=user.id, time=today(), type='user', interaction='follow'))
 
         bot.logger.info('followed %s' % user)
         time.sleep(bot.delay['follow'])
-        return True
+        return user

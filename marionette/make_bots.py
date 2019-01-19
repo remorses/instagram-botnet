@@ -173,6 +173,7 @@ def check(lazy_expr, lazy_var):
         expr = lazy_expr()
         var = lazy_var()
         result = eval(expr, dict(x=var))
+        print("{} == {} for x={}".format(expr, result, var))
         return result
 
     except KeyError:
