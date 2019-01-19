@@ -73,7 +73,7 @@ def upload(bot, nodes,  args):
         #     cache['uploaded'].insert(dict(identifier=bot.last, url=media.url, time=today(), type='media'))
 
         bot.logger.debug('sleeping some time')
-        bot.sleep('upload'])
+        bot.sleep('upload')
 
     else:
         # upload album

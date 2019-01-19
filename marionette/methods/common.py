@@ -82,10 +82,10 @@ def cycled_api_call(bot, api_method, api_argument, key,  ):
 
         if sleep_track > 10:
             bot.logger.debug('sleeping some time while getting')
-            bot.sleep('getter'])
+            bot.sleep('getter')
             sleep_track = 0
 
-        bot.sleep('usual'])
+        bot.sleep('usual')
         next_max_id = bot.last.get("next_max_id", "")
         sleep_track += 1
 
