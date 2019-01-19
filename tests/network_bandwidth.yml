@@ -41,23 +41,23 @@ filter:
     #     lng:                  x < 1000 and x > 500
 
 actions:
-    # -
-    #     name:                   follow and like rappers fans
-    #     nodes:
-    #         - izimusic
-    #         - therealgue
-    #     edges:
-    #         - followers
-    #         - filter:
-    #             user:
-    #                 is_private:  x == False
-    #         - follow:
-    #             amount:         2
-    #         - user_feed
-    #         - like:
-    #             amount:         2
     -
-        name:  repost some memes
+        name:                   follow and like rappers fans
+        nodes:
+            - izimusic
+            - therealgue
+        edges:
+            - followers
+            - filter:
+                user:
+                    is_private: x == False
+            - follow:
+                amount:         2
+            - user_feed
+            - like:
+                amount:         2
+    -
+        name:                   repost some memes
         nodes:
             - dankmemes
             - memes
@@ -65,8 +65,8 @@ actions:
             - user_feed
             - filter:
                 media:
-                    likes: x > 200
+                    likes:      x > 200
             - shuffle:
-                amount: 20
+                amount:         20
             - upload:
-                caption:  "#meme"
+                caption:        "#meme"
