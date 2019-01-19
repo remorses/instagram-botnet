@@ -22,23 +22,6 @@ bots:
 
 execute:
     -
-        nodes: ['***REMOVED***', 'instagram']
+        nodes: [ 'instagram']
         edges:
-            - user_feed
-            - like:
-                amount: 4
-
-
-
-
-
-    # -
-    #     nodes:        [node1, node2] # these are all Node instances
-    #     actions:
-    #         - type:   feed
-    #             amount: 10
-    #         - type:   send
-    #             amount: 1
-    #             args:
-    #                 messages = []
-    #                 stuff =        whokonws
+            - user_stories
