@@ -35,16 +35,20 @@ class API(NOT_MY_API):
 
         # Setup logging
 
-        fh = HTMLFileHandler(title=self.id, file=logs_file, mode='w')
-        fh.setLevel(logging.INFO)
-        fh.setFormatter(file_formatter())
+
+
+
+
+        self.logger = logging.getLogger('[{}]'.format(self.id))
+
+        # fh = HTMLFileHandler(title=self.id, file=logs_file, mode='w')
+        # fh.setLevel(logging.INFO)
+        # fh.setFormatter(file_formatter())
+        # self.logger.addHandler(fh)
 
         ch = logging.StreamHandler()
         ch.setLevel(logging.DEBUG)
         ch.setFormatter(colred_formatter())
-
-        self.logger = logging.getLogger('[{}]'.format(self.id))
-        self.logger.addHandler(fh)
         self.logger.addHandler(ch)
 
         self.logger.setLevel(logging.DEBUG)
