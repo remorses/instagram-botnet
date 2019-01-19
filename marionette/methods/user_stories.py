@@ -19,8 +19,9 @@ def user_stories(bot, nodes,  args) -> List[Story]:
     process = rcompose(
         lambda user: user.id if user.id else user.get_id(bot),
         # lambda id: tap(id, lambda: bot.api.get_user_stories(id)),
-        lambda id: tap(id, print),
+        lambda x: tap(x, lambda: print(x)),
         lambda id: get_stories(bot, id),
+        lambda x: tap(x, lambda: print(x)),
         lambda gen: map(pack_story, gen)
     )
 
@@ -30,7 +31,7 @@ def user_stories(bot, nodes,  args) -> List[Story]:
 
 def get_stories(bot, user_id):
     bot.api.get_user_stories(user_id)
-    if 'items' in bot.last:
-        yield from bot.last['items']
+    if 'reel' in bot.last:
+        yield from bot.last['reel']['items']
     else:
         yield from []
