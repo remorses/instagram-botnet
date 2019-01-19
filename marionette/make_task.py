@@ -66,6 +66,9 @@ def make_task(body):
 
     edges += [dict(type='evaluate', args={})]
 
+    if 'name' in body:
+        edges[0]['name'] = body['name']
+
     nodes = initialize_nodes(nodes, edges)
     return Task(nodes=nodes, edges=edges)
 

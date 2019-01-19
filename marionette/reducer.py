@@ -1,4 +1,4 @@
-from functools import reduce
+from funcy import reduce, ignore
 import time
 import traceback
 
@@ -26,11 +26,11 @@ class Reducer(Thread):
 
 
     def run(self):
-        # last_action = self.edges[-1]['type']
-        # self.logger.debug('{} interaction begins'.format( last_action, ))
+        get_name = lambda: self.edges[0]['name']
+        name = ignore((KeyError, AttributeError), 'unnamed')(get_name)()
+        self.logger.info('beginning {} action'.format(name))
         last_state = reduce(_reducer, self.edges, self.state)
         super().set_data(last_state['data'])
-        # self.logger.debug('{} interaction ends'.format( last_action,))
         return
 
 
