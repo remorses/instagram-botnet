@@ -53,7 +53,7 @@ def scrape(bot: Bot, nodes,  args):
             else:
                  break
 
-    return [], bot.last
+    return nodes, bot.last
 
 
 
