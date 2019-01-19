@@ -22,6 +22,6 @@ bots:
 
 actions:
     -
-        nodes: [ 'instagram']
+        nodes: ['sicklukex2']
         edges:
             - user_stories

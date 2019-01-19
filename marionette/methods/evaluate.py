@@ -6,5 +6,6 @@ from .common import accepts
 def evaluate(bot, nodes,  args) -> Node:
 
     nodes = list(nodes)
+    bot.logger.warn(nodes[:1])
 
     return nodes, bot.last
