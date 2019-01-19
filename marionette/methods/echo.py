@@ -11,7 +11,7 @@ import time
 
 
 @accepts(Node)
-def scrape(bot: Bot, nodes,  args):
+def echo(bot: Bot, nodes,  args):
 
     try:
         amount = float(args['amount']) if 'amount' in args else 1
