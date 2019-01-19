@@ -126,6 +126,9 @@ class Story(Node):
             url = self.get_url()
             return 'Story(id=\'{}\', url=\'{}\')'.format(self._id, url)
 
+    def get_data(self):
+        return self._data
+
     def get_expiring_at(self):
         data = self._data
         if 'expiring_at' in data:
