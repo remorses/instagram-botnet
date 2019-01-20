@@ -20,7 +20,7 @@ from .delete import delete
 from .scrape import scrape
 from .set_profile import set_profile
 from .shuffle import shuffle
-from .echo import echo
+from .print import _print
 
 from .evaluate import evaluate
 
@@ -45,7 +45,7 @@ methods = dict(
    scrape=scrape,
    set_profile=set_profile,
    shuffle=shuffle,
-   echo=echo,
+   print=_print,
 
    evaluate=evaluate,
 )

@@ -12,7 +12,7 @@ import time
 
 
 @accepts(Node)
-def echo(bot: Bot, nodes,  args):
+def _print(bot: Bot, nodes,  args):
 
     try:
         amount = float(args['amount']) if 'amount' in args else 1
