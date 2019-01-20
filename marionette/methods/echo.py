@@ -6,6 +6,7 @@ from ..bot import Bot
 import json
 from dataset import connect
 from funcy import rcompose, ignore, mapcat
+from itertools import islice
 import time
 
 
@@ -22,13 +23,6 @@ def echo(bot: Bot, nodes,  args):
         return [], {}
 
 
-    count = 0
-
-    def increment():
-        nonlocal count
-        count += 1
-
-
     def process(node):
         """
         model:
@@ -40,17 +34,13 @@ def echo(bot: Bot, nodes,  args):
         for name, expr in model.items():
             insertion[name] = evaluate(expr, node, bot=bot)
 
-        if count <= amount + 1:
-            print()
-            print(json.dumps(insertion, indent=4))
-            print()
-            increment()
-            return node
+        print()
+        print(json.dumps(insertion, indent=4))
+        print()
+        return node
 
-        else:
-            raise StopIteration
-
-    nodes = mapcat(process, nodes)
+    amount = ignore(OverflowError, None)(lambda: int(amount))()
+    nodes = map(process, islice(nodes, amount))
 
     return nodes, bot.last
 

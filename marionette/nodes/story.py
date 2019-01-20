@@ -147,7 +147,7 @@ class Story(Node):
         data = self._data
         if 'video_versions' and 'video_duration' in data:
             return data['video_versions'][0]['url']
-        elif 'image_versions2' in data and len(data['image_versions2']) > 0:
-            return self._data['image_versions2'][0]['url']
+        elif 'image_versions2' in data:
+            return data['image_versions2']['candidates'][0]['url']
         else:
             return None

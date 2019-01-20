@@ -25,9 +25,9 @@ actions:
         nodes: ['sicklukex2']
         edges:
             - user_stories
-            - echo:
-                amount: 1
+            - print:
+                amount: 4
                 model:
-                    expires_at: x.expires_at
-                    # image_url: x['image_versions2'][0]['url']
-                    # video_url: x['video_versions'][0]['url']
+                    expires_at: x.expiring_at
+                    image_url: x['image_versions2']['candidates'][0]['url']
+                    video_url: x['video_versions'][0]['url']
