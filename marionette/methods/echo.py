@@ -40,7 +40,7 @@ def echo(bot: Bot, nodes,  args):
         for name, expr in model.items():
             insertion[name] = evaluate(expr, node, bot=bot)
 
-        if count <= amount:
+        if count <= amount + 1:
             print()
             print(json.dumps(insertion, indent=4))
             print()
@@ -48,10 +48,10 @@ def echo(bot: Bot, nodes,  args):
             return node
 
         else:
-             return
+            raise StopIteration
 
-    nodes = map(process, nodes)
-    nodes = filter(lambda x: x, nodes)
+    nodes = mapcat(process, nodes)
+
     return nodes, bot.last
 
 
