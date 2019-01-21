@@ -18,8 +18,8 @@ def scrape(bot: Bot, nodes,  args):
         table = args['table']
         model = args['model']
 
-    except KeyError as exc:
-        bot.logger.error('please add all necessary args, {}'.format( exc))
+    except:
+        bot.logger.error('please add all necessary args, {} isn\'t enought'.format(args))
         return [], {}
 
 
