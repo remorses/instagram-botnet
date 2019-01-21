@@ -47,9 +47,10 @@ class User(Node):
 
 
     def get_data(self, bot):
+
         if self._id:
             bot.sleep('usual')
-            bot.api.get_username_info(id)
+            bot.api.get_username_info(self._id)
             if 'user' in bot.last:
                 self._data = bot.last['user']
                 return self._data
@@ -58,7 +59,7 @@ class User(Node):
             bot.sleep('usual')
             bot.api.search_username(self._username)
             if 'user' in bot.last:
-                bot.api.get_username_info(id)
+                bot.api.get_username_info(bot.last['user']['pk'])
                 if 'user' in bot.last:
                     self._data = bot.last['user']
                     return self._data
