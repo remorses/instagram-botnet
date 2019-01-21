@@ -26,10 +26,9 @@ actions:
         nodes:
             - ***REMOVED***
         edges:
-            - followers
             - text:
                 amount: 1
                 messages:
-                    - [ "testing #hashtags and @instagram" ]
+                    - [ la smetto adesso ]
                     # - ["come stai?", "come va?"]
                     # - ["http://instagram.com"]

@@ -39,9 +39,9 @@ if __name__ or '__main__':
 
     try:
 
-        net_logger = Network_logger()
-        net_logger.daemon = True
-        net_logger.start()
+        # net_logger = Network_logger()
+        # net_logger.daemon = True
+        # net_logger.start()
 
         data = {}
         for script in SCRIPTS:
@@ -54,9 +54,9 @@ if __name__ or '__main__':
             with open('tests/artifacts/{}.json'.format(name), 'w+') as file:
                 content = file.read()
                 dumped = json.dumps(raw, indent=4)
-                if len(raw) > len(dumped):
+                if len(dumped) > len(content):
                     ok = True
-                    file.write(raw)
+                    file.write(dumped)
                 else:
                     file.write(content)
 

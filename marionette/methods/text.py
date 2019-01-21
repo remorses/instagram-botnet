@@ -83,7 +83,7 @@ def send_message(bot: Bot, text, node, thread_id=None):
         thread=thread_id,
         urls=urls
     )
-    if bot.last:
+    if bot.last['status'] == 'ok':
         bot.logger.debug('texted %s' % node)
         bot.sleep('text')
         return node
