@@ -46,7 +46,7 @@ def text(bot, nodes,  args):
 
     process = rcompose(
         lambda node: node \
-            if bot.suitable(node, interaction='text', specifier=str(messages)) \
+            if bot.suitable(node, table='texted', specifier=str(messages)) \
             else tap(None,lambda: bot.logger.warn('{} not suitable'.format(node))),
         lambda node: node \
             if not bot.reached_limit('messages') \
