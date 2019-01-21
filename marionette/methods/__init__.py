@@ -18,6 +18,7 @@ from .follow import follow
 from .unfollow import unfollow
 from .text import text
 from .upload import upload
+from .comment import comment
 from .delete import delete
 from .scrape import scrape
 from .set_profile import set_profile
@@ -45,6 +46,7 @@ methods = dict(
    like=like,
    text=text,
    upload=upload,
+   comment=comment,
    delete=delete,
    scrape=scrape,
    set_profile=set_profile,
