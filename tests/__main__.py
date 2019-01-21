@@ -27,7 +27,8 @@ SCRIPTS = [
     # parse('tests/delete.yml'),
     # parse('tests/set_profile.yml'),
     # parse('tests/network_bandwidth.yml'),
-    parse('tests/stories.yml'),
+    # parse('tests/stories.yml'),
+    parse('tests/text.yml'),
 
 ]
 

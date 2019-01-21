@@ -4,7 +4,7 @@ from ..debug import unmask
 from .common import today, tap, dotdict
 from ..bot import Bot
 from dataset import connect
-from funcy import rcompose, ignore, retry
+from funcy import rcompose, ignore, retry, mapcat
 import time
 
 
@@ -41,21 +41,22 @@ def scrape(bot: Bot, nodes,  args):
             id:        x.pk
             followers: x.followers_count
         """
-        insertion = dotdict()
-        for name, expr in model.items():
-            insertion[name] = evaluate(expr, node, bot=bot)
+        with lazy_database() as db:
+            insertion = dotdict()
+            for name, expr in model.items():
+                insertion[name] = evaluate(expr, node, bot=bot)
 
-        if count <= amount:
-            db[table].insert(insertion)
-            bot.logger.info('added to database node {} with insertion {}'.format(node, insertion))
-            increment()
-            yield node
+            if count <= amount:
+                db[table].insert(insertion)
+                bot.logger.info('added to database node {} with insertion {}'.format(node, insertion))
+                increment()
+                yield node
 
-        else:
-             return
+            else:
+                 return
 
-    with lazy_database() as db:
-        nodes = mapcat(process, nodes)
+
+    nodes = mapcat(process, nodes)
 
 
     return nodes, bot.last
