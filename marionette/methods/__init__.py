@@ -15,6 +15,7 @@ from .user_stories import user_stories
 
 from .like import like
 from .follow import follow
+from .text import text
 from .upload import upload
 from .delete import delete
 from .scrape import scrape
@@ -40,6 +41,7 @@ methods = dict(
 
    follow=follow,
    like=like,
+   text=text,
    upload=upload,
    delete=delete,
    scrape=scrape,
