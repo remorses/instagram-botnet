@@ -76,6 +76,8 @@ def upload(bot, nodes,  args):
         if type == 'photo':
             if not bot.api.upload_photo(path, caption):
                 bot.logger.warn('upload failed')
+            else:
+                bot.total['uploads'] += 1
         else:
             if not bot.api.upload_video(path, caption):
                 bot.logger.warn('upload failed')

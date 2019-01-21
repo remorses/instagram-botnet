@@ -15,6 +15,7 @@ def follow(bot: Bot, nodes,  args):
     count = 0
 
     def increment():
+        bot.total['follows'] += 1
         nonlocal count
         count += 1
 
@@ -22,13 +23,13 @@ def follow(bot: Bot, nodes,  args):
 
     process = rcompose(
         # lambda x: tap(x, lambda: bot.logger.warn('{}._data: \n{}'.format(x, unmask(x._data)))),
+        lambda x: stop() if x and count >= amount else x,
         lambda node: node \
             if bot.suitable(node) \
             else tap(None,lambda: bot.logger.warn('{} not suitable'.format(node))),
         lambda node: follow_user(node, bot=bot) \
             if node else None,
         lambda x: tap(x, increment) if x else None,
-        lambda x: stop() if x and count >= amount + 1 else x,
     )
 
 

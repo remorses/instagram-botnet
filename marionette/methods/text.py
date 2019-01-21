@@ -20,7 +20,6 @@ def text(bot, nodes,  args):
         bot.logger.error('please add all necessary args, {} isn\'t enought'.format(args))
         return [], {}
 
-
     count = 0
 
     def increment():
@@ -29,7 +28,6 @@ def text(bot, nodes,  args):
         count += 1
 
     stop = raiser(StopIteration)
-
 
     def store_in_cache(node):
         with bot.cache as cache:
@@ -41,24 +39,29 @@ def text(bot, nodes,  args):
             )
         return node
 
+    return_if_suitable = lambda node: node \
+        if bot.suitable(node, table='texted', specifier=str(messages)) \
+        else tap(None,lambda: bot.logger.warn('{} not suitable'.format(node)))
+
+    discard_if_reached_limit = lambda node: node \
+        if not bot.reached_limit('texts') \
+        else tap(None, bot.logger.error('reached texting daily limit'))
+
+    send_msg_from_groups = lambda node: map(
+            lambda msgs: send_message(bot, choice(msgs), node),
+            messages) \
+         if node else [],
+
+
+
     process = rcompose(
-        # _tap,
-        lambda node: node \
-            if bot.suitable(node, table='texted', specifier=str(messages)) \
-            else tap(None,lambda: bot.logger.warn('{} not suitable'.format(node))),
-        # _tap,
-        lambda node: node \
-            if not bot.reached_limit('texts') \
-            else tap(None, bot.logger.error('reached texting daily limit')),
-        # _tap,
-        lambda node: map(lambda msgs: send_message(bot, choice(msgs), node), messages) \
-             if node else [],
+        lambda x: stop() if x and count >= amount else x,
+        return_if_suitable,
+        discard_if_reached_limit,
+        send_msg_from_groups,
         lambda arr: list(arr)[0] if arr else None,
-        lambda node: store_in_cache(node)
-            if node
-            else None,
+        lambda node: store_in_cache(node) if node else None,
         lambda x: tap(x, increment) if x else None,
-        lambda x: stop() if x and count >= amount + 1 else x,
     )
 
 

@@ -10,7 +10,8 @@ TOTAL = {'likes': 0,
          'unblocks': 0,
          'texts': 0,
          'archived': 0,
-         'unarchived': 0
+         'unarchived': 0,
+         'uploads': 0
          }
 
 
