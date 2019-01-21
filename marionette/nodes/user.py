@@ -1,8 +1,9 @@
 from .node import Node
 from .geotag import Geotag
 from .hashtag import Hashtag
-from .common import attributes
 import time
+
+
 
 
 class User(Node):
@@ -151,3 +152,8 @@ class User(Node):
         else:
             data = self.get_data(bot)
             return data['biography']
+
+
+
+def attributes(node):
+    return  node._username, node._id, node._data
