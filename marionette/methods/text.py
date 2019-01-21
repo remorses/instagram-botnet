@@ -1,5 +1,5 @@
 from typing import List
-from funcy import  rcompose, raiser, ignore, mapcat, partial
+from funcy import  rcompose, raiser, ignore, mapcat, partial, tap as _tap
 import time
 from random import choice
 from ..bot import Bot
@@ -30,7 +30,7 @@ def text(bot, nodes,  args):
 
     stop = raiser(StopIteration)
 
-    send_from_group = lambda node, msgs: send_message(node, choice(msgs), bot=bot),
+    send_from_group = lambda node, msgs: send_message(bot, choice(msgs), node),
 
 
     def store_in_cache(node):
@@ -41,16 +41,21 @@ def text(bot, nodes,  args):
                     time=today(),
                     type='user')
             )
+        return node
 
     process = rcompose(
+        # _tap,
         lambda node: node \
             if bot.suitable(node, table='texted', specifier=str(messages)) \
             else tap(None,lambda: bot.logger.warn('{} not suitable'.format(node))),
+        # _tap,
         lambda node: node \
             if not bot.reached_limit('texts') \
             else tap(None, bot.logger.error('reached texting daily limit')),
-        lambda node: map(partial(send_from_group, node), messages) \
-            if node else None,
+        # _tap,
+        lambda node: map(lambda msgs: send_message(bot, choice(msgs), node), messages) \
+             if node else [],
+        lambda arr: list(arr)[0] if arr else None,
         lambda node: store_in_cache(node)
             if node
             else None,
@@ -59,7 +64,7 @@ def text(bot, nodes,  args):
     )
 
 
-    result = mapcat(process, nodes)
+    result = map(process, nodes)
     result = filter(lambda x: x, result)
 
     return result, bot.last
@@ -70,17 +75,17 @@ def text(bot, nodes,  args):
 def send_message(bot: Bot, text, node, thread_id=None):
 
     user_id = node.id if node.id else node.get_id(bot)
-
     urls = extract_urls(text)
     item_type = 'link' if urls else 'text'
 
-    if bot.api.send_direct_item(
+    bot.api.send_direct_item(
         item_type,
-        user_ids=[user_id],
+        users=[str(user_id)],
         text=text,
         thread=thread_id,
         urls=urls
-    ):
+    )
+    if bot.last:
         bot.logger.debug('texted %s' % node)
         bot.sleep('text')
         return node

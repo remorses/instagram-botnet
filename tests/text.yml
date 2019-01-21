@@ -21,15 +21,13 @@ bots:
 #             hastags: not in {{ bad_hashtags }}
 
 
-execute:
-
+actions:
     -
         nodes:
             - ***REMOVED***
         edges:
-            - followers
             - text:
                 messages:
-                    - ["heeeeeey scemo!", "wooooooo modificato!","come stai?", "oh man"]
-                    - ["come stai?", "come va?"]
-                    - ["http://instagram.com"]
+                    - [ "testing #hashtags and @instagram" ]
+                    # - ["come stai?", "come va?"]
+                    # - ["http://instagram.com"]
