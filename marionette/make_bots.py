@@ -119,6 +119,10 @@ def make_predicate(script, bot):
             )
         elif isinstance(node, User):
             bool = bool and check(
+                lambda: script['user']['id'],
+                lambda: node.get_id(bot)
+            )
+            bool = bool and check(
                 lambda: script['user']['followers'],
                 lambda: node.get_followers_count(bot)
             )
@@ -168,13 +172,13 @@ def make_predicate(script, bot):
     return predicate
 
 
-def check(lazy_expr, lazy_var):
-    try:
-        expr = lazy_expr()
-        var = lazy_var()
-        result = eval(expr, dict(x=var))
-        print("{} == {} for x={}".format(expr, result, var))
-        return result
+    def check(lazy_expr, lazy_var):
+        try:
+            expr = lazy_expr()
+            var = lazy_var()
+            result = eval(expr, dict(x=var, bot=bot))
+            # print("{} == {} for x={}".format(expr, result, var))
+            return result
 
-    except KeyError:
-        return True
+        except KeyError:
+            return True

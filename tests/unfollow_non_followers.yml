@@ -29,10 +29,8 @@ actions:
             - morse__
         edges:
             - followers
-            # - filter:
-            #     user:
-            #         follows_me:  x == False
-            - print:
-                amount:  2
-                model:
-                    bo: x
+            - filter:
+                user:
+                    pk:  x not in bot.followers_ids
+            - unfollow:
+                amount:  20
