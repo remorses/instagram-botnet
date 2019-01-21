@@ -83,7 +83,7 @@ class Bot:
 
         return nodes
 
-    def suitable(self, node, table=None, argument=None):
+    def suitable(self, node, table=None, specifier=None):
         """
         same as filter but only one node, returns True if node in suitable
         """
@@ -93,7 +93,7 @@ class Bot:
             bool = bool and predicate(
                 node,
                 table=table,
-                argument=argument
+                specifier=specifier
             )
 
         return bool
