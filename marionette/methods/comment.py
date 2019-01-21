@@ -9,8 +9,8 @@ from ..nodes import Node, User, Media
 
 
 
-@accepts(User)
-def text(bot, nodes,  args):
+@accepts(Media)
+def comment(bot, nodes,  args):
 
     try:
         amount = float(args['amount']) if 'amount' in args else 1
@@ -43,13 +43,13 @@ def text(bot, nodes,  args):
         else tap(None,lambda: bot.logger.warn('{} not suitable'.format(node)))
 
     discard_if_reached_limit = lambda node: node \
-        if not bot.reached_limit('texts') \
-        else tap(None, bot.logger.error('reached texting daily limit'))
+        if not bot.reached_limit('comments') \
+        else tap(None, bot.logger.error('reached commenting daily limit'))
 
     do_comment_from_groups = lambda node: map(
             lambda cmnts: do_comment(bot, choice(cmnts), node),
             comments) \
-         if node else [],
+         if node else []
 
 
 
@@ -81,10 +81,10 @@ def do_comment(bot: Bot, text, node, thread_id=None):
         comment_text=text,
     )
     if bot.last['status'] == 'ok':
-        bot.logger.debug('texted %s' % node)
+        bot.logger.debug('commented %s' % node)
         bot.sleep('comment')
         return node
     else:
-        bot.logger.error("message to {} wasn't sent".format(node))
+        bot.logger.error("comment to {} wasn't posted".format(node))
         bot.sleep('error')
         return None

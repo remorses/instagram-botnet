@@ -50,7 +50,7 @@ def text(bot, nodes,  args):
     send_msg_from_groups = lambda node: map(
             lambda msgs: send_message(bot, choice(msgs), node),
             messages) \
-         if node else [],
+         if node else []
 
 
 
