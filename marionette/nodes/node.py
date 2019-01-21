@@ -1,4 +1,5 @@
+from collections import OrderedDict
 
-
-class Node():
-    pass
+class Node(OrderedDict):
+    def get_data(self, bot):
+        return {}
