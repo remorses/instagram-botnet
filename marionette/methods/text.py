@@ -88,7 +88,7 @@ def send_message(bot: Bot, text, node, thread_id=None):
         bot.sleep('text')
         return node
     else:
-        bot.logger.error("message to {user_ids} wasn't sent".format(user_ids=node))
+        bot.logger.error("message to {} wasn't sent".format(node))
         bot.sleep('error')
         return None
 
