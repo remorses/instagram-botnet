@@ -62,13 +62,17 @@ class Bot:
 
     @property
     def followers_ids(self):
-        if self._followers_ids:
-            return self._followers_ids
-        else:
-            data = cycled_api_call(self, self.api.get_user_followers, id, 'users')
-            user_ids = map(lambda item: item['pk'], data)
-            self._followers_ids = user_ids
-            return user_ids
+            if self._followers_ids:
+                print(self._followers_ids)
+
+                return self._followers_ids
+            else:
+                data = cycled_api_call(self, self.api.get_user_followers, id, 'users')
+                user_ids = map(lambda item: item['pk'], data)
+                self._followers_ids = list(user_ids)
+                print(self._followers_ids)
+                return self._followers_ids
+
 
     @property
     def last(self):

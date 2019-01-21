@@ -28,9 +28,9 @@ actions:
         nodes:
             - morse__
         edges:
-            - followers
+            - following
             - filter:
                 user:
-                    pk:  x not in bot.followers_ids
+                    id:  x not in bot.followers_ids
             - unfollow:
-                amount:  20
+                amount:  2000

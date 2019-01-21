@@ -181,4 +181,5 @@ def make_predicate(script, bot):
             return result
 
         except KeyError:
+            bot.logger.error('failed to check {} expression'.format(lazy_expr()))
             return True
