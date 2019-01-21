@@ -47,7 +47,7 @@ def follow_user(user, bot):
         return None
     else:
         with bot.cache as cache:
-            cache['followed'].insert(dict(identifier=user.id, time=today(), type='user', interaction='follow'))
+            cache['followed'].insert(dict(identifier=user.id, time=today(), type='user',))
 
         bot.logger.info('followed %s' % user)
         bot.sleep('follow')

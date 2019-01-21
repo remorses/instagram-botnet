@@ -48,10 +48,10 @@ def like_media(media, bot):
             with bot.cache as cache:
                 cache['liked'].insert(
                     dict(identifier=media.id,
-                        url=media.url,
+                        specifier=media.url,
                         time=today(),
                         type='media',
-                        interaction='like')
+                        )
                 )
             bot.logger.debug('liked %s' % media.url)
             bot.sleep('like')

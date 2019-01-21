@@ -13,22 +13,28 @@ def not_in_cache(bot, node, table=None, specifier=None):
                 return False
 
         if isinstance(node, Media):
-            if cache['liked'].find_one(identifier=node.id, type='media'):
+            kwargs = dict(identifier=node.id, type='media', )
+            if specifier: kwargs['specifier'] = specifier
+
+            if cache['liked'].find_one(**kwargs):
                 return False
-            elif cache['commented'].find_one(identifier=node.id, type='media'):
+            elif cache['commented'].find_one(**kwargs):
                 return False
-            elif cache['reported'].find_one(identifier=node.id, type='media'):
+            elif cache['reported'].find_one(**kwargs):
                 return False
             else:
                 return True
 
 
         elif isinstance(node, User):
-            if cache['followed'].find_one(identifier=node.id, type='user'):
+            kwargs = dict(identifier=node.id, type='user', )
+            if specifier: kwargs['specifier'] = specifier
+
+            if cache['followed'].find_one(**kwargs):
                 return False
-            elif cache['blocked'].find_one(identifier=node.id, type='user'):
+            elif cache['blocked'].find_one(**kwargs):
                 return False
-            elif cache['messaged'].find_one(identifier=node.id, type='user'):
+            elif cache['texted'].find_one(**kwargs):
                 return False
             else:
                 return True
