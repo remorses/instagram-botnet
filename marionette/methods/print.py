@@ -7,6 +7,7 @@ import json
 from dataset import connect
 from funcy import rcompose, ignore, mapcat
 from itertools import islice
+from colorama import init, Fore
 import time
 
 
@@ -34,8 +35,9 @@ def _print(bot: Bot, nodes,  args):
         for name, expr in model.items():
             insertion[name] = evaluate(expr, node, bot=bot)
 
+        init()
         print()
-        print(json.dumps(insertion, indent=4))
+        print(Fore.CYAN + json.dumps(insertion, indent=4))
         print()
         return node
 

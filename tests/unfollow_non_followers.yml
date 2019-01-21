@@ -1,0 +1,38 @@
+
+name:                 test_comment
+version:            1
+mode:                 distributed
+
+
+
+bots:
+    -
+        username: ***REMOVED***
+        password: ***REMOVED***
+
+
+# filter:
+#     - only:     [bot1, bot2]
+#         user:
+#             followers: x > 50 and x < 1000
+#             following: x < 500
+#         media:
+#             likers: x < 1000
+#             hastags: not in {{ bad_hashtags }}
+
+
+actions:
+
+    -
+        name:  unfollow non followers
+        nodes:
+            - morse__
+        edges:
+            - followers
+            # - filter:
+            #     user:
+            #         follows_me:  x == False
+            - print:
+                amount:  2
+                model:
+                    bo: x

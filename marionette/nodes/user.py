@@ -47,26 +47,28 @@ class User(Node):
 
 
     def get_data(self, bot):
-        username, id, data = attributes(self)
-        if id:
+        if self._id:
             bot.sleep('usual')
             bot.api.get_username_info(id)
             if 'user' in bot.last:
                 self._data = bot.last['user']
                 return self._data
-        elif data:
+
+        elif self._username:
+            bot.sleep('usual')
+            bot.api.search_username(self._username)
+            if 'user' in bot.last:
+                bot.api.get_username_info(id)
+                if 'user' in bot.last:
+                    self._data = bot.last['user']
+                    return self._data
+            else:
+                return {}
+        elif self._data:
+            data = self._data
             if 'pk' in data:
                 self._id = data['pk']
                 return self.get_data(bot)
-            else:
-                return {}
-        elif username:
-            bot.sleep('usual')
-            bot.api.search_username(username)
-            if 'user' in bot.last:
-                self._data = bot.last['user']
-                self._data = self.get_data(bot)
-                return self._data
             else:
                 return {}
         else:
