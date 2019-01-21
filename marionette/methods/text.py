@@ -50,7 +50,7 @@ def text(bot, nodes,  args):
             else tap(None,lambda: bot.logger.warn('{} not suitable'.format(node))),
         lambda node: node \
             if not bot.reached_limit('texts') \
-            else tap(None, bot.logger.error('reached send messages daily limit')),
+            else tap(None, bot.logger.error('reached texting daily limit')),
         lambda node: send_from_groups(node, messages) \
             if node else None,
         lambda node: store_in_cache(node)
