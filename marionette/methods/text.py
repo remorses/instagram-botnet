@@ -24,7 +24,7 @@ def text(bot, nodes,  args):
     count = 0
 
     def increment():
-        bot.total['messages'] += 1
+        bot.total['texts'] += 1
         nonlocal count
         count += 1
 
