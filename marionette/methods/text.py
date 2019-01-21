@@ -9,7 +9,7 @@ from ..nodes import Node, User, Media
 
 
 
-@accepts(Media)
+@accepts(User)
 def text(bot, nodes,  args):
 
 

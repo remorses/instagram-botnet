@@ -25,10 +25,11 @@ execute:
 
     -
         nodes:
-            - instagram
+            - ***REMOVED***
         edges:
             - followers
-            - send:
+            - text:
                 messages:
                     - ["heeeeeey scemo!", "wooooooo modificato!","come stai?", "oh man"]
                     - ["come stai?", "come va?"]
+                    - ["http://instagram.com"]
