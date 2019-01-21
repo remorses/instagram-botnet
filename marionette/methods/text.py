@@ -30,8 +30,6 @@ def text(bot, nodes,  args):
 
     stop = raiser(StopIteration)
 
-    send_from_group = lambda node, msgs: send_message(bot, choice(msgs), node),
-
 
     def store_in_cache(node):
         with bot.cache as cache:

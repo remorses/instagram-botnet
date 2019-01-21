@@ -26,7 +26,9 @@ actions:
         nodes:
             - ***REMOVED***
         edges:
+            - followers
             - text:
+                amount: 1
                 messages:
                     - [ "testing #hashtags and @instagram" ]
                     # - ["come stai?", "come va?"]
