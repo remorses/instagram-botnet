@@ -1,5 +1,5 @@
 from typing import List
-from funcy import  rcompose, raiser, ignore, mapcat
+from funcy import  rcompose, raiser, ignore, mapcat, partial
 import time
 from random import choice
 from ..bot import Bot
@@ -30,10 +30,8 @@ def text(bot, nodes,  args):
 
     stop = raiser(StopIteration)
 
-    send_from_groups = lambda node, messages: map(
-            lambda msg: send_message(node, choice(msg), bot=bot),
-            messages
-        )
+    send_from_group = lambda node, msgs: send_message(node, choice(msgs), bot=bot),
+
 
     def store_in_cache(node):
         with bot.cache as cache:
@@ -51,7 +49,7 @@ def text(bot, nodes,  args):
         lambda node: node \
             if not bot.reached_limit('texts') \
             else tap(None, bot.logger.error('reached texting daily limit')),
-        lambda node: send_from_groups(node, messages) \
+        lambda node: map(partial(send_from_group, node), messages) \
             if node else None,
         lambda node: store_in_cache(node)
             if node
