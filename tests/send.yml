@@ -23,12 +23,12 @@ bots:
 
 execute:
 
-    - send:
-        nodes: ['instagram']
+    -
+        nodes:
+            - instagram
         edges:
             - followers
-        args:
-            messages:
-                - ["heeeeeey    modificato", "come stai?", ]
-                - ["wooooooo    modificato", "come va?"]
-                - ["man    man", "come stai?"]
+            - send:
+                messages:
+                    - ["heeeeeey scemo!", "wooooooo modificato!","come stai?", "oh man"]
+                    - ["come stai?", "come va?"]

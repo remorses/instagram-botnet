@@ -1,9 +1,17 @@
 
 from ..nodes import Media, User, Hashtag, Geotag, Node
 
-def not_in_cache(bot, node):
+def not_in_cache(bot, node, table=None, specifier=None):
 
     with bot.cache as cache:
+
+        if table and not specifier:
+            if cache[table].find_one(identifier=node.id, ):
+                return False
+        elif table and specifier:
+            if cache[table].find_one(identifier=node.id,  specifier=specifier):
+                return False
+
         if isinstance(node, Media):
             if cache['liked'].find_one(identifier=node.id, type='media'):
                 return False
