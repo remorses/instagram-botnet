@@ -11,10 +11,13 @@ def evaluate(bot, nodes,  args) -> Node:
     while True:
         try:
             result += next(nodes)
+        except TypeError:
+            result += next(iter(nodes))
         except StopIteration:
             break
-        except Exception as e:
+        except:
             bot.logger.error('there was an error:\n{}'.format(traceback.format_exc()))
+            bot.sleep('error')
             pass
 
     # bot.logger.warn(nodes[:3])

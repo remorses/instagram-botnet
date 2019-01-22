@@ -11,8 +11,8 @@ def filter(bot, nodes,  args) -> Node:
     if args:
         predicate = make_predicate(args, bot)
         nodes = _filter(predicate, nodes)
-
-    nodes = bot.filter(nodes)
+    else:
+        nodes = bot.filter(nodes)
 
 
     return nodes, bot.last
