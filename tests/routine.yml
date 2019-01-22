@@ -44,7 +44,7 @@ actions:
                     is_verified: not x
             - follow:
                 amount:          50
-                
+
             # like 2 of their images
             - filter:
                 user:
@@ -56,7 +56,7 @@ actions:
         name:                    reposting time!
         from_type:               user
         nodes:
-            - meme_dal_web
+            - memetradotti
         edges:
             - user_feed
             - shuffle:
