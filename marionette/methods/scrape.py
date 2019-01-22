@@ -1,5 +1,5 @@
 from .common import accepts
-from ..nodes import Node, User, Media
+from ..nodes import Node, User, Media, Story, Geotag, Hashtag
 from ..debug import unmask
 from .common import today, tap, dotdict
 from ..bot import Bot
@@ -76,7 +76,13 @@ def evaluate(expr, node, bot):
 
 def xeval(expr, x):
     try:
-        return eval(expr, dotdict(x=x))
+        return eval(expr, dict(x=x,
+            User=User,
+            Story=Story,
+            Media=Media,
+            Hashtag=Hashtag,
+            Geotag=Geotag
+        ))
 
     except (KeyError, AttributeError):
         return None
