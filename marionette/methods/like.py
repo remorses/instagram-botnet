@@ -24,9 +24,9 @@ def like(bot, nodes,  args):
 
     process = rcompose(
         lambda x: stop() if x and count >= amount else x,
-        lambda node: node \
-            if bot.suitable(node) \
-            else tap(None,lambda: bot.logger.warn('{} not suitable'.format(node))),
+        # lambda node: node \
+        #     if bot.suitable(node) \
+        #     else tap(None,lambda: bot.logger.warn('{} not suitable'.format(node))),
         lambda node: like_media(node, bot=bot) \
             if node else None,
         lambda x: tap(x, increment) if x else None,

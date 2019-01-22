@@ -56,7 +56,7 @@ def text(bot, nodes,  args):
 
     process = rcompose(
         lambda x: stop() if x and count >= amount else x,
-        return_if_suitable,
+        # return_if_suitable,
         discard_if_reached_limit,
         send_msg_from_groups,
         lambda arr: list(arr)[0] if arr else None,

@@ -27,7 +27,7 @@ def delete(bot, nodes,  args):
                 pass
 
         else:
-            raise Exception('delete needs urls of photos to delete')
+            raise Exception('`delete` needs urls of photos to delete')
 
         bot.logger.debug('sleeping some time')
         bot.sleep('delete')
