@@ -43,7 +43,7 @@ actions:
             #         is_verified: not x
             - scrape:
                 database: instacazzate
-                table:  {{ today() }}
+                table:  '{{ random() }}'
                 model:
                     url:    Story(data=x).get_url()
 

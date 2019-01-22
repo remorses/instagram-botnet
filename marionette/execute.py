@@ -7,9 +7,9 @@ from .reducer import Reducer
 from .threads import start, wait
 import traceback
 
-def execute(script, data={}):
+def execute(script, variables={}):
 
-    script = inject(script, data)
+    inject(script, variables)
 
     bots = make_bots(script)
 
