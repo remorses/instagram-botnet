@@ -30,7 +30,7 @@ class Bot:
         self.username = username
         Bot.id += 1
 
-        self.predicates = [partial(not_in_cache, self), ]
+        self.predicates = [] # [partial(not_in_cache, self), ]
 
         self.start_time = datetime.datetime.now()
         self.api = API(logs_file=self.logs_file, id=self.id, username=username, device=device)
