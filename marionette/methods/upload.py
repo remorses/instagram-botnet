@@ -3,6 +3,7 @@ import requests
 from random import random
 from pathlib import Path
 from funcy import take
+from itertools import islice
 from .common import accepts, today
 from ..nodes import Node, Arg, Media
 import time
@@ -13,12 +14,13 @@ import time
 @accepts(Arg)
 def upload(bot, nodes,  args):
 
-    amount = args.get('amount')
-    nodes = take(amount, nodes)
+    amount = args.get('amount') or 1
+    nodes = islice(nodes, amount)
+    nodes = list(nodes)
 
 
 
-    if not amount or amount == 1:
+    if amount == 1:
         type = 'photo'
 
         node = take(1, nodes)[0]
