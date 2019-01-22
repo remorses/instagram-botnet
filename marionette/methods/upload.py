@@ -17,6 +17,9 @@ def upload(bot, nodes,  args):
     amount = args.get('amount') or 1
     nodes = islice(nodes, amount)
     nodes = list(nodes)
+    if len(nodes) == 0:
+        bot.logger.error('no photos to upload')
+
 
 
 

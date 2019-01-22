@@ -13,8 +13,9 @@ def evaluate(bot, nodes,  args) -> Node:
         except StopIteration:
             break
         except Exception as e:
-            raise e
-            
+            bot.logger.error('there was an error:\n{}'.format(e))
+            pass
+
     # bot.logger.warn(nodes[:3])
 
     return nodes, bot.last
