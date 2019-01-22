@@ -12,6 +12,7 @@ def shuffle(bot, nodes,  args) -> Node:
         nodes = take(amount, nodes)
         nodes = random.sample(nodes, k=amount)
     else:
-        bot.logger.warn('to shuffle the amount of output nodes is needed, you can\'t shuffle a generator')
+        nodes = list(nodes)
+        nodes = random.sample(nodes, k=len(nodes))
 
     return nodes, bot.last

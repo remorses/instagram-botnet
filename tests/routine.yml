@@ -1,36 +1,46 @@
 
-name:                 test_comment
-version:            1
-mode:                 distributed
+name:                            test_comment
+version:                         1
+mode:                            distributed
 
 
 
 bots:
     -
-        username: ***REMOVED***
-        password: ***REMOVED***
+        username:                ***REMOVED***
+        password:                ***REMOVED***
 
 
 # filter:
-#     - only:     [bot1, bot2]
+#     - only:                    [bot1, bot2]
 #         user:
-#             followers: x > 50 and x < 1000
-#             following: x < 500
+#             followers:         x > 50 and x < 1000
+#             following:         x < 500
 #         media:
-#             likers: x < 1000
-#             hastags: not in {{ bad_hashtags }}
+#             likers:            x < 1000
+#             hastags:           not in {{ bad_hashtags }}
 
 
 actions:
 
     -
-        name:  unfollow non followers
+        name:                    follow rappers followers
         nodes:
-            - ***REMOVED***
+            - thetruegemitaiz
+            - sferaebbasta
+            - lebownski
+            - achilleidol
+            - therealgue
         edges:
-            - following
+            - shuffle
+            - user_feed
+            - likers
             - filter:
                 user:
-                    id:  x not in bot.followers_ids
-            - unfollow:
-                amount:  20
+                    id:          not bot.cache['followed'].find(identifier=x)
+                    is_private:  not x
+                    is_verified: not x
+            - follow:
+                amount:          50
+    -
+        name
