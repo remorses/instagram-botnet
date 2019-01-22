@@ -1,3 +1,4 @@
+import traceback
 from ..nodes import Node
 from .common import accepts
 
@@ -13,7 +14,7 @@ def evaluate(bot, nodes,  args) -> Node:
         except StopIteration:
             break
         except Exception as e:
-            bot.logger.error('there was an error:\n{}'.format(e))
+            bot.logger.error('there was an error:\n{}'.format(traceback.format_exc()))
             pass
 
     # bot.logger.warn(nodes[:3])

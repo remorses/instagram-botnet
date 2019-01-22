@@ -39,19 +39,17 @@ actions:
             - likers
             - filter:
                 user:
-                    id:          not bot.cache['followed'].find(identifier=x)
+                    # id:          not bot.cache['followed'].find(identifier=x)
                     is_private:  not x
                     is_verified: not x
             - follow:
-                amount:          50
-
-            # like 2 of their images
+                amount:          5
             - filter:
                 user:
                     is_private:  not x
             - user_feed
             - like:
-                amount:          2
+                amount:          10
     -
         name:                    reposting time!
         from_type:               user

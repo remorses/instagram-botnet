@@ -17,7 +17,7 @@ TOTAL = {'likes': 0,
 
 DELAY = {'like': 10,
          'unlike': 10,
-         'follow': 30,
+         'follow': 5,
          'unfollow': 3,
          'comment': 60,
          'block': 30,
