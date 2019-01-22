@@ -34,11 +34,6 @@ class API(NOT_MY_API):
         self.total_requests = 0
 
         # Setup logging
-
-
-
-
-
         self.logger = logging.getLogger('[{}]'.format(self.id))
 
         # fh = HTMLFileHandler(title=self.id, file=logs_file, mode='w')
@@ -150,7 +145,7 @@ class API(NOT_MY_API):
         """
         url = "feed/user/{user_id}/story/".format(user_id=user_id)
         return self.send_request(url)
-        
+
     def get_user_reel(self, user_id):
         url = 'feed/user/{}/reel_media/'.format(user_id)
         return self.send_request(url)
