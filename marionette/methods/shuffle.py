@@ -10,7 +10,10 @@ def shuffle(bot, nodes,  args) -> Node:
     amount = args.get('amount')
     if amount:
         nodes = take(amount, nodes)
-        nodes = random.sample(nodes, k=amount)
+        if amount <= len(nodes):
+            nodes = random.sample(nodes, k=amount)
+        else:
+            nodes = random.sample(nodes, k=len(nodes))
     else:
         nodes = list(nodes)
         nodes = random.sample(nodes, k=len(nodes))

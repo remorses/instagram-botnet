@@ -1,5 +1,5 @@
 from .methods import methods
-from .nodes import  Media, User, Arg
+from .nodes import node_classes, Media, User, Arg
 
 class Task(dict):
     """"
@@ -69,7 +69,7 @@ def make_task(body):
     if 'name' in body:
         edges[0]['name'] = body['name']
 
-    nodes = initialize_nodes(nodes, edges)
+    nodes = initialize_nodes(nodes, edges, body)
     return Task(nodes=nodes, edges=edges)
 
 
@@ -99,12 +99,15 @@ def popped(to_pop, dictionary):
 
 
 
-def initialize_nodes(nodes, edges, ):
-    first_method = methods.get(edges[0]['type'], None)
-    if not first_method:
-        raise Exception('can\'t find {} edge in available edges methods')
-    Class = first_method.accepts
-    Class = Class if Class.__name__ != 'Node' else \
-        Media if 'instagram.com' in nodes[0] else Arg
+def initialize_nodes(nodes, edges, data):
+    if 'from_type' in data:
+        Class = node_classes[data['from_type']]
+    else:
+        first_method = methods.get(edges[0]['type'], None)
+        if not first_method:
+            raise Exception('can\'t find {} edge in available edges methods')
+        Class = first_method.accepts
+        Class = Class if Class.__name__ != 'Node' else \
+            Media if 'instagram.com' in nodes[0] else Arg
 
     return [Class(generic=value) for value in nodes]

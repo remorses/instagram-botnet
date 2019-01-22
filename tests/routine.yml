@@ -25,6 +25,7 @@ actions:
 
     -
         name:                    follow rappers followers
+        from_type:               user
         nodes:
             - thetruegemitaiz
             - sferaebbasta
@@ -42,5 +43,17 @@ actions:
                     is_verified: not x
             - follow:
                 amount:          50
+            - user_feed
+            - like:
+                amount:          2
     -
-        name
+        name:                    reposting time!
+        from_type:               user
+        nodes:
+            - meme_dal_web
+        edges:
+            - user_feed
+            - shuffle:
+                amount:          5
+            - upload:
+                caption:         uelà
