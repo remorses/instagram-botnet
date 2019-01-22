@@ -48,7 +48,11 @@ def unfollow_user(user, bot):
         return None
     else:
         with bot.cache as cache:
-            cache['unfollowed'].insert(dict(identifier=user.id, time=today(), type='user',))
+            cache['unfollowed'].insert(dict(
+                identifier=user.id,
+                time=today(),
+                type='user',
+            ))
 
         bot.logger.info('unfollowed %s' % user)
         bot.sleep('unfollow')
