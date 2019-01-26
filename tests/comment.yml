@@ -30,6 +30,6 @@ actions:
             - comment:
                 amount: 1
                 comments:
-                    - [ 'ciao @{author}, {caption}?' ]
+                    - [ 'ciao @{author}, {caption}?' ] # caption, author, usertags, geotag
                     # - ["come stai?", "come va?"]
                     # - ["http://instagram.com"]

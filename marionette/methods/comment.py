@@ -83,10 +83,10 @@ def do_comment(bot: Bot, text, node, thread_id=None):
         )(),
         caption=node.get_caption(bot),
         geotag=ignore(AttributeError, '')(
-            lambda: node.get_geotag(bot).name
+            lambda: node.get_geotag(bot).name or ''
         )(),
         usertags=ignore(AttributeError, '')(
-            lambda: list(map(lambda x: x.get_username(bot), node.get_usertags(bot)))
+            lambda: list(map(lambda x: x.get_username(bot), node.get_usertags(bot))) or []
         )()
     )
 
