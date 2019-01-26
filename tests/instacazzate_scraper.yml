@@ -45,7 +45,7 @@ actions:
                 database: instacazzate
                 table:    '{table}'
                 model:
-                    url:  Story(data=x).get_url()
+                    url:  x.data
 
     -
         name:             reposting time!
