@@ -29,8 +29,8 @@ SCRIPTS = [
     # parse('tests/network_bandwidth.yml'),
     # parse('tests/stories.yml'),
     # parse('tests/text.yml'),
-    # parse('tests/comment.yml'),
-    parse('tests/unfollow_non_followers.yml'),
+    parse('tests/comment.yml'),
+    #parse('tests/unfollow_non_followers.yml'),
 
 ]
 

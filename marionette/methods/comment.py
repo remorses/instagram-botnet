@@ -3,7 +3,7 @@ from funcy import  rcompose, raiser, ignore, mapcat, partial, tap as _tap
 import time
 from random import choice
 from ..bot import Bot
-from .common import accepts, today, tap, extract_urls
+from .common import accepts, today, tap, extract_urls, substitute_vars
 from ..nodes import Node, User, Media
 
 
@@ -20,6 +20,8 @@ def comment(bot, nodes,  args):
         return [], {}
 
     count = 0
+
+
 
     def increment():
         bot.total['comments'] += 1
@@ -75,10 +77,22 @@ def comment(bot, nodes,  args):
 def do_comment(bot: Bot, text, node, thread_id=None):
 
     media_id = node.id
+    evaluated_text = substitute_vars(text,
+        author=ignore(AttributeError, '')(
+            lambda: node.get_author(bot).username
+        )(),
+        caption=node.get_caption(bot),
+        geotag=ignore(AttributeError, '')(
+            lambda: node.get_geotag(bot).name
+        )(),
+        usertags=ignore(AttributeError, '')(
+            lambda: list(map(lambda x: x.get_username(bot), node.get_usertags(bot)))
+        )()
+    )
 
     bot.api.comment(
         media_id=media_id,
-        comment_text=text,
+        comment_text=evaluated_text,
     )
     if bot.last['status'] == 'ok':
         bot.logger.debug('commented %s' % node)

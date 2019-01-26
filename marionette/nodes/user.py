@@ -76,6 +76,13 @@ class User(Node):
         else:
             return {}
 
+    def get_username(self, bot):
+        if self.username:
+            return self.username
+        else:
+            data = self.get_data(bot)
+            return data['username']
+
 
     def get_id(self, bot):
         username, id, data = attributes(self)

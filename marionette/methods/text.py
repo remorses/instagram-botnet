@@ -3,7 +3,7 @@ from funcy import  rcompose, raiser, ignore, mapcat, partial, tap as _tap
 import time
 from random import choice
 from ..bot import Bot
-from .common import accepts, today, tap, extract_urls
+from .common import accepts, today, tap, extract_urls, substitute_vars
 from ..nodes import Node, User, Media
 
 
@@ -75,6 +75,13 @@ def text(bot, nodes,  args):
 
 def send_message(bot: Bot, text, node, thread_id=None):
 
+    evaluated_text = substitute_vars(text,
+        receiver=ignore(AttributeError, '')(
+            lambda: node.get_username(bot).username
+        )(),
+        bio=node.get_bio(bot),
+    )
+
     user_id = node.id if node.id else node.get_id(bot)
     urls = extract_urls(text)
     item_type = 'link' if urls else 'text'
@@ -82,7 +89,7 @@ def send_message(bot: Bot, text, node, thread_id=None):
     bot.api.send_direct_item(
         item_type,
         users=[str(user_id)],
-        text=text,
+        text=evaluated_text,
         thread=thread_id,
         urls=urls
     )

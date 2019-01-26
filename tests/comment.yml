@@ -30,7 +30,6 @@ actions:
             - comment:
                 amount: 1
                 comments:
-                    - [ uelà, cos ]
-                    - [f]
+                    - [ 'ciao @{author}, {caption}?' ]
                     # - ["come stai?", "come va?"]
                     # - ["http://instagram.com"]

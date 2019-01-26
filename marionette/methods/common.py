@@ -113,3 +113,7 @@ def extract_urls(text):
     urls = re.findall(url_regex, text)
 
     return urls
+
+
+effify = lambda non_f_str: f'{non_f_str}'
+substitute_vars = lambda txt, **kwds: effify(txt).format(**kwds)
