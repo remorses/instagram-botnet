@@ -1,0 +1,35 @@
+
+name:                     test_send
+version:                  1
+mode:                     distributed
+
+
+
+bots:
+    -
+        username:         ***REMOVED***
+        password:         ***REMOVED***
+
+
+# filter:
+#     - only:             [bot1, bot2]
+#         user:
+#             followers:  x > 50 and x < 1000
+#             following:  x < 500
+#         media:
+#             likers:     x < 1000
+#             hastags:    not in {{ bad_hashtags }}
+
+
+execute:
+
+    -   name:             spammer
+        nodes:            ['instagram']
+        edges:
+            - followers
+            - send:
+                amount: 20
+                messages:
+                    - ["heeeeeey    modificato", "come stai?", ]
+                    - ["wooooooo    modificato", "come va?"]
+                    - ["man    man", "come stai?"]

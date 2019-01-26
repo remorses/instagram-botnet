@@ -2,6 +2,8 @@ from typing import List
 import requests
 from random import random
 from pathlib import Path
+from funcy import take
+from itertools import islice
 from .common import accepts, today
 from ..nodes import Node, Arg, Media
 import time
@@ -12,11 +14,27 @@ import time
 @accepts(Arg)
 def upload(bot, nodes,  args):
 
+    amount = args.get('amount') or 1
+    nodes = islice(nodes, amount)
+    nodes = list(nodes)
+    if len(nodes) == 0:
+        bot.logger.error('no photos to upload')
 
-    if len(nodes) == 1:
+
+
+
+    if amount == 1:
         type = 'photo'
 
-        node = nodes[0]
+        node = take(1, nodes)[0]
+
+        if isinstance(node, Arg):
+            value = node.value
+        elif isinstance(node, Media):
+            value = node.url
+        else:
+            value = node
+
         caption = args['caption'] if 'caption' in args else None
         # TODO implement geotag and usertag in uploading
         # geotag = args[geotag] if 'geotag' in args else None
@@ -24,8 +42,8 @@ def upload(bot, nodes,  args):
 
 
 
-        if 'instagram.com' in node.value:
-            media_id = Media(url=node.value).id
+        if 'instagram.com' in value:
+            media_id = Media(url=value).id
             bot.api.media_info(media_id)
             media = bot.last['items'][0]
             type = media_type(media)
@@ -36,8 +54,8 @@ def upload(bot, nodes,  args):
                 temp = TempVideo(Path(bot.cache_file).parent)
                 path = bot.api.download_video(media_id, temp.path, media=media)
 
-        elif node.value.startswith(('http', 'https')):
-            url = node.value
+        elif value.startswith(('http', 'https')):
+            url = value
             if url.endswith(('.jpg', '.jpeg')):
                 type = 'photo'
                 temp = TempImage(Path(bot.cache_file).parent)
@@ -49,7 +67,7 @@ def upload(bot, nodes,  args):
             path = download_media(bot, url, temp.path)
 
         else:
-            path = str(Path(node.value).resolve())
+            path = str(Path(value).resolve())
             if path.endswith(('.jpg', '.jpeg')):
                 type = 'photo'
             elif path.endswith(('.mp4', '.mov')):
@@ -63,6 +81,8 @@ def upload(bot, nodes,  args):
         if type == 'photo':
             if not bot.api.upload_photo(path, caption):
                 bot.logger.warn('upload failed')
+            else:
+                bot.total['uploads'] += 1
         else:
             if not bot.api.upload_video(path, caption):
                 bot.logger.warn('upload failed')
@@ -73,7 +93,7 @@ def upload(bot, nodes,  args):
         #     cache['uploaded'].insert(dict(identifier=bot.last, url=media.url, time=today(), type='media'))
 
         bot.logger.debug('sleeping some time')
-        time.sleep(bot.delay['upload'])
+        bot.sleep('upload')
 
     else:
         # upload album

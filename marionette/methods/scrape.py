@@ -1,10 +1,10 @@
 from .common import accepts
-from ..nodes import Node, User, Media
+from ..nodes import Node, User, Media, Story, Geotag, Hashtag
 from ..debug import unmask
 from .common import today, tap, dotdict
 from ..bot import Bot
 from dataset import connect
-from funcy import rcompose, ignore, retry
+from funcy import rcompose, ignore, retry, mapcat
 import time
 
 
@@ -13,13 +13,13 @@ import time
 def scrape(bot: Bot, nodes,  args):
 
     try:
-        amount = float(args['amount'])
+        amount = float(args['amount']) if 'amount' in args else 1
         database = args['database']
         table = args['table']
         model = args['model']
 
-    except KeyError as exc:
-        bot.logger.error('please add all necessary args, {}'.format( exc))
+    except:
+        bot.logger.error('please add all necessary args, {} isn\'t enought'.format(args))
         return [], {}
 
 
@@ -34,14 +34,14 @@ def scrape(bot: Bot, nodes,  args):
         engine_kwargs = {'connect_args': {'check_same_thread' : False}}
     )
 
-    with lazy_database() as db:
-        for node in nodes:
-            """
-            model:
-                name:      x.full_name
-                id:        x.pk
-                followers: x.followers_count
-            """
+    def process(node):
+        """
+        model:
+            name:      x.full_name
+            id:        x.pk
+            followers: x.followers_count
+        """
+        with lazy_database() as db:
             insertion = dotdict()
             for name, expr in model.items():
                 insertion[name] = evaluate(expr, node, bot=bot)
@@ -50,10 +50,16 @@ def scrape(bot: Bot, nodes,  args):
                 db[table].insert(insertion)
                 bot.logger.info('added to database node {} with insertion {}'.format(node, insertion))
                 increment()
-            else:
-                 break
+                yield node
 
-    return [], bot.last
+            else:
+                 return
+
+
+    nodes = mapcat(process, nodes)
+
+
+    return nodes, bot.last
 
 
 
@@ -70,7 +76,13 @@ def evaluate(expr, node, bot):
 
 def xeval(expr, x):
     try:
-        return eval(expr, dotdict(x=x))
+        return eval(expr, dict(x=x,
+            User=User,
+            Story=Story,
+            Media=Media,
+            Hashtag=Hashtag,
+            Geotag=Geotag
+        ))
 
     except (KeyError, AttributeError):
         return None

@@ -30,7 +30,7 @@ class Bot:
         self.username = username
         Bot.id += 1
 
-        self.predicates = [partial(not_in_cache, self), ]
+        self.predicates = [] # [partial(not_in_cache, self), ]
 
         self.start_time = datetime.datetime.now()
         self.api = API(logs_file=self.logs_file, id=self.id, username=username, device=device)
@@ -39,6 +39,13 @@ class Bot:
         self.total = TOTAL
         self.delay = DELAY
         self.max_per_day = MAX_PER_DAY
+
+        # methods used in propertis used in yaml
+        self._followers_ids = []
+        self._followers_usernames = []
+        self._following_ids = []
+        self._following_usernames = []
+
 
 
         self.api.login(username, password, proxy=proxy,
@@ -53,6 +60,18 @@ class Bot:
     def cache(self):
         return dataset.connect(make_db_url(self.cache_file), engine_kwargs = {'connect_args': {'check_same_thread' : False}})
 
+    @property
+    def followers_ids(self):
+            if self._followers_ids:
+                print(self._followers_ids)
+
+                return self._followers_ids
+            else:
+                data = cycled_api_call(self, self.api.get_user_followers, id, 'users')
+                user_ids = map(lambda item: item['pk'], data)
+                self._followers_ids = list(user_ids)
+                print(self._followers_ids)
+                return self._followers_ids
 
 
     @property
@@ -83,22 +102,29 @@ class Bot:
 
         return nodes
 
-    def suitable(self, node):
+    def suitable(self, node, table=None, specifier=None):
         """
         same as filter but only one node, returns True if node in suitable
         """
         bool = True
 
         for predicate in self.predicates:
-            bool = bool and predicate(node)
+            bool = bool and predicate(
+                node,
+                table=table,
+                specifier=specifier
+            )
 
         return bool
-        
-        
+
+
     def sleep(self, type='usual'):
+
         if type in self.delay:
+            self.logger.debug('sleeping for {} seconds'.format(self.delay[type]))
             time.sleep(self.delay[type])
         else:
+            self.logger.debug('sleeping for {} seconds'.format(self.delay['usual']))
             time.sleep(self.delay['usual'])
 
 
@@ -136,3 +162,55 @@ def make_cookie_file( file, name):
     file = Path(file)
     file.exists() or file.touch()
     return str(file.resolve())
+
+
+def cycled_api_call(bot, api_method, api_argument, key,  ):
+
+    next_max_id = ''
+    sleep_track = 0
+    done = 0
+
+
+    while True:
+        bot.logger.info('new get cycle with %s' % api_method.__name__)
+        try:
+            api_method(api_argument, max_id=next_max_id)
+            items = bot.last[key] if key in bot.last else []
+
+            if 'next_max_id' not in bot.last:
+                yield from items
+                done += len(items)
+                return
+
+            elif "more_available" in bot.last and not bot.last["more_available"]:
+                yield from items
+                done += len(items)
+                return
+
+            elif "big_list" in bot.last and not bot.last['big_list']:
+                yield from items
+                done += len(items)
+                return
+
+            # elif (done + len(items)) >= amount:
+            #     yield from items[:(amount - done)]
+            #     done += len(items)
+            #     return
+
+            else:
+                yield from items
+                done += len(items)
+
+        except Exception as exc:
+            bot.logger.error('exception in cycled_api_call: {}'.format(exc))
+            yield from []
+            return
+
+        if sleep_track > 10:
+            bot.logger.debug('sleeping some time while getting')
+            bot.sleep('getter')
+            sleep_track = 0
+
+        bot.sleep('usual')
+        next_max_id = bot.last.get("next_max_id", "")
+        sleep_track += 1

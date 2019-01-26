@@ -1,0 +1,31 @@
+name:                          test_followers
+version:                       1
+mode:                          distributed
+
+
+
+bots:
+    -
+        username:              ***REMOVED***
+        password:              ***REMOVED***
+
+
+actions:
+    -   name:                  follow_instagrammers
+        nodes:
+            - instagram
+            - ***REMOVED***
+            - gesu
+            - madonna
+            - gesualdo
+        edges:
+            - followers
+            - filter:
+                user:
+                    followers: x < 400
+            - follow:
+                amount:        40
+
+    -   name:  reposter
+        edges:
+            - upload:

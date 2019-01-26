@@ -9,13 +9,13 @@ import time
 
 
 @accepts(User)
-def follow(bot: Bot, nodes,  args):
+def unfollow(bot: Bot, nodes,  args):
 
     amount = float(args['amount']) if 'amount' in args else 1
     count = 0
 
     def increment():
-        bot.total['follows'] += 1
+        bot.total['unfollows'] += 1
         nonlocal count
         count += 1
 
@@ -27,29 +27,33 @@ def follow(bot: Bot, nodes,  args):
         # lambda node: node \
         #     if bot.suitable(node) \
         #     else tap(None,lambda: bot.logger.warn('{} not suitable'.format(node))),
-        lambda node: follow_user(node, bot=bot) \
+        lambda node: unfollow_user(node, bot=bot) \
             if node else None,
         lambda x: tap(x, increment) if x else None,
     )
 
 
-    followed = map(process, nodes)
-    followed = filter(lambda x: x, followed)
+    unfollowed = map(process, nodes)
+    unfollowed = filter(lambda x: x, unfollowed)
 
-    return followed, bot.last
+    return unfollowed, bot.last
 
 
 
-def follow_user(user, bot):
-    bot.api.follow(user.id)
+def unfollow_user(user, bot):
+    bot.api.unfollow(user.id)
     if bot.last['status'] != 'ok':
         bot.logger.warn('request didn\'t return "ok" following {}'.format(user.username))
         bot.sleep('error')
         return None
     else:
         with bot.cache as cache:
-            cache['followed'].insert(dict(identifier=user.id, time=today(), type='user',))
+            cache['unfollowed'].insert(dict(
+                identifier=user.id,
+                time=today(),
+                type='user',
+            ))
 
-        bot.logger.info('followed %s' % user)
-        bot.sleep('follow')
+        bot.logger.info('unfollowed %s' % user)
+        bot.sleep('unfollow')
         return user

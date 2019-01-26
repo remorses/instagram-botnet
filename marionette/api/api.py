@@ -34,17 +34,16 @@ class API(NOT_MY_API):
         self.total_requests = 0
 
         # Setup logging
+        self.logger = logging.getLogger('[{}]'.format(self.id))
 
-        fh = HTMLFileHandler(title=self.id, file=logs_file, mode='w')
-        fh.setLevel(logging.INFO)
-        fh.setFormatter(file_formatter())
+        # fh = HTMLFileHandler(title=self.id, file=logs_file, mode='w')
+        # fh.setLevel(logging.INFO)
+        # fh.setFormatter(file_formatter())
+        # self.logger.addHandler(fh)
 
         ch = logging.StreamHandler()
         ch.setLevel(logging.DEBUG)
         ch.setFormatter(colred_formatter())
-
-        self.logger = logging.getLogger('[{}]'.format(self.id))
-        self.logger.addHandler(fh)
         self.logger.addHandler(ch)
 
         self.logger.setLevel(logging.DEBUG)
@@ -53,6 +52,10 @@ class API(NOT_MY_API):
 
 
         self.last_json = None
+
+    def media_info(self, media_id):
+        url = 'media/{media_id}/info/'.format(media_id=media_id)
+        return self.send_request(url)
 
 
     def send_request(self, endpoint, post=None, login=False, with_signature=True):
@@ -141,6 +144,69 @@ class API(NOT_MY_API):
         }
         """
         url = "feed/user/{user_id}/story/".format(user_id=user_id)
+        return self.send_request(url)
+
+    def get_user_reel(self, user_id):
+        url = 'feed/user/{}/reel_media/'.format(user_id)
+        return self.send_request(url)
+
+    def get_user_stories(self, user_id):
+        url = 'feed/user/{}/story/'.format(user_id)
+        return self.send_request(url)
+
+    def get_self_story_viewers(self, story_id):
+
+        url = 'media/{}/list_reel_media_viewer/?supported_capabilities_new={}'.format(story_id,
+                                                                                      config.SUPPORTED_CAPABILITIES)
+        return self.send_request(url)
+
+    def get_tv_suggestions(self):
+        url = 'igtv/tv_guide/'
+        return self.send_request(url)
+
+    def get_hashtag_stories(self, hashtag):
+        url = 'tags/{}/story/'.format(hashtag)
+        return self.send_request(url)
+
+    def follow_hashtag(self, hashtag):
+        data = self.json_data({})
+        url = 'tags/follow/{}/'.format(hashtag)
+        return self.send_request(url, data)
+
+    def unfollow_hashtag(self, hashtag):
+        data = self.json_data({})
+        url = 'tags/unfollow/{}/'.format(hashtag)
+        return self.send_request(url, data)
+
+    def get_tags_followed_by_user(self, user_id):
+        url = 'users/{}/following_tags_info/'.format(user_id)
+        return self.send_request(url)
+
+    def get_hashtag_sections(self, hashtag):
+        data = self.json_data({'supported_tabs': "['top','recent','places']", 'include_persistent': 'true'})
+        url = 'tags/{}/sections/'.format(hashtag)
+        return self.send_request(url, data)
+
+    def get_media_insight(self, media_id):
+        url = 'insights/media_organic_insights/{}/?ig_sig_key_version={}'.format(media_id, config.IG_SIG_KEY)
+        return self.send_request(url)
+
+    def get_self_insight(self):
+        url = 'insights/account_organic_insights/?show_promotions_in_landing_page=true&first={}'.format()  # todo
+        return self.send_request(url)
+
+    def save_media(self, media_id):
+        data = self.json_data()
+        url = 'media/{}/save/'.format(media_id)
+        return self.send_request(url, data)
+
+    def unsave_media(self, media_id):
+        data = self.json_data()
+        url = 'media/{}/unsave/'.format(media_id)
+        return self.send_request(url, data)
+
+    def get_saved_medias(self):
+        url = 'feed/saved/'
         return self.send_request(url)
 
 

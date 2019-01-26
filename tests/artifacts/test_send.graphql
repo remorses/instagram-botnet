@@ -1,0 +1,19 @@
+{
+	__nodes_interaction__[1] {
+		__text__ {
+			_
+		}
+		__evaluate__ {
+			action
+			status_code
+			payload {
+				client_context
+				item_id
+				timestamp
+				thread_id
+			}
+			status
+		}
+	}
+}
+

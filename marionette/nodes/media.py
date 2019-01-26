@@ -53,7 +53,7 @@ class Media(Node):
         url, id, data = attributes(self)
         if id:
             bot.api.media_info(id)
-            time.sleep(bot.delay['usual'])
+            bot.sleep('usual')
             if 'items' in bot.last:
                 self._data = bot.last["items"][0]
                 return self._data

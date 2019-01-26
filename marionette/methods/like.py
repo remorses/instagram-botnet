@@ -11,44 +11,49 @@ from ..nodes import Node, User, Media
 def like(bot, nodes,  args):
 
 
+    amount = float(args['amount']) if 'amount' in args else 1
+
     count = 0
 
     def increment():
-        global count
+        bot.total['likes'] += 1
+        nonlocal count
         count += 1
 
     stop = raiser(StopIteration)
 
     process = rcompose(
-        lambda nodes: nodes.next(),
-        lambda node: node \
-            if bot.suitable(node) \
-            else tap(None,lambda: bot.logger.warn('{} not suitable'.format(node))),
+        lambda x: stop() if x and count >= amount else x,
+        # lambda node: node \
+        #     if bot.suitable(node) \
+        #     else tap(None,lambda: bot.logger.warn('{} not suitable'.format(node))),
         lambda node: like_media(node, bot=bot) \
             if node else None,
         lambda x: tap(x, increment) if x else None,
-        lambda x: stop() if x and count >= float(args['amount']) else None,
     )
 
 
-    list(map(process, nodes))
+    liked = map(process, nodes)
+    liked = filter(lambda x: x, liked)
 
-    return [], bot.last
+    return liked, bot.last
 
 
 def like_media(media, bot):
         bot.api.like(media.id)
         if bot.last['status'] != 'ok':
             bot.logger.warn('request didn\'t return "ok" liking {}'.format(media.url))
-            time.sleep(bot.delay['error'])
+            bot.sleep('error')
+            return None
         else:
             with bot.cache as cache:
                 cache['liked'].insert(
                     dict(identifier=media.id,
-                        url=media.url,
+                        specifier=media.url,
                         time=today(),
                         type='media',
-                        interaction='like')
+                        )
                 )
             bot.logger.debug('liked %s' % media.url)
-            time.sleep(bot.delay['like'])
+            bot.sleep('like')
+            return media

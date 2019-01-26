@@ -1,4 +1,4 @@
 #!/bin/bash
 
-cd "$( dirname ${BASH_SOURCE[0]})"
-python -m tests.spec
+echo "pwd: $(pwd)"
+python -m tests

@@ -20,11 +20,13 @@ bots:
 #             hastags:  not in {{ bad_hashtags }}
 
 
-execute:
-    - like:
-            nodes: ['***REMOVED***', 'instagram']
-            edges:
-                - user_feed
+actions:
+    -
+        nodes: ['***REMOVED***', 'instagram']
+        edges:
+            - user_feed
+            - like:
+                amount: 4
 
 
 

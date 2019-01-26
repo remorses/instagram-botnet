@@ -1,5 +1,5 @@
 
-name:                 test_send
+name:                 test_comment
 version:            1
 mode:                 distributed
 
@@ -21,14 +21,15 @@ bots:
 #             hastags: not in {{ bad_hashtags }}
 
 
-execute:
-
-    - send:
-        nodes: ['instagram']
+actions:
+    -
+        nodes:
+            - ***REMOVED***
         edges:
-            - followers
-        args:
-            messages:
-                - ["heeeeeey    modificato", "come stai?", ]
-                - ["wooooooo    modificato", "come va?"]
-                - ["man    man", "come stai?"]
+            - user_feed
+            - comment:
+                amount: 1
+                comments:
+                    - [ 'ciao @{author}, {caption}?' ] # caption, author, usertags, geotag
+                    # - ["come stai?", "come va?"]
+                    # - ["http://instagram.com"]
