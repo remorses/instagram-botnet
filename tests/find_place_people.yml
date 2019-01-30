@@ -1,0 +1,66 @@
+
+name:                     test_comment
+version:                  1
+mode:                     distributed
+
+
+
+bots:
+    -
+        username:         ***REMOVED***
+        password:         ***REMOVED***
+
+
+# filter:
+#     - only:             [bot1, bot2]
+#         user:
+#             followers:  x > 50 and x < 1000
+#             following:  x < 500
+#         media:
+#             likers:     x < 1000
+#             hastags:    not in {{ bad_hashtags }}
+
+
+actions:
+
+    -
+        name:             find people by geotag
+        from_type:        geotag
+        nodes:
+            - chiavari
+            - piazza pescatori
+            - mako
+            - lavagna
+        edges:
+            - geotag_feed
+            - author
+            - filter:
+                user:
+                    followers: x < 5000
+                    following: x < 600
+            - inject:
+                as: found_people
+            - return:
+                amount: 200
+                model:
+                    pk: x.pk
+                    username: x.username
+    - 
+        name: store plaace people likers
+        from_type: user
+        nodes: '{found_people}'
+        edges:
+            - followers
+            - filter:
+                user:
+                    followers: x < 5000
+                    following: x < 600
+            - return:
+                amount: inf
+                model:
+                    pk: x.pk
+                    username: x.username
+                    
+# then in code find all the people present more than 3 times 
+# they probably are people from the place
+                
