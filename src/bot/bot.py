@@ -67,7 +67,7 @@ class Bot:
 
                 return self._followers_ids
             else:
-                data = cycled_api_call(self, self.api.get_user_followers, id, 'users')
+                data = cycled_api_call(amount, self, self.api.get_user_followers, id, 'users')
                 user_ids = map(lambda item: item['pk'], data)
                 self._followers_ids = list(user_ids)
                 print(self._followers_ids)
@@ -164,7 +164,7 @@ def make_cookie_file( file, name):
     return str(file.resolve())
 
 
-def cycled_api_call(bot, api_method, api_argument, key,  ):
+def cycled_api_call(amount, bot, api_method, api_argument, key,  ):
 
     next_max_id = ''
     sleep_track = 0
@@ -192,8 +192,8 @@ def cycled_api_call(bot, api_method, api_argument, key,  ):
                 done += len(items)
                 return
 
-            # elif (done + len(items)) >= amount:
-            #     yield from items[:(amount - done)]
+            # elif (done + len(items)) >= max:
+            #     yield from items[:(max - done)]
             #     done += len(items)
             #     return
 

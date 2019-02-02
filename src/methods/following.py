@@ -10,10 +10,11 @@ from .common import accepts, cycled_api_call
 def following(bot, nodes,  args) -> List[User]:
 
     pack_user = lambda item: User(id=item['pk'], username=item['username'], data=item)
+    amount = args.get('amount')
 
     process = rcompose(
         lambda user: user.id if user.id else user.get_id(bot),
-        lambda id: cycled_api_call(bot, bot.api.get_user_followings, id, 'users'),
+        lambda id: cycled_api_call(amount, bot, bot.api.get_user_followings, id, 'users'),
         lambda gen: map(pack_user, gen)
     )
 

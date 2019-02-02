@@ -6,9 +6,9 @@ COPY requirements.txt .
 RUN pip install -r requirements.txt
 
 
-COPY . .
+COPY ./src .
 
 
 
 # Run the app.
-CMD ["/bin/bash","./run_tests.sh"]
+CMD ["python","-m", "src", "-f", "/etc/file.yml"]

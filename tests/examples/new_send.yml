@@ -28,7 +28,7 @@ execute:
         edges:
             - followers
             - send:
-                amount: 20
+                max: 20
                 messages:
                     - ["heeeeeey    modificato", "come stai?", ]
                     - ["wooooooo    modificato", "come va?"]

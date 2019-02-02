@@ -2,8 +2,8 @@ import sys
 from pathlib import Path
 import json
 
-from marionette import execute
-from marionette.debug import Network_logger
+from src import execute
+from src.debug import Network_logger
 from .parse import parse
 from .unmask import unmask
 

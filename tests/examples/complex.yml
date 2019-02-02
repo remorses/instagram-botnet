@@ -49,4 +49,4 @@ execute:
             edges:
                 - followers
             args:
-                amount: 30
+                max: 30

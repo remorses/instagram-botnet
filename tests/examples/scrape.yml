@@ -17,7 +17,7 @@ execute:
         edges:
             - likers
         args:
-            amount:        3
+            max:        3
 
             database:      sqlite:///tests/scraped.db
             table:         photo5645_likers

@@ -17,4 +17,4 @@ actions:
         edges:
             - likers
             - follow:
-                amount: 30
+                max: 30

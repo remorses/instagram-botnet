@@ -33,4 +33,4 @@ actions:
                 user:
                     id:  x not in bot.followers_ids
             - unfollow:
-                amount:  20
+                max:  20
