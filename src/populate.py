@@ -100,38 +100,24 @@ def str_format_map(format_string, mapping):
         text = ''
     return ''.join(output)
 
-
-def inject(script, data={}):
-    variables = data #safedotdict(**data)
-    if isinstance(script, dict):
-        for (key, value) in script.items():
-            if isinstance(value, str):
-                if '{' in value and '}' in value:
-                    try:
-                        new_value = str_format_map(value, variables)
-                        script[key] = new_value
-                    except Exception as e:
-                        init(autoreset=True)
-                        print(Fore.RED + 'error in {},\n{}'.format(value, e))
-            else:
-                inject(script[key], data)
-    else:
-        return
-
-# 
-# if __name__ == '__main__':
-#     stuff = dict(
-#         a=dict(
-#             b=1,
-#             c='{a.b}'
-#         )
-#     )
-#     inject(stuff, data=dict(
-#         a=dict(
-#             b=dict(
-#                 c=2
-#                 )
-#             )
-#         )
-#     )
-#     print(json.dumps(stuff, indent=4))
+def populate(script, data={}):
+    def recursive_populate(script, data):
+        variables = data #safedotdict(**data)
+        if isinstance(script, dict):
+            for (key, value) in script.items():
+                if isinstance(value, str):
+                    if '{' in value and '}' in value:
+                        try:
+                            new_value = str_format_map(value, variables)
+                            script[key] = new_value
+                        except Exception as e:
+                            init(autoreset=True)
+                            print(Fore.RED + 'error in {},\n{}'.format(value, e))
+                else:
+                    recursive_populate(script[key], data)
+        else:
+            return
+            
+    script_copy = dict(**script)
+    recursive_populate(script_copy, data)
+    return script_copy

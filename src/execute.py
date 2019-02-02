@@ -2,14 +2,14 @@
 
 from .make_task import make_task, partitionate
 from .make_bots import make_bots
-from .inject_variables import inject
+from .populate import populate
 from .reducer import Reducer
 from .threads import start, wait
 import traceback
 
 def execute(script, variables={}):
 
-    inject(script, variables)
+    script = populate(script, variables)
 
     bots = make_bots(script)
 
