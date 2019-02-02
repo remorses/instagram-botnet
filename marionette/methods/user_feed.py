@@ -6,6 +6,7 @@ from .common import accepts, cycled_api_call, tap
 
 @accepts(User)
 def user_feed(bot, nodes,  args) -> List[Media]:
+    amount = args.get('amount')
 
     pack_media = lambda data: Media(id=data['pk'], data=data)
 

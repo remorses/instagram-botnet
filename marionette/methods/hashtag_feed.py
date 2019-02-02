@@ -5,6 +5,7 @@ from .common import accepts, cycled_api_call
 
 @accepts(Hashtag)
 def hashtag_feed(bot, nodes,  args) -> List[Media]:
+    amount = args.get('amount')
 
     pack_media = lambda data: Media(id=data['pk'], data=data)
 

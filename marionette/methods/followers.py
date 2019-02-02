@@ -12,7 +12,7 @@ def followers(bot: Bot, nodes,  args) -> List[User]:
     # bot.logger.debug('nodes at followers %s' % list(nodes)[:3])
     #
     # nodes = iter(list(nodes))
-    amount = args.get('amount') or 1000
+    amount = args.get('amount')
 
     pack_user = lambda item: User(id=item['pk'], username=item['username'], data=item)
 

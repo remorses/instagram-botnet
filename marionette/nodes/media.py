@@ -48,32 +48,28 @@ class Media(Node):
             return data['media_id']
         else:
             raise Exception
+    @property
+    def data(self,):
 
-    def get_data(self, bot):
-        url, id, data = attributes(self)
-        if id:
+        if self.id:
+            bot = self._bot
             bot.api.media_info(id)
             bot.sleep('usual')
             if 'items' in bot.last:
                 self._data = bot.last["items"][0]
                 return self._data
-        elif data:
-            if 'media_id' in data:
-                self._id = data['media_id']
-                return self.get_data(bot)
-            else:
-                return {}
-        elif url:
-            id = id_from_url(url)
+
+        elif self.url:
+            id = id_from_url(self.url)
             self._id = id
-            return self.get_data(bot)
+            return self.data
 
         else:
             return {}
 
-
-    def get_author(self, bot):
-        _, _, data = attributes(self)
+    @property
+    def author(self,):
+        data = self._data
         if 'user' in data:
             user = data["user"]
             return User(
@@ -82,50 +78,50 @@ class Media(Node):
                 username=user['username']
             )
         else:
-            data = self.get_data(bot)
+            data = self.data
             user = data["user"]
             return User(
                 data=user,
                 id=user['pk'],
                 username=user['username']
             )
-
-    def get_like_count(self, bot):
-        _, _, data = attributes(self)
+    @property
+    def like_count(self,):
+        data = self._data
         if 'like_count' in data:
             return data['like_count']
         else:
-            data = self.get_data(bot)
+            data = self.data
             return data['like_count']
-
-    def get_comment_count(self, bot):
-        _, _, data = attributes(self)
+    @property
+    def comment_count(self,):
+        data = self._data
         if 'comment_count' in data:
             return data['comment_count']
         else:
-            data = self.get_data(bot)
+            data = self.data
             if 'comment_count' in data:
                 return data['comment_count']
             else:
                 return False
-
-    def get_caption(self, bot):
-        _, _, data = attributes(self)
+    @property
+    def caption(self,):
+        data = self._data
         if 'caption' in data:
             return data['caption']['text']
         else:
             if 'location' in data:
-                data = self.get_data(bot)
+                data = self.data
                 return data['caption']['text']
             else:
                 return False
-
-    def get_geotag(self, bot):
-        _, _, data = attributes(self)
+    @property
+    def geotag(self,):
+        data = self._data
         if 'location' in data:
             return data['location']
         else:
-            data = self.get_data(bot)
+            data = self.data
             if 'location' in data:
                 return  Geotag(
                     name=data['name'],
@@ -135,8 +131,9 @@ class Media(Node):
             else:
                 return False
 
-    def get_usertags(self, bot):
-        _, _, data = attributes(self)
+    @property
+    def usertags(self,):
+        data = self._data
         pack_user = rcompose(
             lambda data: data['user'],
             lambda data: User(username=data['username'], id=data['pk'], data=data)
@@ -147,7 +144,7 @@ class Media(Node):
                 items =  data["usertags"]["in"]
                 yield from (pack_user(item) for item in items)
             else:
-                data = self.get_data(bot)
+                data = self.data
                 if 'usertags' in data:
                     items =  data["usertags"]["in"]
                     yield from (pack_user(item) for item in items)
@@ -156,8 +153,10 @@ class Media(Node):
         except KeyError:
             return False
 
-    def get_hashtags(self, bot):
-        text = self.get_caption(bot)
+
+
+    def hashtags(self,):
+        text = self.caption
         raw_tags = set(part[1:] for part in text.split() if part.startswith('#'))
         tags = (Hashtag(name=tag) for tag in raw_tags)
         yield from tags
