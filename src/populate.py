@@ -1,66 +1,6 @@
 from colorama import init, Fore
-from datetime import date
-import random
-import json
-import traceback
+
 from string import Formatter
-# def inject(script, data={}):
-#     if isinstance(script, dict):
-#         for (key, value) in script.items():
-#             if isinstance(value, str):
-#                 if '{{ ' in value and ' }}' in value:
-#                     try:
-#                         new_value = value.replace('{{ ','').replace(' }}','')
-#                         new_value = eval(new_value, dict( random=random, data=date, **data,))
-#                         script[key] = new_value
-#                     except Exception as e:
-#                         init(autoreset=True)
-#                         print(Fore.RED + 'couldn\'t replace {}},\n{}'.format(value, e))
-#             else:
-#                 inject(script[key], data)
-#     else:
-#         return
-
-# class MissingAttrHandler(str):
-#     def __init__(self, format):
-#         self.format = format
-#
-#     def __getattr__(self, attr):
-#         return type(self)('{}.{}'.format(self.format, attr))
-#
-#     def __repr__(self):
-#         return MissingAttrHandler(self.format + '!r}')
-#
-#     def __str__(self):
-#         return MissingAttrHandler(self.format + '!s}')
-#
-#     def __format__(self, format):
-#         if self.format.endswith('}'):
-#             self.format = self.format[:-1]
-#         return '{}:{}}}'.format(self.format, format)
-#
-# class safedotdict(dict):
-#     """dot.notation access to dictionary attributes"""
-#     def __getattr__(self, attr):
-#         print('called')
-#         val = dict.__getitem__(self, attr)
-#         if isinstance(val, dict):
-#             return safedotdict(**val)
-#         else:
-#             return val
-#     def __setattr__(self, attr):
-#         print('called')
-#         val = dict.__setitem__(self, attr)
-#         if isinstance(val, dict):
-#             return safedotdict(**val)
-#         else:
-#             return val
-#     __delattr__ = dict.__delitem__
-#     def __missing__(self, key):
-#         return '{' + safedotdict(**eval(key)) + '}'
-
-
-
 
 def get_field_value(field_name, mapping):
     try:
@@ -73,7 +13,7 @@ def get_field_value(field_name, mapping):
                     return recursive_get(".".join(attrs[1:]), mapping[attrs[0]])
         return recursive_get(field_name, mapping)
 
-    except Exception as e:
+    except:
         # traceback.print_exc()
         return field_name, False
 
@@ -117,7 +57,7 @@ def populate(script, data={}):
                     recursive_populate(script[key], data)
         else:
             return
-            
+
     script_copy = dict(**script)
     recursive_populate(script_copy, data)
     return script_copy

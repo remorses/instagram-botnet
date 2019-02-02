@@ -3,7 +3,7 @@ import yaml
 import json
 from colorama import init, Fore
 from .execute import execute
-from .debug import unmask
+# from .debug import unmask
 
 
 
@@ -27,6 +27,6 @@ if __name__ == '__main__':
         template_file.close()
 
         data = execute(template, data)
-        init()
-        print(Fore.YELLOW + unmask(data))
+        # init()
+        # print(Fore.YELLOW + unmask(data))
         execute(template, data)
