@@ -118,20 +118,20 @@ def inject(script, data={}):
     else:
         return
 
-
-if __name__ == '__main__':
-    stuff = dict(
-        a=dict(
-            b=1,
-            c='{a.b}'
-        )
-    )
-    inject(stuff, data=dict(
-        a=dict(
-            b=dict(
-                c=2
-                )
-            )
-        )
-    )
-    print(json.dumps(stuff, indent=4))
+# 
+# if __name__ == '__main__':
+#     stuff = dict(
+#         a=dict(
+#             b=1,
+#             c='{a.b}'
+#         )
+#     )
+#     inject(stuff, data=dict(
+#         a=dict(
+#             b=dict(
+#                 c=2
+#                 )
+#             )
+#         )
+#     )
+#     print(json.dumps(stuff, indent=4))
