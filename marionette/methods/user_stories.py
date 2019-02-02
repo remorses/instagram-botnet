@@ -10,6 +10,7 @@ from .common import accepts, cycled_api_call, tap
 @accepts(User)
 def user_stories(bot, nodes,  args) -> List[Story]:
 
+    amount = args.get('amount')
     pack_story = lambda data: Story(id=data['pk'], data=data)
     # unmasked = lambda: unmask(bot.last)
     # log_unmasked = lambda: bot.logger.warn(unmasked())
