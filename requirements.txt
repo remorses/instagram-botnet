@@ -1,4 +1,5 @@
 instabot
+click
 colorlog
 pyyaml
 dataset
