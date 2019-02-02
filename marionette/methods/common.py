@@ -39,7 +39,7 @@ def parse_date(date):
 
 
 
-def cycled_api_call(bot, api_method, api_argument, key,  ):
+def cycled_api_call(amount, bot, api_method, api_argument, key,  ):
 
     next_max_id = ''
     sleep_track = 0
@@ -51,30 +51,27 @@ def cycled_api_call(bot, api_method, api_argument, key,  ):
         try:
             api_method(api_argument, max_id=next_max_id)
             items = bot.last[key] if key in bot.last else []
+            size = len(items)
 
-            if 'next_max_id' not in bot.last:
-                yield from items
-                done += len(items)
+            if any(
+                'next_max_id' not in bot.last,
+                "more_available" in bot.last and not bot.last["more_available"],
+                "big_list" in bot.last and not bot.last['big_list']
+            ):
+                yield from items[:amount - done]
+                done += size
                 return
 
-            elif "more_available" in bot.last and not bot.last["more_available"]:
-                yield from items
-                done += len(items)
-                return
-
-            elif "big_list" in bot.last and not bot.last['big_list']:
-                yield from items
-                done += len(items)
-                return
-
-            # elif (done + len(items)) >= amount:
-            #     yield from items[:(amount - done)]
-            #     done += len(items)
+            # elif (done + size) >= max:
+            #     yield from items[:(max - done)]
+            #     done += size
             #     return
 
             else:
-                yield from items
-                done += len(items)
+                yield from items[:amount - done]
+                done += size
+                if done > amount:
+                    return
 
         except Exception as exc:
             bot.logger.error('exception in cycled_api_call: {}'.format(exc))

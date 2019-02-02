@@ -11,7 +11,7 @@ def user_feed(bot, nodes,  args) -> List[Media]:
 
     process = rcompose(
         lambda user: user.id if user.id else user.get_id(bot),
-        lambda id: cycled_api_call(bot, bot.api.get_user_feed, id, 'items'),
+        lambda id: cycled_api_call(amount, bot, bot.api.get_user_feed, id, 'items'),
         lambda items: map(pack_media, items),
         # lambda x: tap(x, lambda: print(x)),
 

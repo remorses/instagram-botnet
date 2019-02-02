@@ -17,4 +17,4 @@ execute:
             - geotag
             - geotag_feed
         args:
-            amount: 10
+            max: 10

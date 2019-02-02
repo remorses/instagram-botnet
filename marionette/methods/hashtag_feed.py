@@ -11,7 +11,7 @@ def hashtag_feed(bot, nodes,  args) -> List[Media]:
     process = rcompose(
         lambda tag: tag.id if tag.id else tag.get_id(bot),
         # lambda x: tap(x, lambda: print(bot.last)),
-        lambda id: cycled_api_call(bot, bot.api.get_hashtag_feed, id, 'items'),
+        lambda id: cycled_api_call(amount, bot, bot.api.get_hashtag_feed, id, 'items'),
         lambda items: map(pack_media, items),
     )
 

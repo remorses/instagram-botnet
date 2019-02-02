@@ -14,8 +14,8 @@ import time
 @accepts(Arg)
 def upload(bot, nodes,  args):
 
-    amount = args.get('amount') or 1
-    nodes = islice(nodes, amount)
+    max = args.get('max') or 1
+    nodes = islice(nodes, max)
     nodes = list(nodes)
     if len(nodes) == 0:
         bot.logger.error('no photos to upload')
@@ -23,7 +23,7 @@ def upload(bot, nodes,  args):
 
 
 
-    if amount == 1:
+    if max == 1:
         type = 'photo'
 
         node = take(1, nodes)[0]
