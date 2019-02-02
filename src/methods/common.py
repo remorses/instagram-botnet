@@ -39,7 +39,9 @@ def parse_date(date):
 
 
 
-def cycled_api_call(amount, bot, api_method, api_argument, key,  ):
+def cycled_api_call(amount, bot, api_method, api_argument, key):
+
+    amount = amount or 9999
 
     next_max_id = ''
     sleep_track = 0

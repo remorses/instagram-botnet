@@ -1,68 +1,10 @@
 {
 	__nodes_interaction__[1] {
 		__user_feed__ {
-			logged_in_user {
-				pk
-				username
-				full_name
-				is_private
-				profile_pic_url
-				profile_pic_id
-				is_verified
-				has_anonymous_profile_picture
-				can_boost_post
-				is_business
-				is_call_to_action_enabled {
-					_
-				}
-				account_type
-				can_see_organic_insights
-				show_insights_terms
-				reel_auto_archive
-				has_placed_orders
-				allowed_commenter_type
-				nametag {
-					mode
-					gradient
-					emoji
-					selfie_sticker
-				}
-				allow_contacts_sync
-				phone_number
-			}
-			status
+			_
 		}
 		__comment__ {
-			logged_in_user {
-				pk
-				username
-				full_name
-				is_private
-				profile_pic_url
-				profile_pic_id
-				is_verified
-				has_anonymous_profile_picture
-				can_boost_post
-				is_business
-				is_call_to_action_enabled {
-					_
-				}
-				account_type
-				can_see_organic_insights
-				show_insights_terms
-				reel_auto_archive
-				has_placed_orders
-				allowed_commenter_type
-				nametag {
-					mode
-					gradient
-					emoji
-					selfie_sticker
-				}
-				allow_contacts_sync
-				phone_number
-			}
-			status
+			_
 		}
 		__evaluate__ {
 			items[17] {
