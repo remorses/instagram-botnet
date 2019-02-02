@@ -1,14 +1,8 @@
-FROM python:3.6-stretch
+FROM python:3.6-alpine
+COPY requirements.txt /
+RUN pip install -r /requirements.txt
 
-WORKDIR /bot
+WORKDIR     /bot
+COPY        ./src /bot
 
-COPY requirements.txt .
-RUN pip install -r requirements.txt
-
-
-COPY ./src .
-
-
-
-# Run the app.
-CMD ["python","-m", "src", "-f", "/etc/file.yml"]
+CMD  ['python', '-m', 'src']
