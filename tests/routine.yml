@@ -43,13 +43,13 @@ actions:
                     is_private:  not x
                     is_verified: not x
             - follow:
-                amount:          5
+                max:          5
             - filter:
                 user:
                     is_private:  not x
             - user_feed
             - like:
-                amount:          10
+                max:          10
     -
         name:                    reposting time!
         from_type:               user
@@ -58,6 +58,6 @@ actions:
         edges:
             - user_feed
             - shuffle:
-                amount:          5
+                max:          5
             - upload:
                 caption:         uelà

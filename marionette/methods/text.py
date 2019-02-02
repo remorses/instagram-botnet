@@ -14,7 +14,7 @@ def text(bot, nodes,  args):
 
 
     try:
-        amount = float(args['amount']) if 'amount' in args else 1
+        max = float(args['max']) if 'max' in args else 1
         messages = args['messages']
     except:
         bot.logger.error('please add all necessary args, {} isn\'t enought'.format(args))
@@ -55,7 +55,7 @@ def text(bot, nodes,  args):
 
 
     process = rcompose(
-        lambda x: stop() if x and count >= amount else x,
+        lambda x: stop() if x and count >= max else x,
         # return_if_suitable,
         discard_if_reached_limit,
         send_msg_from_groups,

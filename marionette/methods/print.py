@@ -16,7 +16,7 @@ import time
 def _print(bot: Bot, nodes,  args):
 
     try:
-        amount = float(args['amount']) if 'amount' in args else 1
+        max = float(args['max']) if 'max' in args else 1
         model = args['model']
 
     except KeyError as exc:
@@ -41,8 +41,8 @@ def _print(bot: Bot, nodes,  args):
         print()
         return node
 
-    amount = ignore(OverflowError, None)(lambda: int(amount))()
-    nodes = map(process, islice(nodes, amount))
+    max = ignore(OverflowError, None)(lambda: int(max))()
+    nodes = map(process, islice(nodes, max))
 
     return nodes, bot.last
 

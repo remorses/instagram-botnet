@@ -52,10 +52,10 @@ actions:
                 user:
                     is_private: x == False
             - follow:
-                amount:         2
+                max:         2
             - user_feed
             - like:
-                amount:         2
+                max:         2
     -
         name:                   repost some memes
         nodes:
@@ -67,6 +67,6 @@ actions:
                 media:
                     likes:      x > 200
             - shuffle:
-                amount:         20
+                max:         20
             - upload:
                 caption:        "#meme"

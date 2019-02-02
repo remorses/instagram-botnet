@@ -13,7 +13,7 @@ import time
 def scrape(bot: Bot, nodes,  args):
 
     try:
-        amount = float(args['amount']) if 'amount' in args else 1
+        max = float(args['max']) if 'max' in args else 1
         database = args['database']
         table = args['table']
         model = args['model']
@@ -46,7 +46,7 @@ def scrape(bot: Bot, nodes,  args):
             for name, expr in model.items():
                 insertion[name] = evaluate(expr, node, bot=bot)
 
-            if count <= amount:
+            if count <= max:
                 db[table].insert(insertion)
                 bot.logger.info('added to database node {} with insertion {}'.format(node, insertion))
                 increment()

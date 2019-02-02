@@ -11,7 +11,7 @@ import time
 @accepts(User)
 def unfollow(bot: Bot, nodes,  args):
 
-    amount = float(args['amount']) if 'amount' in args else 1
+    max = float(args['max']) if 'max' in args else 1
     count = 0
 
     def increment():
@@ -23,7 +23,7 @@ def unfollow(bot: Bot, nodes,  args):
 
     process = rcompose(
         # lambda x: tap(x, lambda: bot.logger.warn('{}._data: \n{}'.format(x, unmask(x._data)))),
-        lambda x: stop() if x and count >= amount else x,
+        lambda x: stop() if x and count >= max else x,
         # lambda node: node \
         #     if bot.suitable(node) \
         #     else tap(None,lambda: bot.logger.warn('{} not suitable'.format(node))),

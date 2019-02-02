@@ -52,7 +52,7 @@ execute:
 # actions:
 #     - like:
 #         args:
-#             amount:          20
+#             max:          20
 #         from:                ['https://www.instagram.com/p/BrS3BGPn81X/']
 #         via:
 #             - likers

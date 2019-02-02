@@ -55,6 +55,6 @@ actions:
         edges:
             - user_feed
             - shuffle:
-                amount:   5
+                max:   5
             - upload:
                 caption:  uelà
