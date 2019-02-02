@@ -53,11 +53,11 @@ def cycled_api_call(amount, bot, api_method, api_argument, key,  ):
             items = bot.last[key] if key in bot.last else []
             size = len(items)
 
-            if any(
+            if any([
                 'next_max_id' not in bot.last,
                 "more_available" in bot.last and not bot.last["more_available"],
                 "big_list" in bot.last and not bot.last['big_list']
-            ):
+            ]):
                 yield from items[:amount - done]
                 done += size
                 return
