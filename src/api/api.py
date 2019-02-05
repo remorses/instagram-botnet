@@ -15,7 +15,7 @@ except ImportError:
 
 import requests
 import requests.utils
-import six.moves.urllib as urllib
+import urllib
 from tqdm import tqdm
 
 from . import config, devices
