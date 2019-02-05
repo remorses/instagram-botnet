@@ -40,9 +40,9 @@ class API(object):
 
     _id = 0
 
-    def __init__(self, logs_file, device=None, username=None,  _id=None):
+    def __init__(self, logs_file, device=None, username=None,  id=None):
 
-        self._id = API._id if not _id else _id
+        self._id = API._id if not id else id
         API._id += 1
         # Setup device and user_agent
         device = device or devices.DEFAULT_DEVICE
