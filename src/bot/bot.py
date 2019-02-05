@@ -67,7 +67,7 @@ class Bot:
 
                 return self._followers_ids
             else:
-                data = cycled_api_call(amount, self, self.api.get_user_followers, id, 'users')
+                data = cycled_api_call(99999, self, self.api.get_user_followers, id, 'users')
                 user_ids = map(lambda item: item['pk'], data)
                 self._followers_ids = list(user_ids)
                 print(self._followers_ids)
