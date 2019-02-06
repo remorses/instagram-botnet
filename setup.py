@@ -8,32 +8,26 @@ here = path.abspath(path.dirname(__file__))
 with open(path.join(here, 'README.md'), encoding='utf-8') as f:
     long_description = f.read()
 
+
+# Get the requirements
+with open(path.join(here, 'requirements.txt'), encoding='utf-8') as f:
+    requirements = list(set(f.read().split('\n')) - set(['', '\n']))
+
+
 setup(
-    name='instabot',
+    name='instagram-graphbot',
     version='0.17.0',
 
-    description='Instagram bot scripts for promotion and API python wrapper.',
+    description='Instagram readable yaml rpc api for easy instagram scheduling and promotion',
     long_description=long_description,
 
-    author='Daniil Okhlopkov, Evgeny Kemerov',
-    author_email='danokhlopkov@gmail.com, eskemerov@gmail.com',
+    author='Tommaso De Rossi',
+    author_email='daer.tommy@gmail.com',
     license='Apache Software License 2.0',
 
     url='https://github.com/instagrambot/instabot',
-    keywords=['instagram', 'bot', 'api', 'wrapper'],
-    install_requires=[
-        'tqdm>=4.30.0',
-        'requests>=2.21.0',
-        'requests-toolbelt>=0.8.0',
-        'itsdangerous>=0.24',
-        'click>=5.1',
-        'schedule>=0.6.0',
-        'pysocks>=1.6.8',
-        'responses>=0.10.5',
-        'future>=0.17.1',
-        'six>=1.12.0',
-        'huepy>=0.9.8.1',
-    ],
+    keywords=['instagram', 'bot', 'api', 'graph'],
+    install_requires=[*requirements],
     classifiers=[
         # How mature is this project? Common values are
         'Development Status :: 5 - Production/Stable',
@@ -46,11 +40,9 @@ setup(
 
         # Specify the Python versions you support here. In particular, ensure
         # that you indicate whether you support Python 2, Python 3 or both.
-        'Programming Language :: Python :: 2',
-        'Programming Language :: Python :: 2.7',
         'Programming Language :: Python :: 3',
         'Programming Language :: Python :: 3.6',
         'Programming Language :: Python :: 3.7',
     ],
-    packages=find_packages(),
+    packages=find_packages(exclude='tests'),
 )
