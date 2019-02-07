@@ -15,8 +15,8 @@ with open(path.join(here, 'requirements.txt'), encoding='utf-8') as f:
 
 
 setup(
-    name='instagram-graphbot',
-    version='0.17.0',
+    name='instagram_botnet',
+    version='0.0.1',
 
     description='Instagram readable yaml rpc api for easy instagram scheduling and promotion',
     long_description=long_description,
@@ -44,5 +44,5 @@ setup(
         'Programming Language :: Python :: 3.6',
         'Programming Language :: Python :: 3.7',
     ],
-    packages=find_packages(exclude='tests'),
+    packages=find_packages(exclude=['tests']),
 )
