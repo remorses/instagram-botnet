@@ -25,8 +25,8 @@ setup(
     author_email='daer.tommy@gmail.com',
     license='Apache Software License 2.0',
 
-    url='https://github.com/instagrambot/instabot',
-    keywords=['instagram', 'bot', 'api', 'graph'],
+    url='https://github.com/rpc-botnets/instagram-botnet',
+    keywords=['instagram', 'bot', 'api', 'botnet'],
     install_requires=[*requirements],
     classifiers=[
         # How mature is this project? Common values are
