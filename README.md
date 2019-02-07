@@ -2,42 +2,48 @@
 Write readable declarative yaml files to control your botnet
 ---
 
-## TODO
+## Shell usage
 
-- use generators in all the edge_functions to not generate too many instances
-- filter the nodes returned from method in a steamed function
-- limit the returned nodes with islice as last step of streamed function (so filtering won't change the max of returned nodes)
-- use transactions to batch database io
+The main module works on yaml script like these:
+```yaml
 
+name:                     test_comment
 
-## edge_functions to implement
+bots:
+    -
+        username:         username
+        password:         password
 
-User interactions
-- [X] follow
-- [ ] send
-- [ ] block
+actions:
+    -
+        name: comment on 10 posts from @kimkardashian
+        nodes:
+            - kimkardashian
+        edges:
+            - user_feed:
+                amount: 10
+            - comment:
+                max:      1
+                comments:
+                    - ["hello {author}!!!"] 
+                    - ["come stai?", "come va?"]
+                    - ["url works too! http://instagram.com"]
 
-Media interactions
-- [X] like 
-- [ ] report
-- [ ] comment
-- [ ] upload
-- [ ] download
+```
 
-User edges
-- [X] followers
-- [X] following
-- [X] user_feed
+To execute the above `test_comment.yaml` run:
+```
+python3 -m instabotnet test_comment.yaml
+```
 
-Media edges
-- [X] likers
-- [X] author
-- [X] hashtags
-- [ ] usertags
-- [ ] comments
+## Python API usage
 
-Hashtag edges
-- [X] hashtag_feed
+To use inside python modules:
+```
+from instabot import execute
 
-Geotag feed
-- [ ] geotag_feed
+with open('test_comment.yaml') as file:
+    template = yaml.loads(file.read())
+   
+execute(template)
+```
