@@ -1,10 +1,9 @@
 FROM python:3.6-alpine
+
 COPY requirements.txt /
-RUN apk --no-cache add icu-libs icu-dev gcc g++ && \
-    pip install  --no-cache-dir -r /requirements.txt && \
-    apk del icu-dev gcc g++ 
 
+RUN pip install  --no-cache-dir -r /requirements.txt
 WORKDIR     /bot
-COPY        ./src /bot
+COPY        src /bot/src
 
-CMD  ['python', '-m', 'src']
+CMD  ["python3", "-m", "src"]

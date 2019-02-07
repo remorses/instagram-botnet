@@ -1,7 +1,9 @@
-colorlog
 pyyaml
-dataset
+dataset>=1.1.2
 funcy
 tqdm>=4.30.0
 requests>=2.21.0
 requests-toolbelt>=0.8.0
+colorama
+colorlog
+click
