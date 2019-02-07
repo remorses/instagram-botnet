@@ -16,7 +16,7 @@ with open(path.join(here, 'requirements.txt'), encoding='utf-8') as f:
 
 setup(
     name='instabotnet',
-    version='0.0.1',
+    version='0.0.2',
 
     description='Instagram readable yaml rpc api for easy instagram scheduling and promotion',
     long_description=long_description,
