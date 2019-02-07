@@ -7,8 +7,8 @@ mode:                     distributed
 
 bots:
     -
-        username:         ***REMOVED***
-        password:         ***REMOVED***
+        username:         '{username}'
+        password:         '{password}'
 
 
 # filter:
@@ -45,7 +45,7 @@ actions:
                 model:
                     pk: x.pk
                     username: x.username
-    - 
+    -
         name: store plaace people likers
         from_type: user
         nodes: '{found_people}'
@@ -60,7 +60,6 @@ actions:
                 model:
                     pk: x.pk
                     username: x.username
-                    
-# then in code find all the people present more than 3 times 
+
+# then in code find all the people present more than 3 times
 # they probably are people from the place
-                

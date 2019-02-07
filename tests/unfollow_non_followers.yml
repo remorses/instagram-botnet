@@ -7,8 +7,8 @@ mode:                 distributed
 
 bots:
     -
-        username: ***REMOVED***
-        password: ***REMOVED***
+        username: '{username}'
+        password: '{password}'
 
 
 # filter:
@@ -26,7 +26,7 @@ actions:
     -
         name:  unfollow non followers
         nodes:
-            - ***REMOVED***
+            - '{username}'
         edges:
             - following
             - filter:

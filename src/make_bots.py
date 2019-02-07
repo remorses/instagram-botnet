@@ -13,7 +13,7 @@ def make_bots(script):
 
     bots:
         -
-            username:           ***REMOVED***
+            username:           '{username}'
             password:           qwerty
             cache:              ./cache.db
             log:                ./logs.html

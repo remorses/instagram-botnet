@@ -6,9 +6,9 @@ mode:                           distributed
 
 bots:
     -
-        username:               ***REMOVED***
-        password:               ***REMOVED***
-        cookie:                 tests/_cookies/***REMOVED***_cookie.json
+        username:               '{username}'
+        password:               '{password}'
+        cookie:                 tests/_cookies/'{username}'_cookie.json
         cache:                  tests/cache.db
         logs:                   tests/logs.html
 
@@ -70,8 +70,3 @@ actions:
                 max:         20
             - upload:
                 caption:        "#meme"
-
-
-
-
-
