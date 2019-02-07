@@ -30,7 +30,7 @@ setup(
     install_requires=[*requirements],
     classifiers=[
         # How mature is this project? Common values are
-        'Development Status :: 5 - Production/Stable',
+        # 'Development Status :: 5 - Production/Stable',
 
         # Indicate who your project is intended for
         'Intended Audience :: Information Technology',
