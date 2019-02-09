@@ -39,7 +39,7 @@ python3 -m instabotnet test_comment.yaml
 ## Python API usage
 
 To use inside python modules:
-```
+```python
 from instabotnet import execute
 
 with open('test_comment.yaml') as file:
