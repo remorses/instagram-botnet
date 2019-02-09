@@ -40,7 +40,7 @@ python3 -m instabotnet test_comment.yaml
 
 To use inside python modules:
 ```
-from instabot import execute
+from instabotnet import execute
 
 with open('test_comment.yaml') as file:
     template = yaml.loads(file.read())
