@@ -70,7 +70,7 @@ def populate_string( yaml_string, data={}):
     def replace_in_line(line):
         if '{{' in line and '}}' in line:
             begin = line.index('{{')
-            end = line.index('}}')
+            end = line.index('}}', begin)
             variable_name = line[begin:end].strip().replace('{{','').replace('}}','').strip()
             if variable_name in data:
                 return (
