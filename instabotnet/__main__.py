@@ -1,5 +1,4 @@
 import sys
-import yaml
 import json
 from colorama import init, Fore
 from .execute import execute

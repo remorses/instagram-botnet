@@ -5,8 +5,11 @@ from .make_bots import make_bots
 from .populate import populate_object, populate_string
 from .reducer import Reducer
 from .threads import start, wait
-import yaml
 import traceback
+
+from ramuel.yaml import YAML
+
+yaml = YAML()
 
 def execute(script, variables={}):
 
