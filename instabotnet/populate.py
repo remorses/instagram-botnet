@@ -74,9 +74,9 @@ def populate_string( yaml_string, data={}):
             variable_name = line[begin:end].strip().replace('{{','').replace('}}','').strip()
             if variable_name in data:
                 return (
-                    line[:begin].replace('{{','').replace('}}','').replace(variable_name, '') +
+                    line[:begin].replace('{{','').replace('}}','') +
                     str(data[variable_name]) +
-                    line[end:].replace('}}','').replace('{{','').replace(variable_name, '')
+                    line[end:].replace('}}','').replace('{{','')
                 )
             else:
                 return line
@@ -88,8 +88,95 @@ def populate_string( yaml_string, data={}):
 
 if __name__ == '__main__':
     x = """
-    asd: {{ ciao }}
-    {{ sdasd }} sdasd
+
+name:                            routine
+version:                         1
+
+
+
+bots:
+    -
+        username:                {{ username }}
+        password:                {{ password }}
+        cookie:                  {{ cookie_path }}
+        cache:                   {{ cache_path }}
+
+
+filter:
+        user:
+            followers:           x > 50 and x < 1000
+            following:           x < 500
+        media:
+            likers:              x < 1000
+            hastags:             not in [sex, porn, child]
+
+
+actions:
+
+    -
+        name:                    like competitors followers
+        from_type:               user
+        nodes:                   {{ competitors }}
+        edges:
+            # follow random likers
+            - shuffle
+            - user_feed:
+                amount:          1
+            - likers:
+                amount:          5
+            - filter:
+                user:
+                    # id:        not bot.cache['followed'].find(identifier=x)
+                    is_private:  not x
+                    is_verified: not x
+            - follow:
+                max:             20
+            - filter:
+                user:
+                    is_private:  not x
+            - user_feed:
+                amount:          2
+            - like:
+                max:             30
+    -
+        name:                    follow & like hashtags likers
+        from_type:               hashtag
+        nodes:                   {{ hashtags }}
+        edges:
+            - hashtag_feed
+            - likers
+            - follow:
+                amount:          20
+            - user_feed
+            - like:
+                amount:          2
+    -
+        name:                    follow & like location posts likers
+        from_type:               geotag
+        nodes:                   {{ locations }}
+        edges:
+            - geotag_feed
+            - likers
+            - follow:
+                amount:          30
+            - user_feed
+            - like:
+                amount:          2
+
     """
-    populated = populate_string(x, dict(ciao=3, var=['sdsd', 45]))
+    data = """
+    {
+        "username": "__morse",
+        "password": "ciuccio99",
+        "competitors": ["instagram"],
+        "hashtags": ["pizza"],
+        "geotags": ["milano"],
+        "user_to_repost": ["instagram"],
+        "captions": ["heeey"]
+    }
+    """
+    import json
+    import yaml
+    populated = populate_string(x, json.loads(data))
     print(populated)
+    # print(yaml.load(populated))
