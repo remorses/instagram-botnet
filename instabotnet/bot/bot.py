@@ -102,7 +102,7 @@ class Bot:
 
         return nodes
 
-    def suitable(self, node, table=None, specifier=None):
+    def suitable(self, node, **kwargs):
         """
         same as filter but only one node, returns True if node in suitable
         """
@@ -111,8 +111,7 @@ class Bot:
         for predicate in self.predicates:
             bool = bool and predicate(
                 node,
-                table=table,
-                specifier=specifier
+                **kwargs
             )
 
         return bool

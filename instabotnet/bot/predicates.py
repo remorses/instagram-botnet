@@ -1,7 +1,7 @@
 
 from ..nodes import Media, User, Hashtag, Geotag, Node
 
-def not_in_cache(bot, node, table=None, specifier=None):
+def not_in_cache(bot, node,table=None, specifier=None,):
 
     with bot.cache as cache:
 

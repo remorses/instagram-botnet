@@ -39,7 +39,7 @@ def make_predicate(script, bot):
             # bot.logger.error('failed to check expression')
             return True
 
-    def predicate(node):
+    def predicate(node, **kwargs):
 
 
         bool = True
