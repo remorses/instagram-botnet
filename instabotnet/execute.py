@@ -5,12 +5,14 @@ from .make_bots import make_bots
 from .populate import populate_object, populate_string
 from .reducer import Reducer
 from .threads import start, wait
+import yaml
 import traceback
 
 def execute(script, variables={}):
 
     if type(script) == str:
         script = populate_string(script, variables)
+        script = yaml.load(script)
     else:
         script = populate_object(script, variables)
 
