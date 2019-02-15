@@ -61,8 +61,12 @@ class API(object):
         # fh.setFormatter(file_formatter())
         # self.logger.addHandler(fh)
 
+        LOGGING_LEVEL = os.environ['LOGGING_LEVEL'] \
+            if 'LOGGING_LEVEL' in os.environ and os.environ['LOGGING_LEVEL'] in logging \
+            else 'INFO'
+
         ch = logging.StreamHandler()
-        ch.setLevel(logging.DEBUG)
+        ch.setLevel(logging[LOGGING_LEVEL])
         ch.setFormatter(colred_formatter())
         self.logger.addHandler(ch)
 
