@@ -8,12 +8,15 @@ git pull
 rm -rf *.egg-info
 rm -rf dist
 
-python3 setup.py sdist
+python3 setup.py sdist bdist_wheel
 
 python3 -m twine upload  dist/*
 
 version=`cat VERSION`
 docker run --rm -v "$PWD":/app treeder/bump patch
+
+rm -rf *.egg-info
+rm -rf dist
 
 git add -A
 git commit -m "version $version"
