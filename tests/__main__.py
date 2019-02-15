@@ -49,26 +49,27 @@ if __name__ or '__main__':
         for script in SCRIPTS:
             data[script['name']] = execute(script)
 
-        for name, raw in data.items():
+        # for name, raw in data.items():
+        #
+        #     ok = False
+        #
+        #     with open('tests/artifacts/{}.json'.format(name), 'w+') as file:
+        #         content = file.read()
+        #         dumped = json.dumps(raw, indent=4)
+        #         if len(dumped) > len(content):
+        #             ok = True
+        #             file.write(dumped)
+        #         else:
+        #             file.write(content)
+        #
+        #     with open('tests/artifacts/{}.graphql'.format(name), 'w+') as file:
+        #         content = file.read()
+        #
+        #         if ok:
+        #             file.write(unmask(raw))
+        #         else:
+        #             file.write(content)
 
-            ok = False
-
-            with open('tests/artifacts/{}.json'.format(name), 'w+') as file:
-                content = file.read()
-                dumped = json.dumps(raw, indent=4)
-                if len(dumped) > len(content):
-                    ok = True
-                    file.write(dumped)
-                else:
-                    file.write(content)
-
-            with open('tests/artifacts/{}.graphql'.format(name), 'w+') as file:
-                content = file.read()
-
-                if ok:
-                    file.write(unmask(raw))
-                else:
-                    file.write(content)
     except Exception as exc:
         print(exc)
         raise

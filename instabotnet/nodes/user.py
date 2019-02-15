@@ -4,9 +4,11 @@ from .hashtag import Hashtag
 import time
 
 
-
+attributes = lambda x: (x._username, x._id, x._data)
 
 class User(Node):
+
+    __slots__ = ['_username', '_id', '_data']
 
     def __init__(self, *, generic=None, id=None, username=None, is_private=None, data={}):
         self._username = username
@@ -159,8 +161,3 @@ class User(Node):
         else:
             data = self.get_data(bot)
             return data['biography']
-
-
-
-def attributes(node):
-    return  node._username, node._id, node._data

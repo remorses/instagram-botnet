@@ -1,11 +1,11 @@
 from .node import Node
-from .common import attributes
 
 
 
-
+attributes = lambda x: (x._name, x._data)
 
 class Hashtag(Node):
+    __slots__ = ['_name', '_data']
 
     def __init__(self, *, generic=None, name=None, data=None):
 

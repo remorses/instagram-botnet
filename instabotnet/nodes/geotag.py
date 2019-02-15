@@ -1,5 +1,4 @@
 from .node import Node
-from .common import attributes
 
 """
     pk
@@ -26,7 +25,7 @@ from .common import attributes
 """
 
 class Geotag(Node):
-
+    __slots__ = ['_name', '_id', '_data']
     def __init__(self, *, generic=None, name=None, id=None, data=None):
 
         self._name = name
@@ -125,3 +124,5 @@ class Geotag(Node):
         else:
             data = self.get_data(bot)
             return data['lat'], data['lng']
+
+attributes = lambda x: (x._name, x._id, x._data)
