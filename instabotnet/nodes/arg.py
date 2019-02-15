@@ -6,7 +6,7 @@ from .common import attributes
 
 class Arg(Node):
 
-    __slot__ = ['value']
+    __slots__ = ['value']
 
     def __init__(self, *, generic=None, value=None):
         self.value = value

@@ -13,7 +13,7 @@ import time
 def scrape(bot: Bot, nodes,  args):
 
     try:
-        max = float(args['max']) if 'max' in args else 1
+        max = float(args['max']) if 'max' in args else None
         database = args['database']
         table = args['table']
         model = args['model']

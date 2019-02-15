@@ -14,7 +14,7 @@ def text(bot, nodes,  args):
 
 
     try:
-        max = float(args['max']) if 'max' in args else 1
+        max = float(args['max']) if 'max' in args else None
         messages = args['messages']
     except:
         bot.logger.error('please add all necessary args, {} isn\'t enought'.format(args))

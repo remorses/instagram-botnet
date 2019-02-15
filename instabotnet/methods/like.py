@@ -11,7 +11,7 @@ from ..nodes import Node, User, Media
 def like(bot, nodes,  args):
 
 
-    max = float(args['max']) if 'max' in args else 1
+    max = float(args['max']) if 'max' in args else None
 
     count = 0
 

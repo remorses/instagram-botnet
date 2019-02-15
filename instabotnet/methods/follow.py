@@ -11,7 +11,7 @@ import time
 @accepts(User)
 def follow(bot: Bot, nodes,  args):
 
-    max = float(args['max']) if 'max' in args else 1
+    max = float(args['max']) if 'max' in args else None
     count = 0
 
     def increment():
