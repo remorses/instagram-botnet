@@ -8,15 +8,16 @@ here = path.abspath(path.dirname(__file__))
 with open(path.join(here, 'README.md'), encoding='utf-8') as f:
     long_description = f.read()
 
-
 # Get the requirements
 with open(path.join(here, 'requirements.txt'), encoding='utf-8') as f:
     requirements = list(set(f.read().split('\n')) - set(['', '\n']))
 
+with open(path.join(here, 'VERSION'), 'r') as f:
+    version = f.read().strip()
 
 setup(
     name='instabotnet',
-    version='0.0.3',
+    version=version,
 
     description='Instagram readable yaml rpc api for easy instagram scheduling and promotion',
     long_description=long_description,
