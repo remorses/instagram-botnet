@@ -6,13 +6,11 @@ from .common import accepts
 @accepts(Node)
 def evaluate(bot, nodes,  args) -> Node:
 
-    result = []
-
     while True:
         try:
-            result += next(nodes)
+            next(nodes)
         except TypeError:
-            result += next(iter(nodes))
+            next(iter(nodes))
         except StopIteration:
             break
         except:
