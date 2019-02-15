@@ -6,6 +6,9 @@ from .geotag import Geotag
 from .hashtag import Hashtag
 import time
 
+
+attributes = lambda media: (media._url, media._id, media._data)
+
 class Media(Node):
 
     __slots__ = ['_url', '_id', '_data']
@@ -163,8 +166,7 @@ class Media(Node):
         tags = (Hashtag(name=tag) for tag in raw_tags)
         yield from tags
 
-def attributes(media):
-    return media._url, media._id, media._data
+
 
 
 
