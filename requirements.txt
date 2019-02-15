@@ -1,6 +1,6 @@
+Pillow
 pyyaml
 dataset>=1.1.2
-Pillow
 funcy
 tqdm>=4.30.0
 requests>=2.21.0

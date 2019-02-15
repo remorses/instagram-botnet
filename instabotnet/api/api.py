@@ -88,9 +88,96 @@ class API(object):
 
 
 
-    def media_info(self, media_id):
-        url = 'media/{media_id}/info/'.format(media_id=media_id)
-        return self.send_request(url)
+
+    def login(self, username=None, password=None, force=False, proxy=None,
+              use_cookie=False, cookie_fname='cookie.txt'):
+        if password is None:
+            username, password = get_credentials(username=username)
+
+        self.device_id = self.generate_device_id(self.get_seed(username, password))
+        self.proxy = proxy
+        self.set_user(username, password)
+
+        cookie_is_loaded = False
+        if use_cookie:
+            try:
+                self.load_cookie(cookie_fname)
+                cookie_is_loaded = True
+                self.is_logged_in = True
+                self.set_proxy()  # Only happens if `self.proxy`
+                self.logger.info("Logged-in successfully as '{}' using the cookie!".format(self.username))
+                return True
+            except Exception:
+                print("The cookie is not found, but don't worry `instabot`"
+                      " will create it for you using your login details.")
+
+        if not cookie_is_loaded and (not self.is_logged_in or force):
+            self.session = requests.Session()
+            self.set_proxy()  # Only happens if `self.proxy`
+            url = 'si/fetch_headers/?challenge_type=signup&guid={uuid}'
+            url = url.format(uuid=self.generate_UUID(False))
+            if self.send_request(url, login=True):
+                data = json.dumps({
+                    'phone_id': self.generate_UUID(True),
+                    '_csrftoken': self.token,
+                    'username': self.username,
+                    'guid': self.uuid,
+                    'device_id': self.device_id,
+                    'password': self.password,
+                    'login_attempt_count': '0',
+                })
+
+                if self.send_request('accounts/login/', data, True):
+                    self.is_logged_in = True
+                    self.logger.info("Logged-in successfully as '{}'!".format(self.username))
+                    if use_cookie:
+                        self.save_cookie(cookie_fname)
+                        self.logger.info("Saved cookie!")
+                    return True
+                else:
+                    self.logger.warn("Username or password is incorrect.")
+                    delete_credentials()
+                    return False
+
+    def load_cookie(self, fname):
+        # Python2 compatibility
+        if PY2:
+            FileNotFoundError = IOError
+
+        try:
+            with open(fname, 'r') as f:
+                self.session = requests.Session()
+                self.session.cookies = requests.utils.cookiejar_from_dict(json.load(f))
+            cookie_username = self.cookie_dict['ds_user']
+            assert cookie_username == self.username
+        except FileNotFoundError:
+            raise Exception('Cookie file `{}` not found'.format(fname))
+        except (TypeError, EOFError):
+            os.remove(fname)
+            msg = ('An error occured opening the cookie `{}`, '
+                   'it will be removed an recreated.')
+            raise Exception(msg.format(fname))
+        except AssertionError:
+            msg = 'The loaded cookie was for {} instead of {}.'
+            raise Exception(msg.format(cookie_username, self.username))
+
+    def save_cookie(self, fname):
+        with open(fname, 'w') as f:
+            json.dump(requests.utils.dict_from_cookiejar(self.session.cookies), f)
+
+    def logout(self, *args, **kwargs):
+        if not self.is_logged_in:
+            return True
+        self.is_logged_in = not self.send_request('accounts/logout/')
+        return not self.is_logged_in
+
+    def set_proxy(self):
+        if self.proxy:
+            parsed = urllib.parse.urlparse(self.proxy)
+            scheme = 'http://' if not parsed.scheme else ''
+            self.session.proxies['http'] = scheme + self.proxy
+            self.session.proxies['https'] = scheme + self.proxy
+
 
 
     def send_request(self, endpoint, post=None, login=False, with_signature=True):
@@ -147,6 +234,11 @@ class API(object):
                 except Exception:
                     pass
                 return False
+
+
+    def media_info(self, media_id):
+            url = 'media/{media_id}/info/'.format(media_id=media_id)
+            return self.send_request(url)
 
     def edit_profile(self, external_url, phone_number, full_name, biography, email, gender, **rest):
         data = self.json_data({
@@ -251,94 +343,6 @@ class API(object):
         self.password = password
         self.uuid = self.generate_UUID(uuid_type=True)
 
-    def login(self, username=None, password=None, force=False, proxy=None,
-              use_cookie=False, cookie_fname='cookie.txt'):
-        if password is None:
-            username, password = get_credentials(username=username)
-
-        self.device_id = self.generate_device_id(self.get_seed(username, password))
-        self.proxy = proxy
-        self.set_user(username, password)
-
-        cookie_is_loaded = False
-        if use_cookie:
-            try:
-                self.load_cookie(cookie_fname)
-                cookie_is_loaded = True
-                self.is_logged_in = True
-                self.set_proxy()  # Only happens if `self.proxy`
-                self.logger.info("Logged-in successfully as '{}' using the cookie!".format(self.username))
-                return True
-            except Exception:
-                print("The cookie is not found, but don't worry `instabot`"
-                      " will create it for you using your login details.")
-
-        if not cookie_is_loaded and (not self.is_logged_in or force):
-            self.session = requests.Session()
-            self.set_proxy()  # Only happens if `self.proxy`
-            url = 'si/fetch_headers/?challenge_type=signup&guid={uuid}'
-            url = url.format(uuid=self.generate_UUID(False))
-            if self.send_request(url, login=True):
-                data = json.dumps({
-                    'phone_id': self.generate_UUID(True),
-                    '_csrftoken': self.token,
-                    'username': self.username,
-                    'guid': self.uuid,
-                    'device_id': self.device_id,
-                    'password': self.password,
-                    'login_attempt_count': '0',
-                })
-
-                if self.send_request('accounts/login/', data, True):
-                    self.is_logged_in = True
-                    self.logger.info("Logged-in successfully as '{}'!".format(self.username))
-                    if use_cookie:
-                        self.save_cookie(cookie_fname)
-                        self.logger.info("Saved cookie!")
-                    return True
-                else:
-                    self.logger.warn("Username or password is incorrect.")
-                    delete_credentials()
-                    return False
-
-    def load_cookie(self, fname):
-        # Python2 compatibility
-        if PY2:
-            FileNotFoundError = IOError
-
-        try:
-            with open(fname, 'r') as f:
-                self.session = requests.Session()
-                self.session.cookies = requests.utils.cookiejar_from_dict(json.load(f))
-            cookie_username = self.cookie_dict['ds_user']
-            assert cookie_username == self.username
-        except FileNotFoundError:
-            raise Exception('Cookie file `{}` not found'.format(fname))
-        except (TypeError, EOFError):
-            os.remove(fname)
-            msg = ('An error occured opening the cookie `{}`, '
-                   'it will be removed an recreated.')
-            raise Exception(msg.format(fname))
-        except AssertionError:
-            msg = 'The loaded cookie was for {} instead of {}.'
-            raise Exception(msg.format(cookie_username, self.username))
-
-    def save_cookie(self, fname):
-        with open(fname, 'w') as f:
-            json.dump(requests.utils.dict_from_cookiejar(self.session.cookies), f)
-
-    def logout(self, *args, **kwargs):
-        if not self.is_logged_in:
-            return True
-        self.is_logged_in = not self.send_request('accounts/logout/')
-        return not self.is_logged_in
-
-    def set_proxy(self):
-        if self.proxy:
-            parsed = urllib.parse.urlparse(self.proxy)
-            scheme = 'http://' if not parsed.scheme else ''
-            self.session.proxies['http'] = scheme + self.proxy
-            self.session.proxies['https'] = scheme + self.proxy
 
 
     @property
