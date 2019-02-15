@@ -8,9 +8,13 @@ def evaluate(bot, nodes,  args) -> Node:
 
     while True:
         try:
-            next(nodes)
-        except TypeError:
-            next(iter(nodes))
+            
+            try:
+                next(nodes)
+
+            except TypeError:
+                next(iter(nodes))
+
         except StopIteration:
             break
         except:
