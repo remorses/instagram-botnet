@@ -7,7 +7,7 @@ from .reducer import Reducer
 from .threads import start, wait
 import traceback
 
-from ramuel.yaml import YAML
+from ruamel.yaml import YAML
 
 yaml = YAML()
 
