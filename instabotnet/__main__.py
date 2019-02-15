@@ -19,14 +19,14 @@ if __name__ == '__main__':
     @click.argument('file', type=str)
     @click.option('--data-file', help='data variables to add in the template file')
     def main(ship, template_path, data_path):
-        template_file = open(template_path, 'r')
-        data_file = open(data_path, 'r')
-        template = yaml.load(template_file.read())
-        data = json.loads(data_file.read())
-        data_file.close()
-        template_file.close()
+        data= json.load(data_path,)
+        template = load(template_path)
 
-        data = execute(template, data)
-        # init()
-        # print(Fore.YELLOW + unmask(data))
-        execute(template, data)
+        out = execute(template, data)
+        init()
+        print(Fore.YELLOW + out)
+
+
+def load(file):
+    with open(file, 'r') as f:
+        return f.read()
