@@ -5,6 +5,9 @@ test -f ./VERSION || (echo "file VERSION containing current version is needed" &
 
 git pull
 
+rm -rf *.egg-info
+rm -rf dist
+
 python3 setup.py sdist
 
 python3 -m twine upload  dist/*
