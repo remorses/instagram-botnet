@@ -1,5 +1,4 @@
 Pillow
-pyyaml
 ruamel.yaml
 dataset>=1.1.2
 funcy
