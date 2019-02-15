@@ -48,7 +48,7 @@ class Bot:
 
 
 
-        self.api.login(username, password, proxy=proxy,
+        self.api.login(username, password, proxy=proxy, use_cookie=True,
                        cookie_fname=self.cookie_file)
 
 
