@@ -9,12 +9,13 @@ rm -rf *.egg-info
 rm -rf dist
 rm -rf build
 
+docker run --rm -v "$PWD":/app treeder/bump patch
+
 python3 setup.py sdist bdist_wheel
 
 python3 -m twine upload  dist/*
 
 version=`cat VERSION`
-# docker run --rm -v "$PWD":/app treeder/bump patch
 
 rm -rf *.egg-info
 rm -rf dist
