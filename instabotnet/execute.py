@@ -18,7 +18,7 @@ def execute(script, variables={}):
 
     bots = make_bots(script)
 
-    script_name = script['name'] if script['name'] else 'unnmaed script'
+    script_name = script['name'] if 'name' in script else 'unnmaed script'
 
     data = dict()
 
@@ -30,13 +30,12 @@ def execute(script, variables={}):
             task = make_task(instruction)
 
             for (task, bot) in partitionate(task, bots):
-                bot.logger.debug('nodes in execute: %s' % task.nodes)
+                # bot.logger.debug('nodes in execute: %s' % task.nodes)
                 state = dict(nodes=task.nodes, bot=bot, data=dict(), errors=[])
                 # bot.logger.debug(str(bot) + ' ' + str(state))
                 edges = [dict(type=edge['type'], args=edge['args']) for edge in task.edges]
                 # bot.logger.debug(edges)
                 threads += [Reducer(state, edges)]
-                bot.logger.debug('new task of type {} and new thread, in script {}'.format(interaction, script_name))
                 bot.logger.debug('edges : {}, nodes: {}'.format(edges, list(state['nodes'])))
 
 

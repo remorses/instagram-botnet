@@ -29,7 +29,7 @@ class Reducer(Thread):
     def run(self):
         get_name = lambda: self.edges[0]['name']
         name = ignore((KeyError, AttributeError), 'unnamed')(get_name)()
-        self.logger.info('beginning {} action'.format(name))
+        self.logger.debug('reducer beginning {} action'.format(name))
         last_state = reduce(_reducer, self.edges, self.state)
         super().set_data(last_state['data'])
         return
