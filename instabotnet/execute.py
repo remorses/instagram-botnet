@@ -2,14 +2,17 @@
 
 from .make_task import make_task, partitionate
 from .make_bots import make_bots
-from .populate import populate
+from .populate import populate_object, populate_string
 from .reducer import Reducer
 from .threads import start, wait
 import traceback
 
 def execute(script, variables={}):
 
-    script = populate(script, variables)
+    if type(script) == str:
+        script = populate_string(script, variables)
+    else:
+        script = populate_object(script, variables)
 
     bots = make_bots(script)
 

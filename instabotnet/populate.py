@@ -40,7 +40,7 @@ def str_format_map(format_string, mapping):
         text = ''
     return ''.join(output)
 
-def populate(script, data={}):
+def populate_object(script, data={}):
     def recursive_populate(script, data):
         variables = data #safedotdict(**data)
         if isinstance(script, dict):
@@ -61,3 +61,20 @@ def populate(script, data={}):
     script_copy = dict(**script)
     recursive_populate(script_copy, data)
     return script_copy
+
+def populate_string( yaml_string, data={}):
+
+    def replace_in_line(line):
+        if '{{' in line and '}}' in line:
+            begin = line.index('{{')
+            end = line.index('}}')
+            variable_name = line[begin:end].strip().replace('{{','').replace('}}','')
+            if variable_name in data:
+                return line[begin:] + str(data[variable_name]) + line[end:].replace('}}','')
+            else:
+                return line
+        else:
+            return line
+
+    new_lines = map(replace_in_line, yaml_string.splitlines())
+    return '\n'.join(new_lines)
