@@ -61,12 +61,21 @@ class API(object):
         # fh.setFormatter(file_formatter())
         # self.logger.addHandler(fh)
 
+        levels = dict(
+            DEBUG=logging.DEBUG,
+            INFO=logging.INFO,
+            WARN=logging.WARN,
+            ERROR=logging.ERROR,
+            CRITICAL=logging.CRITICAL,
+        )
+
         LOGGING_LEVEL = os.environ['LOGGING_LEVEL'] \
-            if 'LOGGING_LEVEL' in os.environ and os.environ['LOGGING_LEVEL'] in logging \
+            if 'LOGGING_LEVEL' in os.environ and os.environ['LOGGING_LEVEL'] in levels \
             else 'INFO'
 
+
         ch = logging.StreamHandler()
-        ch.setLevel(logging[LOGGING_LEVEL])
+        ch.setLevel(levels[LOGGING_LEVEL])
         ch.setFormatter(colred_formatter())
         self.logger.addHandler(ch)
 
