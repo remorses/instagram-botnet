@@ -10,7 +10,7 @@ import traceback
 
 def execute(script, variables={}):
 
-    if type(script) == str:
+    if isinstance(script, str):
         script = populate_string(script, variables)
         script = yaml.load(script)
     else:
