@@ -14,7 +14,7 @@ def execute(script, variables={}):
         script = populate_string(script, variables)
         if '{{' in script:
             var = locate_variable(script)
-            raise Exception('yaml file needs all data to be populated: \{\{ {} \}\}'.format(var))
+            raise Exception('yaml file needs all data to be populated: {{{{ {} }}}}'.format(var))
         script = yaml.load(script)
     else:
         script = populate_object(script, variables)
