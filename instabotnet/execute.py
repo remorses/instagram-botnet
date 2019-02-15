@@ -12,6 +12,9 @@ def execute(script, variables={}):
 
     if isinstance(script, str):
         script = populate_string(script, variables)
+        if '{{' in script:
+            var = locate_variable(script)
+            raise Exception('yaml file needs all data to be populated: \{\{ {} \}\}'.format(var))
         script = yaml.load(script)
     else:
         script = populate_object(script, variables)
@@ -62,3 +65,8 @@ def execute(script, variables={}):
 
     finally:
         return data
+
+def locate_variable(script):
+    begin = script.index('{{')
+    end = script.index('}}', begin )
+    return script[begin:end].replace('{{', '').strip()
