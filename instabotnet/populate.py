@@ -63,14 +63,21 @@ def populate_object(script, data={}):
     return script_copy
 
 def populate_string( yaml_string, data={}):
+    """
+    max one {{  }} per line!
+    """
 
     def replace_in_line(line):
         if '{{' in line and '}}' in line:
             begin = line.index('{{')
             end = line.index('}}')
-            variable_name = line[begin:end].strip().replace('{{','').replace('}}','')
+            variable_name = line[begin:end].strip().replace('{{','').replace('}}','').strip()
             if variable_name in data:
-                return line[begin:] + str(data[variable_name]) + line[end:].replace('}}','')
+                return (
+                    line[:begin].replace('{{','').replace('}}','').replace(variable_name, '') +
+                    str(data[variable_name]) +
+                    line[end:].replace('}}','').replace('{{','').replace(variable_name, '')
+                )
             else:
                 return line
         else:
@@ -78,3 +85,11 @@ def populate_string( yaml_string, data={}):
 
     new_lines = map(replace_in_line, yaml_string.splitlines())
     return '\n'.join(new_lines)
+
+if __name__ == '__main__':
+    x = """
+    asd: {{ ciao }}
+    {{ sdasd }} sdasd
+    """
+    populated = populate_string(x, dict(ciao=3, var=['sdsd', 45]))
+    print(populated)
