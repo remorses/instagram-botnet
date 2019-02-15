@@ -9,6 +9,8 @@ import time
 
 class Media(Node):
 
+    __slots__ = ['_url', '_id', '_data']
+
     def __init__(self, *, generic=False, url=False, id=False, data={}):
 
         self._url = url
