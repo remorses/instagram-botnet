@@ -1,5 +1,5 @@
 
-from funcy import rcompose
+from funcy import rcompose, ignore
 from .node import Node
 from .user import User
 from .geotag import Geotag
@@ -113,16 +113,15 @@ class Media(Node):
             else:
                 return False
 
+    @ignore(TypeError)
     def get_caption(self, bot):
         _, _, data = attributes(self)
         if 'caption' in data:
             return data['caption']['text']
         else:
-            if 'location' in data:
-                data = self.get_data(bot)
-                return data['caption']['text']
-            else:
-                return False
+            data = self.get_data(bot)
+            return data['caption']['text']
+
 
     def get_geotag(self, bot):
         _, _, data = attributes(self)
