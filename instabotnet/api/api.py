@@ -85,7 +85,7 @@ class API(object):
 
 
     def send_request(self, endpoint, post=None, login=False, with_signature=True):
-            self.logger.info('new request to endpoint %s' % endpoint)
+            self.logger.debug('%s' % endpoint)
             if (not self.is_logged_in and not login):
                 msg = "Not logged in!"
                 self.logger.critical(msg)
@@ -126,10 +126,10 @@ class API(object):
                 elif response.status_code == 400:
                     response_data = json.loads(response.text)
                     msg = "Instagram's error message: {}"
-                    self.logger.info(msg.format(response_data.get('message')))
+                    self.logger.warn(msg.format(response_data.get('message')))
                     if 'error_type' in response_data:
                         msg = 'Error type: {}'.format(response_data['error_type'])
-                        self.logger.info(msg)
+                        self.logger.warn(msg)
 
                 # For debugging
                 try:
@@ -288,7 +288,7 @@ class API(object):
                         self.logger.info("Saved cookie!")
                     return True
                 else:
-                    self.logger.info("Username or password is incorrect.")
+                    self.logger.warn("Username or password is incorrect.")
                     delete_credentials()
                     return False
 
