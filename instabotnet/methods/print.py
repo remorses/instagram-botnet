@@ -16,7 +16,7 @@ import time
 def _print(bot: Bot, nodes,  args):
 
     try:
-        max = float(args['max']) if 'max' in args else None
+        max = float(args['max']) if 'max' in args else float('inf')
         model = args['model']
 
     except KeyError as exc:

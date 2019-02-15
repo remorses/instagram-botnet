@@ -11,7 +11,7 @@ import time
 @accepts(User)
 def unfollow(bot: Bot, nodes,  args):
 
-    max = float(args['max']) if 'max' in args else None
+    max = float(args['max']) if 'max' in args else float('inf')
     count = 0
 
     def increment():
