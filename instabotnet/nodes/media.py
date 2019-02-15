@@ -1,6 +1,5 @@
 
 from funcy import rcompose
-from .common import attributes
 from .node import Node
 from .user import User
 from .geotag import Geotag
@@ -163,6 +162,9 @@ class Media(Node):
         raw_tags = set(part[1:] for part in text.split() if part.startswith('#'))
         tags = (Hashtag(name=tag) for tag in raw_tags)
         yield from tags
+
+def attributes(media):
+    return media._url, media._id, media._data
 
 
 
