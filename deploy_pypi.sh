@@ -7,6 +7,7 @@ git pull
 
 rm -rf *.egg-info
 rm -rf dist
+rm -rf build
 
 python3 setup.py sdist bdist_wheel
 
@@ -17,6 +18,7 @@ docker run --rm -v "$PWD":/app treeder/bump patch
 
 rm -rf *.egg-info
 rm -rf dist
+rm -rf build
 
 git add -A
 git commit -m "version $version"
