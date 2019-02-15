@@ -41,7 +41,7 @@ def _print(bot: Bot, nodes,  args):
         print()
         return node
 
-    max = int(max) if type(max) == float else max
+    max = ignore(OverflowError, None)(lambda: int(max))()
     nodes = map(process, islice(nodes, max))
 
     return nodes, bot.last
