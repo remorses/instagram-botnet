@@ -1,6 +1,6 @@
 from funcy import  ignore
 from functools import reduce
-from .support import dotdict
+from .support import dotdict, merge
 import time
 import traceback
 
@@ -97,7 +97,3 @@ def reducer(state: dotdict, edge: dotdict):
         # bot.logger.warn(state.data)
         # bot.logger.warn(next_data)
         return dotdict(nodes=next_nodes, bot=bot, errors=[], data=state.data)
-
-
-def merge(a, b):
-    return { key: val for (key, val) in [*a.items(), *b.items()]}

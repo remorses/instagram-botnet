@@ -5,7 +5,7 @@ from .nodes_edges import nodes_edges
 from .make_bots import make_bots
 from .populate import populate_object, populate_string
 from .reducer import  reducer
-from .support import dotdict
+from .support import dotdict, merge
 from collections import deque
 from functools import reduce
 # from .threads import start, wait
@@ -75,7 +75,7 @@ def execute(script, variables={}) -> [dict]:
         raise
 
     finally:
-        result = [x for x in result if x]
+        result = reduce(merge, result)
         return result
 
 def locate_variable(script):
