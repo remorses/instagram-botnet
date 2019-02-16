@@ -7,7 +7,7 @@ import traceback
 from .bot import Bot
 from .methods import methods
 from .threads import Thread
-
+ 
 class Dont_retry(Exception):
     """
     this exception doesn't cause a retry of the edge method when it is raised.
