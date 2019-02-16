@@ -1,6 +1,7 @@
 from .methods import methods
 from .nodes import node_classes, Media, User, Arg
-
+from .support import dotdict
+from functools import reduce
 
 
 
@@ -18,24 +19,21 @@ def nodes_edges(body):
             if isinstance(edge, dict):
                 type = list(edge.keys())[0]
                 args = list(edge.values())[0]
-                edges += [dict(type=type, args=args)]
+                edges += [dotdict(type=type, args=args)]
             else:
-                edges += [dict(type=edge, args={})]
+                edges += [dotdict(type=edge, args={})]
     else:
         raise Exception('in every action there must be edges')
 
-    edges += [dict(type='evaluate', args={})]
+    info = dotdict(
+        name=body['name'] if 'name' in body else 'not named',
+        total_nodes=reduce(edges, lambda acc, e: e.get('amount', 1) * acc, 0),
+    )
 
-    if 'name' in body:
-        name = body['name']
-
-    else:
-        name='not named'
-
-    for n, _ in enumerate(edges):
-        edges[n]['name'] = name
+    edges += [dotdict(type='evaluate', args=dict(info=info))]
 
     nodes = initialize_nodes(nodes, edges, body)
+
     return nodes, edges
 
 

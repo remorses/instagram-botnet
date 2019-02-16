@@ -5,6 +5,7 @@ from .nodes_edges import nodes_edges
 from .make_bots import make_bots
 from .populate import populate_object, populate_string
 from .reducer import Reducer, reducer
+from .support import dotdict
 from functools import reduce
 # from .threads import start, wait
 import traceback
@@ -30,7 +31,7 @@ def execute(script, variables={}) -> [dict]:
             bot.logger.info(f'# ACTION {action_name}')
 
             nodes, edges = nodes_edges(action)
-            state = dict(nodes=nodes, bot=bot, data=dict(), errors=[])
+            state = dotdict(nodes=nodes, bot=bot, data=dict(), errors=[])
             end_state = reduce(reducer, edges, state)
             data += end_state['data']
 

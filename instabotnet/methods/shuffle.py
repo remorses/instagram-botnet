@@ -7,11 +7,11 @@ from .common import accepts
 @accepts(Node)
 def shuffle(bot, nodes,  args) -> Node:
 
-    amount = args.get('amount')
-    if amount:
-        nodes = take(amount, nodes)
-        if amount <= len(nodes):
-            nodes = random.sample(nodes, k=amount)
+    max = args.get('max') # None works as inf
+    if max:
+        nodes = take(max, nodes)
+        if max <= len(nodes):
+            nodes = random.sample(nodes, k=max)
         else:
             nodes = random.sample(nodes, k=len(nodes))
     else:
