@@ -4,8 +4,9 @@
 from .nodes_edges import nodes_edges
 from .make_bots import make_bots
 from .populate import populate_object, populate_string
-from .reducer import Reducer, reducer
+from .reducer import  reducer
 from .support import dotdict
+from collections import deque
 from functools import reduce
 # from .threads import start, wait
 import traceback
@@ -23,7 +24,7 @@ def execute(script, variables={}) -> [dict]:
     script_name = script['name'] if 'name' in script else 'unnmaed script'
     bot.logger.info(f'# SCRIPT {script_name}')
 
-    data = []
+    data = deque()
 
     try:
         for action in script['actions']:
@@ -31,9 +32,9 @@ def execute(script, variables={}) -> [dict]:
             bot.logger.info(f'# ACTION {action_name}')
 
             nodes, edges = nodes_edges(action)
-            state = dotdict(nodes=nodes, bot=bot, data=dict(), errors=[])
+            state = dotdict(nodes=nodes, bot=bot, data=deque(), errors=[])
             end_state = reduce(reducer, edges, state)
-            data += end_state['data']
+            data.append(end_state['data'])
 
     # try:
     #     for action in script['actions']:

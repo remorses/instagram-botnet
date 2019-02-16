@@ -7,7 +7,7 @@ import traceback
 from .bot import Bot
 from .methods import methods
 from .threads import Thread
- 
+
 class Dont_retry(Exception):
     """
     this exception doesn't cause a retry of the edge method when it is raised.
@@ -56,7 +56,7 @@ def reducer(state: dotdict, edge: dotdict):
         # if not nodes:
         #     raise Dont_retry('no nodes, {}'.format(nodes))
 
-        method = methods.get(type, None)
+        method = methods.get(edge.type, None)
 
         if not method:
             raise Dont_retry('can\'t find method {}'.format(type))

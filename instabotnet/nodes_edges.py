@@ -27,7 +27,7 @@ def nodes_edges(body):
 
     info = dotdict(
         name=body['name'] if 'name' in body else 'not named',
-        total_nodes=reduce(edges, lambda acc, e: e.get('amount', 1) * acc, 0),
+        total_nodes=reduce( lambda acc, e: e.get('amount', 1) * acc, edges, 0),
     )
 
     edges += [dotdict(type='evaluate', args=dict(info=info))]
