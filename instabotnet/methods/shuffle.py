@@ -8,14 +8,12 @@ from .common import accepts
 def shuffle(bot, nodes,  args) -> Node:
 
     max = args.get('max') # None works as inf
-    if max:
-        nodes = take(max, nodes)
-        if max <= len(nodes):
-            nodes = random.sample(nodes, k=max)
-        else:
-            nodes = random.sample(nodes, k=len(nodes))
+    batch = args.get('batch', max) # None works as inf
+    nodes = take(batch, nodes)
+    if max <= len(nodes):
+        nodes = random.sample(nodes, k=max)
     else:
-        nodes = list(nodes)
         nodes = random.sample(nodes, k=len(nodes))
+
 
     return nodes, {}
