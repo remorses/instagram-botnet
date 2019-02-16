@@ -60,7 +60,7 @@ def execute(script, variables={}) -> [dict]:
 
     except KeyboardInterrupt:
         bot.logger.warn('keyboard interrupt')
-        raise
+        exit(0)
 
     except Exception as exc:
         print(
