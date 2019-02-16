@@ -1,5 +1,6 @@
 from funcy import  ignore
 from functools import reduce
+from support import dotdict
 import time
 import traceback
 
@@ -15,41 +16,35 @@ class Dont_retry(Exception):
     """
     pass
 
-class Reducer(Thread):
-
-    def __init__(self, state, edges, name=None):
-        super().__init__(name=state['bot'].username)
-        self.name = state['bot'].username
-        self.logger = state['bot'].logger
-        self.edges = edges
-        self.state = state
-
-
-
-    def run(self):
-        get_name = lambda: self.edges[0]['name']
-        name = ignore((KeyError, AttributeError), 'unnamed')(get_name)()
-        self.logger.debug('reducer beginning {} action'.format(name))
-        last_state = reduce(reducer, self.edges, self.state)
-        super().set_data(last_state['data'])
-        return
-
-
+# class Reducer(Thread):
+#
+#     def __init__(self, state, edges, name=None):
+#         super().__init__(name=state['bot'].username)
+#         self.name = state['bot'].username
+#         self.logger = state['bot'].logger
+#         self.edges = edges
+#         self.state = state
+#
+#
+#
+#     def run(self):
+#         get_name = lambda: self.edges[0]['name']
+#         name = ignore((KeyError, AttributeError), 'unnamed')(get_name)()
+#         self.logger.debug('reducer beginning {} action'.format(name))
+#         last_state = reduce(reducer, self.edges, self.state)
+#         super().set_data(last_state['data'])
+#         return
 
 
-def reducer(state: dict, edge: dict):
 
-    nodes = state['nodes']
-    bot: Bot = state['bot']
-    errors = state['errors']
-    data = state['data']
 
-    type = edge['type']
-    args = edge['args']
+def reducer(state: dotdict, edge: dotdict):
 
-    if len(errors) > 1:
+    bot = state.bot
+
+    if len(state.errors) > 1:
         # tried multiple times
-        bot.logger.error('trying to solve errors: {}, bot: {}'.format(errors, bot))
+        bot.logger.error('trying to solve errors: {}, bot: {}'.format(state.errors, bot))
         # send_bot_to_phone_verifier
         # change_bot_if_neccessary
         # resolve_captcha_if_necessary
@@ -68,19 +63,19 @@ def reducer(state: dict, edge: dict):
 
         # bot.logger.debug('reducing nodes %s' % list(nodes))
 
-        next_nodes, next_data = method(bot, nodes,  args)
+        next_nodes, next_data = method(bot, state.nodes,  edge.args)
 
         # bot.logger.info('{} did success on {}'.format(type, nodes))
         # bot.logger.debug('{} returned {}'.format(type, next_nodes))
 
-        next_data = merge(data, {'__{}__'.format(type): next_data})
+        # next_data = merge(data, {'__{}__'.format(type): next_data})
 
         # secs = bot.delay[type] if type in bot.delay else bot.delay['usual']
         # time.sleep(secs)
 
     except Dont_retry as exc:
         bot.logger.error('error reducing edge {}: \"{}\" {}'.format(type, exc.__class__.__name__, exc))
-        return dict(nodes=[], bot=bot, errors=errors + [exc], data=data)
+        return dotdict(nodes=[], bot=bot, errors=state.errors + [exc], data=state.data)
 
     except Exception as exc:
         bot.logger.error('error reducing edge {}: \"{}\" \n {}'.format(
@@ -89,12 +84,12 @@ def reducer(state: dict, edge: dict):
             '\n'.join(traceback.format_exc().split('\n')[5:])))
         bot.sleep('error')
 
-        errored_state = merge(state, dict(errors=errors + [exc]))
+        errored_state = merge(state, dotdict(errors=state.errors + [exc]))
         return reducer(errored_state, edge)
 
     else:
         # all is right, no exceptions
-        return dict(nodes=next_nodes, bot=bot, errors=[], data=next_data)
+        return dotdict(nodes=next_nodes, bot=bot, errors=[], data=state.data.append(next_data))
 
 
 def merge(a, b):
