@@ -28,7 +28,7 @@ def user_stories(bot, nodes,  args) -> List[Story]:
 
     stories = mapcat(process, nodes)
 
-    return stories, bot.last
+    return stories, {}
 
 def get_stories(bot, user_id):
     bot.api.get_user_stories(user_id)

@@ -44,7 +44,7 @@ def _print(bot: Bot, nodes,  args):
     max = ignore(OverflowError, None)(lambda: int(max))()
     nodes = map(process, islice(nodes, max))
 
-    return nodes, bot.last
+    return nodes, {}
 
 
 

@@ -10,4 +10,4 @@ def usertags(bot, nodes,  args) -> List[User]:
     process = lambda media: media.get_usertags(bot)
     result = mapcat(process, nodes)
 
-    return result, bot.last
+    return result, {}

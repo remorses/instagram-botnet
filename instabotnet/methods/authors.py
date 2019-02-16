@@ -10,4 +10,4 @@ def authors(bot, nodes,  args):
     process = lambda media: media.get_author(bot)
     result = mapcat(process, nodes)
 
-    return result, bot.last
+    return result, {}

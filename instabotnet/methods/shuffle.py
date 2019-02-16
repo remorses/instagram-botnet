@@ -18,4 +18,4 @@ def shuffle(bot, nodes,  args) -> Node:
         nodes = list(nodes)
         nodes = random.sample(nodes, k=len(nodes))
 
-    return nodes, bot.last
+    return nodes, {}

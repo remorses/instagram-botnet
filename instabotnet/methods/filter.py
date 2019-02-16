@@ -15,4 +15,4 @@ def filter(bot, nodes,  args) -> Node:
         nodes = bot.filter(nodes)
 
 
-    return nodes, bot.last
+    return nodes, {}

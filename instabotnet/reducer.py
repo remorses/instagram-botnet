@@ -59,11 +59,13 @@ def reducer(state: dotdict, edge: dotdict):
         method = methods.get(edge.type, None)
 
         if not method:
-            raise Dont_retry('can\'t find method {}'.format(type))
+            raise Dont_retry('can\'t find method {}'.format(edge.type))
 
-        # bot.logger.debug('reducing nodes %s' % list(nodes))
+        bot.logger.debug(f'# EDGE {edge.type}')
+
 
         next_nodes, next_data = method(bot, state.nodes,  edge.args)
+        state.data.append(next_data)
 
         # bot.logger.info('{} did success on {}'.format(type, nodes))
         # bot.logger.debug('{} returned {}'.format(type, next_nodes))
@@ -74,14 +76,14 @@ def reducer(state: dotdict, edge: dotdict):
         # time.sleep(secs)
 
     except Dont_retry as exc:
-        bot.logger.error('error reducing edge {}: \"{}\" {}'.format(type, exc.__class__.__name__, exc))
+        bot.logger.error('error reducing edge {}: \"{}\" {}'.format(edge.type, exc.__class__.__name__, exc))
         return dotdict(nodes=[], bot=bot, errors=state.errors + [exc], data=state.data)
 
     except Exception as exc:
         bot.logger.error('error reducing edge {}: \"{}\" \n {}'.format(
-            type,
+            edge.type,
             exc.__class__.__name__,
-            '\n'.join(traceback.format_exc().split('\n')[5:])))
+            traceback.format_exc()))
         bot.sleep('error')
 
         errored_state = merge(state, dotdict(errors=state.errors + [exc]))
@@ -89,7 +91,9 @@ def reducer(state: dotdict, edge: dotdict):
 
     else:
         # all is right, no exceptions
-        return dotdict(nodes=next_nodes, bot=bot, errors=[], data=state.data.append(next_data))
+        bot.logger.warn(state.data)
+        bot.logger.warn(next_data)
+        return dotdict(nodes=next_nodes, bot=bot, errors=[], data=state.data)
 
 
 def merge(a, b):

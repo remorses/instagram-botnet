@@ -20,4 +20,4 @@ def following(bot, nodes,  args) -> List[User]:
 
     result = mapcat(process, nodes)
 
-    return result, bot.last
+    return result, {}

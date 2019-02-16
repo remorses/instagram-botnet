@@ -59,7 +59,7 @@ def scrape(bot: Bot, nodes,  args):
     nodes = mapcat(process, nodes)
 
 
-    return nodes, bot.last
+    return nodes, {}
 
 
 

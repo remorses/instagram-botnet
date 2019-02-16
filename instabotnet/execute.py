@@ -24,7 +24,7 @@ def execute(script, variables={}) -> [dict]:
     script_name = script['name'] if 'name' in script else 'unnmaed script'
     bot.logger.info(f'# SCRIPT {script_name}')
 
-    data = deque()
+    result = deque()
 
     try:
         for action in script['actions']:
@@ -32,9 +32,9 @@ def execute(script, variables={}) -> [dict]:
             bot.logger.info(f'# ACTION {action_name}')
 
             nodes, edges = nodes_edges(action)
-            state = dotdict(nodes=nodes, bot=bot, data=deque(), errors=[])
-            end_state = reduce(reducer, edges, state)
-            data.append(end_state['data'])
+            begin_state = dotdict(nodes=nodes, bot=bot, data=deque([]), errors=[])
+            end_state = reduce(reducer, edges, begin_state)
+            result.extend(end_state['data'])
 
     # try:
     #     for action in script['actions']:
@@ -73,7 +73,7 @@ def execute(script, variables={}) -> [dict]:
         raise
 
     finally:
-        return data
+        return result
 
 def locate_variable(script):
     begin = script.index('{{')

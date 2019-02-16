@@ -20,4 +20,4 @@ def user_feed(bot, nodes,  args) -> List[Media]:
 
     result = mapcat(process, nodes)
 
-    return result, bot.last
+    return result, {}

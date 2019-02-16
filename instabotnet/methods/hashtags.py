@@ -12,4 +12,4 @@ def hashtags(bot, nodes,  args):
     result = mapcat(process, nodes)
     result = islice(result, amount)
 
-    return result, bot.last
+    return result, {}

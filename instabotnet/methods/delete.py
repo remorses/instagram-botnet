@@ -33,4 +33,4 @@ def delete(bot, nodes,  args):
         bot.sleep('delete')
 
 
-    return [], bot.last
+    return [], {}
