@@ -75,6 +75,7 @@ def execute(script, variables={}) -> [dict]:
         raise
 
     finally:
+        result = [x for x in result if x]
         return result
 
 def locate_variable(script):
