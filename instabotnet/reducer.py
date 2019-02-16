@@ -61,7 +61,7 @@ def reducer(state: dotdict, edge: dotdict):
         if not method:
             raise Dont_retry('can\'t find method {}'.format(edge.type))
 
-        bot.logger.debug(f'# EDGE {edge.type}')
+        bot.logger.info(f'# EDGE {edge.type}')
 
 
         next_nodes, next_data = method(bot, state.nodes,  edge.args)
@@ -91,8 +91,8 @@ def reducer(state: dotdict, edge: dotdict):
 
     else:
         # all is right, no exceptions
-        bot.logger.warn(state.data)
-        bot.logger.warn(next_data)
+        # bot.logger.warn(state.data)
+        # bot.logger.warn(next_data)
         return dotdict(nodes=next_nodes, bot=bot, errors=[], data=state.data)
 
 

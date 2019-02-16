@@ -26,7 +26,7 @@ def evaluate(bot, nodes,  args) -> Node:
             pass
         else:
             count += 1
-            bot.logger.info(f'{int(count / total) * 100}%: evaluated {count} nodes of {total} total')
+            bot.logger.info(f'{int(count / total * 100)}%: evaluated {count} nodes of {total} total')
 
     # bot.logger.warn(nodes[:3])
 
