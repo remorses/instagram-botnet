@@ -39,7 +39,7 @@ SCRIPTS = [
 
 if __name__ or '__main__':
 
-    try:
+
 
         # net_logger = Network_logger()
         # net_logger.daemon = True
@@ -69,7 +69,3 @@ if __name__ or '__main__':
         #             file.write(unmask(raw))
         #         else:
         #             file.write(content)
-
-    except Exception as exc:
-        print(exc)
-        raise

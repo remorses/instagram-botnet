@@ -75,6 +75,9 @@ def reducer(state: dotdict, edge: dotdict):
         # secs = bot.delay[type] if type in bot.delay else bot.delay['usual']
         # time.sleep(secs)
 
+    except (KeyboardInterrupt, SystemExit):
+        raise KeyboardInterrupt
+
     except Dont_retry as exc:
         bot.logger.error('error reducing edge {}: \"{}\" {}'.format(edge.type, exc.__class__.__name__, exc))
         return dotdict(nodes=[], bot=bot, errors=state.errors + [exc], data=state.data)

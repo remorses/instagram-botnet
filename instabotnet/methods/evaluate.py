@@ -21,9 +21,7 @@ def evaluate(bot, nodes,  args) -> Node:
         except StopIteration:
             break
         except:
-            bot.logger.error('there was an error:\n{}'.format(traceback.format_exc()))
-            bot.sleep('error')
-            pass
+            raise
         else:
             count += 1
             bot.logger.info(f'{int(count / total * 100)}%:  {count} nodes out of {total}')
