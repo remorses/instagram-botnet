@@ -67,10 +67,14 @@ def make_task(body):
     edges += [dict(type='evaluate', args={})]
 
     if 'name' in body:
-        edges[0]['name'] = body['name']
+        name = body['name']
+        for n, _ in enumerate(edges):
+            edges[n]['name'] = name
+    else:
+        name='not named'
 
     nodes = initialize_nodes(nodes, edges, body)
-    return Task(nodes=nodes, edges=edges)
+    return Task(nodes=nodes, edges=edges, name=name)
 
 
 # TODO this shit suppress my errors

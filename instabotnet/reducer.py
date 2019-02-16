@@ -30,14 +30,14 @@ class Reducer(Thread):
         get_name = lambda: self.edges[0]['name']
         name = ignore((KeyError, AttributeError), 'unnamed')(get_name)()
         self.logger.debug('reducer beginning {} action'.format(name))
-        last_state = reduce(_reducer, self.edges, self.state)
+        last_state = reduce(reducer, self.edges, self.state)
         super().set_data(last_state['data'])
         return
 
 
 
 
-def _reducer(state: dict, edge: dict):
+def reducer(state: dict, edge: dict):
 
     nodes = state['nodes']
     bot: Bot = state['bot']
@@ -90,7 +90,7 @@ def _reducer(state: dict, edge: dict):
         bot.sleep('error')
 
         errored_state = merge(state, dict(errors=errors + [exc]))
-        return _reducer(errored_state, edge)
+        return reducer(errored_state, edge)
 
     else:
         # all is right, no exceptions
