@@ -20,14 +20,14 @@ def execute(script, variables={}) -> [dict]:
     bot = make_bots(script)[0]
 
     script_name = script['name'] if 'name' in script else 'unnmaed script'
-    bot.logger.info(f'SCRIPT {script_name.upper()}')
+    bot.logger.info(f'# SCRIPT {script_name}')
 
     data = []
 
     try:
         for action in script['actions']:
             action_name = action['name'] if 'name' in action else 'unnmaed action'
-            bot.logger.info(f'ACTION {action_name.upper()}')
+            bot.logger.info(f'# ACTION {action_name}')
 
             nodes, edges = nodes_edges(action)
             state = dict(nodes=nodes, bot=bot, data=dict(), errors=[])
@@ -85,6 +85,6 @@ def obj_from_yaml(script, variables):
         if '{{' in script:
             var = locate_variable(script)
             raise Exception('yaml file needs all data to be populated: {{{{ {} }}}}'.format(var))
-        script = yaml.load(script)
+        return yaml.load(script)
     else:
-        script = populate_object(script, variables)
+        return populate_object(script, variables)
