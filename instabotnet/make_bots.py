@@ -49,7 +49,8 @@ def make_bots(script):
             bots += [Bot(**params(data))]
 
     elif 'bot' in script:
-        bots += [Bot(**params(script['bot']))]
+        data = script['bot']
+        bots += [Bot(**params(data))]
 
     else:
         raise Exception('no bots in script')
