@@ -8,4 +8,27 @@ class dotdict(dict):
 
 
 def merge(a, b):
-    return { **a, **b}
+    result = dict()
+
+    [result.update({x: dict(**a[x], **b[x])}) for x in set(a.keys()) & set(b.keys())
+        if isinstance(a[x], dict) and isinstance(b[x], dict)]
+
+    [result.update({x: [*a[x], *b[x]]}) for x in set(a.keys()) & set(b.keys())
+        if isinstance(a[x], list) and isinstance(b[x], list)]
+
+    [result.update({x: a[x] if x in a else b[x]}) for x in set(a.keys()) ^ set(b.keys() )]
+
+    return result
+
+if __name__ == '__main__':
+    x = merge(
+        dict(
+            a=dict(b=[3,4]),
+            b=[5,4,6]
+        ),
+        dict(
+            a=dict(c=[9]),
+            b=[1]
+        )
+    )
+    print(x)
