@@ -68,7 +68,7 @@ def text(bot, nodes,  args):
     result = map(process, nodes)
     result = filter(lambda x: x, result)
 
-    return result, {}
+    return result, bot.last
 
 
 

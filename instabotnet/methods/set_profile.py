@@ -48,4 +48,4 @@ def set_profile(bot, nodes,  args):
 
     bot.logger.info('changed profile values')
 
-    return [], {}
+    return [], bot.last
