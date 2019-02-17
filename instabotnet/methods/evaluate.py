@@ -26,7 +26,8 @@ def evaluate(bot, nodes,  args) -> Node:
             raise
         else:
             count += 1
-            bot.logger.info(f'{int(count / total * 100)}%:  {count} nodes out of {total}')
+            percentage = (str(int(count / total * 100)) + '%').center(5)
+            bot.logger.info( f'{percentage}:  {count} nodes out of {total}')
 
     # bot.logger.warn(nodes[:3])
 
