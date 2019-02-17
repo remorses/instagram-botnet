@@ -53,7 +53,6 @@ def comment(bot, nodes,  args):
         discard_if_reached_limit,
         do_comment_from_groups,
         lambda arr: list(arr)[0] if arr else None,
-        lambda node: bot.cache['commented'].append(node.id) if node else None,
         lambda x: tap(x, increment) if x else None,
     )
 

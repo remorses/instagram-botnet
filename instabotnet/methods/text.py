@@ -50,7 +50,6 @@ def text(bot, nodes,  args):
         discard_if_reached_limit,
         send_msg_from_groups,
         lambda arr: list(arr)[0] if arr else None,
-        lambda node: bot.cache['texted'].append(node.id) if node else None,
         lambda x: tap(x, increment) if x else None,
     )
 

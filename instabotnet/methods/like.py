@@ -46,7 +46,7 @@ def like_media(media, bot):
             bot.sleep('error')
             return None
         else:
-            bot.cache['liked'].append(media.id)
+            bot.total['likes'] += 1
 
             bot.logger.debug('liked %s' % media.url)
             bot.sleep('like')

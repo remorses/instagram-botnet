@@ -15,20 +15,14 @@ class Bot:
                  self,
                  username,
                  password,
-                 logs_file=None,
-                 cache_file=None,
+
                  cookie_file=None,
                  proxy=None,
                  device=None):
 
-        self.cache_file = make_cache_file(cache_file, username + '_cache.json')
-        self.logs_file = make_logs_file( logs_file, username + '_logs.html')
         self.cookie_file = make_cookie_file(cookie_file, username + '_cookie.json')
 
-        with open(self.cache_file) as f:
-            self._cache = json.load(f)
 
-        self._cache_hits = 0
 
         self.id = Bot.id
         self.username = username
@@ -60,13 +54,7 @@ class Bot:
     def __repr__(self):
         return 'Bot(username=\'{}\', id={})'.format(self.username, self.id)
 
-    @property
-    def cache(self):
-        self._cache_hits += 1
-        if self._cache_hits % 10 == 0:
-            with open(str(self._cache), 'w') as f:
-                json.dump(self._cache, f)
-        return self._cache
+
 
     @property
     def followers_ids(self):
@@ -80,7 +68,6 @@ class Bot:
                 self._followers_ids = list(user_ids)
                 print(self._followers_ids)
                 return self._followers_ids
-
 
     @property
     def last(self):
@@ -141,38 +128,6 @@ class Bot:
         self.start_time = datetime.datetime.now()
 
 
-
-
-def make_db_url( file):
-    return 'sqlite:///{}'.format(str(file.resolve()))
-
-def make_logs_file( file, name):
-    if not file:
-        file = Path(str(Path('.') / '_logs' / name)).resolve()
-        file.parent.exists() or file.parent.mkdir()
-    file = Path(file)
-    file.exists() or file.touch()
-    return str(file.resolve())
-
-def make_cache_file( file, name):
-    if not file:
-        file = Path(str(Path('.') / '_cache' / name)).resolve()
-        file.parent.exists() or file.parent.mkdir()
-    file = Path(file)
-    if not file.exists():
-        file.touch()
-        with open(str(file.resolve()), 'w') as f:
-            json.dump(dict(
-                liked=[],
-                followed=[],
-                tested=[],
-                unfollowed=[],
-                blocked=[],
-                saved=[],
-                reported=[]
-            ), f)
-
-    return file.resolve()
 
 def make_cookie_file( file, name):
     if not file:
