@@ -30,15 +30,7 @@ def comment(bot, nodes,  args):
 
     stop = raiser(StopIteration)
 
-    def store_in_cache(node):
-        with bot.cache as cache:
-            cache['commented'].insert(
-                dict(identifier=node.id,
-                    specifier=str(comments),
-                    time=today(),
-                    type='media')
-            )
-        return node
+
 
     return_if_suitable = lambda node: node \
         if bot.suitable(node, table='commented', specifier=str(comments)) \
@@ -61,7 +53,7 @@ def comment(bot, nodes,  args):
         discard_if_reached_limit,
         do_comment_from_groups,
         lambda arr: list(arr)[0] if arr else None,
-        lambda node: store_in_cache(node) if node else None,
+        lambda node: bot.cache['commented'].append(node.id) if node else None,
         lambda x: tap(x, increment) if x else None,
     )
 

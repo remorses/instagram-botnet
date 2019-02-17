@@ -1,6 +1,5 @@
 import datetime
 from pathlib import Path
-import dataset
 import json
 import time
 from funcy import partial
@@ -22,9 +21,14 @@ class Bot:
                  proxy=None,
                  device=None):
 
-        self.cache_file = make_cache_file(cache_file, username + '_cache.db')
+        self.cache_file = make_cache_file(cache_file, username + '_cache.json')
         self.logs_file = make_logs_file( logs_file, username + '_logs.html')
         self.cookie_file = make_cookie_file(cookie_file, username + '_cookie.json')
+
+        with open(self.cache_file) as f:
+            self._cache = json.load(f)
+
+        self._cache_hits = 0
 
         self.id = Bot.id
         self.username = username
@@ -58,7 +62,11 @@ class Bot:
 
     @property
     def cache(self):
-        return dataset.connect(make_db_url(self.cache_file), engine_kwargs = {'connect_args': {'check_same_thread' : False}})
+        self._cache_hits += 1
+        if self._cache_hits % 10 == 0:
+            with open(str(self._cache), 'w') as f:
+                json.dump(self._cache, f)
+        return self._cache
 
     @property
     def followers_ids(self):
@@ -151,7 +159,19 @@ def make_cache_file( file, name):
         file = Path(str(Path('.') / '_cache' / name)).resolve()
         file.parent.exists() or file.parent.mkdir()
     file = Path(file)
-    file.exists() or file.touch()
+    if not file.exists():
+        file.touch()
+        with open(str(file.resolve()), 'w') as f:
+            json.dump(dict(
+                liked=[],
+                followed=[],
+                tested=[],
+                unfollowed=[],
+                blocked=[],
+                saved=[],
+                reported=[]
+            ), f)
+
     return file.resolve()
 
 def make_cookie_file( file, name):

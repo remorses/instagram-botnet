@@ -1,6 +1,5 @@
 Pillow
 ruamel.yaml
-dataset>=1.1.2
 funcy
 tqdm>=4.30.0
 requests>=2.21.0

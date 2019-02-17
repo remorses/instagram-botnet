@@ -3,12 +3,11 @@ from ..nodes import Node, User, Media
 
 from .common import today, tap, dotdict
 from ..bot import Bot
+from funcy import ignore
 import json
-from dataset import connect
-from funcy import rcompose, ignore, mapcat
 from itertools import islice
 from colorama import init, Fore
-import time
+
 
 
 

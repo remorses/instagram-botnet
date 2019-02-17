@@ -20,7 +20,7 @@ from .text import text
 from .upload import upload
 from .comment import comment
 from .delete import delete
-from .scrape import scrape
+# from .scrape import scrape
 from .set_profile import set_profile
 from .shuffle import shuffle
 from .print import _print
@@ -48,7 +48,6 @@ methods = dict(
    upload=upload,
    comment=comment,
    delete=delete,
-   scrape=scrape,
    set_profile=set_profile,
    shuffle=shuffle,
    print=_print,

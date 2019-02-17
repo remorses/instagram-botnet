@@ -3,8 +3,7 @@ from ..nodes import Node, User, Media, Story, Geotag, Hashtag
 
 from .common import today, tap, dotdict
 from ..bot import Bot
-from dataset import connect
-from funcy import rcompose, ignore, retry, mapcat
+from funcy import mapcat
 import time
 
 

@@ -29,16 +29,6 @@ def text(bot, nodes,  args):
 
     stop = raiser(StopIteration)
 
-    def store_in_cache(node):
-        with bot.cache as cache:
-            cache['texted'].insert(
-                dict(identifier=node.id,
-                    specifier=str(messages),
-                    time=today(),
-                    type='user')
-            )
-        return node
-
     return_if_suitable = lambda node: node \
         if bot.suitable(node, table='texted', specifier=str(messages)) \
         else tap(None,lambda: bot.logger.warn('{} not suitable'.format(node)))
@@ -60,7 +50,7 @@ def text(bot, nodes,  args):
         discard_if_reached_limit,
         send_msg_from_groups,
         lambda arr: list(arr)[0] if arr else None,
-        lambda node: store_in_cache(node) if node else None,
+        lambda node: bot.cache['texted'].append(node.id) if node else None,
         lambda x: tap(x, increment) if x else None,
     )
 

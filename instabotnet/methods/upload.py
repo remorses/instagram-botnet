@@ -91,7 +91,7 @@ def upload(bot, nodes,  args):
         temp.delete()
 
         # with bot.cache as cache:
-        #     cache['uploaded'].insert(dict(identifier=bot.last, url=media.url, time=today(), type='media'))
+        #     cache['uploaded'].append(dict(identifier=bot.last, url=media.url, time=today(), type='media'))
 
         bot.logger.debug('sleeping some time')
         bot.sleep('upload')
