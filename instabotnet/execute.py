@@ -6,14 +6,19 @@ from .make_bots import make_bots
 from .populate import populate_object, populate_string
 from .reducer import  reducer
 from .support import dotdict, merge
+from .debug import memory_summary
 from collections import deque
 from functools import reduce
 # from .threads import start, wait
 import traceback
+import os
 
 from ruamel.yaml import YAML
 
 yaml = YAML()
+
+
+DEBUG = bool(os.environ.get('DEBUG'))
 
 def execute(script, variables={}) -> [dict]:
 
@@ -38,6 +43,44 @@ def execute(script, variables={}) -> [dict]:
             end_state = reduce(reducer, edges, begin_state)
             result.extend(end_state['data'])
 
+    except (KeyboardInterrupt, SystemExit):
+        bot.logger.warn('keyboard interrupt')
+        exit(0)
+
+    except Exception as exc:
+        print(
+            exc.__class__.__name__,
+            ':',
+            exc,
+            '\n',
+            '\n'.join(traceback.format_exc().split('\n'))
+        )
+        raise
+
+    else:
+        result = reduce(merge, result)
+        return result
+
+def locate_variable(script):
+    begin = script.index('{{')
+    end = script.index('}}', begin )
+    return script[begin:end].replace('{{', '').strip()
+
+
+def obj_from_yaml(script, variables):
+    if isinstance(script, str):
+        script = populate_string(script, variables)
+        if '{{' in script:
+            var = locate_variable(script)
+            raise Exception('yaml file needs all data to be populated: {{{{ {} }}}}'.format(var))
+        return yaml.load(script)
+    else:
+        return populate_object(script, variables)
+
+
+
+
+
     # try:
     #     for action in script['actions']:
     #
@@ -58,38 +101,3 @@ def execute(script, variables={}) -> [dict]:
     #
     #         data['__' + interaction + '_interaction__'] = [thread.get_data() for thread in threads]
     #         # {'thread' + thread.name: thread.get_data() for thread in threads}
-
-
-    except KeyboardInterrupt:
-        bot.logger.warn('keyboard interrupt')
-        exit(0)
-
-    except Exception as exc:
-        print(
-            exc.__class__.__name__,
-            ':',
-            exc,
-            '\n',
-            '\n'.join(traceback.format_exc().split('\n'))
-        )
-        raise
-
-    finally:
-        result = reduce(merge, result)
-        return result
-
-def locate_variable(script):
-    begin = script.index('{{')
-    end = script.index('}}', begin )
-    return script[begin:end].replace('{{', '').strip()
-
-
-def obj_from_yaml(script, variables):
-    if isinstance(script, str):
-        script = populate_string(script, variables)
-        if '{{' in script:
-            var = locate_variable(script)
-            raise Exception('yaml file needs all data to be populated: {{{{ {} }}}}'.format(var))
-        return yaml.load(script)
-    else:
-        return populate_object(script, variables)

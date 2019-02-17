@@ -40,7 +40,7 @@ class API(object):
 
     _id = 0
 
-    def __init__(self, logs_file, device=None, username=None,  id=None):
+    def __init__(self,  device=None, username=None,  id=None, logs_file=None,):
 
         self._id = API._id if not id else id
         API._id += 1
@@ -50,7 +50,6 @@ class API(object):
         self.user_agent = config.USER_AGENT_BASE.format(**self.device_settings)
 
         self.is_logged_in = False
-        self.last_response = None
         self.total_requests = 0
 
         # Setup logging
@@ -101,7 +100,10 @@ class API(object):
         cookie_is_loaded = False
         if use_cookie:
             try:
-                self.load_cookie(cookie_fname)
+                self.session = requests.Session()
+                self.session.headers.update(config.REQUEST_HEADERS)
+                self.session.headers.update({'User-Agent': self.user_agent})
+                self.load_cookie(self.session, cookie_fname)
                 cookie_is_loaded = True
                 self.is_logged_in = True
                 self.set_proxy()  # Only happens if `self.proxy`
@@ -113,6 +115,8 @@ class API(object):
 
         if not cookie_is_loaded and (not self.is_logged_in or force):
             self.session = requests.Session()
+            self.session.headers.update(config.REQUEST_HEADERS)
+            self.session.headers.update({'User-Agent': self.user_agent})
             self.set_proxy()  # Only happens if `self.proxy`
             url = 'si/fetch_headers/?challenge_type=signup&guid={uuid}'
             url = url.format(uuid=self.generate_UUID(False))
@@ -139,15 +143,14 @@ class API(object):
                     delete_credentials()
                     return False
 
-    def load_cookie(self, fname):
+    def load_cookie(self, session, fname):
         # Python2 compatibility
         if PY2:
             FileNotFoundError = IOError
 
         try:
             with open(fname, 'r') as f:
-                self.session = requests.Session()
-                self.session.cookies = requests.utils.cookiejar_from_dict(json.load(f))
+                session.cookies = requests.utils.cookiejar_from_dict(json.load(f))
             cookie_username = self.cookie_dict['ds_user']
             assert cookie_username == self.username
         except FileNotFoundError:
@@ -175,20 +178,19 @@ class API(object):
         if self.proxy:
             parsed = urllib.parse.urlparse(self.proxy)
             scheme = 'http://' if not parsed.scheme else ''
-            self.session.proxies['http'] = scheme + self.proxy
-            self.session.proxies['https'] = scheme + self.proxy
+            self.session.proxies['http'] = f'{scheme}{self.proxy}'
+            self.session.proxies['https'] = f'{scheme}{self.proxy}'
 
 
 
     def send_request(self, endpoint, post=None, login=False, with_signature=True):
-            self.logger.debug('%s' % endpoint)
+            self.logger.debug(f'{endpoint}')
             if (not self.is_logged_in and not login):
                 msg = "Not logged in!"
                 self.logger.critical(msg)
                 raise Exception(msg)
 
-            self.session.headers.update(config.REQUEST_HEADERS)
-            self.session.headers.update({'User-Agent': self.user_agent})
+
             try:
                 self.total_requests += 1
                 if post is not None:  # POST
@@ -196,16 +198,15 @@ class API(object):
                         # Only `send_direct_item` doesn't need a signature
                         post = self.generate_signature(post)
                     response = self.session.post(
-                        config.API_URL + endpoint, data=post)
+                        f'{config.API_URL}{endpoint}', data=post)
                 else:  # GET
                     response = self.session.get(
-                        config.API_URL + endpoint)
+                        f'{config.API_URL}{endpoint}')
             except Exception as e:
                 self.logger.warning(str(e))
                 return False
 
             if response.status_code == 200:
-                self.last_response = response
                 try:
                     self.last_json = json.loads(response.text)
                     return True
@@ -229,10 +230,11 @@ class API(object):
 
                 # For debugging
                 try:
-                    self.last_response = response
                     self.last_json = json.loads(response.text)
                 except Exception:
                     pass
+
+                del response
                 return False
 
 
@@ -685,10 +687,9 @@ class API(object):
 
     @staticmethod
     def generate_signature(data):
-        body = hmac.new(config.IG_SIG_KEY.encode('utf-8'), data.encode('utf-8'),
-                        hashlib.sha256).hexdigest() + '.' + urllib.parse.quote(data)
-        signature = 'ig_sig_key_version={sig_key}&signed_body={body}'
-        return signature.format(sig_key=config.SIG_KEY_VERSION, body=body)
+        hash = hmac.new(config.IG_SIG_KEY.encode('utf-8'), data.encode('utf-8'), hashlib.sha256).hexdigest()
+        body = f'{hash}.{urllib.parse.quote(data)}'
+        return f'ig_sig_key_version={config.SIG_KEY_VERSION}&signed_body={body}'
 
     @staticmethod
     def generate_device_id(seed):

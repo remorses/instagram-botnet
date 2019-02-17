@@ -36,7 +36,7 @@ def unfollow(bot: Bot, nodes,  args):
     unfollowed = map(process, nodes)
     unfollowed = filter(lambda x: x, unfollowed)
 
-    return unfollowed, bot.last
+    return unfollowed, {}
 
 
 

@@ -1,7 +1,8 @@
-import traceback
+import os
 from ..nodes import Node
 from .common import accepts
 
+DEBUG = bool(os.environ.get('DEBUG'))
 
 @accepts(Node)
 def evaluate(bot, nodes,  args) -> Node:
@@ -10,6 +11,7 @@ def evaluate(bot, nodes,  args) -> Node:
     count = 0
 
     while True:
+
         try:
 
             try:

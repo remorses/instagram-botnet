@@ -36,7 +36,7 @@ def follow(bot: Bot, nodes,  args):
     followed = map(process, nodes)
     followed = filter(lambda x: x, followed)
 
-    return followed, bot.last
+    return followed, {}
 
 
 

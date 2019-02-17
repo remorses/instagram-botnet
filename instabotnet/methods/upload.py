@@ -100,7 +100,7 @@ def upload(bot, nodes,  args):
         # upload album
         pass
 
-    return [], bot.last
+    return [], {}
 
 
 class TempImage():

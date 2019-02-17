@@ -8,22 +8,11 @@ import re
 
 def accepts(Class):
 
-    def _accepts(original):
+    def accepts(original):
+        original.accepts = Class
+        return original
 
-        @wraps(original)
-        def enhanced(bot, nodes,  args):
-
-            # print('nodes in accepts for {}: {}'.format(original.__name__, nodes))
-
-            result = original(bot, nodes,  args)
-
-            return result
-
-        enhanced.accepts = Class
-
-        return enhanced
-
-    return _accepts
+    return accepts
 
 
 

@@ -36,7 +36,7 @@ def like(bot, nodes,  args):
     liked = map(process, nodes)
     liked = filter(lambda x: x, liked)
 
-    return liked, bot.last
+    return liked, {}
 
 
 def like_media(media, bot):
