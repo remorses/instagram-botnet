@@ -40,7 +40,7 @@ class API(object):
 
     _id = 0
 
-    def __init__(self,  device=None, username=None,  id=None, logs_file=None,):
+    def __init__(self,  device=None, username=None,  id=None,):
 
         self._id = API._id if not id else id
         API._id += 1
