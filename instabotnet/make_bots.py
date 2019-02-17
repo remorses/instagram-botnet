@@ -1,4 +1,3 @@
-from funcy import partial
 from .nodes import Media, User, Geotag, Hashtag
 from .make_predicate import make_predicate
 from .bot import Bot

@@ -4,7 +4,7 @@ from .node import Node
 from .user import User
 from .geotag import Geotag
 from .hashtag import Hashtag
-import time
+
 
 
 attributes = lambda media: (media._url, media._id, media._data)

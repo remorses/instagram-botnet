@@ -1,4 +1,4 @@
-import sys
+
 import json
 from colorama import init, Fore
 from .execute import execute

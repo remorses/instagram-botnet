@@ -6,12 +6,12 @@ from .make_bots import make_bots
 from .populate import populate_object, populate_string
 from .reducer import  reducer
 from .support import dotdict, merge
-from .debug import memory_summary
 from collections import deque
 from functools import reduce
 # from .threads import start, wait
 import traceback
 import os
+
 
 from ruamel.yaml import YAML
 

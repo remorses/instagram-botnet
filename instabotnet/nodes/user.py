@@ -1,7 +1,5 @@
 from .node import Node
-from .geotag import Geotag
-from .hashtag import Hashtag
-import time
+
 
 
 attributes = lambda x: (x._username, x._id, x._data)

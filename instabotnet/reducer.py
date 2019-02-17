@@ -1,12 +1,8 @@
-from funcy import  ignore
-from functools import reduce
+
 from .support import dotdict, merge
-import time
 import traceback
 
-from .bot import Bot
 from .methods import methods
-from .threads import Thread
 
 class Dont_retry(Exception):
     """
@@ -77,7 +73,7 @@ def reducer(state: dotdict, edge: dotdict):
 
     except (KeyboardInterrupt, SystemExit):
         raise
-        
+
     except Dont_retry as exc:
         bot.logger.error('error reducing edge {}: \"{}\" {}'.format(edge.type, exc.__class__.__name__, exc))
         return dotdict(nodes=[], bot=bot, errors=state.errors + [exc], data=state.data)
