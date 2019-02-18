@@ -1,5 +1,4 @@
-set -ex
-cd `dirname ${BASH_SOURCE[0]}`
+
 ##################################################
 
 REGISTRY="xmorse" # for docker hub just put your username

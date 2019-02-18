@@ -25,5 +25,3 @@ git add -A
 git commit -m "pypi version $version"
 git tag -a "$version" -m "version $version"
 git push
-
-./deploy_docker.sh
