@@ -1,5 +1,4 @@
-set -ex
-cd `dirname ${BASH_SOURCE[0]}`
+
 
 test -f ./VERSION || (echo "file VERSION containing current version is needed" && exit 1)
 
