@@ -12,7 +12,7 @@ test -f ./VERSION || (echo "file VERSION containing current version is needed" &
 
 git pull
 
-version=`cat VERSION`
+version=`cat VERSION` 
 echo "version: $version"
 docker build -t $REGISTRY/$IMAGE:latest . # tag it
 git add -A
