@@ -16,7 +16,6 @@ except ImportError:
 import requests
 import requests.utils
 import urllib
-from tqdm import tqdm
 
 from . import config, devices
 from .api_photo import configure_photo, download_photo, upload_photo
@@ -716,100 +715,100 @@ class API(object):
         url = 'feed/liked/?max_id={max_id}'.format(max_id=max_id)
         return self.send_request(url)
 
-    def get_total_followers_or_followings(self,
-                                          user_id,
-                                          amount=None,
-                                          which='followers',
-                                          filter_private=False,
-                                          filter_business=False,
-                                          filter_verified=False,
-                                          usernames=False,
-                                          to_file=None,
-                                          overwrite=False):
-        from io import StringIO
-
-        if which == 'followers':
-            key = 'follower_count'
-            get = self.get_user_followers
-        elif which == 'followings':
-            key = 'following_count'
-            get = self.get_user_followings
-
-        sleep_track = 0
-        result = []
-        next_max_id = ''
-        self.get_username_info(user_id)
-        username_info = self.last_json
-        if "user" in username_info:
-            total = amount or username_info["user"][key]
-
-            if total > 200000:
-                print("Consider temporarily saving the result of this big "
-                      "operation. This will take a while.\n")
-        else:
-            return False
-        if filter_business:
-            print("--> You are going to filter business accounts. This will take time! <--")
-            from random import random
-        if to_file is not None:
-            if os.path.isfile(to_file):
-                if not overwrite:
-                    print("File `{}` already exists. Not overwriting.".format(to_file))
-                    return False
-                else:
-                    print("Overwriting file `{}`".format(to_file))
-            with open(to_file, 'w'):
-                pass
-        desc = "Getting {} of {}".format(which, user_id)
-        with tqdm(total=total, desc=desc, leave=True) as pbar:
-            while True:
-                get(user_id, next_max_id)
-                last_json = self.last_json
-                try:
-                    with open(to_file, 'a') if to_file is not None else StringIO() as f:
-                        for item in last_json["users"]:
-                            if filter_private and item['is_private']:
-                                continue
-                            if filter_business:
-                                time.sleep(2 * random())
-                                self.get_username_info(item['pk'])
-                                item_info = self.last_json
-                                if item_info['user']['is_business']:
-                                    continue
-                            if filter_verified and item['is_verified']:
-                                continue
-                            if to_file is not None:
-                                if usernames:
-                                    f.write("{}\n".format(item['username']))
-                                else:
-                                    f.write("{}\n".format(item['pk']))
-                            result.append(item)
-                            pbar.update(1)
-                            sleep_track += 1
-                            if sleep_track >= 20000:
-                                sleep_time = uniform(120, 180)
-                                msg = "\nWaiting {:.2f} min. due to too many requests."
-                                print(msg.format(sleep_time / 60))
-                                time.sleep(sleep_time)
-                                sleep_track = 0
-                    if not last_json["users"] or len(result) >= total:
-                        return result[:total]
-                except Exception as e:
-                    print("ERROR: {}".format(e))
-                    return result[:total]
-
-                if last_json["big_list"] is False:
-                    return result[:total]
-
-                next_max_id = last_json.get("next_max_id", "")
-
-    def get_total_followers(self, user_id, amount=None):
-        return self.get_total_followers_or_followings(
-            user_id, amount, 'followers')
-
-    def get_total_followings(self, user_id, amount=None):
-        return self.get_total_followers_or_followings(
-            user_id, amount, 'followings')
+    # def get_total_followers_or_followings(self,
+    #                                       user_id,
+    #                                       amount=None,
+    #                                       which='followers',
+    #                                       filter_private=False,
+    #                                       filter_business=False,
+    #                                       filter_verified=False,
+    #                                       usernames=False,
+    #                                       to_file=None,
+    #                                       overwrite=False):
+    #     from io import StringIO
+    #
+    #     if which == 'followers':
+    #         key = 'follower_count'
+    #         get = self.get_user_followers
+    #     elif which == 'followings':
+    #         key = 'following_count'
+    #         get = self.get_user_followings
+    #
+    #     sleep_track = 0
+    #     result = []
+    #     next_max_id = ''
+    #     self.get_username_info(user_id)
+    #     username_info = self.last_json
+    #     if "user" in username_info:
+    #         total = amount or username_info["user"][key]
+    #
+    #         if total > 200000:
+    #             print("Consider temporarily saving the result of this big "
+    #                   "operation. This will take a while.\n")
+    #     else:
+    #         return False
+    #     if filter_business:
+    #         print("--> You are going to filter business accounts. This will take time! <--")
+    #         from random import random
+    #     if to_file is not None:
+    #         if os.path.isfile(to_file):
+    #             if not overwrite:
+    #                 print("File `{}` already exists. Not overwriting.".format(to_file))
+    #                 return False
+    #             else:
+    #                 print("Overwriting file `{}`".format(to_file))
+    #         with open(to_file, 'w'):
+    #             pass
+    #     desc = "Getting {} of {}".format(which, user_id)
+    #     with tqdm(total=total, desc=desc, leave=True) as pbar:
+    #         while True:
+    #             get(user_id, next_max_id)
+    #             last_json = self.last_json
+    #             try:
+    #                 with open(to_file, 'a') if to_file is not None else StringIO() as f:
+    #                     for item in last_json["users"]:
+    #                         if filter_private and item['is_private']:
+    #                             continue
+    #                         if filter_business:
+    #                             time.sleep(2 * random())
+    #                             self.get_username_info(item['pk'])
+    #                             item_info = self.last_json
+    #                             if item_info['user']['is_business']:
+    #                                 continue
+    #                         if filter_verified and item['is_verified']:
+    #                             continue
+    #                         if to_file is not None:
+    #                             if usernames:
+    #                                 f.write("{}\n".format(item['username']))
+    #                             else:
+    #                                 f.write("{}\n".format(item['pk']))
+    #                         result.append(item)
+    #                         pbar.update(1)
+    #                         sleep_track += 1
+    #                         if sleep_track >= 20000:
+    #                             sleep_time = uniform(120, 180)
+    #                             msg = "\nWaiting {:.2f} min. due to too many requests."
+    #                             print(msg.format(sleep_time / 60))
+    #                             time.sleep(sleep_time)
+    #                             sleep_track = 0
+    #                 if not last_json["users"] or len(result) >= total:
+    #                     return result[:total]
+    #             except Exception as e:
+    #                 print("ERROR: {}".format(e))
+    #                 return result[:total]
+    #
+    #             if last_json["big_list"] is False:
+    #                 return result[:total]
+    #
+    #             next_max_id = last_json.get("next_max_id", "")
+    #
+    # def get_total_followers(self, user_id, amount=None):
+    #     return self.get_total_followers_or_followings(
+    #         user_id, amount, 'followers')
+    #
+    # def get_total_followings(self, user_id, amount=None):
+    #     return self.get_total_followers_or_followings(
+    #         user_id, amount, 'followings')
 
     def get_total_user_feed(self, user_id, min_timestamp=None):
         return self.get_last_user_feed(user_id, amount=float('inf'), min_timestamp=min_timestamp)
@@ -830,25 +829,25 @@ class API(object):
                 return user_feed
             next_max_id = last_json.get("next_max_id", "")
 
-    def get_total_hashtag_feed(self, hashtag_str, amount=100):
-        hashtag_feed = []
-        next_max_id = ''
-
-        with tqdm(total=amount, desc="Getting hashtag media.", leave=False) as pbar:
-            while True:
-                self.get_hashtag_feed(hashtag_str, next_max_id)
-                last_json = self.last_json
-                if 'items' not in last_json:
-                    return hashtag_feed[:amount]
-                items = last_json['items']
-                try:
-                    pbar.update(len(items))
-                    hashtag_feed += items
-                    if not items or len(hashtag_feed) >= amount:
-                        return hashtag_feed[:amount]
-                except Exception:
-                    return hashtag_feed[:amount]
-                next_max_id = last_json.get("next_max_id", "")
+    # def get_total_hashtag_feed(self, hashtag_str, amount=100):
+    #     hashtag_feed = []
+    #     next_max_id = ''
+    #
+    #     with tqdm(total=amount, desc="Getting hashtag media.", leave=False) as pbar:
+    #         while True:
+    #             self.get_hashtag_feed(hashtag_str, next_max_id)
+    #             last_json = self.last_json
+    #             if 'items' not in last_json:
+    #                 return hashtag_feed[:amount]
+    #             items = last_json['items']
+    #             try:
+    #                 pbar.update(len(items))
+    #                 hashtag_feed += items
+    #                 if not items or len(hashtag_feed) >= amount:
+    #                     return hashtag_feed[:amount]
+    #             except Exception:
+    #                 return hashtag_feed[:amount]
+    #             next_max_id = last_json.get("next_max_id", "")
 
     def get_total_self_user_feed(self, min_timestamp=None):
         return self.get_total_user_feed(self.user_id, min_timestamp)
