@@ -7,7 +7,7 @@ from .common import decorate
 
 @decorate(accepts=(User, Hashtag, Geotag,), returns=Media)
 def feed(bot, nodes, args):
-    first = next(nodes, None)
+    first = next(iter(nodes), None)
     nodes = chain([first], nodes)
     
     switch = {
