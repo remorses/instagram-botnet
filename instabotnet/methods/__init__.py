@@ -53,7 +53,7 @@ methods = dict(
    set_profile=set_profile,
    shuffle=shuffle,
    print=_print,
-   return=_return,
+   scrape=scrape,
 
    evaluate=evaluate,
 )
