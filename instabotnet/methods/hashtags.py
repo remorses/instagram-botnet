@@ -4,7 +4,7 @@ from ..nodes import Hashtag, Media
 from .common import accepts
 
 
-@accepts(Media)
+@decorate(accepts=Media, returns=Hashtag)
 def hashtags(bot, nodes,  args):
 
     amount = args.get('amount')

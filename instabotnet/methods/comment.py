@@ -4,12 +4,12 @@ import time
 from random import choice
 from ..bot import Bot
 from .common import accepts, today, tap, extract_urls, substitute_vars
-from ..nodes import Node, User, Media
+from ..nodes import Node, User, Media, Comment
 
 
 
 
-@accepts(Media)
+@decorate(accepts=Media, returns=Comment)
 def comment(bot, nodes,  args):
 
     try:

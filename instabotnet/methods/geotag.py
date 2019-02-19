@@ -3,7 +3,7 @@ from ..nodes import Geotag, Media
 from .common import accepts
 
 
-@accepts(Media)
+@decorate(accepts=Media, returns=Geotag)
 def geotag(bot, nodes,  args) -> Geotag:
 
     process = lambda media: media.get_geotag(bot)

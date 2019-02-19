@@ -4,7 +4,10 @@ from funcy import  rcompose, mapcat
 from ..nodes import User, Media
 from .common import accepts, cycled_api_call, tap
 
-@accepts(User)
+
+
+
+@decorate(accepts=User, returns=Media)
 def user_feed(bot, nodes,  args) -> List[Media]:
     amount = args.get('amount')
 

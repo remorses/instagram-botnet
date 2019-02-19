@@ -9,7 +9,7 @@ from ..nodes import Node, User, Arg
 
 
 
-@accepts(Arg)
+@decorate(accepts=Arg, returns=Arg)
 def set_profile(bot, nodes,  args):
 
 
@@ -48,4 +48,4 @@ def set_profile(bot, nodes,  args):
 
     bot.logger.info('changed profile values')
 
-    return [], {}
+    return nodes, {}

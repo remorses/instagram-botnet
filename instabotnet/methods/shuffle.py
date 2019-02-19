@@ -4,7 +4,7 @@ from ..nodes import Node
 from .common import accepts
 
 
-@accepts(Node)
+@decorate(accepts=Node, returns=Node)
 def shuffle(bot, nodes,  args) -> Node:
 
     max = args.get('max') # None works as inf

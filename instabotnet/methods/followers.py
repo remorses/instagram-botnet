@@ -6,7 +6,7 @@ from ..nodes import User, Media
 from .common import accepts, cycled_api_call
 
 
-@accepts(User)
+@decorate(accepts=User, returns=User)
 def followers(bot: Bot, nodes,  args) -> List[User]:
 
     # bot.logger.debug('nodes at followers %s' % list(nodes)[:3])

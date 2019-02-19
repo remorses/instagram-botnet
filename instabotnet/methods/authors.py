@@ -3,7 +3,7 @@ from ..nodes import User, Media
 from .common import accepts
 
 
-@accepts(Media)
+@decorate(accepts=Media, returns=User)
 def authors(bot, nodes,  args):
 
 

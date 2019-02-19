@@ -7,7 +7,7 @@ from .common import accepts, cycled_api_call, tap
 
 
 
-@accepts(Geotag)
+@decorate(accepts=Geotag, returns=Media)
 def geotag_feed(bot, nodes,  args) -> List[Media]:
 
     pack_media = lambda data: Media(id=data['pk'], data=data)

@@ -8,8 +8,8 @@ import time
 
 
 
-@accepts(Node)
-def scrape(bot: Bot, nodes,  args):
+@decorate(accepts=Node, returns=Node)
+def return(bot: Bot, nodes,  args):
 
     try:
         max = float(args['max']) if 'max' in args else float('inf')

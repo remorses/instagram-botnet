@@ -4,7 +4,10 @@ from funcy import  rcompose, mapcat
 from ..nodes import  Media, User
 from .common import accepts
 
-@accepts(Media)
+
+
+
+@decorate(accepts=Media, returns=User)
 def likers(bot, nodes,  args) -> List[Media]:
 
     pack_user = lambda item: User(id=item['pk'], username=item['username'], data=item)

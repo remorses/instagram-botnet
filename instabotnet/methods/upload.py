@@ -10,7 +10,7 @@ from ..nodes import Node, Arg, Media
 
 
 
-@accepts(Arg)
+@decorate(accepts=(Arg, Media), returns=Media)
 def upload(bot, nodes,  args):
 
     max = args.get('max') or 1

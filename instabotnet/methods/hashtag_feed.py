@@ -3,7 +3,9 @@ from funcy import  rcompose, mapcat
 from ..nodes import  Media, Hashtag
 from .common import accepts, cycled_api_call
 
-@accepts(Hashtag)
+
+
+@decorate(accepts=Geotag, returns=Media)
 def hashtag_feed(bot, nodes,  args) -> List[Media]:
     amount = args.get('amount')
 

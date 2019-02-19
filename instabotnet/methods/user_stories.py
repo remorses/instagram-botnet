@@ -6,7 +6,11 @@ import json
 from ..nodes import User, Media, Story
 from .common import accepts, cycled_api_call, tap
 
-@accepts(User)
+
+
+
+
+@decorate(accepts=User, returns=Story)
 def user_stories(bot, nodes,  args) -> List[Story]:
 
     amount = args.get('amount')

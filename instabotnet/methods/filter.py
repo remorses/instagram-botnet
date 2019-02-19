@@ -5,7 +5,7 @@ from ..nodes import Node
 from .common import accepts
 
 
-@accepts(Node)
+@decorate(accepts=Node, returns=Node)
 def filter(bot, nodes,  args) -> Node:
 
     if args:

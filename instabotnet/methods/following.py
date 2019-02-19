@@ -6,7 +6,7 @@ from ..nodes import User, Media
 from .common import accepts, cycled_api_call
 
 
-@accepts(User)
+@decorate(accepts=User, returns=User)
 def following(bot, nodes,  args) -> List[User]:
 
     pack_user = lambda item: User(id=item['pk'], username=item['username'], data=item)

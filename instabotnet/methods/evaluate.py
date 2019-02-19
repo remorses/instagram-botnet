@@ -4,7 +4,7 @@ from .common import accepts
 
 DEBUG = bool(os.environ.get('DEBUG'))
 
-@accepts(Node)
+@decorate(accepts=Node, returns=Node)
 def evaluate(bot, nodes,  args) -> Node:
 
     total = args['info']['total_nodes']

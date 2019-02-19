@@ -8,7 +8,7 @@ import time
 
 
 
-@accepts(User)
+@decorate(accepts=User, returns=User)
 def unfollow(bot: Bot, nodes,  args):
 
     max = float(args['max']) if 'max' in args else float('inf')

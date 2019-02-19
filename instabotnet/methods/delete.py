@@ -9,7 +9,7 @@ import time
 
 
 
-@accepts(Media)
+@decorate(accepts=Media, returns=Media)
 def delete(bot, nodes,  args):
 
 

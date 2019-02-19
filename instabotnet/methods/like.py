@@ -7,7 +7,7 @@ from ..nodes import Node, User, Media
 
 
 
-@accepts(Media)
+@decorate(accepts=Media, returns=Media)
 def like(bot, nodes,  args):
 
 
