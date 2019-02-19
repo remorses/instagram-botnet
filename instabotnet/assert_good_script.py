@@ -23,6 +23,10 @@ def assert_good_script(script):
         
         if not 'nodes' in action:
             raise MalformedScript(f' missing `nodes` in action {name}')
+        
+        for edge in [edge.keys()[0] if isinstance(edge, dict) else edge for edge in edges]:
+            if not edge in methods:
+                raise MalformedScript(f'unknown edge {edge} in action {name}')
             
         check, problem = check_edges(action['edges'], action['from'])
         
@@ -40,7 +44,9 @@ def check_edges(from_type, edges):
         and  isinstance(methods[edges[-1]]['returns'], methods[last]['accepts']) \
         else edges + [None]
         
-    names = [edge.keys()[0] for edge in edges]
+    names = [edge.keys()[0] if isinstance(edge, dict) else edge for edge in edges]
+    
+    
     checks = reduce(reducer, names, [dict(returns=node_classes[from_type])])
     
     if None in checks:
