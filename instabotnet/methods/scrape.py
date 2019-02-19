@@ -8,7 +8,7 @@ import time
 
 
 
-@decorate(accepts=(*node_classes.values()), returns=Node)
+@decorate(accepts=(*node_classes.values(),), returns=Node)
 def scrape(bot: Bot, nodes,  args):
 
     try:

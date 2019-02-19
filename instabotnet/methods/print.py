@@ -11,7 +11,7 @@ from colorama import init, Fore
 
 
 
-@decorate(accepts=(*node_classes.values()), returns=Node)
+@decorate(accepts=(*node_classes.values(),), returns=Node)
 def _print(bot: Bot, nodes,  args):
 
     try:
