@@ -11,7 +11,7 @@ from .usertags import usertags
 from .geotag import geotag
 from .geotag_feed import geotag_feed
 from .filter import filter
-from .stories import user_stories
+from .stories import stories
 from .feed import feed
 
 from .like import like
