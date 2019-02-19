@@ -2,7 +2,7 @@ from typing import List
 import requests
 from random import random
 from pathlib import Path
-from .common import accepts, today
+from .common import decorate, today
 from ..nodes import Node, Arg, Media
 import time
 

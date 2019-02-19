@@ -1,7 +1,7 @@
 from funcy import rcompose, take
 import random
 from ..nodes import Node
-from .common import accepts
+from .common import decorate
 
 
 @decorate(accepts=Node, returns=Node)

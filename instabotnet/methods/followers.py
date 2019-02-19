@@ -3,7 +3,7 @@ from funcy import rcompose, ignore, tap as _tap, partial, mapcat
 import time
 from ..bot import Bot
 from ..nodes import User, Media
-from .common import accepts, cycled_api_call
+from .common import decorate, cycled_api_call
 
 
 @decorate(accepts=User, returns=User)

@@ -4,7 +4,7 @@ from funcy import  rcompose, mapcat
 import json
 
 from ..nodes import User, Media, Story
-from .common import accepts, cycled_api_call, tap
+from .common import decorate, cycled_api_call, tap
 
 
 

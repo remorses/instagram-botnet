@@ -1,6 +1,6 @@
 import os
 from ..nodes import Node
-from .common import accepts
+from .common import decorate
 
 DEBUG = bool(os.environ.get('DEBUG'))
 

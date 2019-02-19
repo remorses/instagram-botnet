@@ -1,7 +1,7 @@
 from funcy import rcompose, mapcat
 from itertools import islice
 from ..nodes import Hashtag, Media
-from .common import accepts
+from .common import decorate
 
 
 @decorate(accepts=Media, returns=Hashtag)

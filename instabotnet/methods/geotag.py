@@ -1,6 +1,6 @@
 from funcy import rcompose
 from ..nodes import Geotag, Media
-from .common import accepts
+from .common import decorate
 
 
 @decorate(accepts=Media, returns=Geotag)

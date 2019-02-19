@@ -1,7 +1,7 @@
 from typing import List
 from funcy import  rcompose, mapcat
 from ..nodes import  Media, Hashtag
-from .common import accepts, cycled_api_call
+from .common import decorate, cycled_api_call
 
 
 

@@ -1,7 +1,7 @@
 from funcy import rcompose, mapcat
 from typing import List
 from ..nodes import User, Media
-from .common import accepts
+from .common import decorate
 
 
 

@@ -1,4 +1,4 @@
-from .common import accepts
+from .common import decorate
 from ..nodes import Node, User, Media
 
 from .common import today, tap

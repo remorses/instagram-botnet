@@ -3,7 +3,7 @@ from pathlib import Path
 from funcy import take
 from itertools import islice
 from ..api.api_image import get_image_size, resize_image
-from .common import accepts, today
+from .common import decorate, today
 from ..nodes import Node, Arg, Media
 
 

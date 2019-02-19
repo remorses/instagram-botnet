@@ -2,7 +2,7 @@ from funcy import rcompose, take, filter as _filter
 from itertools import islice
 from ..make_predicate import make_predicate
 from ..nodes import Node
-from .common import accepts
+from .common import decorate
 
 
 @decorate(accepts=Node, returns=Node)

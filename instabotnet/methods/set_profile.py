@@ -3,7 +3,7 @@ from funcy import  rcompose, raiser, ignore
 from operator import itemgetter
 import time
 
-from .common import accepts, today, tap
+from .common import decorate, today, tap
 from ..nodes import Node, User, Arg
 
 

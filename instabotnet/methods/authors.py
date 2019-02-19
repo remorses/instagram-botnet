@@ -1,6 +1,6 @@
 from funcy import rcompose, mapcat
 from ..nodes import User, Media
-from .common import accepts
+from .common import decorate
 
 
 @decorate(accepts=Media, returns=User)

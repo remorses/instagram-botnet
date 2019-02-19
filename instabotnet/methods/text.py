@@ -3,7 +3,7 @@ from funcy import  rcompose, raiser, ignore, mapcat, partial, tap as _tap
 import time
 from random import choice
 from ..bot import Bot
-from .common import accepts, today, tap, extract_urls, substitute_vars
+from .common import decorate, today, tap, extract_urls, substitute_vars
 from ..nodes import Node, User, Media
 
 
