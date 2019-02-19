@@ -19,12 +19,12 @@ def accepts(Class, returns):
 
 def decorate(*, accepts, returns):
 
-    def accepts(original):
+    def wrapper(original):
         original.accepts = accepts
         original.returns = returns
         return original
 
-    return accepts
+    return wrapper
 
 
 

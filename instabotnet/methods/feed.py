@@ -5,7 +5,7 @@ from ..nodes import Node, User, Hashtag, Geotag, Media
 from .common import decorate
 
 
-@decorate(accepts=(User, Hashtag, Geotag), returns=Media)
+@decorate(accepts=(User, Hashtag, Geotag,), returns=Media)
 def feed(bot, nodes, args):
     first = next(nodes, None)
     nodes = chain([first], nodes)
