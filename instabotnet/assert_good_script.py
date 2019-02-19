@@ -46,10 +46,10 @@ def check_edges(edges, from_type,):
     
     reducer = lambda edges, last: edges + [last] \
         if edges[-1] is not None \
-        and  isinstance(meth[edges[-1]].returns, meth[last].accepts) \
+        and  issubclass(meth[edges[-1]].returns, meth[last].accepts) \
         else edges + [None]
         
-    print(isinstance(meth['feed'].returns, meth['likers'].accepts)) 
+    print(issubclass(meth['feed'].returns, meth['likers'].accepts)) 
     
     get_name = lambda e: list(e.keys())[0] if isinstance(e, dict) else e
         
