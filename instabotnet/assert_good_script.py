@@ -59,8 +59,8 @@ def check_edges(edges, from_type,):
         index = checks.index(None)
         errored_edge = names[index]
         right_type = methods[errored_edge].accepts
-        wrong_type = methods[names[index - 1]].accepts if index > 0 else from_type
-        problem = f'{errored_edge} must receive nodes of type {right_type}, not {wrong_type}'
+        wrong_type = methods[names[index - 1]].returns if index > 0 else from_type
+        problem = f'`{errored_edge}` must receive nodes of type `{right_type}`, not `{wrong_type}`'
         return False, problem
         
     else:
