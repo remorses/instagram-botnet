@@ -1,6 +1,3 @@
-
-
-# from .make_task import make_task, partitionate
 from .nodes_edges import nodes_edges
 from .make_bots import make_bots
 from .populate import populate_object, populate_string
@@ -8,7 +5,6 @@ from .reducer import  reducer
 from .support import dotdict, merge
 from collections import deque
 from functools import reduce
-# from .threads import start, wait
 import traceback
 import os
 
