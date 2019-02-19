@@ -21,7 +21,7 @@ from .text import text
 from .upload import upload
 from .comment import comment
 from .delete import delete
-# from .scrape import scrape
+from .return import _return
 from .set_profile import set_profile
 from .shuffle import shuffle
 from .print import _print
@@ -53,6 +53,7 @@ methods = dict(
    set_profile=set_profile,
    shuffle=shuffle,
    print=_print,
+   return=_return,
 
    evaluate=evaluate,
 )
