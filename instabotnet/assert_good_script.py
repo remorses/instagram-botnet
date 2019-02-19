@@ -41,11 +41,11 @@ def assert_good_script(script):
 
 def check_edges(edges, from_type,):
     
-    methods = {**methods, 'starting_point': dict(returns=node_classes[from_type])}
+    meth = {**methods, 'starting_point': dict(returns=node_classes[from_type])}
     
     reducer = lambda edges, last: edges + [last] \
-        if methods[edges[-1]] is not None \
-        and  isinstance(methods[edges[-1]]['returns'], methods[last]['accepts']) \
+        if meth[edges[-1]] is not None \
+        and  isinstance(meth[edges[-1]]['returns'], meth[last]['accepts']) \
         else edges + [None]
         
     get_name = lambda e: list(e.keys())[0] if isinstance(e, dict) else e
