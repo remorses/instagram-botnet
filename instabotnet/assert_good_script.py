@@ -44,10 +44,10 @@ def check_edges(edges, from_type,):
     
     meth = {**methods, 'starting_point': dotdict(returns=node_classes[from_type])}
     
-    reducer = lambda edges, last: edges + [last] \
+    reducer = lambda edges, last:  [last] + edges \
         if edges[-1] is not None \
-        and  isinstance(meth[edges[0]].returns, meth[last].accepts) \
-        else edges + [None]
+        and  isinstance(meth[edges[-1]].returns, meth[last].accepts) \
+        else  [None] + edges
         
     get_name = lambda e: list(e.keys())[0] if isinstance(e, dict) else e
         
@@ -60,7 +60,7 @@ def check_edges(edges, from_type,):
         errored_edge = names[index]
         right_type = methods[errored_edge].accepts
         wrong_type = methods[names[index - 1]].returns if index > 0 else from_type
-        problem = f'`{errored_edge}` must receive nodes of type `{str(right_type)}`, not `{str(wrong_type)}`'
+        problem = f'`{errored_edge}` must receive nodes of type `{right_type}`, not `{wrong_type}`'
         return False, problem
         
     else:
