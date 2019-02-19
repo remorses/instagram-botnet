@@ -1,4 +1,5 @@
 from .methods import methods
+from functools import reduce
 from .nodes import node_classes
 
 
