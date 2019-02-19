@@ -2,6 +2,7 @@ from .methods import methods
 from functools import reduce
 from .nodes import node_classes
 from .support import dotdict
+from collections.abc import Iterable
 
 
 
@@ -44,9 +45,19 @@ def check_edges(edges, from_type,):
     
     meth = {**methods, 'starting_point': dotdict(returns=node_classes[from_type])}
     
+    def good_chain(before, after):
+        before = before.returns
+        after = after.accepts
+
+        if not isinstance(after, Iterable):
+            return issubclass(after, before,) 
+            
+        else:
+            return any([issubclass(x, before,) for x in after])
+    
     reducer = lambda edges, last: edges + [last] \
         if edges[-1] is not None \
-        and  issubclass(meth[last].accepts, meth[edges[-1]].returns, ) \
+        and  good_chain(meth[edges[-1]], meth[last]) \
         else edges + [None]
         
     print(issubclass(meth['print'].returns, meth['follow'].accepts)) 
