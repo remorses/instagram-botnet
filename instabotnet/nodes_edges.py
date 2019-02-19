@@ -46,7 +46,9 @@ def calc_total_nodes(acc, node):
 
 def initialize_nodes(nodes, edges, data):
     if 'from_type' in data:
-        Class = node_classes[data['from_type']]
+        Class = node_classes[data['from_type'].lower()]
+    elif 'from' in data:
+        Class = node_classes[data['from'].lower()]
     else:
         first_method = methods.get(edges[0]['type'], None)
         if not first_method:
