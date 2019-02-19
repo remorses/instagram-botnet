@@ -51,7 +51,7 @@ def check_edges(edges, from_type,):
         
     get_name = lambda e: list(e.keys())[0] if isinstance(e, dict) else e
         
-    names = [get_name(edge) for edge in action['edges']]
+    names = [get_name(edge) for edge in edges]
         
     checks = reduce(reducer, names, [dict(returns=node_classes[from_type])])
     
