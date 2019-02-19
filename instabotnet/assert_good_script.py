@@ -49,9 +49,10 @@ def check_edges(edges, from_type,):
         and  isinstance(methods[edges[-1]]['returns'], methods[last]['accepts']) \
         else edges + [None]
         
-    names = [edge.keys()[0] if isinstance(edge, dict) else edge for edge in edges]
-    
-    
+    get_name = lambda e: list(e.keys())[0] if isinstance(e, dict) else e
+        
+    names = [get_name(edge) for edge in action['edges']]
+        
     checks = reduce(reducer, names, [dict(returns=node_classes[from_type])])
     
     if None in checks:
