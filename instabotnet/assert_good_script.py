@@ -39,7 +39,7 @@ def assert_good_script(script):
 
 
 
-def check_edges(from_type, edges):
+def check_edges(edges, from_type,):
     reducer = lambda acc, name: methods[name].accepts \
         if isinstance(acc, methods[name].accepts,) and acc is not None \
         else None
