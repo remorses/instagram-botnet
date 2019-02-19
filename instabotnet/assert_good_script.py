@@ -37,11 +37,12 @@ def check_edges(from, edges):
         
     reducer = lambda edges, last: edges + [last] \
         if methods[edges[-1]] is not None \
-        and methods[last]['accepts'] == methods[edges[-1]]['returns'] \
+        and  isinstance(methods[edges[-1]]['returns'], methods[last]['accepts']) \
         else edges + [None]
         
     names = [edge.keys()[0] for edge in edges]
     checks = reduce(reducer, names, [dict(returns=node_classes[from])])
+    
     if None in checks:
         index = checks.index(None)
         errored_edge = names[index]
@@ -49,6 +50,7 @@ def check_edges(from, edges):
         wrong_type = methods[names[index - 1]].accepts if index > 0 else from
         problem = f'{errored_edge} must receive nodes of type {right_type}, not {wrong_type}'
         return False, problem
+        
     else:
         return True, ''
 
