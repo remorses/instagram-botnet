@@ -1,5 +1,5 @@
 from .common import decorate
-from ..nodes import Node, User, Media, Story, Geotag, Hashtag
+from ..nodes import Node, node_classes
 
 from .common import today, tap, dotdict
 from ..bot import Bot
@@ -8,7 +8,7 @@ import time
 
 
 
-@decorate(accepts=Node, returns=Node)
+@decorate(accepts=(*node_classes.values()), returns=Node)
 def scrape(bot: Bot, nodes,  args):
 
     try:
