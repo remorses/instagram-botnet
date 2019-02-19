@@ -75,7 +75,8 @@ def reducer(state: dotdict, edge: dotdict):
         raise
 
     except Dont_retry as exc:
-        bot.logger.error('error reducing edge {}: \"{}\" {}'.format(edge.type, exc.__class__.__name__, exc))
+        bot.logger.error('error reducing edge {}: \"{}\" {}' \
+            .format(edge.type, exc.__class__.__name__, exc))
         return dotdict(nodes=[], bot=bot, errors=state.errors + [exc], data=state.data)
 
     except Exception as exc:
@@ -85,7 +86,7 @@ def reducer(state: dotdict, edge: dotdict):
             traceback.format_exc()))
         bot.sleep('error')
 
-        errored_state = merge(state, dotdict(errors=state.errors + [exc]))
+        errored_state = dotdict(**merge(state, dotdict(errors=state.errors + [exc])))
         return reducer(errored_state, edge)
 
     else:
