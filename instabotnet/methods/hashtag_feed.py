@@ -5,7 +5,7 @@ from .common import decorate, cycled_api_call
 
 
 
-@decorate(accepts=Geotag, returns=Media)
+@decorate(accepts=Hashtag, returns=Media)
 def hashtag_feed(bot, nodes,  args) -> List[Media]:
     amount = args.get('amount')
 
