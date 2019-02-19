@@ -40,10 +40,9 @@ def assert_good_script(script):
 
 
 def check_edges(edges, from_type,):
-    reducer = lambda acc, name: methods[name].accepts \
-        if isinstance(acc, methods[name].accepts,) and acc is not None \
-        else None
-        
+    
+    methods = {**methods, 'starting_point': dict(returns=node_classes[from_type])}
+    
     reducer = lambda edges, last: edges + [last] \
         if methods[edges[-1]] is not None \
         and  isinstance(methods[edges[-1]]['returns'], methods[last]['accepts']) \
@@ -53,7 +52,7 @@ def check_edges(edges, from_type,):
         
     names = [get_name(edge) for edge in edges]
         
-    checks = reduce(reducer, names, [dict(returns=node_classes[from_type])])
+    checks = reduce(reducer, names, ['starting_point'])
     
     if None in checks:
         index = checks.index(None)
