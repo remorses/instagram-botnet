@@ -33,9 +33,10 @@ def stories(bot, nodes,  args) -> List[Story]:
 
     return stories, {}
 
-def get_stories(bot, user_id):
+def get_stories(bot, user_id, amount,):
+    count = 0
     bot.api.get_user_stories(user_id)
     if 'reel' in bot.last:
-        yield from bot.last['reel']['items']
+        yield from bot.last['reel']['items'][:amount]
     else:
         yield from []
