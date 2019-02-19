@@ -1,11 +1,11 @@
 from funcy import rcompose, take, filter as _filter
 from itertools import islice
 from ..make_predicate import make_predicate
-from ..nodes import Node
+from ..nodes import Node, node_classes
 from .common import decorate
 
 
-@decorate(accepts=Node, returns=Node)
+@decorate(accepts=(*node_classes.values(),), returns=Node)
 def filter(bot, nodes,  args) -> Node:
 
     if args:

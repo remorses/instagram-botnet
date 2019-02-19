@@ -1,10 +1,10 @@
 from funcy import rcompose, take
 import random
-from ..nodes import Node
+from ..nodes import Node, node_classes
 from .common import decorate
 
 
-@decorate(accepts=Node, returns=Node)
+@decorate(accepts=(*node_classes.values(),), returns=Node)
 def shuffle(bot, nodes,  args) -> Node:
 
     max = args.get('max') # None works as inf

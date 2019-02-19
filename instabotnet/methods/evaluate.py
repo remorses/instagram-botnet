@@ -1,10 +1,10 @@
 import os
-from ..nodes import Node
+from ..nodes import Node, node_classes
 from .common import decorate
 
 DEBUG = bool(os.environ.get('DEBUG'))
 
-@decorate(accepts=Node, returns=Node)
+@decorate(accepts=(*node_classes.values(),), returns=Node)
 def evaluate(bot, nodes,  args) -> Node:
 
     total = args['info']['total_nodes']
