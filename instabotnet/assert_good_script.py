@@ -46,7 +46,7 @@ def check_edges(edges, from_type,):
     
     reducer = lambda edges, last: edges + [last] \
         if edges[-1] is not None \
-        and  issubclass(meth[edges[-1]].returns, meth[last].accepts) \
+        and  issubclass(meth[last].accepts, meth[edges[-1]].returns, ) \
         else edges + [None]
         
     print(issubclass(meth['print'].returns, meth['follow'].accepts)) 
