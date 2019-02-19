@@ -11,7 +11,7 @@ from .common import accepts, cycled_api_call, tap
 
 
 @decorate(accepts=User, returns=Story)
-def user_stories(bot, nodes,  args) -> List[Story]:
+def stories(bot, nodes,  args) -> List[Story]:
 
     amount = args.get('amount')
     pack_story = lambda data: Story(id=data['pk'], data=data)

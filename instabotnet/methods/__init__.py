@@ -11,7 +11,7 @@ from .usertags import usertags
 from .geotag import geotag
 from .geotag_feed import geotag_feed
 from .filter import filter
-from .user_stories import user_stories
+from .stories import user_stories
 from .feed import feed
 
 from .like import like
@@ -40,7 +40,7 @@ methods = dict(
    geotag=geotag,
    geotag_feed=geotag_feed,
    filter=filter,
-   user_stories=user_stories,
+   stories=stories,
    feed=feed,
 
    follow=follow,
