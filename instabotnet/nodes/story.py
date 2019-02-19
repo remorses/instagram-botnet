@@ -151,3 +151,8 @@ class Story(Node):
             return data['image_versions2']['candidates'][0]['url']
         else:
             return None
+    
+    @property
+    def author(self):
+        data = self._data
+        return User(data=data['user'])
