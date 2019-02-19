@@ -1,6 +1,7 @@
 from .methods import methods
 from functools import reduce
 from .nodes import node_classes
+from .support import dotdict
 
 
 
@@ -41,11 +42,11 @@ def assert_good_script(script):
 
 def check_edges(edges, from_type,):
     
-    meth = {**methods, 'starting_point': dict(returns=node_classes[from_type])}
+    meth = {**methods, 'starting_point': dotdict(returns=node_classes[from_type])}
     
     reducer = lambda edges, last: edges + [last] \
         if meth[edges[-1]] is not None \
-        and  isinstance(meth[edges[-1]]['returns'], meth[last]['accepts']) \
+        and  isinstance(meth[edges[-1]].returns, meth[last].accepts) \
         else edges + [None]
         
     get_name = lambda e: list(e.keys())[0] if isinstance(e, dict) else e
