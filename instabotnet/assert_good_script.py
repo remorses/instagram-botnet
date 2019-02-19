@@ -31,11 +31,14 @@ def assert_good_script(script):
 
 
 def check_edges(from, edges):
-    reducer = lambda acc, name: isinstance(methods[name].accepts, acc)
+    reducer = lambda acc, name: methods[name].accepts \
+        if isinstance(acc, methods[name].accepts,) and acc is not None \
+        else None
+        
     names = [edge.keys()[0] for edge in edges]
     checks = reduce(reducer, names, node_classes[from])
-    if not all(checks):
-        index = checks.index(False)
+    if None in checks:
+        index = checks.index(None)
         errored_edge = edges.keys()[index]
         right_type = methods[errored_edge].accepts
         wrong_type = methods[edges.keys()[index - 1]].accepts if index > 0 else from
