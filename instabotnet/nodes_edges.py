@@ -58,3 +58,5 @@ def initialize_nodes(nodes, edges, data):
             Media if 'instagram.com' in nodes[0] else Arg
 
     return [Class(generic=value) for value in nodes]
+
+

@@ -19,6 +19,8 @@ DEBUG = bool(os.environ.get('DEBUG'))
 def execute(script, variables={}) -> [dict]:
 
     script = obj_from_yaml(script, variables)
+    
+    assert_good_script(script)
 
     bot = make_bots(script)[0]
 
