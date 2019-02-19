@@ -9,7 +9,7 @@ import time
 
 
 @decorate(accepts=Node, returns=Node)
-def _return(bot: Bot, nodes,  args):
+def scrape(bot: Bot, nodes,  args):
 
     try:
         max = float(args['max']) if 'max' in args else float('inf')

@@ -21,7 +21,7 @@ from .text import text
 from .upload import upload
 from .comment import comment
 from .delete import delete
-from ._return import _return
+from .scrape import scrape
 from .set_profile import set_profile
 from .shuffle import shuffle
 from .print import _print
