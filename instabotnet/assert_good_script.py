@@ -45,7 +45,7 @@ def check_edges(edges, from_type,):
     meth = {**methods, 'starting_point': dotdict(returns=node_classes[from_type])}
     
     reducer = lambda edges, last: edges + [last] \
-        if meth[edges[-1]] is not None \
+        if edges[-1] is not None \
         and  isinstance(meth[edges[-1]].returns, meth[last].accepts) \
         else edges + [None]
         
