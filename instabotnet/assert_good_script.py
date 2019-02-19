@@ -60,7 +60,6 @@ def check_edges(edges, from_type,):
         and  good_chain(meth[edges[-1]], meth[last]) \
         else edges + [None]
         
-    print(issubclass(meth['print'].returns, meth['follow'].accepts)) 
     
     get_name = lambda e: list(e.keys())[0] if isinstance(e, dict) else e
         
