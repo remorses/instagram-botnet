@@ -30,7 +30,7 @@ def assert_good_script(script):
             raise MalformedScript(f'wrong edges chaining in action {name}, {problem}')
 
 
-def check_edges(from, edges):
+def check_edges(from_type, edges):
     reducer = lambda acc, name: methods[name].accepts \
         if isinstance(acc, methods[name].accepts,) and acc is not None \
         else None
@@ -41,7 +41,7 @@ def check_edges(from, edges):
         else edges + [None]
         
     names = [edge.keys()[0] for edge in edges]
-    checks = reduce(reducer, names, [dict(returns=node_classes[from])])
+    checks = reduce(reducer, names, [dict(returns=node_classes[from_type])])
     
     if None in checks:
         index = checks.index(None)
