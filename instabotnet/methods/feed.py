@@ -4,7 +4,7 @@ from .geotag_feed import geotag feed
 from ..nodes import Node, User, Hashtag, Geotag
 
 
-@accepts(Node)
+@accepts((User, Hashtag, Geotag))
 def feed(bot, nodes, args):
     first = next(nodes, None)
     nodes = chain([first], nodes)
