@@ -2,6 +2,7 @@ from .user_feed import user_feed
 from .hashtag_feed import hashtag_feed
 from .geotag_feed import geotag_feed
 from ..nodes import Node, User, Hashtag, Geotag
+from .common import decorate
 
 
 @decorate(accepts=(User, Hashtag, Geotag), returns=Media)
