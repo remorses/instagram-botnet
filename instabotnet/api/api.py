@@ -184,57 +184,72 @@ class API(object):
 
     def send_request(self, endpoint, post=None, login=False, with_signature=True):
             self.logger.debug(f'{endpoint}')
-            if (not self.is_logged_in and not login):
-                msg = "Not logged in!"
-                self.logger.critical(msg)
-                raise Exception(msg)
-
-
+            
             try:
                 self.total_requests += 1
                 if post is not None:  # POST
                     if with_signature:
                         # Only `send_direct_item` doesn't need a signature
                         post = self.generate_signature(post)
-                    response = self.session.post(
-                        f'{config.API_URL}{endpoint}', data=post)
+                    response = self.session.post(f'{config.API_URL}{endpoint}', data=post)
                 else:  # GET
-                    response = self.session.get(
-                        f'{config.API_URL}{endpoint}')
-            except Exception as e:
-                self.logger.warning(str(e))
-                return False
-
-            if response.status_code == 200:
-                try:
-                    self.last_json = json.loads(response.text)
-                    return True
-                except JSONDecodeError:
-                    return False
+                    response = self.session.get(f'{config.API_URL}{endpoint}')
+                    
+            except RequestException as e:
+                # network errors
+                # self.logger.error(str(e))
+                raise 
+            
+            error_codes = {
+                429: TooManyRequests,
+                431: HeadersTooLarge,
+                # 400: BadRequest,
+                404: NotFound,
+            }
+            
+            if response.status_code in error_codes:
+                raise error_codes[response.status_code]
+                
+            elif response.status_code != 200:
+                bot.logger.warn(f'request returned {response.status_code}')
+            
+            data = response.json()
+            
+            if data.get('status') == 'ok':
+                self.last_json = data
+                return
+                
+            elif data.get('status') == 'fail':
+                messages = get_messages(data)
+                for class_name, errors in error_messages.items():
+                    if all([err in messages for err in errors]):
+                        raise exceptions[class_name]
+                    else:
+                        pass
             else:
-                self.logger.error("Request returns {} error!".format(response.status_code))
-                if response.status_code == 429:
-                    sleep_minutes = 5
-                    self.logger.warning(
-                        "That means 'too many requests'. I'll go to sleep "
-                        "for {} minutes.".format(sleep_minutes))
-                    time.sleep(sleep_minutes * 60)
-                elif response.status_code == 400:
-                    response_data = json.loads(response.text)
-                    msg = "Instagram's error message: {}"
-                    self.logger.warn(msg.format(response_data.get('message')))
-                    if 'error_type' in response_data:
-                        msg = 'Error type: {}'.format(response_data['error_type'])
-                        self.logger.warn(msg)
+                raise EmptyResponse
+            
+            def get_messages(data):
+                messages = []
+                msg = data.get('message')
+                
+                if msg is None:
+                    print('no `message` property')
+                    
+                elif isinstance(msg, str):
+                    messages += [data.get('message')]
+                    
+                elif isinstance(msg, dict):
+                     messages += msg.get('errors', [])
+                
+                if 'error_type' in data:
+                    messages += [data.get('error_type')]
+                
+                if 'payload' in data:
+                    return messages += get_messages(data['payload'])
+                
+                return messages
 
-                # For debugging
-                try:
-                    self.last_json = json.loads(response.text)
-                except Exception:
-                    pass
-
-                del response
-                return False
 
 
     def media_info(self, media_id):
