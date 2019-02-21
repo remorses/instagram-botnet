@@ -56,31 +56,31 @@ NetworkException
 EXCEPTION_MAP = {
         'LoginRequiredException'       : ['login_required'],
         'CheckpointRequiredException'  : [
-            'checkpoint_required', // message
-            'checkpoint_challenge_required', // error_type
+            'checkpoint_required', # message
+            'checkpoint_challenge_required', # error_type
         ],
         'ChallengeRequiredException'   : ['challenge_required'],
         'FeedbackRequiredException'    : ['feedback_required'],
         'ConsentRequiredException'     : ['consent_required'],
         'IncorrectPasswordException'   : [
-            // "The password you entered is incorrect".
-            '/password(.*?)incorrect/', // message
-            'bad_password', // error_type
+            # "The password you entered is incorrect".
+            '/password(.*?)incorrect/', # message
+            'bad_password', # error_type
         ],
         'InvalidSmsCodeException'      : [
-            // "Please check the security code we sent you and try again".
-            '/check(.*?)security(.*?)code/', // message
-            'sms_code_validation_code_invalid', // error_type
+            # "Please check the security code we sent you and try again".
+            '/check(.*?)security(.*?)code/', # message
+            'sms_code_validation_code_invalid', # error_type
         ],
         'AccountDisabledException'     : [
-            // "Your account has been disabled for violating our terms".
+            # "Your account has been disabled for violating our terms".
             '/account(.*?)disabled(.*?)violating/',
         ],
         'SentryBlockException'         : ['sentry_block'],
         'InvalidUserException'         : [
-            // "The username you entered doesn't appear to belong to an account"
-            '/username(.*?)doesn\'t(.*?)belong/', // message
-            'invalid_user', // error_type
+            # "The username you entered doesn't appear to belong to an account"
+            '/username(.*?)doesn\'t(.*?)belong/', # message
+            'invalid_user', # error_type
         ],
         'ForcedPasswordResetException' : ['/reset(.*?)password/'],
 }
