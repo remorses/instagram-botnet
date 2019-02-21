@@ -492,10 +492,6 @@ class API(object):
         url = 'media/{media_id}/remove/'.format(media_id=media_id)
         return self.send_request(url, data)
 
-    def media_info(self, media_id):
-        # data = self.json_data({'media_id': media_id})
-        url = 'media/{media_id}/info/'.format(media_id=media_id)
-        return self.send_request(url)
 
     def archive_media(self, media, undo=False):
         action = 'only_me' if not undo else 'undo_only_me'
@@ -954,17 +950,6 @@ class API(object):
         data = self.json_data()
         return self.send_request('accounts/current_user/?edit=true', data)
 
-    def edit_profile(self, url, phone, first_name, biography, email, gender):
-        data = self.json_data({
-            'external_url': url,
-            'phone_number': phone,
-            'username': self.username,
-            'full_name': first_name,
-            'biography': biography,
-            'email': email,
-            'gender': gender,
-        })
-        return self.send_request('accounts/edit_profile/', data)
 
     def fb_user_search(self, query):
         url = 'fbsearch/topsearch/?context=blended&query={query}&rank_token={rank_token}'
