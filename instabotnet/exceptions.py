@@ -1,13 +1,13 @@
 # try random network request, if fail
-NetworkException
+Network
 
 # exception based on http codes
 {
-   429: ThrottledException('Throttled by Instagram because of too many API requests.'),
-   431: RequestHeadersTooLargeException('The request start-line and/or headers are too large to process.'),
-   400: BadRequestException,
-   404: NotFoundException,
-   _: EmptyResponseException, # when response from instagram is empty
+   429: Throttled('Throttled by Instagram because of too many API requests.'),
+   431: RequestHeadersTooLarge('The request start-line and/or headers are too large to process.'),
+   400: BadRequest,
+   404: NotFound,
+   _: EmptyResponse, # when response from instagram is empty
 }
 
 # all instagram responses return exceptions inside a message property
@@ -54,35 +54,35 @@ NetworkException
 
 
 EXCEPTION_MAP = {
-        'LoginRequiredException'       : ['login_required'],
-        'CheckpointRequiredException'  : [
+        'LoginRequired'       : ['login_required'],
+        'CheckpointRequired'  : [
             'checkpoint_required', # message
             'checkpoint_challenge_required', # error_type
         ],
-        'ChallengeRequiredException'   : ['challenge_required'],
-        'FeedbackRequiredException'    : ['feedback_required'],
-        'ConsentRequiredException'     : ['consent_required'],
-        'IncorrectPasswordException'   : [
+        'ChallengeRequired'   : ['challenge_required'],
+        'FeedbackRequired'    : ['feedback_required'],
+        'ConsentRequired'     : ['consent_required'],
+        'IncorrectPassword'   : [
             # "The password you entered is incorrect".
             '/password(.*?)incorrect/', # message
             'bad_password', # error_type
         ],
-        'InvalidSmsCodeException'      : [
+        'InvalidSmsCode'      : [
             # "Please check the security code we sent you and try again".
             '/check(.*?)security(.*?)code/', # message
             'sms_code_validation_code_invalid', # error_type
         ],
-        'AccountDisabledException'     : [
+        'AccountDisabled'     : [
             # "Your account has been disabled for violating our terms".
             '/account(.*?)disabled(.*?)violating/',
         ],
-        'SentryBlockException'         : ['sentry_block'],
-        'InvalidUserException'         : [
+        'SentryBlock'         : ['sentry_block'],
+        'InvalidUser'         : [
             # "The username you entered doesn't appear to belong to an account"
             '/username(.*?)doesn\'t(.*?)belong/', # message
             'invalid_user', # error_type
         ],
-        'ForcedPasswordResetException' : ['/reset(.*?)password/'],
+        'ForcedPasswordReset' : ['/reset(.*?)password/'],
 }
 
 
