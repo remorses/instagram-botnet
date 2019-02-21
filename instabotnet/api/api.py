@@ -30,6 +30,43 @@ class LoggerAdapter(logging.LoggerAdapter):
     def process(self, msg, kwargs):
         return '[%s] %s' % (self.prefix, msg), kwargs
 
+
+
+exceptions_map = {
+        'LoginRequiredException'       : ['login_required'],
+        'CheckpointRequiredException'  : [
+            'checkpoint_required', # message
+            'checkpoint_challenge_required', # error_type
+        ],
+        'ChallengeRequiredException'   : ['challenge_required'],
+        'FeedbackRequiredException'    : ['feedback_required'],
+        'ConsentRequiredException'     : ['consent_required'],
+        'IncorrectPasswordException'   : [
+            # "The password you entered is incorrect".
+            '/password(.*?)incorrect/', # message
+            'bad_password', # error_type
+        ],
+        'InvalidSmsCodeException'      : [
+            # "Please check the security code we sent you and try again".
+            '/check(.*?)security(.*?)code/', # message
+            'sms_code_validation_code_invalid', # error_type
+        ],
+        'AccountDisabledException'     : [
+            # "Your account has been disabled for violating our terms".
+            '/account(.*?)disabled(.*?)violating/',
+        ],
+        'SentryBlockException'         : ['sentry_block'],
+        'InvalidUserException'         : [
+            # "The username you entered doesn't appear to belong to an account"
+            '/username(.*?)doesn\'t(.*?)belong/', # message
+            'invalid_user', # error_type
+        ],
+        'ForcedPasswordResetException' : ['/reset(.*?)password/'],
+}
+
+
+
+
 class API(object):
 
     _id = 0
@@ -176,7 +213,7 @@ class API(object):
             self.session.proxies['https'] = f'{scheme}{self.proxy}'
 
 
-
+    # raises InstagramApiError
     def send_request(self, endpoint, post=None, login=False, with_signature=True):
     
             self.logger.debug(f'{endpoint}')
@@ -209,8 +246,6 @@ class API(object):
             elif response.status_code != 200:
                 bot.logger.warn(f'request returned {response.status_code}')
             
-            error_messages = {
-            }
             
             data = response.json()
             
@@ -220,13 +255,15 @@ class API(object):
                 
             elif data.get('status') == 'fail':
                 messages = get_messages(data)
-                for class_name, errors in error_messages.items():
+                for class_name, errors in exceptions_map.items():
                     if all([err in messages for err in errors]):
-                        raise exceptions[class_name]
+                        raise exceptions[class_name](f'{messages}')
                     else:
                         pass
+                bot.logger.debug(f'unknown excption for message {messages}')
+                
             else:
-                raise EmptyResponse
+                raise exceptions['EmptyResponse']
             
             def get_messages(data):
                 messages = []

@@ -52,6 +52,9 @@ class InvalidUser(InstagramApiError):
 
 class ForcedPasswordReset(InstagramApiError):
     pass
+
+class EmptyResponse(InstagramApiError):
+    pass
     
 exceptions = {name: exc for name, exc in dict(**locals()).items() \
     if not name.startswith('_')}
