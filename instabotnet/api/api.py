@@ -228,23 +228,23 @@ class API(object):
                 else:  # GET
                     response = self.session.get(f'{config.API_URL}{endpoint}')
                     
-            except RequestException as e:
+            except RequestException:
                 # network errors
                 # self.logger.error(str(e))
                 raise 
             
             error_codes = {
-                429: TooManyRequests,
-                431: HeadersTooLarge,
+                429: exceptions['TooManyRequests'],
+                431: exceptions['HeadersTooLarge'],
                 # 400: BadRequest,
-                404: NotFound,
+                404: exceptions['NotFound'],
             }
             
             if response.status_code in error_codes:
                 raise error_codes[response.status_code]
                 
             elif response.status_code != 200:
-                bot.logger.warn(f'request returned {response.status_code}')
+                bot.logger.debug(f'request returned {response.status_code}')
             
             
             data = response.json()
