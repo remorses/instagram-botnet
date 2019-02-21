@@ -32,7 +32,7 @@ class LoggerAdapter(logging.LoggerAdapter):
 
 
 
-exception_map = {
+exceptions_map = {
         'LoginRequired'       : ['login_required'],
         'CheckpointRequired'  : [
             'checkpoint_required', # message
