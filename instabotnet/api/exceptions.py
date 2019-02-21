@@ -12,7 +12,9 @@ class TooManyRequests(InstagramApiError):
 
 class ChallengeRequired(InstagramApiError):
     pass
-    
+
+class NotFound(InstagramApiError):
+    pass
 
 class ConsentRequired(InstagramApiError):
     pass
