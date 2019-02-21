@@ -58,6 +58,8 @@ methods = dict(
    evaluate=evaluate,
 )
 
+assert (methods,)
+
 #
 # def make_methods(bot):
 #     return {key: partial(value, bot) for (key, value) in methods.items()}

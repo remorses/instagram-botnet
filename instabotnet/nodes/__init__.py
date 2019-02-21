@@ -18,3 +18,5 @@ node_classes = dict(
     arg=Arg,
     comment=Comment,
 )
+
+assert (node_classes,)
