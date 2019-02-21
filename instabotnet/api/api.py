@@ -7,16 +7,11 @@ import sys
 import time
 import uuid
 from random import uniform
-
-try:
-    from json.decoder import JSONDecodeError
-except ImportError:
-    JSONDecodeError = ValueError
-
+from json.decoder import JSONDecodeError
 import requests
 import requests.utils
-import urllib
-
+import urllib.parse
+from .exceptions import exceptions
 from . import config, devices
 from .api_photo import configure_photo, download_photo, upload_photo
 from .api_video import configure_video, download_video, upload_video
@@ -183,6 +178,7 @@ class API(object):
 
 
     def send_request(self, endpoint, post=None, login=False, with_signature=True):
+    
             self.logger.debug(f'{endpoint}')
             
             try:
@@ -213,11 +209,14 @@ class API(object):
             elif response.status_code != 200:
                 bot.logger.warn(f'request returned {response.status_code}')
             
+            error_messages = {
+            }
+            
             data = response.json()
             
             if data.get('status') == 'ok':
                 self.last_json = data
-                return
+                return data
                 
             elif data.get('status') == 'fail':
                 messages = get_messages(data)
