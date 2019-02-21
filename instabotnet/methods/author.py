@@ -4,7 +4,7 @@ from .common import decorate
 
 
 @decorate(accepts=Media, returns=User)
-def authors(bot, nodes,  args):
+def author(bot, nodes,  args):
 
 
     process = lambda media: media.get_author(bot)

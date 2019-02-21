@@ -1,6 +1,6 @@
 from functools import partial
 
-from .authors import authors
+from .author import author
 from .followers import followers
 from .following import following
 from .user_feed import user_feed
@@ -29,7 +29,7 @@ from .print import _print
 from .evaluate import evaluate
 
 methods = dict(
-   authors=authors,
+   author=author,
    followers=followers,
    likers=likers,
    following=following,
