@@ -43,25 +43,40 @@ exceptions_map = {
         'ConsentRequired'     : ['consent_required'],
         'IncorrectPassword'   : [
             # "The password you entered is incorrect".
-            '/password(.*?)incorrect/', # message
+            # '/password(.*?)incorrect/', # message
+            'password',
+            'incorrect',
             'bad_password', # error_type
         ],
         'InvalidSmsCode'      : [
             # "Please check the security code we sent you and try again".
-            '/check(.*?)security(.*?)code/', # message
+            # '/check(.*?)security(.*?)code/', # message
+            'check',
+            'security',
+            'code',
             'sms_code_validation_code_invalid', # error_type
         ],
         'AccountDisabled'     : [
             # "Your account has been disabled for violating our terms".
-            '/account(.*?)disabled(.*?)violating/',
+            # '/account(.*?)disabled(.*?)violating/',
+            'account',
+            'disabled',
+            'violating',
         ],
         'SentryBlock'         : ['sentry_block'],
         'InvalidUser'         : [
             # "The username you entered doesn't appear to belong to an account"
-            '/username(.*?)doesn\'t(.*?)belong/', # message
+            # '/username(.*?)doesn\'t(.*?)belong/', # message
+            'username',
+            'doesn\'t',
+            'belong',
             'invalid_user', # error_type
         ],
-        'ForcedPasswordReset' : ['/reset(.*?)password/'],
+        'ForcedPasswordReset' : [
+            # '/reset(.*?)password/'
+            'reset',
+            'password',
+        ],
 }
 
 
@@ -278,7 +293,7 @@ class API(object):
             elif data.get('status') == 'fail':
                 messages = get_messages(data)
                 for class_name, errors in exceptions_map.items():
-                    if all([err in messages for err in errors]):
+                    if all([any([err in msg for msg in messages]) for err in errors]):
                         raise exceptions[class_name](f'{messages}')
                     else:
                         pass
