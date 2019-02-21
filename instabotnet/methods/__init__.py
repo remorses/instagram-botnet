@@ -58,7 +58,7 @@ methods = dict(
    evaluate=evaluate,
 )
 
-assert (methods,)
+(methods,)
 
 #
 # def make_methods(bot):

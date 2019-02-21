@@ -19,4 +19,4 @@ node_classes = dict(
     comment=Comment,
 )
 
-assert (node_classes,)
+(node_classes,)

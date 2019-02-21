@@ -65,15 +65,15 @@ def check_edges(edges, from_type,):
         
     names = [get_name(edge) for edge in edges]
     
-    print(names)
-    print()
+    # print(names)
+    # print()
         
     checks = reduce(reducer, names, ['starting_point'])
     
-    print(checks)
+    # print(checks)
     
     if None in checks:
-        index = checks.index(None)
+        index = checks.index(None) - 1
         errored_edge = names[index]
         right_type = methods[errored_edge].accepts
         wrong_type = methods[names[index - 1]].returns if index > 0 else from_type
