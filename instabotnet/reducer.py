@@ -2,6 +2,7 @@
 from .support import dotdict, merge
 from .api.exceptions import InstagramApiError
 from .methods import methods
+import requests.exceptions
 import traceback
 
 class Dont_retry(Exception):
@@ -75,10 +76,10 @@ def reducer(state: dotdict, edge: dotdict):
 
     except Dont_retry as e:
         bot.logger.error('error reducing edge {}: \"{}\" {}' \
-            .format(edge.type, e.__class__.__name__, exc))
+            .format(edge.type, e.__class__.__name__, e))
         return dotdict(nodes=[], bot=bot, errors=state.errors + [e], data=state.data)
     
-    except RequestsException as e:
+    except requests.exceptions.RequestsException as e:
         bot.logger.error(f'network error: {e}')
         return dotdict(nodes=[], bot=bot, errors=state.errors + [e], data=state.data)
         
