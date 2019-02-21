@@ -6,7 +6,9 @@ class InstagramApiError(Exception):
 
 class CheckpointRequired(InstagramApiError):
     pass
-    
+
+class TooManyRequests(InstagramApiError):
+    pass
 
 class ChallengeRequired(InstagramApiError):
     pass
