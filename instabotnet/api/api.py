@@ -282,7 +282,7 @@ class API(object):
                     messages += [data.get('error_type')]
                 
                 if 'payload' in data:
-                    return messages += get_messages(data['payload'])
+                    return messages + get_messages(data['payload'])
                 
                 return messages
 
