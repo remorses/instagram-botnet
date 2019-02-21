@@ -1,4 +1,5 @@
-from .node import Node, User
+from .node import Node
+from .user import User
 
 
 """
