@@ -1,7 +1,7 @@
 
 from .support import dotdict, merge
 import traceback
-
+from api.exceptions import InstagramApiError, exceptions
 from .methods import methods
 
 class Dont_retry(Exception):
@@ -74,10 +74,18 @@ def reducer(state: dotdict, edge: dotdict):
     except (KeyboardInterrupt, SystemExit):
         raise
 
-    except Dont_retry as exc:
+    except Dont_retry as e:
         bot.logger.error('error reducing edge {}: \"{}\" {}' \
-            .format(edge.type, exc.__class__.__name__, exc))
-        return dotdict(nodes=[], bot=bot, errors=state.errors + [exc], data=state.data)
+            .format(edge.type, e.__class__.__name__, exc))
+        return dotdict(nodes=[], bot=bot, errors=state.errors + [e], data=state.data)
+    
+    except RequestsException as e:
+        bot.logger.error(f'network error: {e}')
+        return dotdict(nodes=[], bot=bot, errors=state.errors + [e], data=state.data)
+        
+    except InstagramApiError as e:
+        bot.logger.error(e)
+        return dotdict(nodes=[], bot=bot, errors=state.errors + [e], data=state.data)
 
     except Exception as exc:
         bot.logger.error('error reducing edge {}: \"{}\" \n {}'.format(
