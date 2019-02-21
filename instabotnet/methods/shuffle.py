@@ -1,4 +1,4 @@
-from funcy import rcompose, take
+from funcy import take
 import random
 from ..nodes import Node, node_classes
 from .common import decorate

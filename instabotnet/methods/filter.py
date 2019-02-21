@@ -1,5 +1,4 @@
-from funcy import rcompose, take, filter as _filter
-from itertools import islice
+from funcy import filter as _filter
 from ..make_predicate import make_predicate
 from ..nodes import Node, node_classes
 from .common import decorate

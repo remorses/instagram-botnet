@@ -1,4 +1,3 @@
-from funcy import rcompose
 from ..nodes import Geotag, Media
 from .common import decorate
 

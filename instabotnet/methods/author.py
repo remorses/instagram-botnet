@@ -1,4 +1,4 @@
-from funcy import rcompose, mapcat
+from funcy import mapcat
 from ..nodes import User, Media
 from .common import decorate
 

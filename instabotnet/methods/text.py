@@ -1,10 +1,8 @@
-from typing import List
-from funcy import  rcompose, raiser, ignore, mapcat, partial, tap as _tap
-import time
+from funcy import ignore, raiser, rcompose
 from random import choice
 from ..bot import Bot
-from .common import decorate, today, tap, extract_urls, substitute_vars
-from ..nodes import Node, User, Media
+from .common import decorate, extract_urls, substitute_vars, tap
+from ..nodes import Media, Node
 
 
 

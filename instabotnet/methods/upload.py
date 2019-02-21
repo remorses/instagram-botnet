@@ -2,9 +2,9 @@ from random import random
 from pathlib import Path
 from funcy import take
 from itertools import islice
-from ..api.api_photo import get_image_size, resize_image
-from .common import decorate, today
-from ..nodes import Node, Arg, Media
+from ..api.api_photo import resize_image
+from .common import decorate
+from ..nodes import Arg, Media
 
 
 

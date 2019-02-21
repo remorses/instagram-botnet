@@ -1,5 +1,5 @@
 from .methods import methods
-from .nodes import node_classes, Media, User, Arg
+from .nodes import Arg, Media, node_classes
 from .support import dotdict
 from functools import reduce
 

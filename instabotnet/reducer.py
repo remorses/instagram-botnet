@@ -1,6 +1,6 @@
 
 from .support import dotdict, merge
-from .api.exceptions import InstagramApiError, exceptions
+from .api.exceptions import InstagramApiError
 from .methods import methods
 import traceback
 
@@ -10,7 +10,6 @@ class Dont_retry(Exception):
     Useful when a method is not found in the methods object,
     because it would be just a waste of time to retry.
     """
-    pass
 
 # class Reducer(Thread):
 #

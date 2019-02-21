@@ -187,7 +187,6 @@ def resize_image(fname):
             (w, h) = img.size
     except (AttributeError, KeyError, IndexError) as e:
         print("No exif info found (ERR: {})".format(e))
-        pass
     img = img.convert("RGBA")
     ratio = w * 1. / h * 1.
     print("FOUND w:{w}, h:{h}, ratio={r}".format(w=w, h=h, r=ratio))

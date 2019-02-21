@@ -1,4 +1,4 @@
-from funcy import rcompose, mapcat
+from funcy import mapcat
 from itertools import islice
 from ..nodes import Hashtag, Media
 from .common import decorate

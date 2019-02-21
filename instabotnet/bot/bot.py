@@ -1,11 +1,8 @@
 import datetime
 from pathlib import Path
-import json
 import time
-from funcy import partial
 from ..api import API
 from .settings import DELAY, TOTAL, MAX_PER_DAY
-from .predicates import not_in_cache
 
 class Bot:
 

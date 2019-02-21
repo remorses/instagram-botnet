@@ -1,4 +1,3 @@
-from functools import partial
 
 from .author import author
 from .followers import followers

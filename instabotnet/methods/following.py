@@ -1,8 +1,6 @@
 from typing import List
 from funcy import rcompose, mapcat
-import time
-from ..bot import Bot
-from ..nodes import User, Media
+from ..nodes import User
 from .common import decorate, cycled_api_call
 
 
