@@ -26,6 +26,8 @@ class Bot:
 
         self.id = Bot.id
         self.username = username
+        self.password = password
+        self.proxy = proxy
         Bot.id += 1
 
         self.predicates = [] # [partial(not_in_cache, self), ]
@@ -55,7 +57,15 @@ class Bot:
         return 'Bot(username=\'{}\', id={})'.format(self.username, self.id)
 
 
-
+    def relogin(self):
+        self.api.login(
+            self.username, 
+            self.password, 
+            proxy=self.proxy, 
+            use_cookie=True, 
+            cookie_fname=self.cookie_file
+        )
+    
     @property
     def followers_ids(self):
             if self._followers_ids:
