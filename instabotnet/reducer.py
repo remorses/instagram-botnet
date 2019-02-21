@@ -1,8 +1,8 @@
 
 from .support import dotdict, merge
-import traceback
-from api.exceptions import InstagramApiError, exceptions
+from .api.exceptions import InstagramApiError, exceptions
 from .methods import methods
+import traceback
 
 class Dont_retry(Exception):
     """
