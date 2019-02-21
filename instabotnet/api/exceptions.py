@@ -37,9 +37,7 @@ class HeadersTooLarge(InstagramApiError):
 class IncorrectPassword(InstagramApiError):
     pass
     
-    
-class IncorrectPassword(InstagramApiError):
-    pass
+
     
 
 class InvalidSmsCode(InstagramApiError):
