@@ -64,7 +64,26 @@ exceptions_map = {
         'ForcedPasswordResetException' : ['/reset(.*?)password/'],
 }
 
-
+def get_messages(data):
+    messages = []
+    msg = data.get('message')
+    
+    if msg is None:
+        print('no `message` property')
+        
+    elif isinstance(msg, str):
+        messages += [data.get('message')]
+        
+    elif isinstance(msg, dict):
+         messages += msg.get('errors', [])
+    
+    if 'error_type' in data:
+        messages += [data.get('error_type')]
+    
+    if 'payload' in data:
+        return messages + get_messages(data['payload'])
+    
+    return messages
 
 
 class API(object):
@@ -228,7 +247,7 @@ class API(object):
                 else:  # GET
                     response = self.session.get(f'{config.API_URL}{endpoint}')
                     
-            except RequestException:
+            except requests.exceptions.RequestException:
                 # network errors
                 # self.logger.error(str(e))
                 raise 
@@ -244,7 +263,7 @@ class API(object):
                 raise error_codes[response.status_code]
                 
             elif response.status_code != 200:
-                bot.logger.debug(f'request returned {response.status_code}')
+                self.logger.debug(f'request returned {response.status_code}')
             
             
             data = response.json()
@@ -260,31 +279,12 @@ class API(object):
                         raise exceptions[class_name](f'{messages}')
                     else:
                         pass
-                bot.logger.debug(f'unknown excption for message {messages}')
+                self.logger.debug(f'unknown excption for message {messages}')
                 
             else:
                 raise exceptions['EmptyResponse']
             
-            def get_messages(data):
-                messages = []
-                msg = data.get('message')
-                
-                if msg is None:
-                    print('no `message` property')
-                    
-                elif isinstance(msg, str):
-                    messages += [data.get('message')]
-                    
-                elif isinstance(msg, dict):
-                     messages += msg.get('errors', [])
-                
-                if 'error_type' in data:
-                    messages += [data.get('error_type')]
-                
-                if 'payload' in data:
-                    return messages + get_messages(data['payload'])
-                
-                return messages
+
 
 
 

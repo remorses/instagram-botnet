@@ -69,11 +69,11 @@ def evaluate(expr, node, bot):
 def xeval(expr, x):
     try:
         return eval(expr, dict(x=x,
-            User=User,
-            Story=Story,
-            Media=Media,
-            Hashtag=Hashtag,
-            Geotag=Geotag
+            # User=User,
+            # Story=Story,
+            # Media=Media,
+            # Hashtag=Hashtag,
+            # Geotag=Geotag
         ))
 
     except (KeyError, AttributeError):
