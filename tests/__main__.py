@@ -47,7 +47,7 @@ if __name__ or '__main__':
 
         data = {}
         for script in SCRIPTS:
-            data[script['name']] = execute(script)
+            execute(script)
 
         # for name, raw in data.items():
         #
