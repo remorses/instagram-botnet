@@ -12,14 +12,11 @@ class Bot:
                  self,
                  username,
                  password,
-
                  cookie_file=None,
                  proxy=None,
                  device=None):
 
         self.cookie_file = make_cookie_file(cookie_file, username + '_cookie.json')
-
-
 
         self.id = Bot.id
         self.username = username
@@ -32,7 +29,7 @@ class Bot:
         self.start_time = datetime.datetime.now()
         self.api = API(
             username=username,
-            password=password,)
+            password=password,),
             cookie=load(self.cookie_file),
             proxy=proxy,
             # settings=settings,
@@ -58,13 +55,7 @@ class Bot:
 
 
     def relogin(self):
-        self.api.login(
-            self.username, 
-            self.password, 
-            proxy=self.proxy, 
-            use_cookie=True, 
-            cookie_fname=self.cookie_file
-        )
+        self.api.login()
     
     @property
     def followers_ids(self):

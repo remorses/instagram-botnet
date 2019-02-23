@@ -1,6 +1,7 @@
 
 from .support import dotdict, merge
-from .api.exceptions import InstagramApiError
+# from .api.exceptions import InstagramApiError
+from instagram_private_api.errors import ClientError
 from .methods import methods
 import requests.exceptions
 import traceback
