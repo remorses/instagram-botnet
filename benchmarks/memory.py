@@ -19,4 +19,5 @@ def main():
             password=PASSWORD
         )
     )
-    
+
+main()
