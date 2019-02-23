@@ -40,7 +40,7 @@ def follow(bot: Bot, nodes,  args):
 
 
 def follow_user(user, bot):
-    data = bot.api.friendship_create(user.id)
+    data = bot.api.friendships_create(user.id)
     bot.total['follows'] += 1
     bot.logger.info(f'followed {user}')
     return user
