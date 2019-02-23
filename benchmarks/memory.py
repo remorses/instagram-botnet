@@ -1,5 +1,5 @@
 from memory_profiler import profile 
-from .support import load_yaml
+from support import load_yaml
 import os
 
 USERNAME = os.environ.get('USERNAME')
