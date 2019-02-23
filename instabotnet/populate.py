@@ -1,5 +1,5 @@
 from colorama import init, Fore
-
+import os
 from string import Formatter
 
 def get_field_value(field_name, mapping):
@@ -73,10 +73,10 @@ def populate_string( yaml_string, data={}):
             begin = line.index('{{')
             end = line.index('}}', begin)
             variable_name = line[begin:end].strip().replace('{{','').replace('}}','').strip()
-            if variable_name in data:
+            if variable_name in data or variable_name in os.environ:
                 return (
                     line[:begin].replace('{{','').replace('}}','') +
-                    str(xeval(variable_name)) +
+                    str(xeval(variable_name, data)) +
                     line[end:].replace('}}','').replace('{{','')
                 )
             else:
@@ -91,6 +91,7 @@ def xeval(expr, data):
     try:
         return eval(expr, dict(
             random=random,
+            env=os.environ,
             **data,
             # User=User,
             # Story=Story,
