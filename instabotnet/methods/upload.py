@@ -2,7 +2,6 @@ from random import random
 from pathlib import Path
 from funcy import take
 from itertools import islice
-from ..api.api_photo import resize_image
 from .common import decorate
 from ..nodes import Arg, Media
 
@@ -64,7 +63,7 @@ def upload(bot, nodes,  args):
             else:
                 raise Exception('to use http url it must end with .jpg or .mp4 or .mov to notify file type')
             path = download_media(bot, url, temp.path)
-            resize_image(path)
+
 
         else:
             path = str(Path(value).resolve())
