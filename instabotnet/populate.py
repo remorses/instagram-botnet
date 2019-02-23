@@ -83,8 +83,6 @@ def populate_string( yaml_string, data={}):
             except:
                 return line
                 
-            else:
-                return line
         else:
             return line
 
