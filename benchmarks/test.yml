@@ -1,8 +1,8 @@
 
 bot:
-    username: {{ username }}
-    password: {{ password }}
-    cookie: {{ username }}_cookie.txt
+    username: {{ env['USERNAME'] }}
+    password: {{ env['PASSWORD'] }}
+    cookie: {{ env['USERNAME'] }}_cookie.txt
     
 
 actions:
@@ -16,4 +16,7 @@ actions:
                 amount: 10
             - likers:
                 amount: 50
-            - print
+            - print:
+                model:
+                    name: x.username
+                    
