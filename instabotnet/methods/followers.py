@@ -22,8 +22,9 @@ def followers(bot: Bot, nodes,  args) -> List[User]:
                 amount, 
                 bot, 
                 bot.api.user_followers, 
-                dict(user_id=id, **args.get('query', {}), 
-                'users'),
+                dict(user_id=id, **args.get('query', {}),) ,
+                'users',
+            ),
             lambda gen: map(pack_user, gen)
 
         )
