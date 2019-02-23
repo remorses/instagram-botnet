@@ -21,4 +21,4 @@ def feed(bot, nodes, args):
         return switch[True](bot, nodes, args)  
         
     else:
-        return []
+        return [], {}
