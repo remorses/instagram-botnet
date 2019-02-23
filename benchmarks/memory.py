@@ -13,11 +13,5 @@ def main():
     from instabotnet import execute
     
     execute(
-        open('benchmarks/test.yml').read(), 
-        dict(
-            username=USERNAME, 
-            password=PASSWORD
-        )
-    )
-
+        open('benchmarks/test.yml').read(),)
 main()
