@@ -33,17 +33,6 @@ def parse_date(date):
     return datetime.strptime(date, "%Y-%m-%d" )
 
 
-def make_kwargs(): 
-    if 'next_max_id' in locals(): 
-        if isinstance(api_argument, dict):
-            return dict(    
-                **api_argument, 
-                rank_token=rank_token,
-                max_id=next_max_id,
-            )
-        else:
-            return dict(
-                
 
 def cycled_api_call(amount, bot, api_method, api_argument, key):
 
