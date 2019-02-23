@@ -74,12 +74,15 @@ def populate_string( yaml_string, data={}):
             begin = line.index('{{')
             end = line.index('}}', begin)
             variable_name = line[begin:end].strip().replace('{{','').replace('}}','').strip()
-            if variable_name in data or variable_name in os.environ:
+            try:
                 return (
                     line[:begin].replace('{{','').replace('}}','') +
-                    str(xeval(variable_name, data)) +
+                    str(xeval(variable_name, merge(data, os.environ)) +
                     line[end:].replace('}}','').replace('{{','')
                 )
+            except:
+                return line
+                
             else:
                 return line
         else:
