@@ -56,14 +56,14 @@ def cycled_api_call(amount, bot, api_method, api_argument, key):
             if 'rank_token' in args:
 
                 data = api_method(
-                    **api_argument if isinstance(api_argument, dict) else api_argument, 
+                    api_argument if not isinstance(api_argument, dict) else **api_argument, 
                     rank_token=rank_token,
                     max_id=next_max_id,
                 )
                 
             else:
                 data = api_method(
-                    **api_argument if isinstance(api_argument, dict) else api_argument,                 
+                    api_argument if not isinstance(api_argument, dict) else **api_argument,                 
                     max_id=next_max_id,
                 )
                 
