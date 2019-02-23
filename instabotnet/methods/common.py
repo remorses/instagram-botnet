@@ -33,14 +33,22 @@ def parse_date(date):
     return datetime.strptime(date, "%Y-%m-%d" )
 
 
-
-
+def make_kwargs(): 
+    if 'next_max_id' in locals(): 
+        if isinstance(api_argument, dict):
+            return dict(    
+                **api_argument, 
+                rank_token=rank_token,
+                max_id=next_max_id,
+            )
+        else:
+            return dict(
+                
 
 def cycled_api_call(amount, bot, api_method, api_argument, key):
 
     amount = amount or 9999
 
-    next_max_id = ''
     sleep_track = 0
     done = 0
     
@@ -50,34 +58,27 @@ def cycled_api_call(amount, bot, api_method, api_argument, key):
     while True:
         bot.logger.debug('new get cycle with %s' % api_method.__name__)
         try:
-            args = inspect.signature(api_method).parameters
-                
-            print(api_argument)
-                        
-            if 'rank_token' in args:
-                if isinstance(api_argument, dict):
-                    data = api_method(
-                        **api_argument, 
-                        rank_token=rank_token,
-                        max_id=next_max_id,
-                    )
-                else:
-                    data = api_method(
-                        api_argument, 
-                        rank_token=rank_token,
-                        max_id=next_max_id,
-                    )    
+            
+            all_params = {}
+            
+            if 'rank_token' in inspect.signature(api_method).parameters:
+                all_params.update(dict(rank_token=rank_token))
+            
+            if next_max_id:
+                all_params.update(dict(max_id=next_max_id))
+        
+
+            if isinstance(api_argument, dict):
+                data = api_method(
+                    **api_argument, 
+                    **all_params,
+                )
+            
             else:
-                if isinstance(api_argument, dict):
-                    data = api_method(
-                        **api_argument, 
-                        max_id=next_max_id,
-                    )
-                else:
-                    data = api_method(
-                        api_argument, 
-                        max_id=next_max_id,
-                    )    
+                data = api_method(
+                    api_argument, 
+                    **all_params,
+                )
                 
             items = data[key] if key in data else []
             size = len(items)
