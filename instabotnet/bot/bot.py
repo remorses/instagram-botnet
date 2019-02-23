@@ -16,7 +16,7 @@ class Bot:
                  proxy=None,
                  device=None):
 
-        self.cookie_file = make_cookie_file(cookie_file, username + '_cookie.json')
+        self.cookie_file = make_cookie_file(cookie_file, username + '_cookie.txt')
 
         self.id = Bot.id
         self.username = username
