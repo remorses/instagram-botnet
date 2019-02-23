@@ -15,8 +15,8 @@ class LoggerAdapter(logging.LoggerAdapter):
 
 
 class API(Client):
-    def __init__(self, username, password, **kwargs):
-        super().__init__(username, password, **kwargs)
+    def __init__(self,**kwargs):
+        super().__init__(**kwargs)
         
         # Setup logging
         self.logger = logging.getLogger(__name__)
@@ -32,7 +32,7 @@ class API(Client):
         self.logger.addHandler(ch)
 
         self.logger.setLevel(logging.DEBUG)
-        self.logger = LoggerAdapter(self.logger, username)
+        self.logger = LoggerAdapter(self.logger, kwargs['username'])
     
     def _call_api(*args, **kwargs):
         data = super()._call_api(*args, **kwargs)
