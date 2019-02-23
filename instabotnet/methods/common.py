@@ -1,6 +1,7 @@
 from datetime import datetime
 import re
 import inspect
+import traceback
 
 def accepts(Class, returns):
 
@@ -102,7 +103,7 @@ def cycled_api_call(amount, bot, api_method, api_argument, key):
                     return
 
         except Exception as exc:
-            bot.logger.error('exception in cycled_api_call: {}'.format(exc))
+            bot.logger.error('exception in cycled_api_call:\n {}'.format(traceback.format_exc())
             yield from []
             return
 
