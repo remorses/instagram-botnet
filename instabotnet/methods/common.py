@@ -54,18 +54,29 @@ def cycled_api_call(amount, bot, api_method, api_argument, key):
             print(api_argument)
                         
             if 'rank_token' in args:
-
-                data = api_method(
-                    api_argument if not isinstance(api_argument, dict) else **api_argument, 
-                    rank_token=rank_token,
-                    max_id=next_max_id,
-                )
-                
+                if isinstance(api_argument, dict):
+                    data = api_method(
+                        **api_argument, 
+                        rank_token=rank_token,
+                        max_id=next_max_id,
+                    )
+                else:
+                    data = api_method(
+                        api_argument, 
+                        rank_token=rank_token,
+                        max_id=next_max_id,
+                    )    
             else:
-                data = api_method(
-                    api_argument if not isinstance(api_argument, dict) else **api_argument,                 
-                    max_id=next_max_id,
-                )
+                if isinstance(api_argument, dict):
+                    data = api_method(
+                        **api_argument, 
+                        max_id=next_max_id,
+                    )
+                else:
+                    data = api_method(
+                        api_argument, 
+                        max_id=next_max_id,
+                    )    
                 
             items = data[key] if key in data else []
             size = len(items)
