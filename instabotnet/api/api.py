@@ -1,4 +1,5 @@
 from instagram_private_api import Client
+from colorlog import ColoredFormatter
 import logging
 import os
 
@@ -26,7 +27,7 @@ class API(Client):
         # self.logger.addHandler(fh)
 
         ch = logging.StreamHandler()
-        ch.setLevel(levels[get_logging_level()])
+        ch.setLevel(get_logging_level())
         ch.setFormatter(colred_formatter())
         self.logger.addHandler(ch)
 
