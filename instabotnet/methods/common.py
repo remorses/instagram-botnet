@@ -50,8 +50,11 @@ def cycled_api_call(amount, bot, api_method, api_argument, key):
         bot.logger.debug('new get cycle with %s' % api_method.__name__)
         try:
             args = inspect.signature(api_method).parameters
-            
+                
+            print(api_argument)
+                        
             if 'rank_token' in args:
+
                 data = api_method(
                     **api_argument if isinstance(api_argument, dict) else api_argument, 
                     rank_token=rank_token,
