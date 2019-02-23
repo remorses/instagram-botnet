@@ -33,11 +33,7 @@ class API(Client):
 
         self.logger.setLevel(logging.DEBUG)
         self.logger = LoggerAdapter(self.logger, kwargs['username'])
-    
-    def _call_api(*args, **kwargs):
-        data = super()._call_api(*args, **kwargs)
-        self.last_json = data
-        return data
+
 
 
 def get_logging_level():
