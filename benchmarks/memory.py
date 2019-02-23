@@ -13,7 +13,7 @@ def main():
     from instabotnet import execute
     
     execute(
-        load_yaml('test.yml'), 
+        load_yaml('benchmarks/test.yml'), 
         dict(
             username=USERNAME, 
             password=PASSWORD
