@@ -47,7 +47,7 @@ def get_logging_level():
 
         return os.environ['LOGGING_LEVEL'] \
             if 'LOGGING_LEVEL' in os.environ and os.environ['LOGGING_LEVEL'] in levels \
-            else 'INFO'
+            else logging.DEBUG if 'DEBUG' in os.environ else 'INFO'
 
 def colred_formatter():
     format = '%(asctime)s | %(levelname)-8s | %(message)s'
