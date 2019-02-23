@@ -40,6 +40,7 @@ def cycled_api_call(amount, bot, api_method, api_argument, key):
 
     sleep_track = 0
     done = 0
+    next_max_id = ''
     
     rank_token = bot.api.generate_uuid()
     
