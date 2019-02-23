@@ -29,7 +29,7 @@ class Bot:
         self.start_time = datetime.datetime.now()
         self.api = API(
             username=username,
-            password=password,),
+            password=password,
             cookie=load(self.cookie_file),
             proxy=proxy,
             # settings=settings,

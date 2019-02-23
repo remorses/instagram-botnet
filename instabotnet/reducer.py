@@ -84,7 +84,7 @@ def reducer(state: dotdict, edge: dotdict):
         bot.logger.error(f'network error: {e}')
         return dotdict(nodes=[], bot=bot, errors=state.errors + [e], data=state.data)
         
-    except InstagramApiError as e:
+    except ClientError as e:
         bot.logger.error(e)
         return dotdict(nodes=[], bot=bot, errors=state.errors + [e], data=state.data)
 
