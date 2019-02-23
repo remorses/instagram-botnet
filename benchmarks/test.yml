@@ -1,0 +1,19 @@
+
+bot:
+    username: {{ username }}
+    password: {{ password }}
+    cookie: {{ username }}_cookie.txt
+    
+
+actions:
+    - 
+        name: test something general
+        from: user
+        nodes:
+            - instagram
+        edges:
+            - feed:
+                amount: 10
+            - likers:
+                amount: 50
+            - print
