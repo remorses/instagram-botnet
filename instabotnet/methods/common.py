@@ -82,9 +82,9 @@ def cycled_api_call(amount, bot, api_method, api_argument, key):
             size = len(items)
 
             if any([
-                'next_max_id' not in bot.last,
-                "more_available" in bot.last and not bot.last["more_available"],
-                "big_list" in bot.last and not bot.last['big_list']
+                'next_max_id' not in data,
+                "more_available" in data and not data["more_available"],
+                "big_list" in data and not data['big_list']
             ]):
                 yield from items[:amount - done]
                 done += size
@@ -112,7 +112,7 @@ def cycled_api_call(amount, bot, api_method, api_argument, key):
             sleep_track = 0
 
         bot.sleep('usual')
-        next_max_id = bot.last.get("next_max_id", "")
+        next_max_id = data.get("next_max_id", "")
         sleep_track += 1
 
 
