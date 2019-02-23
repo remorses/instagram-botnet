@@ -1,13 +1,11 @@
-from typing import List
-from funcy import  rcompose, raiser, ignore
-import time
-from .common import accepts, today, tap
-from ..nodes import Node, User, Media
+from funcy import raiser, rcompose
+from .common import decorate, tap
+from ..nodes import Media
 
 
 
 
-@accepts(Media)
+@decorate(accepts=Media, returns=Media)
 def like(bot, nodes,  args):
 
 
@@ -46,14 +44,8 @@ def like_media(media, bot):
             bot.sleep('error')
             return None
         else:
-            with bot.cache as cache:
-                cache['liked'].insert(
-                    dict(identifier=media.id,
-                        specifier=media.url,
-                        time=today(),
-                        type='media',
-                        )
-                )
+            bot.total['likes'] += 1
+
             bot.logger.debug('liked %s' % media.url)
             bot.sleep('like')
             return media

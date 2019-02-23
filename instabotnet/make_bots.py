@@ -1,4 +1,3 @@
-from .nodes import Media, User, Geotag, Hashtag
 from .make_predicate import make_predicate
 from .bot import Bot
 
@@ -66,9 +65,6 @@ def error(exception):
 
 
 params = lambda data: dict(
-        cache_file=data['cache'] if 'cache' in data else None,
-        logs_file=data['logs'] if 'logs' in data else \
-            data['log'] if 'log' in data else None,
         cookie_file=data['cookie'] if 'cookie' in data else None,
         username=data['username'] if 'username' in data \
             else error(Exception('username necessary')),

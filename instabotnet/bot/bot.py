@@ -1,12 +1,8 @@
 import datetime
 from pathlib import Path
-import dataset
-import json
 import time
-from funcy import partial
 from ..api import API
 from .settings import DELAY, TOTAL, MAX_PER_DAY
-from .predicates import not_in_cache
 
 class Bot:
 
@@ -16,24 +12,25 @@ class Bot:
                  self,
                  username,
                  password,
-                 logs_file=None,
-                 cache_file=None,
+
                  cookie_file=None,
                  proxy=None,
                  device=None):
 
-        self.cache_file = make_cache_file(cache_file, username + '_cache.db')
-        self.logs_file = make_logs_file( logs_file, username + '_logs.html')
         self.cookie_file = make_cookie_file(cookie_file, username + '_cookie.json')
+
+
 
         self.id = Bot.id
         self.username = username
+        self.password = password
+        self.proxy = proxy
         Bot.id += 1
 
         self.predicates = [] # [partial(not_in_cache, self), ]
 
         self.start_time = datetime.datetime.now()
-        self.api = API( id=self.id, username=username, device=device, logs_file=self.logs_file,)
+        self.api = API( id=self.id, username=username, device=device,)
         self.logger = self.api.logger
 
         self.total = TOTAL
@@ -56,10 +53,16 @@ class Bot:
     def __repr__(self):
         return 'Bot(username=\'{}\', id={})'.format(self.username, self.id)
 
-    @property
-    def cache(self):
-        return dataset.connect(make_db_url(self.cache_file), engine_kwargs = {'connect_args': {'check_same_thread' : False}})
 
+    def relogin(self):
+        self.api.login(
+            self.username, 
+            self.password, 
+            proxy=self.proxy, 
+            use_cookie=True, 
+            cookie_fname=self.cookie_file
+        )
+    
     @property
     def followers_ids(self):
             if self._followers_ids:
@@ -72,7 +75,6 @@ class Bot:
                 self._followers_ids = list(user_ids)
                 print(self._followers_ids)
                 return self._followers_ids
-
 
     @property
     def last(self):
@@ -133,26 +135,6 @@ class Bot:
         self.start_time = datetime.datetime.now()
 
 
-
-
-def make_db_url( file):
-    return 'sqlite:///{}'.format(str(file.resolve()))
-
-def make_logs_file( file, name):
-    if not file:
-        file = Path(str(Path('.') / '_logs' / name)).resolve()
-        file.parent.exists() or file.parent.mkdir()
-    file = Path(file)
-    file.exists() or file.touch()
-    return str(file.resolve())
-
-def make_cache_file( file, name):
-    if not file:
-        file = Path(str(Path('.') / '_cache' / name)).resolve()
-        file.parent.exists() or file.parent.mkdir()
-    file = Path(file)
-    file.exists() or file.touch()
-    return file.resolve()
 
 def make_cookie_file( file, name):
     if not file:

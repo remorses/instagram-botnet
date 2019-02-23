@@ -1,12 +1,11 @@
 from typing import List
-from funcy import rcompose, ignore, tap as _tap, partial, mapcat
-import time
+from funcy import mapcat, rcompose
 from ..bot import Bot
-from ..nodes import User, Media
-from .common import accepts, cycled_api_call
+from ..nodes import User
+from .common import decorate, cycled_api_call
 
 
-@accepts(User)
+@decorate(accepts=User, returns=User)
 def followers(bot: Bot, nodes,  args) -> List[User]:
 
     # bot.logger.debug('nodes at followers %s' % list(nodes)[:3])

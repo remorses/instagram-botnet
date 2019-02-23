@@ -6,7 +6,7 @@ from .geotag import Geotag
 from .arg import Arg
 from .media import Media
 from .story import Story
-
+from .comment import Comment
 
 node_classes = dict(
     node=Node,
@@ -16,4 +16,7 @@ node_classes = dict(
     hashtag=Hashtag,
     geotag=Geotag,
     arg=Arg,
+    comment=Comment,
 )
+
+(node_classes,)

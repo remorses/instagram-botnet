@@ -1,5 +1,5 @@
 from .methods import methods
-from .nodes import node_classes, Media, User, Arg
+from .nodes import Arg, Media, node_classes
 from .support import dotdict
 from functools import reduce
 
@@ -19,6 +19,7 @@ def nodes_edges(body):
             if isinstance(edge, dict):
                 type = list(edge.keys())[0]
                 args = list(edge.values())[0]
+                args = args if isinstance(args, dict) else {}
                 edges += [dotdict(type=type, args=args)]
             else:
                 edges += [dotdict(type=edge, args={})]
@@ -38,15 +39,17 @@ def nodes_edges(body):
 
 
 
-def calc_total_nodes(acc, node):
-    amount  = node.args.get('amount', 1)
-    max = node.args.get('max', acc)
+def calc_total_nodes(acc, edge):
+    amount  = edge.args.get('amount', 1)
+    max = edge.args.get('max', acc)
     return amount * acc if acc <= max else max
 
 
 def initialize_nodes(nodes, edges, data):
     if 'from_type' in data:
-        Class = node_classes[data['from_type']]
+        Class = node_classes[data['from_type'].lower()]
+    elif 'from' in data:
+        Class = node_classes[data['from'].lower()]
     else:
         first_method = methods.get(edges[0]['type'], None)
         if not first_method:
@@ -56,3 +59,5 @@ def initialize_nodes(nodes, edges, data):
             Media if 'instagram.com' in nodes[0] else Arg
 
     return [Class(generic=value) for value in nodes]
+
+

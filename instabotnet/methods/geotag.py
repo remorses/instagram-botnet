@@ -1,9 +1,8 @@
-from funcy import rcompose
 from ..nodes import Geotag, Media
-from .common import accepts
+from .common import decorate
 
 
-@accepts(Media)
+@decorate(accepts=Media, returns=Geotag)
 def geotag(bot, nodes,  args) -> Geotag:
 
     process = lambda media: media.get_geotag(bot)

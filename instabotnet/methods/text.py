@@ -1,15 +1,13 @@
-from typing import List
-from funcy import  rcompose, raiser, ignore, mapcat, partial, tap as _tap
-import time
+from funcy import ignore, raiser, rcompose
 from random import choice
 from ..bot import Bot
-from .common import accepts, today, tap, extract_urls, substitute_vars
-from ..nodes import Node, User, Media
+from .common import decorate, extract_urls, substitute_vars, tap
+from ..nodes import Media, Node
 
 
 
 
-@accepts(User)
+@decorate(accepts=Media, returns=Node)
 def text(bot, nodes,  args):
 
 
@@ -28,16 +26,6 @@ def text(bot, nodes,  args):
         count += 1
 
     stop = raiser(StopIteration)
-
-    def store_in_cache(node):
-        with bot.cache as cache:
-            cache['texted'].insert(
-                dict(identifier=node.id,
-                    specifier=str(messages),
-                    time=today(),
-                    type='user')
-            )
-        return node
 
     return_if_suitable = lambda node: node \
         if bot.suitable(node, table='texted', specifier=str(messages)) \
@@ -60,7 +48,6 @@ def text(bot, nodes,  args):
         discard_if_reached_limit,
         send_msg_from_groups,
         lambda arr: list(arr)[0] if arr else None,
-        lambda node: store_in_cache(node) if node else None,
         lambda x: tap(x, increment) if x else None,
     )
 

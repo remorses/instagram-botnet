@@ -3,7 +3,11 @@ from .node import Node
 
 
 
-class Arg(Node):
+
+class Text(Node):
+    """
+    a text message
+    """
 
     __slots__ = ['value']
 
@@ -14,4 +18,4 @@ class Arg(Node):
             self.value = generic
 
     def __repr__(self):
-            return 'Arg(value=\'{}\')'.format(self.value)
+            return 'Text(value=\'{}\')'.format(self.value)

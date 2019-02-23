@@ -1,19 +1,27 @@
 from datetime import datetime
-import time
-from typing import List
-from ..nodes import Node
 import re
 
 
-def accepts(Class):
+def accepts(Class, returns):
 
     def accepts(original):
-        original.accepts = Class
+        original.accepts = accepts
+        original.returns = returns
         return original
 
     return accepts
 
 
+
+
+def decorate(*, accepts, returns):
+
+    def wrapper(original):
+        original.accepts = accepts
+        original.returns = returns
+        return original
+
+    return wrapper
 
 
 

@@ -1,15 +1,12 @@
-from typing import List
-from funcy import  rcompose, raiser, ignore
-from operator import itemgetter
-import time
+from funcy import ignore
 
-from .common import accepts, today, tap
-from ..nodes import Node, User, Arg
+from .common import decorate
+from ..nodes import Arg
 
 
 
 
-@accepts(Arg)
+@decorate(accepts=Arg, returns=Arg)
 def set_profile(bot, nodes,  args):
 
 
@@ -48,4 +45,4 @@ def set_profile(bot, nodes,  args):
 
     bot.logger.info('changed profile values')
 
-    return [], {}
+    return nodes, {}

@@ -1,21 +1,17 @@
-from .common import accepts
-from ..nodes import Node, User, Media, Story, Geotag, Hashtag
+from .common import decorate
+from ..nodes import Node, node_classes
 
-from .common import today, tap, dotdict
+from .common import dotdict
 from ..bot import Bot
-from dataset import connect
-from funcy import rcompose, ignore, retry, mapcat
-import time
+from funcy import mapcat
 
 
 
-@accepts(Node)
+@decorate(accepts=(*node_classes.values(),), returns=Node)
 def scrape(bot: Bot, nodes,  args):
 
     try:
         max = float(args['max']) if 'max' in args else float('inf')
-        database = args['database']
-        table = args['table']
         model = args['model']
 
     except:
@@ -29,10 +25,7 @@ def scrape(bot: Bot, nodes,  args):
         nonlocal count
         count += 1
 
-    lazy_database = lambda: connect(
-        database,
-        engine_kwargs = {'connect_args': {'check_same_thread' : False}}
-    )
+
 
     def process(node):
         """
@@ -41,19 +34,17 @@ def scrape(bot: Bot, nodes,  args):
             id:        x.pk
             followers: x.followers_count
         """
-        with lazy_database() as db:
-            insertion = dotdict()
-            for name, expr in model.items():
-                insertion[name] = evaluate(expr, node, bot=bot)
+        insertion = dotdict()
+        for name, expr in model.items():
+            insertion[name] = evaluate(expr, node, bot=bot)
 
-            if count <= max:
-                db[table].insert(insertion)
-                bot.logger.info('added to database node {} with insertion {}'.format(node, insertion))
-                increment()
-                yield node
+        if count <= max:
+            bot.logger.info('scraped node {} '.format(node, ))
+            increment()
+            yield node
 
-            else:
-                 return
+        else:
+             return
 
 
     nodes = mapcat(process, nodes)
@@ -77,11 +68,11 @@ def evaluate(expr, node, bot):
 def xeval(expr, x):
     try:
         return eval(expr, dict(x=x,
-            User=User,
-            Story=Story,
-            Media=Media,
-            Hashtag=Hashtag,
-            Geotag=Geotag
+            # User=User,
+            # Story=Story,
+            # Media=Media,
+            # Hashtag=Hashtag,
+            # Geotag=Geotag
         ))
 
     except (KeyError, AttributeError):

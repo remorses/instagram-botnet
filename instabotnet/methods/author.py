@@ -1,10 +1,10 @@
-from funcy import rcompose, mapcat
+from funcy import mapcat
 from ..nodes import User, Media
-from .common import accepts
+from .common import decorate
 
 
-@accepts(Media)
-def authors(bot, nodes,  args):
+@decorate(accepts=Media, returns=User)
+def author(bot, nodes,  args):
 
 
     process = lambda media: media.get_author(bot)

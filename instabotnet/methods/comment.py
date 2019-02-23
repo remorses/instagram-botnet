@@ -1,15 +1,13 @@
-from typing import List
-from funcy import  rcompose, raiser, ignore, mapcat, partial, tap as _tap
-import time
+from funcy import ignore, raiser, rcompose
 from random import choice
 from ..bot import Bot
-from .common import accepts, today, tap, extract_urls, substitute_vars
-from ..nodes import Node, User, Media
+from .common import decorate, substitute_vars, tap
+from ..nodes import Comment, Media
 
 
 
 
-@accepts(Media)
+@decorate(accepts=Media, returns=Comment)
 def comment(bot, nodes,  args):
 
     try:
@@ -30,15 +28,7 @@ def comment(bot, nodes,  args):
 
     stop = raiser(StopIteration)
 
-    def store_in_cache(node):
-        with bot.cache as cache:
-            cache['commented'].insert(
-                dict(identifier=node.id,
-                    specifier=str(comments),
-                    time=today(),
-                    type='media')
-            )
-        return node
+
 
     return_if_suitable = lambda node: node \
         if bot.suitable(node, table='commented', specifier=str(comments)) \
@@ -61,7 +51,6 @@ def comment(bot, nodes,  args):
         discard_if_reached_limit,
         do_comment_from_groups,
         lambda arr: list(arr)[0] if arr else None,
-        lambda node: store_in_cache(node) if node else None,
         lambda x: tap(x, increment) if x else None,
     )
 

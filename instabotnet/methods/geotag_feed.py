@@ -2,12 +2,12 @@
 from typing import List
 from funcy import  rcompose, mapcat
 from ..nodes import  Media, Geotag
-from .common import accepts, cycled_api_call, tap
+from .common import cycled_api_call, decorate
 
 
 
 
-@accepts(Geotag)
+@decorate(accepts=Geotag, returns=Media)
 def geotag_feed(bot, nodes,  args) -> List[Media]:
 
     pack_media = lambda data: Media(id=data['pk'], data=data)

@@ -1,14 +1,13 @@
-from .common import accepts
-from ..nodes import Node, User, Media
+from .common import decorate
+from ..nodes import User
 
-from .common import today, tap
+from .common import tap
 from ..bot import Bot
-from funcy import rcompose, raiser, tap as _tap
-import time
+from funcy import raiser, rcompose
 
 
 
-@accepts(User)
+@decorate(accepts=User, returns=User)
 def follow(bot: Bot, nodes,  args):
 
     max = float(args['max']) if 'max' in args else float('inf')
@@ -47,8 +46,7 @@ def follow_user(user, bot):
         bot.sleep('error')
         return None
     else:
-        with bot.cache as cache:
-            cache['followed'].insert(dict(identifier=user.id, time=today(), type='user',))
+        bot.total['follows'] += 1
 
         bot.logger.info('followed %s' % user)
         bot.sleep('follow')

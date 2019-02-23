@@ -1,13 +1,16 @@
 
 from typing import List
 from funcy import  rcompose, mapcat
-import json
 
-from ..nodes import User, Media, Story
-from .common import accepts, cycled_api_call, tap
+from ..nodes import Story, User
+from .common import decorate
 
-@accepts(User)
-def user_stories(bot, nodes,  args) -> List[Story]:
+
+
+
+
+@decorate(accepts=User, returns=Story)
+def stories(bot, nodes,  args) -> List[Story]:
 
     amount = args.get('amount')
     pack_story = lambda data: Story(id=data['pk'], data=data)
@@ -29,9 +32,10 @@ def user_stories(bot, nodes,  args) -> List[Story]:
 
     return stories, {}
 
-def get_stories(bot, user_id):
+def get_stories(bot, user_id, amount,):
+    count = 0
     bot.api.get_user_stories(user_id)
     if 'reel' in bot.last:
-        yield from bot.last['reel']['items']
+        yield from bot.last['reel']['items'][:amount]
     else:
         yield from []

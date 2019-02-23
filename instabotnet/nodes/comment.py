@@ -3,7 +3,7 @@ from .node import Node
 
 
 
-class Arg(Node):
+class Comment(Node):
 
     __slots__ = ['value']
 
@@ -14,4 +14,4 @@ class Arg(Node):
             self.value = generic
 
     def __repr__(self):
-            return 'Arg(value=\'{}\')'.format(self.value)
+            return 'Comment(value=\'{}\')'.format(self.value)

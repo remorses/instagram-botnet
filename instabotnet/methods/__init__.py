@@ -1,6 +1,5 @@
-from functools import partial
 
-from .authors import authors
+from .author import author
 from .followers import followers
 from .following import following
 from .user_feed import user_feed
@@ -11,7 +10,8 @@ from .usertags import usertags
 from .geotag import geotag
 from .geotag_feed import geotag_feed
 from .filter import filter
-from .user_stories import user_stories
+from .stories import stories
+from .feed import feed
 
 from .like import like
 from .follow import follow
@@ -28,7 +28,7 @@ from .print import _print
 from .evaluate import evaluate
 
 methods = dict(
-   authors=authors,
+   author=author,
    followers=followers,
    likers=likers,
    following=following,
@@ -39,7 +39,8 @@ methods = dict(
    geotag=geotag,
    geotag_feed=geotag_feed,
    filter=filter,
-   user_stories=user_stories,
+   stories=stories,
+   feed=feed,
 
    follow=follow,
    unfollow=unfollow,
@@ -48,13 +49,15 @@ methods = dict(
    upload=upload,
    comment=comment,
    delete=delete,
-   scrape=scrape,
    set_profile=set_profile,
    shuffle=shuffle,
    print=_print,
+   scrape=scrape,
 
    evaluate=evaluate,
 )
+
+(methods,)
 
 #
 # def make_methods(bot):

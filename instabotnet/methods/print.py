@@ -1,18 +1,17 @@
-from .common import accepts
-from ..nodes import Node, User, Media
+from .common import decorate
+from ..nodes import Node, node_classes
 
-from .common import today, tap, dotdict
+from .common import dotdict
 from ..bot import Bot
+from funcy import ignore
 import json
-from dataset import connect
-from funcy import rcompose, ignore, mapcat
 from itertools import islice
 from colorama import init, Fore
-import time
 
 
 
-@accepts(Node)
+
+@decorate(accepts=(*node_classes.values(),), returns=Node)
 def _print(bot: Bot, nodes,  args):
 
     try:

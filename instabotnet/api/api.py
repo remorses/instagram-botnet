@@ -4,20 +4,11 @@ import json
 import logging
 import os
 import sys
-import time
 import uuid
-from random import uniform
-
-try:
-    from json.decoder import JSONDecodeError
-except ImportError:
-    JSONDecodeError = ValueError
-
 import requests
 import requests.utils
-import urllib
-from tqdm import tqdm
-
+import urllib.parse
+from .exceptions import exceptions
 from . import config, devices
 from .api_photo import configure_photo, download_photo, upload_photo
 from .api_video import configure_video, download_video, upload_video
@@ -36,11 +27,85 @@ class LoggerAdapter(logging.LoggerAdapter):
     def process(self, msg, kwargs):
         return '[%s] %s' % (self.prefix, msg), kwargs
 
+
+
+exceptions_map = {
+        'LoginRequired'       : ['login_required'],
+        'CheckpointRequired'  : [
+            'checkpoint_required', # message
+            'checkpoint_challenge_required', # error_type
+        ],
+        'ChallengeRequired'   : ['challenge_required'],
+        'FeedbackRequired'    : ['feedback_required'],
+        'ConsentRequired'     : ['consent_required'],
+        'IncorrectPassword'   : [
+            # "The password you entered is incorrect".
+            # '/password(.*?)incorrect/', # message
+            'password',
+            'incorrect',
+            'bad_password', # error_type
+        ],
+        'InvalidSmsCode'      : [
+            # "Please check the security code we sent you and try again".
+            # '/check(.*?)security(.*?)code/', # message
+            'check',
+            'security',
+            'code',
+            'sms_code_validation_code_invalid', # error_type
+        ],
+        'AccountDisabled'     : [
+            # "Your account has been disabled for violating our terms".
+            # '/account(.*?)disabled(.*?)violating/',
+            'account',
+            'disabled',
+            'violating',
+        ],
+        'SentryBlock'         : ['sentry_block'],
+        'InvalidUser'         : [
+            # "The username you entered doesn't appear to belong to an account"
+            # '/username(.*?)doesn\'t(.*?)belong/', # message
+            'username',
+            'doesn\'t',
+            'belong',
+            'invalid_user', # error_type
+        ],
+        'ForcedPasswordReset' : [
+            # '/reset(.*?)password/'
+            'reset',
+            'password',
+        ],
+}
+
+
+
+
+def get_messages(data):
+    messages = []
+    msg = data.get('message')
+    
+    if msg is None:
+        print('no `message` property')
+        
+    elif isinstance(msg, str):
+        messages += [data.get('message')]
+        
+    elif isinstance(msg, dict):
+         messages += msg.get('errors', [])
+    
+    if 'error_type' in data:
+        messages += [data.get('error_type')]
+    
+    if 'payload' in data:
+        return messages + get_messages(data['payload'])
+    
+    return messages
+
+
 class API(object):
 
     _id = 0
 
-    def __init__(self,  device=None, username=None,  id=None, logs_file=None,):
+    def __init__(self,  device=None, username=None,  id=None,):
 
         self._id = API._id if not id else id
         API._id += 1
@@ -182,60 +247,60 @@ class API(object):
             self.session.proxies['https'] = f'{scheme}{self.proxy}'
 
 
-
+    # raises InstagramApiError
     def send_request(self, endpoint, post=None, login=False, with_signature=True):
+    
             self.logger.debug(f'{endpoint}')
-            if (not self.is_logged_in and not login):
-                msg = "Not logged in!"
-                self.logger.critical(msg)
-                raise Exception(msg)
-
-
+            
             try:
                 self.total_requests += 1
                 if post is not None:  # POST
                     if with_signature:
                         # Only `send_direct_item` doesn't need a signature
                         post = self.generate_signature(post)
-                    response = self.session.post(
-                        f'{config.API_URL}{endpoint}', data=post)
+                    response = self.session.post(f'{config.API_URL}{endpoint}', data=post)
                 else:  # GET
-                    response = self.session.get(
-                        f'{config.API_URL}{endpoint}')
-            except Exception as e:
-                self.logger.warning(str(e))
-                return False
-
-            if response.status_code == 200:
-                try:
-                    self.last_json = json.loads(response.text)
-                    return True
-                except JSONDecodeError:
-                    return False
+                    response = self.session.get(f'{config.API_URL}{endpoint}')
+                    
+            except requests.exceptions.RequestException:
+                # network errors
+                # self.logger.error(str(e))
+                raise 
+            
+            error_codes = {
+                429: exceptions['TooManyRequests'],
+                431: exceptions['HeadersTooLarge'],
+                # 400: BadRequest,
+                404: exceptions['NotFound'],
+            }
+            
+            if response.status_code in error_codes:
+                raise error_codes[response.status_code]
+                
+            elif response.status_code != 200:
+                self.logger.debug(f'request returned {response.status_code}')
+            
+            
+            data = response.json()
+            
+            if data.get('status') == 'ok':
+                self.last_json = data
+                return data
+                
+            elif data.get('status') == 'fail':
+                messages = get_messages(data)
+                for class_name, errors in exceptions_map.items():
+                    if all([any([err in msg for msg in messages]) for err in errors]):
+                        raise exceptions[class_name](f'{messages}')
+                    else:
+                        pass
+                self.logger.debug(f'unknown excption for message {messages}')
+                
             else:
-                self.logger.error("Request returns {} error!".format(response.status_code))
-                if response.status_code == 429:
-                    sleep_minutes = 5
-                    self.logger.warning(
-                        "That means 'too many requests'. I'll go to sleep "
-                        "for {} minutes.".format(sleep_minutes))
-                    time.sleep(sleep_minutes * 60)
-                elif response.status_code == 400:
-                    response_data = json.loads(response.text)
-                    msg = "Instagram's error message: {}"
-                    self.logger.warn(msg.format(response_data.get('message')))
-                    if 'error_type' in response_data:
-                        msg = 'Error type: {}'.format(response_data['error_type'])
-                        self.logger.warn(msg)
+                raise exceptions['EmptyResponse']
+            
 
-                # For debugging
-                try:
-                    self.last_json = json.loads(response.text)
-                except Exception:
-                    pass
 
-                del response
-                return False
 
 
     def media_info(self, media_id):
@@ -427,10 +492,6 @@ class API(object):
         url = 'media/{media_id}/remove/'.format(media_id=media_id)
         return self.send_request(url, data)
 
-    def media_info(self, media_id):
-        # data = self.json_data({'media_id': media_id})
-        url = 'media/{media_id}/info/'.format(media_id=media_id)
-        return self.send_request(url)
 
     def archive_media(self, media, undo=False):
         action = 'only_me' if not undo else 'undo_only_me'
@@ -716,100 +777,100 @@ class API(object):
         url = 'feed/liked/?max_id={max_id}'.format(max_id=max_id)
         return self.send_request(url)
 
-    def get_total_followers_or_followings(self,
-                                          user_id,
-                                          amount=None,
-                                          which='followers',
-                                          filter_private=False,
-                                          filter_business=False,
-                                          filter_verified=False,
-                                          usernames=False,
-                                          to_file=None,
-                                          overwrite=False):
-        from io import StringIO
-
-        if which == 'followers':
-            key = 'follower_count'
-            get = self.get_user_followers
-        elif which == 'followings':
-            key = 'following_count'
-            get = self.get_user_followings
-
-        sleep_track = 0
-        result = []
-        next_max_id = ''
-        self.get_username_info(user_id)
-        username_info = self.last_json
-        if "user" in username_info:
-            total = amount or username_info["user"][key]
-
-            if total > 200000:
-                print("Consider temporarily saving the result of this big "
-                      "operation. This will take a while.\n")
-        else:
-            return False
-        if filter_business:
-            print("--> You are going to filter business accounts. This will take time! <--")
-            from random import random
-        if to_file is not None:
-            if os.path.isfile(to_file):
-                if not overwrite:
-                    print("File `{}` already exists. Not overwriting.".format(to_file))
-                    return False
-                else:
-                    print("Overwriting file `{}`".format(to_file))
-            with open(to_file, 'w'):
-                pass
-        desc = "Getting {} of {}".format(which, user_id)
-        with tqdm(total=total, desc=desc, leave=True) as pbar:
-            while True:
-                get(user_id, next_max_id)
-                last_json = self.last_json
-                try:
-                    with open(to_file, 'a') if to_file is not None else StringIO() as f:
-                        for item in last_json["users"]:
-                            if filter_private and item['is_private']:
-                                continue
-                            if filter_business:
-                                time.sleep(2 * random())
-                                self.get_username_info(item['pk'])
-                                item_info = self.last_json
-                                if item_info['user']['is_business']:
-                                    continue
-                            if filter_verified and item['is_verified']:
-                                continue
-                            if to_file is not None:
-                                if usernames:
-                                    f.write("{}\n".format(item['username']))
-                                else:
-                                    f.write("{}\n".format(item['pk']))
-                            result.append(item)
-                            pbar.update(1)
-                            sleep_track += 1
-                            if sleep_track >= 20000:
-                                sleep_time = uniform(120, 180)
-                                msg = "\nWaiting {:.2f} min. due to too many requests."
-                                print(msg.format(sleep_time / 60))
-                                time.sleep(sleep_time)
-                                sleep_track = 0
-                    if not last_json["users"] or len(result) >= total:
-                        return result[:total]
-                except Exception as e:
-                    print("ERROR: {}".format(e))
-                    return result[:total]
-
-                if last_json["big_list"] is False:
-                    return result[:total]
-
-                next_max_id = last_json.get("next_max_id", "")
-
-    def get_total_followers(self, user_id, amount=None):
-        return self.get_total_followers_or_followings(
-            user_id, amount, 'followers')
-
-    def get_total_followings(self, user_id, amount=None):
-        return self.get_total_followers_or_followings(
-            user_id, amount, 'followings')
+    # def get_total_followers_or_followings(self,
+    #                                       user_id,
+    #                                       amount=None,
+    #                                       which='followers',
+    #                                       filter_private=False,
+    #                                       filter_business=False,
+    #                                       filter_verified=False,
+    #                                       usernames=False,
+    #                                       to_file=None,
+    #                                       overwrite=False):
+    #     from io import StringIO
+    #
+    #     if which == 'followers':
+    #         key = 'follower_count'
+    #         get = self.get_user_followers
+    #     elif which == 'followings':
+    #         key = 'following_count'
+    #         get = self.get_user_followings
+    #
+    #     sleep_track = 0
+    #     result = []
+    #     next_max_id = ''
+    #     self.get_username_info(user_id)
+    #     username_info = self.last_json
+    #     if "user" in username_info:
+    #         total = amount or username_info["user"][key]
+    #
+    #         if total > 200000:
+    #             print("Consider temporarily saving the result of this big "
+    #                   "operation. This will take a while.\n")
+    #     else:
+    #         return False
+    #     if filter_business:
+    #         print("--> You are going to filter business accounts. This will take time! <--")
+    #         from random import random
+    #     if to_file is not None:
+    #         if os.path.isfile(to_file):
+    #             if not overwrite:
+    #                 print("File `{}` already exists. Not overwriting.".format(to_file))
+    #                 return False
+    #             else:
+    #                 print("Overwriting file `{}`".format(to_file))
+    #         with open(to_file, 'w'):
+    #             pass
+    #     desc = "Getting {} of {}".format(which, user_id)
+    #     with tqdm(total=total, desc=desc, leave=True) as pbar:
+    #         while True:
+    #             get(user_id, next_max_id)
+    #             last_json = self.last_json
+    #             try:
+    #                 with open(to_file, 'a') if to_file is not None else StringIO() as f:
+    #                     for item in last_json["users"]:
+    #                         if filter_private and item['is_private']:
+    #                             continue
+    #                         if filter_business:
+    #                             time.sleep(2 * random())
+    #                             self.get_username_info(item['pk'])
+    #                             item_info = self.last_json
+    #                             if item_info['user']['is_business']:
+    #                                 continue
+    #                         if filter_verified and item['is_verified']:
+    #                             continue
+    #                         if to_file is not None:
+    #                             if usernames:
+    #                                 f.write("{}\n".format(item['username']))
+    #                             else:
+    #                                 f.write("{}\n".format(item['pk']))
+    #                         result.append(item)
+    #                         pbar.update(1)
+    #                         sleep_track += 1
+    #                         if sleep_track >= 20000:
+    #                             sleep_time = uniform(120, 180)
+    #                             msg = "\nWaiting {:.2f} min. due to too many requests."
+    #                             print(msg.format(sleep_time / 60))
+    #                             time.sleep(sleep_time)
+    #                             sleep_track = 0
+    #                 if not last_json["users"] or len(result) >= total:
+    #                     return result[:total]
+    #             except Exception as e:
+    #                 print("ERROR: {}".format(e))
+    #                 return result[:total]
+    #
+    #             if last_json["big_list"] is False:
+    #                 return result[:total]
+    #
+    #             next_max_id = last_json.get("next_max_id", "")
+    #
+    # def get_total_followers(self, user_id, amount=None):
+    #     return self.get_total_followers_or_followings(
+    #         user_id, amount, 'followers')
+    #
+    # def get_total_followings(self, user_id, amount=None):
+    #     return self.get_total_followers_or_followings(
+    #         user_id, amount, 'followings')
 
     def get_total_user_feed(self, user_id, min_timestamp=None):
         return self.get_last_user_feed(user_id, amount=float('inf'), min_timestamp=min_timestamp)
@@ -830,25 +891,25 @@ class API(object):
                 return user_feed
             next_max_id = last_json.get("next_max_id", "")
 
-    def get_total_hashtag_feed(self, hashtag_str, amount=100):
-        hashtag_feed = []
-        next_max_id = ''
-
-        with tqdm(total=amount, desc="Getting hashtag media.", leave=False) as pbar:
-            while True:
-                self.get_hashtag_feed(hashtag_str, next_max_id)
-                last_json = self.last_json
-                if 'items' not in last_json:
-                    return hashtag_feed[:amount]
-                items = last_json['items']
-                try:
-                    pbar.update(len(items))
-                    hashtag_feed += items
-                    if not items or len(hashtag_feed) >= amount:
-                        return hashtag_feed[:amount]
-                except Exception:
-                    return hashtag_feed[:amount]
-                next_max_id = last_json.get("next_max_id", "")
+    # def get_total_hashtag_feed(self, hashtag_str, amount=100):
+    #     hashtag_feed = []
+    #     next_max_id = ''
+    #
+    #     with tqdm(total=amount, desc="Getting hashtag media.", leave=False) as pbar:
+    #         while True:
+    #             self.get_hashtag_feed(hashtag_str, next_max_id)
+    #             last_json = self.last_json
+    #             if 'items' not in last_json:
+    #                 return hashtag_feed[:amount]
+    #             items = last_json['items']
+    #             try:
+    #                 pbar.update(len(items))
+    #                 hashtag_feed += items
+    #                 if not items or len(hashtag_feed) >= amount:
+    #                     return hashtag_feed[:amount]
+    #             except Exception:
+    #                 return hashtag_feed[:amount]
+    #             next_max_id = last_json.get("next_max_id", "")
 
     def get_total_self_user_feed(self, min_timestamp=None):
         return self.get_total_user_feed(self.user_id, min_timestamp)
@@ -889,17 +950,6 @@ class API(object):
         data = self.json_data()
         return self.send_request('accounts/current_user/?edit=true', data)
 
-    def edit_profile(self, url, phone, first_name, biography, email, gender):
-        data = self.json_data({
-            'external_url': url,
-            'phone_number': phone,
-            'username': self.username,
-            'full_name': first_name,
-            'biography': biography,
-            'email': email,
-            'gender': gender,
-        })
-        return self.send_request('accounts/edit_profile/', data)
 
     def fb_user_search(self, query):
         url = 'fbsearch/topsearch/?context=blended&query={query}&rank_token={rank_token}'
@@ -927,69 +977,6 @@ class API(object):
     def search_location(self, query='', lat=None, lng=None):
         url = 'fbsearch/places/?rank_token={rank_token}&query={query}&lat={lat}&lng={lng}'
         url = url.format(rank_token=self.rank_token, query=query, lat=lat, lng=lng)
-        return self.send_request(url)
-
-    def get_user_reel(self, user_id):
-        url = 'feed/user/{}/reel_media/'.format(user_id)
-        return self.send_request(url)
-
-    def get_user_stories(self, user_id):
-        url = 'feed/user/{}/story/'.format(user_id)
-        return self.send_request(url)
-
-    def get_self_story_viewers(self, story_id):
-
-        url = 'media/{}/list_reel_media_viewer/?supported_capabilities_new={}'.format(story_id,
-                                                                                      config.SUPPORTED_CAPABILITIES)
-        return self.send_request(url)
-
-    def get_tv_suggestions(self):
-        url = 'igtv/tv_guide/'
-        return self.send_request(url)
-
-    def get_hashtag_stories(self, hashtag):
-        url = 'tags/{}/story/'.format(hashtag)
-        return self.send_request(url)
-
-    def follow_hashtag(self, hashtag):
-        data = self.json_data({})
-        url = 'tags/follow/{}/'.format(hashtag)
-        return self.send_request(url, data)
-
-    def unfollow_hashtag(self, hashtag):
-        data = self.json_data({})
-        url = 'tags/unfollow/{}/'.format(hashtag)
-        return self.send_request(url, data)
-
-    def get_tags_followed_by_user(self, user_id):
-        url = 'users/{}/following_tags_info/'.format(user_id)
-        return self.send_request(url)
-
-    def get_hashtag_sections(self, hashtag):
-        data = self.json_data({'supported_tabs': "['top','recent','places']", 'include_persistent': 'true'})
-        url = 'tags/{}/sections/'.format(hashtag)
-        return self.send_request(url, data)
-
-    def get_media_insight(self, media_id):
-        url = 'insights/media_organic_insights/{}/?ig_sig_key_version={}'.format(media_id, config.IG_SIG_KEY)
-        return self.send_request(url)
-
-    def get_self_insight(self):
-        url = 'insights/account_organic_insights/?show_promotions_in_landing_page=true&first={}'.format()  # todo
-        return self.send_request(url)
-
-    def save_media(self, media_id):
-        data = self.json_data()
-        url = 'media/{}/save/'.format(media_id)
-        return self.send_request(url, data)
-
-    def unsave_media(self, media_id):
-        data = self.json_data()
-        url = 'media/{}/unsave/'.format(media_id)
-        return self.send_request(url, data)
-
-    def get_saved_medias(self):
-        url = 'feed/saved/'
         return self.send_request(url)
 
 

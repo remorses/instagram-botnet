@@ -1,15 +1,10 @@
-from typing import List
-import requests
-from random import random
-from pathlib import Path
-from .common import accepts, today
-from ..nodes import Node, Arg, Media
-import time
+from .common import decorate
+from ..nodes import Media
 
 
 
 
-@accepts(Media)
+@decorate(accepts=Media, returns=Media)
 def delete(bot, nodes,  args):
 
 
@@ -24,7 +19,6 @@ def delete(bot, nodes,  args):
                     bot.logger.warn('deletion didn\'t go well')
             except (KeyError, TypeError):
                 bot.logger.warn('cannot delete media {}'.format(node.url))
-                pass
 
         else:
             raise Exception('`delete` needs urls of photos to delete')

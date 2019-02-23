@@ -1,14 +1,13 @@
-from .common import accepts
-from ..nodes import Node, User, Media
+from .common import decorate
+from ..nodes import User
 
-from .common import today, tap
+from .common import tap
 from ..bot import Bot
-from funcy import rcompose, raiser, tap as _tap
-import time
+from funcy import raiser, rcompose
 
 
 
-@accepts(User)
+@decorate(accepts=User, returns=User)
 def unfollow(bot: Bot, nodes,  args):
 
     max = float(args['max']) if 'max' in args else float('inf')
@@ -47,12 +46,7 @@ def unfollow_user(user, bot):
         bot.sleep('error')
         return None
     else:
-        with bot.cache as cache:
-            cache['unfollowed'].insert(dict(
-                identifier=user.id,
-                time=today(),
-                type='user',
-            ))
+        bot.total['unfollows'] += 1
 
         bot.logger.info('unfollowed %s' % user)
         bot.sleep('unfollow')

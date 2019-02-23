@@ -66,6 +66,7 @@ def populate_string( yaml_string, data={}):
     """
     max one {{  }} per line!
     """
+    import random
 
     def replace_in_line(line):
         if '{{' in line and '}}' in line:
@@ -75,7 +76,7 @@ def populate_string( yaml_string, data={}):
             if variable_name in data:
                 return (
                     line[:begin].replace('{{','').replace('}}','') +
-                    str(data[variable_name]) +
+                    str(xeval(variable_name)) +
                     line[end:].replace('}}','').replace('{{','')
                 )
             else:
@@ -85,3 +86,19 @@ def populate_string( yaml_string, data={}):
 
     new_lines = map(replace_in_line, yaml_string.splitlines())
     return '\n'.join(new_lines)
+
+def xeval(expr, data):
+    try:
+        return eval(expr, dict(
+            random=random,
+            **data,
+            # User=User,
+            # Story=Story,
+            # Media=Media,
+            # Hashtag=Hashtag,
+            # Geotag=Geotag
+        ))
+
+    except Exception as e:
+        print(f'error in xeval {e}'
+        return None

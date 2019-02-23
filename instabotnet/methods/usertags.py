@@ -1,10 +1,13 @@
-from funcy import rcompose, mapcat
+from funcy import mapcat
 from typing import List
 from ..nodes import User, Media
-from .common import accepts
+from .common import decorate
 
 
-@accepts(Media)
+
+
+
+@decorate(accepts=Media, returns=User)
 def usertags(bot, nodes,  args) -> List[User]:
 
     process = lambda media: media.get_usertags(bot)
