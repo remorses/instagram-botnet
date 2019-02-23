@@ -1,6 +1,6 @@
 from datetime import datetime
 import re
-
+import inspect
 
 def accepts(Class, returns):
 
@@ -42,13 +42,29 @@ def cycled_api_call(amount, bot, api_method, api_argument, key):
     next_max_id = ''
     sleep_track = 0
     done = 0
-
+    
+    rank_token = bot.api.generate_uuid()
+    
 
     while True:
         bot.logger.debug('new get cycle with %s' % api_method.__name__)
         try:
-            api_method(api_argument, max_id=next_max_id)
-            items = bot.last[key] if key in bot.last else []
+            args = inspect,sigature(api_prthod).parameters
+            
+            if 'rank_token' in args:
+                data = api_method(
+                    **api_argument if isinstance(api_argument, dict) else api_argument, 
+                    rank_token=rank_token,
+                    max_id=next_max_id,
+                )
+                
+            else:
+                data = api_method(
+                    **api_argument if isinstance(api_argument, dict) else api_argument,                 
+                    max_id=next_max_id,
+                )
+                
+            items = data[key] if key in data else []
             size = len(items)
 
             if any([

@@ -30,7 +30,13 @@ class Bot:
         self.predicates = [] # [partial(not_in_cache, self), ]
 
         self.start_time = datetime.datetime.now()
-        self.api = API( id=self.id, username=username, device=device,)
+        self.api = API(
+            username=username,
+            password=password,)
+            cookie=load(self.cookie_file),
+            proxy=proxy,
+            # settings=settings,
+        )
         self.logger = self.api.logger
 
         self.total = TOTAL
@@ -43,10 +49,7 @@ class Bot:
         self._following_ids = []
         self._following_usernames = []
 
-
-
-        self.api.login(username, password, proxy=proxy, use_cookie=True,
-                       cookie_fname=self.cookie_file)
+        self.api.login()
 
 
 
@@ -195,3 +198,9 @@ def cycled_api_call(amount, bot, api_method, api_argument, key,  ):
         bot.sleep('usual')
         next_max_id = bot.last.get("next_max_id", "")
         sleep_track += 1
+    
+    
+
+def load(path):
+    with open(path) as f:
+        return f.read()

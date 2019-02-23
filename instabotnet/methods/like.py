@@ -38,14 +38,7 @@ def like(bot, nodes,  args):
 
 
 def like_media(media, bot):
-        bot.api.like(media.id)
-        if bot.last['status'] != 'ok':
-            bot.logger.warn('request didn\'t return "ok" liking {}'.format(media.url))
-            bot.sleep('error')
-            return None
-        else:
-            bot.total['likes'] += 1
-
-            bot.logger.debug('liked %s' % media.url)
-            bot.sleep('like')
-            return media
+        bot.api.post_like(media.id)
+        bot.total['likes'] += 1
+        bot.sleep('like')
+        return media

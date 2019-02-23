@@ -12,12 +12,18 @@ def followers(bot: Bot, nodes,  args) -> List[User]:
     #
     # nodes = iter(list(nodes))
     amount = args.get('amount')
+    query = args.get('query', {})
 
     pack_user = lambda item: User(id=item['pk'], username=item['username'], data=item)
 
     process = rcompose(
             lambda user: user.id if user.id else user.get_id(bot),
-            lambda id: cycled_api_call(amount, bot, bot.api.get_user_followers, id, 'users'),
+            lambda id: cycled_api_call(
+                amount, 
+                bot, 
+                bot.api.user_followers, 
+                dict(user_id=id, **args.get('query', {}), 
+                'users'),
             lambda gen: map(pack_user, gen)
 
         )

@@ -40,14 +40,6 @@ def follow(bot: Bot, nodes,  args):
 
 
 def follow_user(user, bot):
-    bot.api.follow(user.id)
-    if bot.last['status'] != 'ok':
-        bot.logger.warn('request didn\'t return "ok" following {}'.format(user.username))
-        bot.sleep('error')
-        return None
-    else:
-        bot.total['follows'] += 1
-
-        bot.logger.info('followed %s' % user)
-        bot.sleep('follow')
-        return user
+    data = bot.api.friendship_create(user.id)
+    bot.total['follows'] += 1
+    return user

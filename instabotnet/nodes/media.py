@@ -56,10 +56,10 @@ class Media(Node):
     def get_data(self, bot):
         url, id, data = attributes(self)
         if id:
-            bot.api.media_info(id)
+            res = bot.api.media_info(id)
             bot.sleep('usual')
-            if 'items' in bot.last:
-                self._data = bot.last["items"][0]
+            if 'items' in res:
+                self._data = res["items"][0]
                 return self._data
         elif data:
             if 'media_id' in data:

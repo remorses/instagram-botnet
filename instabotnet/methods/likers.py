@@ -29,8 +29,8 @@ def likers(bot, nodes,  args) -> List[Media]:
 
 
 def get_likers(id, bot, amount):
-    bot.api.get_media_likers(id)
-    if 'users' in bot.last:
-        yield from bot.last['users'][:amount]
+    data = bot.api.media_likers(id)
+    if 'users' in data:
+        yield from data['users'][:amount]
     else:
         yield from []
