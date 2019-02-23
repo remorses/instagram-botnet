@@ -2,12 +2,12 @@ import os
 import traceback
 from ..nodes import Node, node_classes
 from .common import decorate
-from ..api.exceptions import (
-    LoginRequired,
-    TooManyRequests,
-    NotFound,
-    HeadersTooLarge,
-    EmptyResponse,
+from instagram_private_api.errors import (
+    ClientLoginRequiredError,
+    ClientCookieExpiredError,
+    ClientConnectionError,
+    ClientThrottledError,
+    ClientReqHeadersTooLargeError,
 )
 
 DEBUG = bool(os.environ.get('DEBUG'))
@@ -31,18 +31,17 @@ def evaluate(bot, nodes,  args) -> Node:
         except StopIteration:
             break
             
-        except LoginRequired:
+        except ClientLoginRequiredError:
             log_error(bot.logger)
             bot.relogin()
             
-        except (NotFound, HeadersTooLarge, EmptyResponse):
+        except (
+            ClientConnectionError,
+            ClientReqHeadersTooLargeError,
+        ):
             log_error(bot.logger)
             bot.sleep()
         
-        except TooManyRequests:
-            log_error(bot.logger)
-            bot.sleep('error')
-            
         except:
             raise
             

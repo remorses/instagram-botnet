@@ -87,8 +87,7 @@ def configure_photo(self, upload_id, photo, caption=''):
 def upload_photo(self, photo, caption=None, upload_id=None, from_video=False):
     if upload_id is None:
         upload_id = str(int(time.time() * 1000))
-    if not from_video:
-        photo = resize_image(photo)
+
     if not photo:
         return False
     if not compatible_aspect_ratio(get_image_size(photo)):
