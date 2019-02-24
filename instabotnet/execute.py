@@ -35,7 +35,7 @@ def execute(script, variables={}) -> [dict]:
             action_name = action['name'] if 'name' in action else 'unnmaed action'
             bot.logger.info(f'# ACTION {action_name}')
 
-            nodes, edges = nodes_edges(action)
+            nodes, edges = nodes_edges(action, bot)
             begin_state = dotdict(nodes=nodes, bot=bot, data=deque([]), errors=[])
             bot.logger.info(f'# with nodes {nodes}')
 

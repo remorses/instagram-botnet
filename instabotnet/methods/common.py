@@ -63,14 +63,22 @@ def cycled_api_call(amount, bot, api_method, api_argument, key):
                     **api_argument, 
                     **all_params,
                 )
-            
+
             else:
                 data = api_method(
                     api_argument, 
                     **all_params,
                 )
+            
+            if type(key) == tuple or type(key) == list:
+                items = data
+                for k in key:
+                    items = items.get(k, {})
+            else:
+                items = data.get(key)
                 
-            items = data[key] if key in data else []
+            items = items or []
+            
             size = len(items)
 
             if any([

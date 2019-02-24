@@ -1,0 +1,121 @@
+$schema: "http://json-schema.org/draft-06/schema#"
+$ref: "#/definitions/Script"
+definitions: 
+  Script: 
+    type: "object"
+    additionalProperties: "false"
+    properties: 
+      name: 
+        type: "string"
+      version: 
+        type: "integer"
+      mode: 
+        type: "string"
+      bots: 
+        type: "array"
+        items: 
+          $ref: "#/definitions/Bot"
+      actions: 
+        type: "array"
+        items: 
+          $ref: "#/definitions/Action"
+    required: 
+    - "actions"
+    - "bots"
+    - "mode"
+    - "name"
+    - "version"
+    title: "Welcome"
+  Action: 
+    type: "object"
+    additionalProperties: "false"
+    properties: 
+      name: 
+        type: "string"
+      from_type: 
+        type: "string"
+      nodes: 
+        type: "array"
+        items: 
+          type: "string"
+      edges: 
+        type: "array"
+        items: 
+          $ref: "#/definitions/EdgeElement"
+    required: 
+    - "edges"
+    - "from"
+    - "name"
+    - "nodes"
+    title: "Action"
+  EdgeClass: 
+    type: "object"
+    additionalProperties: "false"
+    properties: 
+      filter: 
+        $ref: "#/definitions/Filter"
+      follow: 
+        $ref: "#/definitions/Follow"
+      like: 
+        $ref: "#/definitions/Follow"
+      shuffle: 
+        $ref: "#/definitions/Follow"
+      upload: 
+        $ref: "#/definitions/Upload"
+    required: 
+    title: "EdgeClass"
+  Filter: 
+    type: "object"
+    additionalProperties: "false"
+    properties: 
+      user: 
+        $ref: "#/definitions/User"
+    required: 
+    - "user"
+    title: "Filter"
+  User: 
+    type: "object"
+    additionalProperties: "false"
+    properties: 
+      is_private: 
+        type: "string"
+      is_verified: 
+        type: "string"
+    required: 
+    - "is_private"
+    title: "User"
+  Follow: 
+    type: "object"
+    additionalProperties: "false"
+    properties: 
+      max: 
+        type: "integer"
+    required: 
+    - "max"
+    title: "Follow"
+  Upload: 
+    type: "object"
+    additionalProperties: "false"
+    properties: 
+      caption: 
+        type: "string"
+    required: 
+    - "caption"
+    title: "Upload"
+  Bot: 
+    type: "object"
+    additionalProperties: "false"
+    properties: 
+      username: 
+        type: "string"
+      password: 
+        type: "string"
+    required: 
+    - "password"
+    - "username"
+    title: "Bot"
+  EdgeElement: 
+    anyOf: 
+    - $ref: "#/definitions/EdgeClass"
+    - type: "string"
+    title: "EdgeElement"

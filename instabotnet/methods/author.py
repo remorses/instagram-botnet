@@ -7,7 +7,14 @@ from .common import decorate
 def author(bot, nodes,  args):
 
 
-    process = lambda media: media.get_author(bot)
+    process = rcompose(
+        lambda media: media._data['user'],
+        lambda data: User(data=data),
+    )
+    
     result = mapcat(process, nodes)
 
     return result, {}
+
+
+ 

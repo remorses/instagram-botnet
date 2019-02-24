@@ -6,6 +6,8 @@ from .common import decorate
 def geotag(bot, nodes,  args) -> Geotag:
 
     process = lambda media: media.get_geotag(bot)
+    
     result = map(process, nodes)
+
 
     return result, {}

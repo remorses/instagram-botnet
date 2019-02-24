@@ -1,11 +1,12 @@
 from .methods import methods
 from .nodes import Arg, Media, node_classes
 from .support import dotdict
+from instagram_private_api.utils import InstagramId
 from functools import reduce
 
 
 
-def nodes_edges(body):
+def nodes_edges(body, bot):
 
     nodes = []
     edges = []
@@ -33,7 +34,7 @@ def nodes_edges(body):
 
     edges += [dotdict(type='evaluate', args=dict(info=info))]
 
-    nodes = initialize_nodes(nodes, edges, body)
+    nodes = initialize_nodes(nodes, body['from'], bot)
 
     return nodes, edges
 
@@ -45,19 +46,25 @@ def calc_total_nodes(acc, edge):
     return amount * acc if acc <= max else max
 
 
-def initialize_nodes(nodes, edges, data):
-    if 'from_type' in data:
-        Class = node_classes[data['from_type'].lower()]
-    elif 'from' in data:
-        Class = node_classes[data['from'].lower()]
-    else:
-        first_method = methods.get(edges[0]['type'], None)
-        if not first_method:
-            raise Exception('can\'t find {} edge in available edges methods')
-        Class = first_method.accepts
-        Class = Class if Class.__name__ != 'Node' else \
-            Media if 'instagram.com' in nodes[0] else Arg
-
-    return [Class(generic=value) for value in nodes]
+def initialize_nodes(nodes, from_type, api):
+    
+    Class = node_classes[from_type.lower()]
+    
+    identity = lambda x: x
+    
+    switch = {
+        'User': lambda username: api.username_info(username)['user'],
+        'Media': rcompose(
+            lambda url: [x for x in url.split('/') if x][-1],
+            lambda short: InstagramId.expand_code(short),
+            lambda code: api.media_info(code),
+        ),
+        'Hashtag': identity,
+        'Arg': identity,
+        'Geotag': lambda name: api.
+    }
+        
+        
+    return [Class(data=switch[Class.__name__](value)) for value in nodes]
 
 

@@ -79,15 +79,12 @@ def do_comment(bot: Bot, text, node, thread_id=None):
         )()
     )
 
-    bot.api.comment(
+    bot.api.post_comment(
         media_id=media_id,
         comment_text=evaluated_text,
     )
-    if bot.last['status'] == 'ok':
-        bot.logger.debug('commented %s' % node)
-        bot.sleep('comment')
-        return node
-    else:
-        bot.logger.error("comment to {} wasn't posted".format(node))
-        bot.sleep('error')
-        return None
+
+    bot.logger.info('commented %s' % node)
+    bot.toal['comments'] += 1
+    bot.sleep('comment')
+    return node
