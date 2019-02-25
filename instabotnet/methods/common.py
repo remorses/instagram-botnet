@@ -2,6 +2,8 @@ from datetime import datetime
 import re
 import inspect
 import traceback
+import os
+from random import random
 
 def accepts(Class, returns):
 
@@ -142,3 +144,17 @@ def extract_urls(text):
 
 effify = lambda non_f_str: f'{non_f_str}'
 substitute_vars = lambda txt, **kwds: effify(txt).format(**kwds)
+
+
+
+
+class temporary_write:
+		def __init__(self,  data, path=str(random())[3:]):
+				self.path = path
+				self.data = data
+				f = open(self.path, 'a+b')
+				f.write(self.data)
+				f.close()
+				
+		__enter__ = lambda self: self.path
+		__exit__ = lambda self, a, b, c: os.remove(self.path)
