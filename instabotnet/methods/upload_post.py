@@ -92,9 +92,7 @@ def load(path):
         return f.read()
             
 def download_media(url):
-    res = urllib.request.urlopen(url)
-    data = res.read()
-    return data
+    return urllib.request.urlopen(url).read()
       
 def binary_data(node):
     is_url = isinstance(node, Arg) and 'http' in node.value
@@ -119,8 +117,6 @@ def get_video_size(path):
         width = int(video_stream['width'])
         height = int(video_stream['height'])
         return width, height
-
-
 
 def make_thumbnail(input_data):
     import subprocess
