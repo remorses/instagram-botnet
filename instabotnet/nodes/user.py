@@ -51,8 +51,8 @@ class User(Node):
 
         if self._id:
             bot.sleep('usual')
-            bot.api.user_info(self._id)
-            if 'user' in bot.last:
+            re = bot.api.user_info(self._id)
+            if 'user' in res:
                 self._data = res['user']
                 return self._data
 

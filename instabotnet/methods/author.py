@@ -1,11 +1,10 @@
-from funcy import mapcat
+from funcy import mapcat, rcompose
 from ..nodes import User, Media
 from .common import decorate
 
 
 @decorate(accepts=Media, returns=User)
 def author(bot, nodes,  args):
-
 
     process = rcompose(
         lambda media: media._data['user'],

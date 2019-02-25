@@ -77,7 +77,7 @@ def populate_string( yaml_string, data={}):
             try:
                 return (
                     line[:begin].replace('{{','').replace('}}','') +
-                    str(xeval(variable_name, merge(data, os.environ)) +
+                    str(xeval(variable_name, merge(data, os.environ))) +
                     line[end:].replace('}}','').replace('{{','')
                 )
             except:

@@ -46,7 +46,7 @@ def upload_post(bot, nodes,  args):
                       res = bot.api.post_photo(**kwargs)
                       
                 elif fleep.get(data[:128]).extension[0] in SUPPORTD_VIDEO_EXT:
-                      kwargs.update(make_video_args(data, path)
+                      kwargs.update(make_video_args(data, path))
                       res = bot.api.post_video(**kwargs)
                       
                 else:
