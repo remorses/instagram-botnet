@@ -50,7 +50,7 @@ def initialize_nodes(nodes, from_type, api):
     
     Class = node_classes[from_type.lower()]
     
-    identity = lambda x: x
+ 
     
     switch = {
         'User': lambda username: api.username_info(username)['user'],
@@ -59,9 +59,9 @@ def initialize_nodes(nodes, from_type, api):
             lambda short: InstagramId.expand_code(short),
             lambda code: api.media_info(code),
         ),
-        'Hashtag': identity,
+        'Hashtag': lambda name: api.hashtag,
         'Arg': identity,
-        'Geotag': lambda name: api.
+        'Geotag': lambda name: api.location_fb_search(name, rank_token=api.generate_uuid())
     }
         
         
