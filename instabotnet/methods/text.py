@@ -2,12 +2,12 @@ from funcy import ignore, raiser, rcompose
 from random import choice
 from ..bot import Bot
 from .common import decorate, extract_urls, substitute_vars, tap
-from ..nodes import Media, Node
+from ..nodes import User, Node
 
 
 
 
-@decorate(accepts=Media, returns=Node)
+@decorate(accepts=User, returns=Node)
 def text(bot, nodes,  args):
 
 

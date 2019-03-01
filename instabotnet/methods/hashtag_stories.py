@@ -1,6 +1,6 @@
 from typing import List
 from funcy import  rcompose, mapcat
-from ..nodes import  Media, Hashtag
+from ..nodes import  Media, Hashtag, Story
 from .common import decorate, cycled_api_call
 
 
@@ -9,7 +9,7 @@ from .common import decorate, cycled_api_call
 def hashtag_stories(bot, nodes,  args) -> List[Media]:
     amount = args.get('amount')
 
-    pack_story = lambda data: Story(id=data['pk'], data=data)
+    pack_story = lambda data: Story(**data)
 
     process = rcompose(
         lambda tag: tag.name,

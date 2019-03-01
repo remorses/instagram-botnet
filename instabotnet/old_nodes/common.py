@@ -1,6 +1,7 @@
 
 from types import FunctionType
 
+
 # returns the attributes of the class,
 # TODO, in pyton 3.2 attribtes aren't ordered
 def attributes(instance):

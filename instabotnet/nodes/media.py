@@ -1,169 +1,298 @@
 
-from funcy import rcompose, ignore
+from funcy import rcompose, ignore, fallback
 from .node import Node
-from .user import User
-from .geotag import Geotag
-from .hashtag import Hashtag
+from modeller import Model
+import yaml
+
+schema = yaml.load('''
+properties:
+    can_see_insights_as_brand: {}
+    can_view_more_preview_comments: {}
+    can_viewer_reshare: {}
+    can_viewer_save: {}
+    caption:
+        properties:
+            bit_flags:
+                type: integer
+            content_type:
+                type: string
+            created_at:
+                type: integer
+            created_at_utc:
+                type: integer
+            did_report_as_spam:
+                type: boolean
+            has_translation: {}
+            media_id:
+                type: integer
+            pk:
+                type: integer
+            share_enabled:
+                type: boolean
+            status:
+                type: string
+            text:
+                type: string
+            type:
+                type: integer
+            user:
+                {user_schema}
+            user_id:
+                type: integer
+        required:
+            - user
+            - created_at
+            - text
+            - did_report_as_spam
+            - share_enabled
+            - user_id
+            - content_type
+            - bit_flags
+            - pk
+            - status
+            - created_at_utc
+            - type
+            - media_id
+        type: object
+    caption_is_edited: {}
+    carousel_media:
+        properties:
+            carousel_parent_id: {}
+            id: {}
+            image_versions2:
+                properties:
+                    candidates:
+                        properties:
+                            height: {}
+                            url: {}
+                            width: {}
+                        required:
+                            - url
+                            - height
+                            - width
+                required:
+                    - candidates
+            is_dash_eligible: {}
+            media_type: {}
+            number_of_qualities: {}
+            original_height: {}
+            original_width: {}
+            pk: {}
+            usertags:
+                properties:
+                    in:
+                        properties:
+                            duration_in_video_in_sec:
+                                type: 'null'
+                            position:
+                                items:
+                                    type: number
+                                type: array
+                            start_time_in_video_in_sec:
+                                type: 'null'
+                            user:
+                                {user_tag}
+                        required:
+                            - duration_in_video_in_sec
+                            - position
+                            - user
+                            - start_time_in_video_in_sec
+                        type: object
+                required:
+                    - in
+                type: object
+            video_codec: {}
+            video_dash_manifest: {}
+            video_duration: {}
+            video_versions:
+                properties:
+                    height: {}
+                    id: {}
+                    type: {}
+                    url: {}
+                    width: {}
+                required:
+                    - height
+                    - width
+                    - url
+                    - type
+                    - id
+        required:
+            - video_versions
+            - original_height
+            - video_codec
+            - is_dash_eligible
+            - original_width
+            - number_of_qualities
+            - pk
+            - carousel_parent_id
+            - media_type
+            - id
+            - video_duration
+            - image_versions2
+            - video_dash_manifest
+    carousel_media_count: {}
+    client_cache_key: {}
+    code: {}
+    comment_count: {}
+    comment_likes_enabled: {}
+    comment_threading_enabled: {}
+    commenting_disabled_for_viewer:
+        type: boolean
+    comments_disabled:
+        type: boolean
+    device_timestamp: {}
+    direct_reply_to_author_enabled:
+        type: boolean
+    facepile_top_likers: {}
+    filter_type: {}
+    has_audio:
+        type: boolean
+    has_liked: {}
+    has_more_comments: {}
+    id: {}
+    image_versions2:
+        properties:
+            candidates:
+                properties:
+                    height: {}
+                    url: {}
+                    width: {}
+                required:
+                    - url
+                    - height
+                    - width
+        required:
+            - candidates
+    inline_composer_display_condition: {}
+    inline_composer_imp_trigger_time: {}
+    is_dash_eligible: {}
+    lat:
+        type: number
+    like_count: {}
+    likers:
+        {user_schema}
+    lng:
+        type: number
+    location:
+        {geotag_schema}
+    max_num_visible_preview_comments: {}
+    media_type: {}
+    next_max_id:
+        type: integer
+    number_of_qualities: {}
+    organic_tracking_token: {}
+    original_height: {}
+    original_width: {}
+    photo_of_you: {}
+    pk: {}
+    preview_comments:
+        {comment_schema}
+    taken_at: {}
+    top_likers:
+        items:
+            type: string
+    user:
+        {user_schema}
+    usertags:
+        properties:
+            in:
+                properties:
+                    duration_in_video_in_sec:
+                        type: 'null'
+                    position:
+                        items:
+                            type: number
+                        type: array
+                    start_time_in_video_in_sec:
+                        type: 'null'
+                    user:
+                        {user_schema}
+                required:
+                    - duration_in_video_in_sec
+                    - position
+                    - user
+                    - start_time_in_video_in_sec
+                type: object
+        required:
+            - in
+        type: object
+    video_codec: {}
+    video_dash_manifest: {}
+    video_duration:
+        type: number
+    video_versions:
+        properties:
+            height:
+                type: integer
+            id:
+                type: string
+            type:
+                type: integer
+            url:
+                type: string
+            width:
+                type: integer
+        required:
+            - height
+            - width
+            - url
+            - type
+            - id
+        type: object
+    view_count:
+        type: number
+required:
+    - can_viewer_save
+    - photo_of_you
+    - caption
+    - filter_type
+    - user
+    - has_liked
+    - organic_tracking_token
+    - caption_is_edited
+    - code
+    - can_viewer_reshare
+    - like_count
+    - taken_at
+    - client_cache_key
+    - pk
+    - media_type
+    - id
+    - device_timestamp
+''')
+
+
+get_image_url = lambda data: fallback(
+    lambda: data['image_versions2']['candidates'][0]['url'],
+    lambda: data['image_versions2'][0]['url'],
+    lambda: None,
+)
+
+get_video_url = lambda data: fallback(
+    lambda: data['video_versions'][0]['url'],
+    lambda: None,
+)
+
+get_url = lambda data: get_video_url(data) or get_image_url(data)
+
+class Media(Node, Model):
+
+    id = property(lambda self: self.pk)
+
+    url = property(lambda self: url_from_id(self.pk))
+
+    sources = property(lambda self: fallback(
+        lambda: list(map(get_url, self['carousel_media'])),
+        lambda: [get_url(self)],
+        lambda: [],
+    ))
 
 
 
-attributes = lambda media: (media._url, media._id, media._data)
-
-class Media(Node):
-
-    __slots__ = ['_url', '_id', '_data']
-
-    def __init__(self, *, generic=False, url=False, id=False, data={}):
-
-        self._url = url
-        self._id = id
-        self._data = data
-
-        if generic:
-            self._url = generic
-
-    def __repr__(self):
-        url, id, data = attributes(self)
-        if url:
-            return 'Media(url=\'{}\')'.format(url)
-        elif id:
-            return 'Media(id={})'.format(id)
-        elif data:
-            return 'Media(data=\'{...}\')'
-
-    @property
-    def id(self):
-        url, id, data = attributes(self)
-        if id:
-            return id
-        elif url:
-            return id_from_url(url)
-        else:
-            raise Exception('can\'t retrieve id, not enought data')
-
-    @property
-    def url(self):
-        url, id, data = attributes(self)
-        if url:
-            return url
-        elif id:
-            return url_from_id(id)
-        elif data:
-            return data['media_id']
-        else:
-            raise Exception
-
-    def get_data(self, bot):
-        url, id, data = attributes(self)
-        if id:
-            res = bot.api.media_info(id)
-            bot.sleep('usual')
-            if 'items' in res:
-                self._data = res["items"][0]
-                return self._data
-        elif data:
-            if 'media_id' in data:
-                self._id = data['media_id']
-                return self.get_data(bot)
-            else:
-                return {}
-        elif url:
-            id = id_from_url(url)
-            self._id = id
-            return self.get_data(bot)
-
-        else:
-            return {}
 
 
-    def get_author(self, bot):
-        _, _, data = attributes(self)
-        if 'user' in data:
-            user = data["user"]
-            return User(
-                data=user,
-                id=user['pk'],
-                username=user['username']
-            )
-        else:
-            data = self.get_data(bot)
-            user = data["user"]
-            return User(
-                data=user,
-                id=user['pk'],
-                username=user['username']
-            )
 
-    def get_like_count(self, bot):
-        _, _, data = attributes(self)
-        if 'like_count' in data:
-            return data['like_count']
-        else:
-            data = self.get_data(bot)
-            return data['like_count']
-
-    def get_comment_count(self, bot):
-        _, _, data = attributes(self)
-        if 'comment_count' in data:
-            return data['comment_count']
-        else:
-            data = self.get_data(bot)
-            if 'comment_count' in data:
-                return data['comment_count']
-            else:
-                return False
-
-    @ignore(TypeError)
-    def get_caption(self, bot):
-        _, _, data = attributes(self)
-        if 'caption' in data:
-            return data['caption']['text']
-        else:
-            data = self.get_data(bot)
-            return data['caption']['text']
-
-
-    def get_geotag(self, bot):
-        _, _, data = attributes(self)
-        if 'location' in data:
-            return data['location']
-        else:
-            data = self.get_data(bot)
-            if 'location' in data:
-                return  Geotag(
-                    name=data['name'],
-                    id=data['pk'],
-                    data=data
-                )
-            else:
-                return False
-
-    def get_usertags(self, bot):
-        _, _, data = attributes(self)
-        pack_user = rcompose(
-            lambda data: data['user'],
-            lambda data: User(username=data['username'], id=data['pk'], data=data)
-        )
-
-        try:
-            if 'usertags' in data:
-                items =  data["usertags"]["in"]
-                yield from (pack_user(item) for item in items)
-            else:
-                data = self.get_data(bot)
-                if 'usertags' in data:
-                    items =  data["usertags"]["in"]
-                    yield from (pack_user(item) for item in items)
-                else:
-                    return False
-        except KeyError:
-            return False
-
-    def get_hashtags(self, bot):
-        text = self.get_caption(bot)
-        raw_tags = set(part[1:] for part in text.split() if part.startswith('#'))
-        tags = (Hashtag(name=tag) for tag in raw_tags)
-        yield from tags
 
 
 

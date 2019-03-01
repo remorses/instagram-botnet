@@ -1,17 +1,7 @@
 from .node import Node
+from modeller import Model
 
 
 
-
-class Arg(Node):
-
-    __slots__ = ['value']
-
-    def __init__(self, *, generic=None, value=None):
-        self.value = value
-
-        if generic:
-            self.value = generic
-
-    def __repr__(self):
-            return 'Arg(value=\'{}\')'.format(self.value)
+class Arg(Node, Model):
+    _schema = {'value': {'type': 'string'}}

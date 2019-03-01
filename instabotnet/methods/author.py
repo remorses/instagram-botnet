@@ -7,13 +7,10 @@ from .common import decorate
 def author(bot, nodes,  args):
 
     process = rcompose(
-        lambda media: media._data['user'],
-        lambda data: User(data=data),
+        lambda media: media['user'],
+        lambda data: User(**data),
     )
-    
+
     result = mapcat(process, nodes)
 
     return result, {}
-
-
- 

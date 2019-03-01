@@ -44,11 +44,19 @@ def make_bots(script):
 
     if 'bots' in script:
         for data in script['bots']:
-            bots += [Bot(**params(data))]
+            bot = Bot(**params(data))
+            if 'latitude' in data and 'longitude' in data:
+                bot.latitude = data['latitude']
+                bot.longitude = data['bot']['longitude']
+            bots += [bot]
 
     elif 'bot' in script:
         data = script['bot']
-        bots += [Bot(**params(data))]
+        bot = Bot(**params(data))
+        if 'latitude' in data and 'longitude' in data:
+            bot.latitude = data['latitude']
+            bot.longitude = data['bot']['longitude']
+        bots += [bot]
 
     else:
         raise Exception('no bots in script')

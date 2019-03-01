@@ -1,159 +1,59 @@
 from .node import Node
+import yaml
+from modeller import Model
 
+schema = yaml.load("""
+properties:
+    friendship_status:
+        properties:
+            blocking:
+                type: boolean
+            incoming_request:
+                type: boolean
+            is_private:
+                type: boolean
+            following:
+                type: boolean
+            outgoing_request:
+                type: boolean
+        required:
+            - incoming_request
+            - following
+            - outgoing_request
+            - blocking
+        type: object
+    full_name:
+        type: string
+    has_anonymous_profile_picture: {}
+    is_directapp_installed:
+        type: boolean
+    is_favorite: {}
+    is_private:
+        type: boolean
+    is_unpublished:
+        type: boolean
+    is_verified:
+        type: boolean
+    latest_reel_media:
+        type: integer
+    pk:
+        type: integer
+    profile_pic_id:
+        type: string
+    profile_pic_url:
+        type: string
+    reel_auto_archive: {}
+    username:
+        type: string
+required:
+    - is_private
+    - username
+    - is_verified
+    - pk
+    - full_name
+    - profile_pic_url
+""")
 
-
-attributes = lambda x: (x._username, x._id, x._data)
-
-class User(Node):
-
-    __slots__ = ['_username', '_id', '_data']
-
-    def __init__(self, *, generic=None, id=None, username=None, is_private=None, data={}):
-        self._username = username
-        self._id = id
-        self._data = data
-
-        if generic:
-            self._username = generic
-
-    def __repr__(self):
-        username, id, data = attributes(self)
-
-        if username:
-            return 'User(username=\'{}\')'.format(username)
-        elif id:
-            return 'User(id=\'{}\')'.format(id)
-        elif data:
-            return 'User(data=\'{...}\')'
-
-    @property
-    def username(self):
-        username, id, data = attributes(self)
-        if username:
-            return username
-        elif data:
-            return data['username']
-        else:
-            return None
-
-    @property
-    def id(self):
-        username, id, data, *rest = attributes(self)
-        if id:
-            return id
-        elif data:
-            return data['pk']
-        else:
-            return None
-
-
-    def get_data(self, bot):
-
-        if self._id:
-            bot.sleep('usual')
-            re = bot.api.user_info(self._id)
-            if 'user' in res:
-                self._data = res['user']
-                return self._data
-
-        elif self._username:
-            bot.sleep('usual')
-            res = bot.api.username_info(self._username)
-            if 'user' in res:
-                    self._data = res['user']
-                    return self._data
-            else:
-                return {}
-        elif self._data:
-            data = self._data
-            if 'pk' in data:
-                self._id = data['pk']
-                return self.get_data(bot)
-            else:
-                return {}
-        else:
-            return {}
-
-    def get_username(self, bot):
-        if self.username:
-            return self.username
-        else:
-            data = self.get_data(bot)
-            return data['username']
-
-
-    def get_id(self, bot):
-        username, id, data = attributes(self)
-        if id:
-            return id
-        elif data:
-            if 'pk' in data:
-                return data['pk']
-            else:
-                data = self.get_data(bot)
-                return data['pk'] if 'pk' in data else None
-        elif username:
-            data = self.get_data(bot)
-            return data['pk'] if 'pk' in data else None
-        else:
-            return None
-
-
-    def get_followers_count(self, bot):
-        _, _, data = attributes(self)
-        if 'follower_count' in data:
-            return data['follower_count']
-        else:
-            data = self.get_data(bot)
-            return data['follower_count']
-
-
-    def get_following_count(self, bot):
-        _, _, data = attributes(self)
-        if 'following_count' in data:
-            return data['following_count']
-        else:
-            data = self.get_data(bot)
-            return data['following_count']
-
-
-    def get_is_private(self, bot):
-        _, _, data = attributes(self)
-        if 'is_private' in data:
-            return data['is_private']
-        else:
-            data = self.get_data(bot)
-            return data['is_private']
-
-
-    def get_is_business(self, bot):
-        _, _, data = attributes(self)
-        if 'is_business' in data:
-            return data['is_business']
-        else:
-            data = self.get_data(bot)
-            return data['is_business']
-
-    def get_is_verified(self, bot):
-        _, _, data = attributes(self)
-        if 'is_verified' in data:
-            return data['is_verified']
-        else:
-            data = self.get_data(bot)
-            return 'is_verified' in data and data['is_verified']
-
-    def get_is_anonymous_picture(self, bot):
-        _, _, data = attributes(self)
-        if 'has_anonymous_profile_picture' in data:
-            return data['has_anonymous_profile_picture']
-        else:
-            data = self.get_data(bot)
-            return data['has_anonymous_profile_picture']
-
-    def get_bio(self, bot):
-        _, _, data = attributes(self)
-        if 'biography' in data:
-            return data['biography']
-        else:
-            data = self.get_data(bot)
-            return data['biography']
+class User(Node, Model):
+    _schema = schema
+    id = property(lambda self: self['pk'])
