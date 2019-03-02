@@ -2,7 +2,18 @@ import datetime
 from pathlib import Path
 import time
 from ..api import API
+from instagram_private_api import  ClientCookieExpiredError, ClientLoginRequiredError
+from .support import to_json, from_json
 from .settings import DELAY, TOTAL, MAX_PER_DAY
+import json
+
+
+
+
+
+
+
+
 
 class Bot:
 
@@ -12,11 +23,13 @@ class Bot:
                  self,
                  username,
                  password,
-                 cookie_file=None,
+                 # cookie_file=None,
+                 settings_file=None,
                  proxy=None,
                  device=None):
 
-        self.cookie_file = make_cookie_file(cookie_file, username + '_cookie.txt')
+        # self.cookie_file = make_cookie_file(cookie_file, username + '_cookie.json')
+        self.settings_file = make_file(settings_file, username + '_settings.json', initial='{}')
 
         self.id = Bot.id
         self.username = username
@@ -27,13 +40,39 @@ class Bot:
         self.predicates = [] # [partial(not_in_cache, self), ]
 
         self.start_time = datetime.datetime.now()
-        self.api = API(
-            username=username,
-            password=password,
-            cookie=load(self.cookie_file),
-            proxy=proxy,
-            # settings=settings,
-        )
+
+
+
+        def on_login(api, ):
+            cache_settings = api.settings
+            with open(self.settings_file, 'w') as outfile:
+                json.dump(cache_settings, outfile, default=to_json)
+                print('SAVED: {0!s}'.format(self.settings_file))
+
+        try:
+            with open(self.settings_file) as file_data:
+                settings = json.load(file_data, object_hook=from_json)
+                print('Reusing settings: {0!s}'.format(self.settings_file))
+
+            self.api = API(
+                username=username,
+                password=password,
+                # cookie=load(self.cookie_file),
+                on_login=on_login,
+                proxy=proxy,
+                settings=settings,
+            )
+
+        except (ClientCookieExpiredError, ClientLoginRequiredError) as e:
+            print('ClientCookieExpiredError/ClientLoginRequiredError: {0!s}'.format(e))
+            self.api = API(
+                username=username,
+                password=password,
+                proxy=proxy,
+                device_id=settings.get('device_id'),
+                on_login=on_login
+            )
+
         self.logger = self.api.logger
 
         self.total = TOTAL
@@ -46,7 +85,7 @@ class Bot:
         self._following_ids = []
         self._following_usernames = []
 
-        self.api.login()
+        # self.api.login()
 
 
 
@@ -57,18 +96,6 @@ class Bot:
     def relogin(self):
         self.api.login()
 
-    @property
-    def followers_ids(self):
-            if self._followers_ids:
-                print(self._followers_ids)
-
-                return self._followers_ids
-            else:
-                data = cycled_api_call(99999, self, self.api.get_user_followers, id, 'users')
-                user_ids = map(lambda item: item['pk'], data)
-                self._followers_ids = list(user_ids)
-                print(self._followers_ids)
-                return self._followers_ids
 
     @property
     def last(self):
@@ -139,56 +166,25 @@ def make_cookie_file( file, name):
     return str(file.resolve())
 
 
-def cycled_api_call(amount, bot, api_method, api_argument, key,  ):
+def make_file( file, name, initial=''):
+    if not file:
+        file = Path(str(Path('.') / name)).resolve()
+        file.parent.exists() or file.parent.mkdir()
+    file = Path(file)
+    if not file.exists():
+         file.touch()
+         with open(str(file.resolve()), 'w') as f:
+             f.write(initial)
+    return str(file.resolve())
 
-    next_max_id = ''
-    sleep_track = 0
-    done = 0
 
-
-    while True:
-        bot.logger.info('new get cycle with %s' % api_method.__name__)
-        try:
-            api_method(api_argument, max_id=next_max_id)
-            items = bot.last[key] if key in bot.last else []
-
-            if 'next_max_id' not in bot.last:
-                yield from items
-                done += len(items)
-                return
-
-            elif "more_available" in bot.last and not bot.last["more_available"]:
-                yield from items
-                done += len(items)
-                return
-
-            elif "big_list" in bot.last and not bot.last['big_list']:
-                yield from items
-                done += len(items)
-                return
-
-            # elif (done + len(items)) >= max:
-            #     yield from items[:(max - done)]
-            #     done += len(items)
-            #     return
-
-            else:
-                yield from items
-                done += len(items)
-
-        except Exception as exc:
-            bot.logger.error('exception in cycled_api_call: {}'.format(exc))
-            yield from []
-            return
-
-        if sleep_track > 10:
-            bot.logger.debug('sleeping some time while getting')
-            bot.sleep('getter')
-            sleep_track = 0
-
-        bot.sleep('usual')
-        next_max_id = bot.last.get("next_max_id", "")
-        sleep_track += 1
+def make_settings_file( file, name):
+    if not file:
+        file = Path(str(Path('.') / '_settings' / name)).resolve()
+        file.parent.exists() or file.parent.mkdir()
+    file = Path(file)
+    file.exists() or file.touch()
+    return str(file.resolve())
 
 
 

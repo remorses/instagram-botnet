@@ -11,17 +11,17 @@ def followers(bot: Bot, nodes,  args) -> List[User]:
     # bot.logger.debug('nodes at followers %s' % list(nodes)[:3])
     #
     # nodes = iter(list(nodes))
-    amount = args.get('amount')
-    query = args.get('query', {})
+    amount = args.get('amount') or 1
+    # query = args.get('query', {})
 
-    pack_user = lambda item: User(id=item['pk'], username=item['username'], data=item)
+    pack_user = lambda item: User(**item)
 
     process = rcompose(
             lambda user: user.id if user.id else user.get_id(bot),
             lambda id: cycled_api_call(
-                amount, 
-                bot, 
-                bot.api.user_followers, 
+                amount,
+                bot,
+                bot.api.user_followers,
                 dict(user_id=id, **args.get('query', {}),) ,
                 'users',
             ),

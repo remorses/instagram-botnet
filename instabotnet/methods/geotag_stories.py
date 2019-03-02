@@ -1,50 +1,29 @@
 
 from typing import List
 from funcy import  rcompose, mapcat
-
-from ..nodes import Story, Geotag
-from .common import decorate
-
+from itertools import islice
+from ..bot import Bot
+from ..nodes import  Story, Geotag
+from .common import cycled_api_call, decorate, tap
 
 
 
 
 @decorate(accepts=Geotag, returns=Story)
-def geotag_stories(bot, nodes,  args) -> List[Story]:
+def geotag_stories(bot: Bot, nodes,  args) -> List[Story]:
 
-    amount = args.get('amount')
-    pack_story = lambda data: Story(id=data['pk'], data=data)
-    # unmasked = lambda: unmask(bot.last)
-    # log_unmasked = lambda: bot.logger.warn(unmasked())
-    # bot.logger.warn([x for x in nodes])
-
+    pack_story = lambda data: Story(**data)
+    amount = args.get('amount') or 1
 
     process = rcompose(
         lambda tag: tag.id,
-        # lambda id: tap(id, lambda: bot.api.get_user_stories(id)),
         # lambda x: tap(x, lambda: print(x)),
-        lambda id: get_stories(bot, id),
-        # lambda x: tap(x, lambda: print(x)),
-        lambda gen: map(pack_story, gen)
+        lambda id: cycled_api_call(amount, bot, bot.api.location_stories, id, ( 'story', 'items')),
+        # lambda x: tap(x, lambda: print(next(x))),
+        # lambda gen: islice(gen, amount),
+        lambda items: map(pack_story, items),
     )
 
-    stories = mapcat(process, nodes)
+    result = mapcat(process, nodes)
 
-    return stories, {}
-
-def get_stories(bot, user_id, amount,):
-    count = 0
-    data = bot.api.feed_location(user_id)
-    if 'reel' in data:
-        # if data.get('items'):
-        #     yield from data['items']
-            
-        if data.get('story', {}).get('items'):
-            yield from data['story']['items']
-        
-        else:
-            yield from []
-        # elif data.get('ranked_items'):
-        #     yield from data['ranked_items']
-    else:
-        yield from []
+    return result, {}

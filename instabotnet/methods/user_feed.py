@@ -2,13 +2,14 @@
 from typing import List
 from funcy import  rcompose, mapcat
 from ..nodes import User, Media
+from ..bot import Bot
 from .common import cycled_api_call, decorate, tap
 
 
 
 
 @decorate(accepts=User, returns=Media)
-def user_feed(bot, nodes,  args) -> List[Media]:
+def user_feed(bot: Bot, nodes,  args) -> List[Media]:
 
     amount = args.get('amount')
 

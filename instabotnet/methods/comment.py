@@ -2,13 +2,13 @@ from funcy import ignore, raiser, rcompose
 from random import choice
 from ..bot import Bot
 from .common import decorate, substitute_vars, tap
-from ..nodes import Comment, Media
+from ..nodes import Comment, Media, User, Geotag
 
 
 
 
 @decorate(accepts=Media, returns=Comment)
-def comment(bot, nodes,  args):
+def comment(bot: Bot, nodes,  args):
 
     try:
         max = float(args['max']) if 'max' in args else float('inf')
@@ -22,7 +22,6 @@ def comment(bot, nodes,  args):
 
 
     def increment():
-        bot.total['comments'] += 1
         nonlocal count
         count += 1
 
@@ -47,8 +46,8 @@ def comment(bot, nodes,  args):
 
     process = rcompose(
         lambda x: stop() if x and count >= max else x,
-        return_if_suitable,
-        discard_if_reached_limit,
+        # return_if_suitable,
+        # discard_if_reached_limit,
         do_comment_from_groups,
         lambda arr: list(arr)[0] if arr else None,
         lambda x: tap(x, increment) if x else None,
@@ -68,14 +67,14 @@ def do_comment(bot: Bot, text, node, thread_id=None):
     media_id = node.id
     evaluated_text = substitute_vars(text,
         author=ignore(AttributeError, '')(
-            lambda: node.get_author(bot).username
+            lambda: User(**node.user).username
         )(),
-        caption=node.get_caption(bot),
+        caption=node['caption']['text'],
         geotag=ignore(AttributeError, '')(
-            lambda: node.get_geotag(bot).name or ''
+            lambda: Geotag(**node.location).name or ''
         )(),
         usertags=ignore(AttributeError, '')(
-            lambda: list(map(lambda x: x.get_username(bot), node.get_usertags(bot))) or []
+            lambda: list(map(lambda x: User(**x), node.usertags)) or []
         )()
     )
 
@@ -85,6 +84,6 @@ def do_comment(bot: Bot, text, node, thread_id=None):
     )
 
     bot.logger.info('commented %s' % node)
-    bot.toal['comments'] += 1
+    bot.total['comments'] += 1
     bot.sleep('comment')
     return node

@@ -1,4 +1,4 @@
-from instagram_private_api import Client
+from instagram_private_api import Client, ClientCookieExpiredError, ClientLoginRequiredError
 from colorlog import ColoredFormatter
 import logging
 import os
@@ -17,7 +17,7 @@ class LoggerAdapter(logging.LoggerAdapter):
 class API(Client):
     def __init__(self,**kwargs):
         super().__init__(**kwargs)
-        
+
         # Setup logging
         self.logger = logging.getLogger(__name__)
 

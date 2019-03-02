@@ -11,6 +11,6 @@ def author(bot, nodes,  args):
         lambda data: User(**data),
     )
 
-    result = mapcat(process, nodes)
+    result = map(process, nodes)
 
     return result, {}

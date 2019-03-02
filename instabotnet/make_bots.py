@@ -47,7 +47,7 @@ def make_bots(script):
             bot = Bot(**params(data))
             if 'latitude' in data and 'longitude' in data:
                 bot.latitude = data['latitude']
-                bot.longitude = data['bot']['longitude']
+                bot.longitude = data['longitude']
             bots += [bot]
 
     elif 'bot' in script:
@@ -55,7 +55,7 @@ def make_bots(script):
         bot = Bot(**params(data))
         if 'latitude' in data and 'longitude' in data:
             bot.latitude = data['latitude']
-            bot.longitude = data['bot']['longitude']
+            bot.longitude = data['longitude']
         bots += [bot]
 
     else:
@@ -73,7 +73,9 @@ def error(exception):
 
 
 params = lambda data: dict(
-        cookie_file=data['cookie'] if 'cookie' in data else None,
+        # cookie_file=data['cookie'] if 'cookie' in data else None,
+        settings_file=data['settings_file'] if 'settings_file' in data else \
+            data['settings'] if 'settings' in data else None,
         username=data['username'] if 'username' in data \
             else error(Exception('username necessary')),
         password=data['password'] if 'password' in data \

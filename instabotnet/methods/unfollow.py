@@ -14,7 +14,6 @@ def unfollow(bot: Bot, nodes,  args):
     count = 0
 
     def increment():
-        bot.total['unfollows'] += 1
         nonlocal count
         count += 1
 
@@ -44,4 +43,3 @@ def unfollow_user(user, bot):
     bot.total['unfollows'] += 1
     bot.logger.info('unfollowed %s' % user)
     bot.sleep('unfollow')
-

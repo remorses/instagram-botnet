@@ -7,12 +7,13 @@ from .common import decorate, cycled_api_call
 @decorate(accepts=User, returns=User)
 def following(bot, nodes,  args) -> List[User]:
 
-    pack_user = lambda item: User(id=item['pk'], username=item['username'], data=item)
-    amount = args.get('amount')
+    amount = args.get('amount') or 1
+
+    pack_user = lambda item: User(**item)
 
     process = rcompose(
         lambda user: user.id if user.id else user.get_id(bot),
-        lambda id: cycled_api_call(amount, bot, bot.api.user_following, id, 'users'),
+        lambda id: cycled_api_call(amount, bot, bot.api.user_following, dict(user_id=id, **args.get('query', {}),), 'users'),
         lambda gen: map(pack_user, gen)
     )
 

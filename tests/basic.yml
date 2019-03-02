@@ -3,16 +3,36 @@
 bot:
     username: {{ USERNAME }}
     password: {{ PASSWORD }}
+    latitude: 53.2734
+    longitude: -7.77832031
 
 actions:
+    # -
+    #     name: get instagram feed
+    #     from: geotag
+    #     nodes:
+    #         - chiavari
+    #     edges:
+    #         # - feed:
+    #         #     amount: 1
+    #         # # - stories:
+    #         # #     amount: 3
+    #         # - geotag
+    #         - stories:
+    #             amount: 10
+    #         - print:
+    #             model:
+    #                 source: x.source
     -
-        name: get instagram feed
+        name: test
         from: user
         nodes:
-            - instagram
+            - ttipane
         edges:
             - feed:
                 amount: 10
+            - usertags:
+                amount: 90
             - print:
                 model:
-                    url: x.url
+                    x: x._serialize()

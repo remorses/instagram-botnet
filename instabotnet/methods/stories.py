@@ -8,17 +8,21 @@ from .common import decorate
 
 @decorate(accepts=(User, Hashtag, Geotag,), returns=Media)
 def stories(bot, nodes, args):
-    first = next(iter(nodes), None)
-    nodes = chain([first], nodes)
     
+    if isinstance(nodes, (tuple, list)):
+        first = nodes[0]
+    else:
+        first = next(iter(nodes), None)
+        nodes = chain([first], nodes)
+
     switch = {
         isinstance(first, User): user_stories,
         isinstance(first, Hashtag): hashtag_stories,
         isinstance(first, Geotag): geotag_stories,
     }
-    
+
     if True in switch:
-        return switch[True](bot, nodes, args)  
-        
+        return switch[True](bot, nodes, args)
+
     else:
         return [], {}

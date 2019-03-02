@@ -66,6 +66,12 @@ def cycled_api_call(amount, bot, api_method, api_argument, key):
                     **all_params,
                 )
 
+            elif isinstance(api_argument, (tuple, list)):
+                data = api_method(
+                    *api_argument,
+                    **all_params,
+                )
+
             else:
                 data = api_method(
                     api_argument,
@@ -75,7 +81,17 @@ def cycled_api_call(amount, bot, api_method, api_argument, key):
             if type(key) == tuple or type(key) == list:
                 items = data
                 for k in key:
-                    items = items.get(k, {})
+                    if not items:
+                        items = []
+                        break
+                    if isinstance(k, int):
+                        try:
+                            items = items[k]
+                        except:
+                            items = []
+                            break
+                    else:
+                        items = items.get(k, {})
             else:
                 items = data.get(key)
 
@@ -84,12 +100,12 @@ def cycled_api_call(amount, bot, api_method, api_argument, key):
             size = len(items)
 
             if any([
-                'next_max_id' not in data,
+                not (data.get("next_max_id", "") or items[-1].get("next_max_id", "")),
                 "more_available" in data and not data["more_available"],
                 "big_list" in data and not data['big_list']
             ]):
                 yield from items[:amount - done]
-                done +=  amount - done if amount - done >= size else size
+                done +=  amount - done if amount - done <= size else size
                 return
 
             # elif (done + size) >= max:
@@ -99,7 +115,7 @@ def cycled_api_call(amount, bot, api_method, api_argument, key):
 
             else:
                 yield from items[:amount - done]
-                done +=  amount - done if amount - done >= size else size
+                done +=  amount - done if amount - done <= size else size
                 if done >= amount:
                     return
 
@@ -114,7 +130,8 @@ def cycled_api_call(amount, bot, api_method, api_argument, key):
             sleep_track = 0
 
         bot.sleep('usual')
-        next_max_id = data.get("next_max_id", "")
+
+        next_max_id = data.get("next_max_id", "") or items[-1].get("next_max_id", "")
         sleep_track += 1
 
 
@@ -149,12 +166,19 @@ substitute_vars = lambda txt, **kwds: effify(txt).format(**kwds)
 
 
 class temporary_write:
-		def __init__(self,  data, path=str(random())[3:]):
-				self.path = path
-				self.data = data
-				f = open(self.path, 'a+b')
-				f.write(self.data)
-				f.close()
+        def __init__(self,  data, path=str(random())[3:]):
+                self.path = path
+                self.data = data
+                f = open(self.path, 'a+b')
+                f.write(self.data)
+                f.close()
 
-		__enter__ = lambda self: self.path
-		__exit__ = lambda self, a, b, c: os.remove(self.path)
+        __enter__ = lambda self: self.path
+        __exit__ = lambda self, a, b, c: os.remove(self.path)
+
+
+
+def lazycat(iterables):
+    # chain.from_iterable(['ABC', 'DEF']) --> A B C D E F
+    for it in iterables:
+        yield from it

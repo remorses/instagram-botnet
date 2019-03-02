@@ -4,4 +4,10 @@ from modeller import Model
 
 
 class Arg(Node, Model):
-    _schema = {'value': {'type': 'string'}}
+    _schema = {
+        'properties':
+            {
+                'value': {'type': 'string'}
+            },
+        'type': 'object',
+    }
