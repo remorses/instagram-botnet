@@ -2,7 +2,9 @@ from .node import Node
 from .user import User
 from funcy import fallback
 from modeller import Model
-schema = """
+import yaml
+
+schema = yaml.load("""
 properties:
     ad_action: {}
     attribution:
@@ -364,35 +366,7 @@ properties:
                         type: array
                     id:
                         type: string
-                    ig_artist:
-                        anyOf:
-                            - type: 'null'
-                            - properties:
-                                    full_name:
-                                        type: string
-                                    is_private:
-                                        type: boolean
-                                    is_verified:
-                                        type: boolean
-                                    pk:
-                                        type: integer
-                                    profile_pic_id:
-                                        type: string
-                                    profile_pic_url:
-                                        type: string
-                                    username:
-                                        type: string
-                                required:
-                                    - full_name
-                                    - is_private
-                                    - is_verified
-                                    - pk
-                                    - profile_pic_id
-                                    - profile_pic_url
-                                    - username
-                                type: object
-                    is_explicit:
-                        type: boolean
+                    ig_artist: {}
                     overlap_duration_in_ms:
                         type: integer
                     placeholder_profile_pic_url:
@@ -576,7 +550,16 @@ required:
     - can_reply
     - is_reel_media
     - id
-"""
+
+""")
+
+
+
+
+
+
+
+
 """
 {
     id
@@ -685,6 +668,7 @@ required:
     status
 }
 """
+
 get_image_url = lambda data: fallback(
     lambda: data['image_versions2']['candidates'][0]['url'],
     lambda: data['image_versions2'][0]['url'],

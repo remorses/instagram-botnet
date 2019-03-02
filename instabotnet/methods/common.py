@@ -43,44 +43,44 @@ def cycled_api_call(amount, bot, api_method, api_argument, key):
     sleep_track = 0
     done = 0
     next_max_id = ''
-    
+
     rank_token = bot.api.generate_uuid()
-    
+
 
     while True:
         bot.logger.debug('new get cycle with %s' % api_method.__name__)
         try:
-            
+
             all_params = {}
-            
+
             if 'rank_token' in inspect.signature(api_method).parameters:
                 all_params.update(dict(rank_token=rank_token))
-            
+
             if next_max_id:
                 all_params.update(dict(max_id=next_max_id))
-        
+
 
             if isinstance(api_argument, dict):
                 data = api_method(
-                    **api_argument, 
+                    **api_argument,
                     **all_params,
                 )
 
             else:
                 data = api_method(
-                    api_argument, 
+                    api_argument,
                     **all_params,
                 )
-            
+
             if type(key) == tuple or type(key) == list:
                 items = data
                 for k in key:
                     items = items.get(k, {})
             else:
                 items = data.get(key)
-                
+
             items = items or []
-            
+
             size = len(items)
 
             if any([
@@ -89,7 +89,7 @@ def cycled_api_call(amount, bot, api_method, api_argument, key):
                 "big_list" in data and not data['big_list']
             ]):
                 yield from items[:amount - done]
-                done += size
+                done +=  amount - done if amount - done >= size else size
                 return
 
             # elif (done + size) >= max:
@@ -99,8 +99,8 @@ def cycled_api_call(amount, bot, api_method, api_argument, key):
 
             else:
                 yield from items[:amount - done]
-                done += size
-                if done > amount:
+                done +=  amount - done if amount - done >= size else size
+                if done >= amount:
                     return
 
         except Exception as exc:
@@ -155,6 +155,6 @@ class temporary_write:
 				f = open(self.path, 'a+b')
 				f.write(self.data)
 				f.close()
-				
+
 		__enter__ = lambda self: self.path
 		__exit__ = lambda self, a, b, c: os.remove(self.path)

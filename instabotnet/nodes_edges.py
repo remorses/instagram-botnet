@@ -59,12 +59,13 @@ def initialize_nodes(nodes, from_type, bot):
         'Media': rcompose(
             lambda url: [x for x in url.split('/') if x][-1],
             lambda short: InstagramID.expand_code(short),
-            lambda code: api.media_info(code),
+            lambda id: api.media_info(id),
+            lambda data: data['items'][0]
         ),
         'Hashtag': lambda name: {'name': name},
-        'Arg': lambda x: x,
-        'Geotag': lambda name: api.location_search(bot.latitude, bot.longitude, query=name, )
+        'Arg': lambda v: {'value': v},
+        'Geotag': lambda name: api.location_search(bot.latitude, bot.longitude, query=name,)['venues'][0]
     }
 
 
-    return [Class(data=switch[Class.__name__](value)) for value in nodes]
+    return [Class(**switch[Class.__name__](value)) for value in nodes]

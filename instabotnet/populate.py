@@ -2,6 +2,7 @@ from colorama import init, Fore
 import os
 from string import Formatter
 import random
+from .support import merge
 
 def get_field_value(field_name, mapping):
     try:
@@ -82,7 +83,7 @@ def populate_string( yaml_string, data={}):
                 )
             except:
                 return line
-                
+
         else:
             return line
 

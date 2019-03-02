@@ -4,33 +4,33 @@ import json
 
 from instabotnet import execute
 
-from .parse import parse
+from .parse import parse, load
 from .unmask import unmask
 
 
 ################################################################################
 
 SCRIPTS = [
-    # parse('tests/hashtags.yml'),
-    # parse('tests/geotag_feed.yml'),
-    # parse('tests/geotag.yml'),
-    # parse('tests/usertags.yml'),
-    # parse('tests/like.yml'),
-    # parse('tests/authors.yml'),
-    # parse('tests/hashtag_feed.yml'),
-    # parse('tests/followers.yml'),
-    # parse('tests/user_feed.yml'),
-    # parse('tests/likers.yml'),
-    # parse('tests/complex.yml'),
-    # parse('tests/scrape.yml'),
-    # parse('tests/upload.yml'),
-    # parse('tests/delete.yml'),
-    # parse('tests/set_profile.yml'),
-    # parse('tests/network_bandwidth.yml'),
-    # parse('tests/stories.yml'),
-    # parse('tests/text.yml'),
-    parse('tests/comment.yml'),
-    #parse('tests/unfollow_non_followers.yml'),
+    # load('tests/hashtags.yml'),
+    # load('tests/geotag_feed.yml'),
+    # load('tests/geotag.yml'),
+    # load('tests/usertags.yml'),
+    # load('tests/like.yml'),
+    # load('tests/authors.yml'),
+    # load('tests/hashtag_feed.yml'),
+    # load('tests/followers.yml'),
+    # load('tests/user_feed.yml'),
+    # load('tests/likers.yml'),
+    # load('tests/complex.yml'),
+    # load('tests/scrape.yml'),
+    # load('tests/upload.yml'),
+    # load('tests/delete.yml'),
+    # load('tests/set_profile.yml'),
+    # load('tests/network_bandwidth.yml'),
+    # load('tests/stories.yml'),
+    # load('tests/text.yml'),
+    load('tests/basic.yml'),
+    #load('tests/unfollow_non_followers.yml'),
 
 ]
 

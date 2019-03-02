@@ -1,0 +1,18 @@
+
+
+bot:
+    username: {{ USERNAME }}
+    password: {{ PASSWORD }}
+
+actions:
+    -
+        name: get instagram feed
+        from: user
+        nodes:
+            - instagram
+        edges:
+            - feed:
+                amount: 10
+            - print:
+                model:
+                    url: x.url

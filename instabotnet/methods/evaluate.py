@@ -30,21 +30,21 @@ def evaluate(bot, nodes,  args) -> Node:
 
         except StopIteration:
             break
-            
+
         except ClientLoginRequiredError:
             log_error(bot.logger)
             bot.relogin()
-            
+
         except (
             ClientConnectionError,
             ClientReqHeadersTooLargeError,
         ):
             log_error(bot.logger)
             bot.sleep()
-        
+
         except:
             raise
-            
+
         else:
             count += 1
             percentage = (str(int(count / total * 100)) + '%').center(5)

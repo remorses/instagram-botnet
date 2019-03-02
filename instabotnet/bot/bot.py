@@ -56,7 +56,7 @@ class Bot:
 
     def relogin(self):
         self.api.login()
-    
+
     @property
     def followers_ids(self):
             if self._followers_ids:
@@ -189,8 +189,8 @@ def cycled_api_call(amount, bot, api_method, api_argument, key,  ):
         bot.sleep('usual')
         next_max_id = bot.last.get("next_max_id", "")
         sleep_track += 1
-    
-    
+
+
 
 def load(path):
     with open(path) as f:
