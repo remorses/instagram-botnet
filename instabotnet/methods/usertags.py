@@ -15,9 +15,9 @@ def usertags(bot, nodes,  args) -> List[User]:
 
 
     def process(node,):
-        tags = node.usertags
+        tags = node._usertags
         tags = [User(**data) for data in tags]
-        print(tags)
+        # print(tags)
         yield from islice(tags, amount)
 
     result = mapcat(process, nodes)

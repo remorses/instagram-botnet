@@ -27,17 +27,17 @@ class Media(Node, Model):
     )
 
 
-    def fallback(*args):
-        first = lambda arr: arr[1:] if len(arr) > 0 else lambda: None
-        rest = lambda arr: arr[:1]if len(arr) > 0 else []
-        return  first(args)() or fallback(rest(args))
+    # def fallback(*args):
+    #     first = lambda arr: arr[1:] if len(arr) > 0 else lambda: None
+    #     rest = lambda arr: arr[:1]if len(arr) > 0 else []
+    #     return  first(args)() or fallback(rest(args))
 
-    usertags = property(lambda self: fallback(
-        lambda self: self['usertags']['in']['user'],
-        lambda self: list(map(lambda x: x['user'], self['usertags']['in'])),
-        lambda self: list(map(lambda x: x['user'], self['caption']['usertags']['in'])),
-        mapcat(lambda data: map(lambda x: x['user'], data['usertags']['in']), self['carousel_media'] or []),
-        mapcat(lambda data: map(lambda x: x['user'], data['caption']['usertags']['in']), self['carousel_media'] or []),
+    _usertags = property(lambda self: fallback(
+        lambda : self['usertags']['in']['user'],
+        lambda : list(map(lambda x: x['user'], self['usertags']['in'])),
+        lambda : list(map(lambda x: x['user'], self['caption']['usertags']['in'])),
+        lambda: list(mapcat(lambda data: map(lambda x: x['user'], data['usertags']['in']), self['carousel_media'] or [])),
+        lambda: list(mapcat(lambda data: map(lambda x: x['user'], data['caption']['usertags']['in']), self['carousel_media'] or [])),
         lambda: []
     ))
 

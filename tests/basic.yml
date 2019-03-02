@@ -35,4 +35,4 @@ actions:
                 amount: 90
             - print:
                 model:
-                    x: x._serialize()
+                    x: x.username
