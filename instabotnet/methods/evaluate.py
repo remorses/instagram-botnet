@@ -38,9 +38,10 @@ def evaluate(bot, nodes,  args) -> Node:
         except (
             ClientConnectionError,
             ClientReqHeadersTooLargeError,
+            ClientThrottledError
         ):
             log_error(bot.logger)
-            bot.sleep()
+            bot.sleep(5 * 60)
 
         except:
             raise
