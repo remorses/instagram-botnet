@@ -11,12 +11,8 @@ properties:
                 type: boolean
             outgoing_request:
                 type: boolean
-        required:
-            - incoming_request
-            - following
-            - outgoing_request
-            - blocking
-        type: object
+        type:
+            - object
     full_name:
         type: string
     has_anonymous_profile_picture: {}

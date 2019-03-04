@@ -7,6 +7,11 @@ properties:
         required:
             - name
         type: object
+    story_app_attribution:
+        type: object
+        properties:
+            content_url:
+                type: string
     can_reply:
         type: boolean
     can_reshare:
@@ -30,10 +35,10 @@ properties:
             persisted_effect_metadata_json:
                 type: string
             should_render_try_it_on: {}
-        required:
-            - should_render_try_it_on
-            - camera_facing
-            - capture_type
+        # required:
+        #     - should_render_try_it_on
+        #     - camera_facing
+        #     - capture_type
     device_timestamp:
         type: integer
     expiring_at:

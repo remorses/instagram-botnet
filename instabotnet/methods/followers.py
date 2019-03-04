@@ -17,7 +17,7 @@ def followers(bot: Bot, nodes,  args) -> List[User]:
     pack_user = lambda item: User(**item)
 
     process = rcompose(
-            lambda user: user.id if user.id else user.get_id(bot),
+            lambda user: user.pk,
             lambda id: cycled_api_call(
                 amount,
                 bot,

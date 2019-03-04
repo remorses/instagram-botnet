@@ -62,8 +62,7 @@ def make_bots(script):
         raise Exception('no bots in script')
 
     for bot in bots:
-        modify_bot(bot, data)
-
+        modify_bot(bot, script)
 
     return bots
 
@@ -87,7 +86,7 @@ def modify_bot(bot, script):
             bot.max_per_day = {key: value for key,
                                value in script['max_per_day'].items()}
         if 'delay' in script:
-            bot.delay = {**bot.delay, **{key: value for key, value in script['delay'].items()} }
+            bot.delay.update({key: value for key, value in script['delay'].items()})
 
         if 'filter' in script:
             bot.predicates += [make_predicate(script['filter'], bot)]

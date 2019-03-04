@@ -97,10 +97,12 @@ def cycled_api_call(amount, bot, api_method, api_argument, key):
 
             items = items or []
 
+            next_max_id = (data.get("next_max_id", "") or (len(items) and items[-1].get("next_max_id", "")))
+
             size = len(items)
 
             if any([
-                not (data.get("next_max_id", "") or items[-1].get("next_max_id", "")),
+                not next_max_id,
                 "more_available" in data and not data["more_available"],
                 "big_list" in data and not data['big_list']
             ]):
@@ -131,7 +133,7 @@ def cycled_api_call(amount, bot, api_method, api_argument, key):
 
         bot.sleep('usual')
 
-        next_max_id = data.get("next_max_id", "") or items[-1].get("next_max_id", "")
+        # next_max_id = data.get("next_max_id", "") or (len(items) and items[-1].get("next_max_id", ""))
         sleep_track += 1
 
 
@@ -175,10 +177,3 @@ class temporary_write:
 
         __enter__ = lambda self: self.path
         __exit__ = lambda self, a, b, c: os.remove(self.path)
-
-
-
-def lazycat(iterables):
-    # chain.from_iterable(['ABC', 'DEF']) --> A B C D E F
-    for it in iterables:
-        yield from it

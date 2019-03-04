@@ -15,7 +15,7 @@ def likers(bot, nodes,  args) -> List[Media]:
     amount = args.get('amount')
 
     process = rcompose(
-            lambda media: media.id,
+            lambda media: media.pk,
             lambda id: get_likers(id, bot, amount),
             lambda gen: map(pack_user, gen)
         )

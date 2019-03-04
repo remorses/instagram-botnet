@@ -12,7 +12,7 @@ def following(bot, nodes,  args) -> List[User]:
     pack_user = lambda item: User(**item)
 
     process = rcompose(
-        lambda user: user.id if user.id else user.get_id(bot),
+        lambda user: user.pk,
         lambda id: cycled_api_call(amount, bot, bot.api.user_following, dict(user_id=id, **args.get('query', {}),), 'users'),
         lambda gen: map(pack_user, gen)
     )

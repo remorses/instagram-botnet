@@ -35,7 +35,7 @@ def like(bot, nodes,  args):
 
 
 def like_media(media, bot):
-        bot.api.post_like(media.id)
+        bot.api.post_like(media.pk)
         bot.logger.info(f'liked media {media}')
         bot.total['likes'] += 1
         bot.sleep('like')

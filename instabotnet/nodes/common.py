@@ -1,4 +1,4 @@
-
+import traceback
 from types import FunctionType
 from xml.etree import ElementTree
 from funcy import fallback
@@ -20,13 +20,6 @@ class SafeDict(dict):
         return '{' + key + '}'
 
 
-def get_mdp_url(manifest):
-    if not manifest:
-        raise Exception
-    else:
-        root = ElementTree.fromstring(manifest)
-        return root[0][0][0][0].text
-
 
 get_image_url = lambda data: fallback(
     lambda: data['image_versions2']['candidates'][0]['url'],
@@ -36,8 +29,11 @@ get_image_url = lambda data: fallback(
 
 get_video_url = lambda data: fallback(
     lambda: data['video_versions'][0]['url'],
-    lambda: get_mdp_url(data['video_dash_manifest']),
+    # lambda: get_mdp_url(data['video_dash_manifest']),
     lambda: None,
 )
 
-get_media_url = lambda data: get_video_url(data) or get_image_url(data)
+# get_media_url = lambda data:  get_image_url(data)
+
+
+get_manifest = lambda data: data['video_dash_manifest']

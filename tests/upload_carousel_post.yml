@@ -1,0 +1,22 @@
+
+name: upload single image
+bot:
+    username: {{ USERNAME }}
+    password: {{ PASSWORD }}
+    latitude: 53.2734
+    longitude: -7.77832031
+
+actions:
+    -
+        name: upload
+        from: user
+        nodes:
+            - gucci
+        edges:
+            - feed:
+                amount: 3
+            - upload_post:
+                max: 3
+                caption: hey
+                geotag: monaco
+                disable_comments: true

@@ -60,7 +60,8 @@ def initialize_nodes(nodes, from_type, bot):
             lambda url: [x for x in url.split('/') if x][-1],
             lambda short: InstagramID.expand_code(short),
             lambda id: api.media_info(id),
-            lambda data: data['items'][0]
+            lambda data: data['items'][0],
+            # lambda x: print(x) or x
         ),
         'Hashtag': lambda name: {'name': name},
         'Arg': lambda v: {'value': v},

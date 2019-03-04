@@ -17,6 +17,8 @@ eggs/
 lib/
 lib64/
 parts/
+*_settings.json
+
 sdist/
 var/
 wheels/

@@ -11,7 +11,7 @@ from .common import decorate, tap
 @decorate(accepts=User, returns=Story)
 def user_stories(bot, nodes,  args) -> List[Story]:
 
-    amount = args.get('amount')
+    amount = args.get('amount') or 1
     pack_story = lambda data: Story(**data)
     # unmasked = lambda: unmask(bot.last)
     # log_unmasked = lambda: bot.logger.warn(unmasked())
@@ -19,12 +19,13 @@ def user_stories(bot, nodes,  args) -> List[Story]:
 
 
     process = rcompose(
-        lambda user: user.id,
+        lambda user: user.pk,
         # lambda id: tap(id, lambda: bot.api.get_user_stories(id)),
         # lambda x: tap(x, lambda: print(x)),
         lambda id: get_stories(bot, id, amount),
+        # lambda gen: map(lambda data: print(Story(**data)._yaml()) or data, gen),
         lambda gen: map(pack_story, gen),
-        lambda x: tap(x, lambda: print(next(x)._json())),
+
     )
 
     stories = mapcat(process, nodes)
@@ -39,6 +40,7 @@ def get_stories(bot: Bot, user_id, amount,):
     if data['reel']:
         yield from data['reel']['items'][:amount]
     else:
+        bot.logger.debug('no stories')
         yield from []
 
 

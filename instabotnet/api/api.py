@@ -19,20 +19,20 @@ class API(Client):
         super().__init__(**kwargs)
 
         # Setup logging
-        self.logger = logging.getLogger(__name__)
+        self.logger = logging.getLogger(kwargs.get('username',''))
 
         # fh = HTMLFileHandler(title=self._id, file=logs_file, mode='w')
         # fh.setLevel(logging.INFO)
         # fh.setFormatter(file_formatter())
         # self.logger.addHandler(fh)
+        if not len(self.logger.handlers):
+            ch = logging.StreamHandler()
+            ch.setLevel(get_logging_level())
+            ch.setFormatter(colred_formatter())
+            self.logger.addHandler(ch)
 
-        ch = logging.StreamHandler()
-        ch.setLevel(get_logging_level())
-        ch.setFormatter(colred_formatter())
-        self.logger.addHandler(ch)
-
-        self.logger.setLevel(logging.DEBUG)
-        self.logger = LoggerAdapter(self.logger, kwargs['username'])
+            self.logger.setLevel(logging.DEBUG)
+            self.logger = LoggerAdapter(self.logger, kwargs['username'])
 
 
 

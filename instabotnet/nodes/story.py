@@ -3,7 +3,7 @@ from .user import User
 from funcy import fallback, silent, compose
 from .schemas import story_schema
 from modeller import Model
-from .common import get_media_url
+from .common import get_image_url, get_manifest, get_video_url
 
 
 
@@ -21,7 +21,11 @@ class Story(Node, Model):
 
     # _on_init = lambda self: print(self._json())
 
-    source = property(lambda self: get_media_url(self))
+    mpd = property(lambda self: get_manifest(self))
+
+    image = property(lambda self: get_image_url(self))
+
+    image = property(lambda self: get_video_url(self))
 
     __repr__ = lambda self: f'Story(pk={self.pk})'
 
@@ -32,6 +36,11 @@ class Story(Node, Model):
     ))
 
     geotag: compose(property, silent)(lambda self: self['story_locations'][0]['location'])
+
+    swipeup_url = property(silent(lambda self: self['story_cta'][0]['links'][0]['webUri']))
+
+    spotyfy_song = property(lambda self: self['story_app_attribution']['content_url'])
+
 
 
 

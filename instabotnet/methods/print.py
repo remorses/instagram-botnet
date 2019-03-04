@@ -40,7 +40,7 @@ def _print(bot: Bot, nodes,  args):
         print()
         return node
 
-    nodes = map(process, islice(nodes, max))
+    nodes = map(process, nodes)
 
     return nodes, {}
 

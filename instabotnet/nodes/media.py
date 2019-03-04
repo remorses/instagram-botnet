@@ -3,7 +3,7 @@ from funcy import rcompose, ignore, fallback, mapcat
 from .node import Node
 from .schemas import media_schema
 from modeller import Model
-from .common import get_media_url
+from .common import get_image_url, get_manifest, get_video_url
 
 
 
@@ -16,15 +16,31 @@ class Media(Node, Model):
 
     __repr__ = lambda self: f'Media(url={self.url})'
 
-    id = property(lambda self: self.pk)
+    # id = property(lambda self: self.pk)
 
     url = property(lambda self: url_from_id(self.pk))
 
-    sources = property(lambda self:  \
-        list(map(get_media_url, self['carousel_media'] or [])) or \
-        [get_media_url(self)] or \
+    # for image data, for video posts returns the thumbnail
+    images = property(lambda self:  \
+        list(map(get_image_url, self['carousel_media'])) if self['carousel_media'] \
+        else [get_image_url(self)] or
         []
     )
+
+    # for videos, it is a MDP, if it is long it needs to be recomposed
+    mpd = property(lambda self:  \
+        list(map(get_manifest, self['carousel_media'] or [])) if self['carousel_media'] \
+        else [get_manifest(self)] or
+        []
+    )
+
+    videos = property(lambda self:  \
+        list(map(get_video_url, self['carousel_media'] or [])) if self['carousel_media'] \
+        else [get_video_url(self)] or
+        []
+    )
+
+
 
 
     # def fallback(*args):

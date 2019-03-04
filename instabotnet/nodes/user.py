@@ -9,4 +9,4 @@ class User(Node, Model):
     _schema = user_schema
     __repr__ = lambda self: f'User(pk={self.pk}, username={self.username})'
 
-    id = property(lambda self: self['pk'])
+    # id = property(lambda self: self['pk'])

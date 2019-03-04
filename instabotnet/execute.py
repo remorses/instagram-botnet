@@ -1,7 +1,7 @@
 from .nodes_edges import nodes_edges
 from .make_bots import make_bots
 from .populate import populate_object, populate_string
-from .assert_good_script import assert_good_script 
+from .assert_good_script import assert_good_script
 from .reducer import  reducer
 from .support import dotdict, merge
 from collections import deque
@@ -20,7 +20,7 @@ DEBUG = bool(os.environ.get('DEBUG'))
 def execute(script, variables={}) -> [dict]:
 
     script = obj_from_yaml(script, variables)
-    
+
     assert_good_script(script)
 
     bot = make_bots(script)[0]
@@ -57,7 +57,7 @@ def execute(script, variables={}) -> [dict]:
         raise
 
     else:
-        result = reduce(merge, result)
+        result = dict(reduce(merge, result))
         return result
 
 def locate_variable(script):

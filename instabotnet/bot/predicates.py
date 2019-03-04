@@ -6,14 +6,14 @@ def not_in_cache(bot, node,table=None, specifier=None,):
     with bot.cache as cache:
 
         if table and not specifier:
-            if cache[table].find_one(identifier=node.id, ):
+            if cache[table].find_one(identifier=node.pk, ):
                 return False
         elif table and specifier:
-            if cache[table].find_one(identifier=node.id,  specifier=specifier):
+            if cache[table].find_one(identifier=node.pk,  specifier=specifier):
                 return False
 
         if isinstance(node, Media):
-            kwargs = dict(identifier=node.id, type='media', )
+            kwargs = dict(identifier=node.pk, type='media', )
             if specifier: kwargs['specifier'] = specifier
 
             if cache['liked'].find_one(**kwargs):
@@ -27,7 +27,7 @@ def not_in_cache(bot, node,table=None, specifier=None,):
 
 
         elif isinstance(node, User):
-            kwargs = dict(identifier=node.id, type='user', )
+            kwargs = dict(identifier=node.pk, type='user', )
             if specifier: kwargs['specifier'] = specifier
 
             if cache['followed'].find_one(**kwargs):

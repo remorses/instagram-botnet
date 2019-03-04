@@ -69,7 +69,7 @@ def send_message(bot: Bot, text, node, thread_id=None):
         bio=node.get_bio(bot),
     )
 
-    user_id = node.id if node.id else node.get_id(bot)
+    user_id = node.pk if node.pk else node.get_id(bot)
     urls = extract_urls(text)
     item_type = 'link' if urls else 'text'
 
