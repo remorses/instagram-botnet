@@ -30,15 +30,15 @@ def message(bot, nodes,  args):
 
     stop = raiser(StopIteration)
 
-    send_msg_from_groups = lambda node: map(
+    send_msg_from_groups = lambda node: list(map(
             lambda msgs: send_message(bot, choice(msgs), node),
             messages
-        ) if node else []
+        )) if node else []
 
     process = rcompose(
         lambda x: stop() if x and count >= max else x,
         send_msg_from_groups,
-        lambda x: increment() if x is not None else None,
+        lambda x: len(x) and x[0] and increment(),
     )
 
     result = map(process, nodes)
