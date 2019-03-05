@@ -87,7 +87,7 @@ actions:
 
     -
         name:                    repost a photo from inspirations
-        from_type:               user
+        from:               user
         nodes:
             - {{ random.choice(inspirations) }}
         edges:
