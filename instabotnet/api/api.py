@@ -41,7 +41,8 @@ class API(Client):
             'client_context': self.generate_uuid(),
             'action': 'send_item'
         }
-
+        
+        users = [str(x) for x in users]
         
         text = options.get('text', '')
         
