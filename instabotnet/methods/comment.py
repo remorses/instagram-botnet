@@ -70,10 +70,10 @@ def do_comment(bot: Bot, text, node, thread_id=None):
             lambda: User(**node.user).username
         )(),
         caption=node['caption']['text'],
-        geotag=ignore(AttributeError, '')(
+        geotag=ignore(Exception, '')(
             lambda: Geotag(**node.location).name or ''
         )(),
-        usertags=ignore(AttributeError, '')(
+        usertags=ignore(Exception, '')(
             lambda: list(map(lambda x: User(**x), node._usertags)) or []
         )()
     )
