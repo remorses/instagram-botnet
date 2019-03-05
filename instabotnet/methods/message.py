@@ -10,11 +10,10 @@ import json
 @decorate(accepts=User, returns=Node)
 def message(bot, nodes,  args):
 
-
     try:
         max = float(args['max']) if 'max' in args else float('inf')
         messages = args['messages']
-        media = args.get('media')
+        media = args.get('media_share')
         profile = args.get('profile')
         hashtag = args.get('hashtag')
     except:
