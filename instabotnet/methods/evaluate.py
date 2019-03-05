@@ -38,6 +38,10 @@ def evaluate(bot, nodes,  args) -> Node:
         ):
             log_error(bot.logger)
             bot.sleep(5 * 60)
+            
+        except ClientError:
+            log_error(bot.logger)
+            bot.sleep()
 
         except:
             raise
