@@ -7,6 +7,9 @@ version:                         1
 bot:
         username:                {{ username }}
         password:                {{ password }}
+    latitude: 53.2734
+    longitude: -7.77832031
+        
         # settings:                {{ settings }} 
 
 
