@@ -46,7 +46,7 @@ for path in tests:
             'username': credentials.USER,
             'PASSWORD': credentials.PASS,
             'password': credentials.PASS,
-            'settings': open(credentials.USER + '_settings.json').read()
+             # 'settings': open(credentials.USER + '_settings.json').read())
             'competitors': ['instagram'],
             'inspirations': ['archillect.png'],
             'hashtags': ['pizza'],
