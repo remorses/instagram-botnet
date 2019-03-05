@@ -33,7 +33,51 @@ class API(Client):
 
             self.logger.setLevel(logging.DEBUG)
             self.logger = LoggerAdapter(self.logger, kwargs['username'])
+            
+            
+    def _prepare_recipients(users, thread_id=None, use_quotes=False):
+        if not isinstance(users, list):
+            print('Users must be an list')
+            return False
+        result = {'users': '[[{}]]'.format(','.join(users))}
+        if thread_id:
+            template = '["{}"]' if use_quotes else '[{}]'
+            result['thread'] = template.format(thread_id)
+        return result
 
+
+    def send_direct_item(self, item_type, users, **options):
+        data = {
+            'client_context': self.generate_uuid(),
+            'action': 'send_item'
+        }
+
+        url = 'direct_v2/threads/broadcast/{}/'.format(item_type)
+        text = options.get('text', '')
+        
+        if item_type == 'link':
+            data['link_text'] = text
+            data['link_urls'] = json.dumps(options.get('urls'))
+        elif item_type == 'text':
+            data['text'] = text
+        elif item_type == 'media_share':
+            data['text'] = text
+            data['media_type'] = options.get('media_type', 'photo')
+            data['media_id'] = options.get('media_id', '')
+        elif item_type == 'hashtag':
+            data['text'] = text
+            data['hashtag'] = options.get('hashtag', '')
+        elif item_type == 'profile':
+            data['text'] = text
+            data['profile_user_id'] = options.get('profile_user_id')
+
+        data['recipient_users'] = f"[[{','.join(users)}]]"
+        if options.get('thread'):
+            data['thread_ids'] = f'[{options.get('thread')}]'
+        data.update(self.authenticated_params)
+        return self._call_api(url, params=data, unsignature=True)
+
+  
 
 
 def get_logging_level():
