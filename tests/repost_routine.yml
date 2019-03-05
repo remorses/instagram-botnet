@@ -102,4 +102,4 @@ actions:
                     url:         x.sources[0]
             - upload:
                 max:             1
-                caption:         {{ random.choice(caption) }}
+                caption:         {{ random.choice(captions) }}
