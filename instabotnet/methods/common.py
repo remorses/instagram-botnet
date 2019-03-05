@@ -49,82 +49,81 @@ def cycled_api_call(amount, bot, api_method, api_argument, key):
 
     while True:
         bot.logger.debug('new get cycle with %s' % api_method.__name__)
-        try:
+        # try:
 
-            all_params = {}
+        all_params = {}
 
-            if 'rank_token' in inspect.signature(api_method).parameters:
-                all_params.update(dict(rank_token=rank_token))
+        if 'rank_token' in inspect.signature(api_method).parameters:
+            all_params.update(dict(rank_token=rank_token))
 
-            if next_max_id:
-                all_params.update(dict(max_id=next_max_id))
+        if next_max_id:
+            all_params.update(dict(max_id=next_max_id))
 
 
-            if isinstance(api_argument, dict):
-                data = api_method(
-                    **api_argument,
-                    **all_params,
-                )
+        if isinstance(api_argument, dict):
+            data = api_method(
+                **api_argument,
+                **all_params,
+            )
 
-            elif isinstance(api_argument, (tuple, list)):
-                data = api_method(
-                    *api_argument,
-                    **all_params,
-                )
+        elif isinstance(api_argument, (tuple, list)):
+            data = api_method(
+                *api_argument,
+                **all_params,
+            )
 
-            else:
-                data = api_method(
-                    api_argument,
-                    **all_params,
-                )
+        else:
+            data = api_method(
+                api_argument,
+                **all_params,
+            )
 
-            if type(key) == tuple or type(key) == list:
-                items = data
-                for k in key:
-                    if not items:
+        if type(key) == tuple or type(key) == list:
+            items = data
+            for k in key:
+                if not items:
+                    items = []
+                    break
+                if isinstance(k, int):
+                    try:
+                        items = items[k]
+                    except:
                         items = []
                         break
-                    if isinstance(k, int):
-                        try:
-                            items = items[k]
-                        except:
-                            items = []
-                            break
-                    else:
-                        items = items.get(k, {})
-            else:
-                items = data.get(key)
+                else:
+                    items = items.get(k, {})
+        else:
+            items = data.get(key)
 
-            items = items or []
+        items = items or []
 
-            next_max_id = (data.get("next_max_id", "") or (len(items) and items[-1].get("next_max_id", "")))
+        next_max_id = (data.get("next_max_id", "") or (len(items) and items[-1].get("next_max_id", "")))
 
-            size = len(items)
+        size = len(items)
 
-            if any([
-                not next_max_id,
-                "more_available" in data and not data["more_available"],
-                "big_list" in data and not data['big_list']
-            ]):
-                yield from items[:amount - done]
-                done +=  amount - done if amount - done <= size else size
+        if any([
+            not next_max_id,
+            "more_available" in data and not data["more_available"],
+            "big_list" in data and not data['big_list']
+        ]):
+            yield from items[:amount - done]
+            done +=  amount - done if amount - done <= size else size
+            return
+
+        # elif (done + size) >= max:
+        #     yield from items[:(max - done)]
+        #     done += size
+        #     return
+
+        else:
+            yield from items[:amount - done]
+            done +=  amount - done if amount - done <= size else size
+            if done >= amount:
                 return
 
-            # elif (done + size) >= max:
-            #     yield from items[:(max - done)]
-            #     done += size
-            #     return
-
-            else:
-                yield from items[:amount - done]
-                done +=  amount - done if amount - done <= size else size
-                if done >= amount:
-                    return
-
-        except Exception as exc:
-            bot.logger.error('exception in cycled_api_call:\n {}'.format(traceback.format_exc()))
-            yield from []
-            return
+        # except Exception as exc:
+        #    bot.logger.error('exception in cycled_api_call:\n {}'.format(traceback.format_exc()))
+        #    return
 
         if sleep_track > 10:
             bot.logger.debug('sleeping some time while getting')
