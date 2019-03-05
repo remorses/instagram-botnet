@@ -2,7 +2,7 @@ from instagram_private_api import Client, ClientCookieExpiredError, ClientLoginR
 from colorlog import ColoredFormatter
 import logging
 import os
-
+import json
 
 
 class LoggerAdapter(logging.LoggerAdapter):
@@ -35,16 +35,6 @@ class API(Client):
             self.logger = LoggerAdapter(self.logger, kwargs['username'])
             
             
-    def _prepare_recipients(users, thread_id=None, use_quotes=False):
-        if not isinstance(users, list):
-            print('Users must be an list')
-            return False
-        result = {'users': '[[{}]]'.format(','.join(users))}
-        if thread_id:
-            template = '["{}"]' if use_quotes else '[{}]'
-            result['thread'] = template.format(thread_id)
-        return result
-
 
     def send_direct_item(self, users, **options):
         data = {
@@ -52,32 +42,39 @@ class API(Client):
             'action': 'send_item'
         }
 
-        url = 'direct_v2/threads/broadcast/{}/'.format(item_type)
+        
         text = options.get('text', '')
         
         if options.get('urls'):
             data['link_text'] = text
             data['link_urls'] = json.dumps(options.get('urls'))
+            item_type = 'link'
             
         elif options.get('media_id',) and options.get('media_type'):
             data['text'] = text
             data['media_type'] = options.get('media_type', 'photo')
             data['media_id'] = options.get('media_id', '')
+            item_type = 'media_share'
             
         elif options.get('hashtag',):
             data['text'] = text
             data['hashtag'] = options.get('hashtag', '')
+            item_type = 'hashtag'
             
         elif options.get('profile_user_id'):
             data['text'] = text
             data['profile_user_id'] = options.get('profile_user_id')
+            item_type = 'profile'
             
         else:
             data['text'] = text
+            item_type = 'text'
+        
+        url = 'direct_v2/threads/broadcast/{}/'.format(item_type)
 
         data['recipient_users'] = f"[[{','.join(users)}]]"
-        if options.get('thread'):
-            data['thread_ids'] = f"[{options.get('thread')}]"
+        if options.get('thread_id'):
+            data['thread_ids'] = f"[{options.get('thread_id')}]"
         data.update(self.authenticated_params)
         return self._call_api(url, params=data, unsignature=True)
 
