@@ -42,7 +42,16 @@ for path in tests:
         load(path),
         {
             'USERNAME': credentials.USER,
+            'username': credentials.USER,
             'PASSWORD': credentials.PASS,
+            'password': credentials.PASS,
+            'settings': open(credentials.USER + '_settings.json').read()
+            'competitors': ['instagram'],
+            'inspirations': ['archillect.png'],
+            'hashtags': ['pizza'],
+            'geotags': ['monaco'],
+            'proxy': None,
+            
         }
     )
     # print(yaml.dump(data, Dumper=Dumper, default_flow_style=False))
