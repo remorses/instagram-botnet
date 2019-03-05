@@ -39,7 +39,6 @@ def message(bot, nodes,  args):
     process = rcompose(
         lambda x: stop() if x and count >= max else x,
         send_msg_from_groups,
-        lambda arr: list(arr)[0] if list(arr) else None,
         lambda x: x and increment and x,
     )
 
@@ -68,6 +67,8 @@ def send_message(bot: Bot, text, node, thread_id=None):
     )
     
     print(json.dumps(res, indent=4))
+    
+    thread_id = res.get('payload',{}).get('thread_id', '')
     
     bot.logger.info('messaged %s' % node)
     bot.total['messages'] += 1
