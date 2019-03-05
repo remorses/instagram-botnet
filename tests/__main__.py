@@ -18,9 +18,10 @@ tests = [
     # 'tests/upload_carousel_post.yml',
     # 'tests/upload_video_post.yml',
     # 'tests/delete_last_post.yml',
-     'tests/print_user_stories.yml',
+    # 'tests/print_user_stories.yml',
     # 'tests/scrape_users.yml',
     # 'tests/print_users_feed.yml',
+    'tests/message_some_urls.yml',
 ]
 
 

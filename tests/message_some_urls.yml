@@ -1,0 +1,20 @@
+
+name: upload single image
+bot:
+    username: {{ USERNAME }}
+    password: {{ PASSWORD }}
+    latitude: 53.2734
+    longitude: -7.77832031
+
+actions:
+    -
+        name: chat with myself
+        from: user
+        nodes:
+            - xmorse_
+        edges:
+            - message:
+                messages:
+                    - ['hey bro', 'ciao']
+                    - ['prova un po sta merda google.com', 'http://google.com']
+          

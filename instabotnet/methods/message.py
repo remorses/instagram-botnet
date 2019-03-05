@@ -14,6 +14,9 @@ def message(bot, nodes,  args):
     try:
         max = float(args['max']) if 'max' in args else float('inf')
         messages = args['messages']
+        media = args.get('media')
+        profile = args.get('profile')
+        hashtag = args.get('hashtag')
     except:
         bot.logger.error('please add all necessary args, {} isn\'t enought'.format(args))
         return [], {}
@@ -55,10 +58,9 @@ def send_message(bot: Bot, text, node, thread_id=None):
     )
     
     urls = extract_urls(text)
-    item_type = 'link' if urls else 'text'
+    
 
     res = bot.api.send_direct_item(
-        item_type,
         users=[node.pk],
         text=evaluated_text,
         thread=thread_id,
@@ -67,8 +69,9 @@ def send_message(bot: Bot, text, node, thread_id=None):
     
     print(json.dumps(res, indent=4))
     
-    bot.logger.info('texted %s' % node)
-    bot.sleep('text')
+    bot.logger.info('messaged %s' % node)
+    bot.total['messages'] += 1
+    bot.sleep('message')
     return node
 
 

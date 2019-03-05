@@ -46,7 +46,7 @@ class API(Client):
         return result
 
 
-    def send_direct_item(self, item_type, users, **options):
+    def send_direct_item(self, users, **options):
         data = {
             'client_context': self.generate_uuid(),
             'action': 'send_item'
@@ -55,21 +55,25 @@ class API(Client):
         url = 'direct_v2/threads/broadcast/{}/'.format(item_type)
         text = options.get('text', '')
         
-        if item_type == 'link':
+        if options.get('urls'):
             data['link_text'] = text
             data['link_urls'] = json.dumps(options.get('urls'))
-        elif item_type == 'text':
-            data['text'] = text
-        elif item_type == 'media_share':
+            
+        elif options.get('media_id',) and options.get('media_type'):
             data['text'] = text
             data['media_type'] = options.get('media_type', 'photo')
             data['media_id'] = options.get('media_id', '')
-        elif item_type == 'hashtag':
+            
+        elif options.get('hashtag',):
             data['text'] = text
             data['hashtag'] = options.get('hashtag', '')
-        elif item_type == 'profile':
+            
+        elif options.get('profile_user_id'):
             data['text'] = text
             data['profile_user_id'] = options.get('profile_user_id')
+            
+        else:
+            data['text'] = text
 
         data['recipient_users'] = f"[[{','.join(users)}]]"
         if options.get('thread'):
