@@ -70,7 +70,7 @@ def obj_from_yaml(script, variables):
     if isinstance(script, str):
         script = populate_string(script, variables)
         for script in script.split('\n'):
-            if '{{' in script and not ('#' in script and script.index('#') < script.index('{{')):
+            if '{{' in script and not ('#' in script and not script.index('#') < script.index('{{')):
                 var = locate_variable(script)
                 raise Exception('yaml file needs all data to be populated: {{{{ {} }}}}'.format(var))
         return yaml.load(script)
