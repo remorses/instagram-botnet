@@ -77,7 +77,7 @@ class API(Client):
 
         data['recipient_users'] = f"[[{','.join(users)}]]"
         if options.get('thread'):
-            data['thread_ids'] = f'[{options.get('thread')}]'
+            data['thread_ids'] = f"[{options.get('thread')}]"
         data.update(self.authenticated_params)
         return self._call_api(url, params=data, unsignature=True)
 
