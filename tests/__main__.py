@@ -21,7 +21,8 @@ tests = [
     # 'tests/print_user_stories.yml',
     # 'tests/scrape_users.yml',
     # 'tests/print_users_feed.yml',
-    'tests/message_some_urls.yml',
+    # 'tests/message_some_urls.yml',
+    'tests/repost_routine.yml',
 ]
 
 
