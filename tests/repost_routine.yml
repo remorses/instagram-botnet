@@ -24,23 +24,7 @@ delay:
 
 actions:
 
-    -
-        name:                    interactions on competitors fans 
-        from:               user
-        nodes:
-            - {{ random.choice(competitors) }}
-        edges:
-            - feed:
-                amount:          10
-            - shuffle:
-                max:             1
-                batch:           10
-            - likers:
-                amount:          30
-            - follow
-            - feed:
-                amount:          1
-            - like
+
     -
         name:                    geotag interactions
         from:               geotag
@@ -57,6 +41,8 @@ actions:
             - comment:
                 comments:
                     - {{ comments }}
+
+
 
 
     -
@@ -77,3 +63,21 @@ actions:
             - upload_post:
                 max:             1
                 caption:         {{ random.choice(captions) }}
+
+    -
+        name:                    interactions on competitors fans 
+        from:               user
+        nodes:
+            - {{ random.choice(competitors) }}
+        edges:
+            - feed:
+                amount:          10
+            - shuffle:
+                max:             1
+                batch:           10
+            - likers:
+                amount:          30
+            - follow
+            - feed:
+                amount:          1
+            - like
