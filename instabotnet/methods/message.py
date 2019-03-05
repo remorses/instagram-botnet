@@ -38,7 +38,7 @@ def message(bot, nodes,  args):
     process = rcompose(
         lambda x: stop() if x and count >= max else x,
         send_msg_from_groups,
-        lambda x: x and increment() and x,
+        lambda x: increment() if x is not None else None,
     )
 
     result = map(process, nodes)
