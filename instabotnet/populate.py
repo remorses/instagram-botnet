@@ -71,7 +71,7 @@ def populate_string( yaml_string, data={}):
     import random
 
     def replace_in_line(line):
-        if '{{' in line and '}}' in line:
+        if '{{' in line and '}}' in line and not ('#' in line and line.index('#') < line.index('{{')):
             begin = line.index('{{')
             end = line.index('}}', begin)
             variable_name = line[begin:end].strip().replace('{{','').replace('}}','').strip()
@@ -82,16 +82,14 @@ def populate_string( yaml_string, data={}):
                     line[end:].replace('}}','').replace('{{','')
                 )
             except:
-                return line
+                var = locate_variable(line)
+                raise Exception('yaml file needs all data to be evaluated: {{{{ {} }}}}'.format(variable_name))
+
 
         else:
             return line
 
     new_lines = list(map(replace_in_line, yaml_string.splitlines()))
-    for line in new_lines:
-        if '{{' in line and not ('#' in line and line.index('#') < line.index('{{')):
-            var = locate_variable(line)
-            raise Exception('yaml file needs all data to be evaluated: {{{{ {} }}}}'.format(var))
     return '\n'.join(new_lines)
 
 
