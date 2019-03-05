@@ -18,7 +18,7 @@ def evaluate(bot, nodes,  args) -> Node:
 
     total = args['info']['total_nodes']
     count = 0
-    nodes = iter(nodes)
+
 
     while True:
 
@@ -43,6 +43,7 @@ def evaluate(bot, nodes,  args) -> Node:
         except ClientError: # when trying to see private user
             bot.logger.error('\n' + traceback.format_exc())
             bot.sleep()
+            continue
 
         except:
             raise
