@@ -16,7 +16,7 @@ from .feed import feed
 from .like import like
 from .follow import follow
 from .unfollow import unfollow
-from .text import text
+from .message import message
 from .upload_post import upload_post
 from .comment import comment
 from .delete import delete
@@ -45,7 +45,7 @@ methods = dict(
    follow=follow,
    unfollow=unfollow,
    like=like,
-   text=text,
+   message=message,
    upload_post=upload_post,
    comment=comment,
    delete=delete,
