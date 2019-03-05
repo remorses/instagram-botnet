@@ -48,12 +48,12 @@ class Bot:
             with open(self.settings_file, 'w') as outfile:
                 json.dump(cache_settings, outfile, default=to_json)
                 print('SAVED: {0!s}'.format(self.settings_file))
-
+        
+        with open(self.settings_file) as file_data:
+            settings = json.load(file_data, object_hook=from_json)
+            print('Reusing settings: {0!s}'.format(self.settings_file))
+            
         try:
-            with open(self.settings_file) as file_data:
-                settings = json.load(file_data, object_hook=from_json)
-                print('Reusing settings: {0!s}'.format(self.settings_file))
-
             self.api = API(
                 username=username,
                 password=password,
@@ -79,30 +79,17 @@ class Bot:
         self.delay = DELAY
         self.max_per_day = MAX_PER_DAY
 
-        # methods used in propertis used in yaml
-        self._followers_ids = []
-        self._followers_usernames = []
-        self._following_ids = []
-        self._following_usernames = []
-
         # self.api.login()
 
 
 
     def __repr__(self):
-        return 'Bot(username=\'{}\', id={})'.format(self.username, self.id)
+        return 'Bot(username=\'{}\')'.format(self.username)
 
 
     def relogin(self):
         self.api.login()
 
-
-    @property
-    def last(self):
-        if self.api.last_json:
-            return self.api.last_json
-        else:
-            return {}
 
     def reached_limit(self, key):
         current_date = datetime.datetime.now()
