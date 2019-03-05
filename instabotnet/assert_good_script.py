@@ -27,6 +27,7 @@ def assert_good_script(script):
         if not 'nodes' in action:
             raise MalformedScript(f' missing `nodes` in action {name}')
         
+        
         get_name = lambda e: list(e.keys())[0] if isinstance(e, dict) else e
         
         for edge in (get_name(edge) for edge in action['edges']):

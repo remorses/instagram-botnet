@@ -56,6 +56,10 @@ def make_bots(script):
         if 'latitude' in data and 'longitude' in data:
             bot.latitude = data['latitude']
             bot.longitude = data['longitude']
+        else:
+            bot.logger.warn('no latitude and longitude in script, geotag searches will probably fail')
+            bot.latitude = 0
+            bot.longitude = 0
         bots += [bot]
 
     else:

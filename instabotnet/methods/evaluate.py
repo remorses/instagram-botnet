@@ -39,7 +39,7 @@ def evaluate(bot, nodes,  args) -> Node:
             log_error(bot.logger)
             bot.sleep(5 * 60)
             
-        except ClientError:
+        except ClientError: # when trying to see private user
             log_error(bot.logger)
             bot.sleep()
 
