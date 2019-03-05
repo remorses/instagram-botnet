@@ -77,7 +77,7 @@ class API(Client):
         if options.get('thread_id'):
             data['thread_ids'] = f"[{options.get('thread_id')}]"
         data.update(self.authenticated_params)
-        return self._call_api(url, params=data, unsignature=True)
+        return self._call_api(url, params=data, unsigned=True)
 
   
 
