@@ -49,6 +49,7 @@ for path in tests:
              # 'settings': open(credentials.USER + '_settings.json').read())
             'competitors': ['instagram'],
             'inspirations': ['archillect.png'],
+            'captions': ['hey', 'bruh'],
             'hashtags': ['pizza'],
             'geotags': ['monaco'],
             'comments': ['wow', 'awesome'],

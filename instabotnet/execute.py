@@ -60,19 +60,11 @@ def execute(script, variables={}) -> [dict]:
         result = dict(reduce(merge, result))
         return result
 
-def locate_variable(script):
-    begin = script.index('{{')
-    end = script.index('}}', begin )
-    return script[begin:end].replace('{{', '').strip()
 
 
 def obj_from_yaml(script, variables):
     if isinstance(script, str):
         script = populate_string(script, variables)
-        for script in script.split('\n'):
-            if '{{' in script and not ('#' in script and script.index('#') < script.index('{{')):
-                var = locate_variable(script)
-                raise Exception('yaml file needs all data to be populated: {{{{ {} }}}}'.format(var))
         return yaml.load(script)
     else:
         return populate_object(script, variables)
