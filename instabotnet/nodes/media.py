@@ -12,7 +12,16 @@ from .common import get_image_url, get_manifest, get_video_url
 
 class Media(Node, Model):
 
-    _on_init = lambda self: print(self._yaml())
+    def _on_init(self):
+        try:
+            self._validate()
+        except:
+            print('ERROR in validation:')
+            print()
+            traceback.print_exc()
+            print()
+            print(self._yaml())
+            print()
 
     _schema = media_schema
 

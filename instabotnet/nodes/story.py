@@ -19,8 +19,17 @@ from .common import get_image_url, get_manifest, get_video_url
 class Story(Node, Model):
     _schema = story_schema
 
-    _on_init = lambda self: print(self._yaml())
-    # _on_init = lambda self: print(self._json())
+    def _on_init(self):
+        try:
+            self._validate()
+        except:
+            print('ERROR in validation:')
+            print()
+            traceback.print_exc()
+            print()
+            print(self._yaml())
+            print()
+
 
     mpd = property(lambda self: get_manifest(self))
 
