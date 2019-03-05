@@ -64,7 +64,7 @@ def send_message(bot: Bot, text, node, thread_id=None):
         urls=urls
     )
     
-    print(json.dumps(res, indent=4))
+    # print(json.dumps(res, indent=4))
     
     thread_id = res.get('payload',{}).get('thread_id', '')
     
