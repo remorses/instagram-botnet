@@ -58,10 +58,6 @@ def scrape(bot: Bot, nodes,  args):
 
 def evaluate(expr, node, bot):
     x = node
-    return xeval(expr, x)
-
-
-def xeval(expr, x):
     try:
         return eval(expr, dict(x=x,
             # User=User,
@@ -72,4 +68,6 @@ def xeval(expr, x):
         ))
 
     except (KeyError, AttributeError):
+        bot.logger.error(f'error evaluating expression {expr}')
+        bot.logger.error(treaceback.format_exc())
         return None
