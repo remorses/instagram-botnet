@@ -74,6 +74,6 @@ actions:
                 key:             reposted_images
                 model:
                     url:         x.sources[0]
-            - upload:
+            - upload_post:
                 max:             1
                 caption:         {{ random.choice(captions) }}
