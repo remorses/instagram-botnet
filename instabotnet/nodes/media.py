@@ -4,7 +4,7 @@ from .node import Node
 from .schemas import media_schema
 from modeller import Model
 from .common import get_image_url, get_manifest, get_video_url
-
+import traceback
 
 
 
