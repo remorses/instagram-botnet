@@ -51,6 +51,7 @@ for path in tests:
             'inspirations': ['archillect.png'],
             'hashtags': ['pizza'],
             'geotags': ['monaco'],
+            'comments': ['wow', 'awesome'],
             'proxy': None,
             
         }
