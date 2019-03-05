@@ -7,7 +7,7 @@ version:                         1
 bot:
         username:                {{ username }}
         password:                {{ password }}
-        # settings:                {{ settings }}
+        # settings:                {{ settings }} 
 
 
 filter:
