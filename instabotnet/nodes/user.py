@@ -6,6 +6,17 @@ import traceback
 
 
 class User(Node, Model):
+    def _on_init(self):
+        try:
+            self._validate()
+        except:
+            print('ERROR in validation:')
+            print()
+            traceback.print_exc()
+            print()
+            print(self._yaml())
+            print()
+            
     _schema = user_schema
     __repr__ = lambda self: f'User(pk={self.pk}, username={self.username})'
 

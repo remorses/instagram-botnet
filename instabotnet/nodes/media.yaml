@@ -159,7 +159,7 @@ properties:
 required:
     # - can_viewer_save
     # - photo_of_you
-    - caption
+    # - caption # some photos don't have one
     # - filter_type
     - user
     # - has_liked
