@@ -87,7 +87,7 @@ def populate_string( yaml_string, data={}):
         else:
             return line
 
-    new_lines = map(replace_in_line, yaml_string.splitlines())
+    new_lines = list(map(replace_in_line, yaml_string.splitlines()))
     for line in new_lines:
         if '{{' in line and not ('#' in line and line.index('#') < line.index('{{')):
             var = locate_variable(line)

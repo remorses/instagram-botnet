@@ -24,17 +24,6 @@ delay:
 
 actions:
 
-    # -
-    #     name:                  unfollow
-    #     from_type:             user
-    #     nodes:
-    #         - {{ username }}
-    #     edges:
-    #         - following:
-    #             amount:        100
-    #         - shuffle:
-    #             max:           10
-    #         - unfollow
     -
         name:                    interactions on competitors fans 
         from:               user
@@ -52,21 +41,6 @@ actions:
             - feed:
                 amount:          1
             - like
-    # -
-    #     name:                  follow & like hashtags likers
-    #     from_type:             hashtag
-    #     nodes:
-    #     edges:
-    #         - hashtag_feed:
-    #             amount:        1
-    #         - likers:
-    #             amount:        10
-    #         - follow:
-    #             amount:        10
-    #         - user_feed:
-    #             amount:        2
-    #         - like:
-    #             max:           100
     -
         name:                    geotag interactions
         from:               geotag
