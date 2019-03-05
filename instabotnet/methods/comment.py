@@ -74,7 +74,7 @@ def do_comment(bot: Bot, text, node, thread_id=None):
             lambda: Geotag(**node.location).name or ''
         )(),
         usertags=ignore(AttributeError, '')(
-            lambda: list(map(lambda x: User(**x), node.usertags)) or []
+            lambda: list(map(lambda x: User(**x), node._usertags)) or []
         )()
     )
 
