@@ -104,5 +104,5 @@ def xeval(expr, data):
         ))
 
     except Exception as e:
-        print(f'error in xeval {e}')
-        return None
+        print(f'error {e} in xeval for {expr}')
+        raise
