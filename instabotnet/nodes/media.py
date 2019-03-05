@@ -12,6 +12,8 @@ from .common import get_image_url, get_manifest, get_video_url
 
 class Media(Node, Model):
 
+    _on_init = lambda self: print(self._yaml())
+
     _schema = media_schema
 
     __repr__ = lambda self: f'Media(url={self.url})'

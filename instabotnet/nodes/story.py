@@ -19,6 +19,7 @@ from .common import get_image_url, get_manifest, get_video_url
 class Story(Node, Model):
     _schema = story_schema
 
+    _on_init = lambda self: print(self._yaml())
     # _on_init = lambda self: print(self._json())
 
     mpd = property(lambda self: get_manifest(self))
