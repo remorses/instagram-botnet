@@ -24,7 +24,6 @@ def message(bot, nodes,  args):
     count = 0
 
     def increment():
-        bot.total['texts'] += 1
         nonlocal count
         count += 1
         return True
@@ -39,7 +38,7 @@ def message(bot, nodes,  args):
     process = rcompose(
         lambda x: stop() if x and count >= max else x,
         send_msg_from_groups,
-        lambda x: x and increment and x,
+        lambda x: x and increment() and x,
     )
 
     result = map(process, nodes)
