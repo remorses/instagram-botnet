@@ -1,6 +1,6 @@
 FROM python:3.6-alpine
 
-RUN apk  add --no-cache build-base jpeg-dev zlib-dev freetype-dev
+RUN apk  add --no-cache build-base git jpeg-dev zlib-dev freetype-dev musl ffmpeg-libs ffmpeg
 
 COPY requirements.txt /
 
