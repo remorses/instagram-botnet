@@ -29,19 +29,19 @@ def evaluate(bot, nodes,  args) -> Node:
             break
 
         except ClientLoginRequiredError as e:
-            bot.logger.error('\n' + e)
+            bot.logger.error(f'\n{e}')
             bot.relogin()
         
         except ClientConnectionError as e:  
-            bot.logger.error('\n' + e)
+            bot.logger.error(f'\n{e}')
 
         except (ClientReqHeadersTooLargeError, ClientThrottledError) as e:
-            bot.logger.error('\n' + e)
+            bot.logger.error(f'\n{e}')
             bot.sleep(5 * 60)
             
         except ClientError as e: # when trying to see private user
             print('here')
-            bot.logger.error('\n' + e)
+            bot.logger.error(f'\n{e}')
             bot.sleep()
 
         except Exception as e:
