@@ -1,7 +1,7 @@
 from .nodes_edges import nodes_edges
 from .make_bots import make_bots
 from .populate import populate_object, populate_string
-from .assert_good_script import assert_good_script 
+from .assert_good_script import assert_good_script
 from .reducer import  reducer
 from .support import dotdict, merge
 from collections import deque
@@ -20,7 +20,7 @@ DEBUG = bool(os.environ.get('DEBUG'))
 def execute(script, variables={}) -> [dict]:
 
     script = obj_from_yaml(script, variables)
-    
+
     assert_good_script(script)
 
     bot = make_bots(script)[0]
@@ -35,7 +35,7 @@ def execute(script, variables={}) -> [dict]:
             action_name = action['name'] if 'name' in action else 'unnmaed action'
             bot.logger.info(f'# ACTION {action_name}')
 
-            nodes, edges = nodes_edges(action)
+            nodes, edges = nodes_edges(action, bot)
             begin_state = dotdict(nodes=nodes, bot=bot, data=deque([]), errors=[])
             bot.logger.info(f'# with nodes {nodes}')
 
@@ -57,21 +57,14 @@ def execute(script, variables={}) -> [dict]:
         raise
 
     else:
-        result = reduce(merge, result)
+        result = dict(reduce(merge, result))
         return result
 
-def locate_variable(script):
-    begin = script.index('{{')
-    end = script.index('}}', begin )
-    return script[begin:end].replace('{{', '').strip()
 
 
 def obj_from_yaml(script, variables):
     if isinstance(script, str):
         script = populate_string(script, variables)
-        if '{{' in script:
-            var = locate_variable(script)
-            raise Exception('yaml file needs all data to be populated: {{{{ {} }}}}'.format(var))
         return yaml.load(script)
     else:
         return populate_object(script, variables)

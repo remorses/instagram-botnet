@@ -1,0 +1,22 @@
+
+bot:
+    username: {{ env['USERNAME'] }}
+    password: {{ env['PASSWORD'] }}
+    cookie: {{ env['USERNAME'] }}_cookie.txt
+    
+
+actions:
+    - 
+        name: test something general
+        from: user
+        nodes:
+            - instagram
+        edges:
+            - feed:
+                amount: 10
+            - likers:
+                amount: 50
+            - print:
+                model:
+                    name: x.username
+                    

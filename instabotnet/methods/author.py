@@ -1,4 +1,4 @@
-from funcy import mapcat
+from funcy import mapcat, rcompose
 from ..nodes import User, Media
 from .common import decorate
 
@@ -6,8 +6,11 @@ from .common import decorate
 @decorate(accepts=Media, returns=User)
 def author(bot, nodes,  args):
 
+    process = rcompose(
+        lambda media: media['user'],
+        lambda data: User(**data),
+    )
 
-    process = lambda media: media.get_author(bot)
-    result = mapcat(process, nodes)
+    result = map(process, nodes)
 
     return result, {}

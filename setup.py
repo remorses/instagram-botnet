@@ -29,7 +29,11 @@ setup(
 
     url='https://github.com/rpc-botnets/instagram-botnet',
     keywords=['instagram', 'bot', 'api', 'botnet'],
-    install_requires=[*requirements],
+    install_requires=[
+        *requirements,
+    ],
+    package_data={'': ['*.yaml', '*.json']},
+    include_package_data=True,
     classifiers=[
         # How mature is this project? Common values are
         # 'Development Status :: 5 - Production/Stable',

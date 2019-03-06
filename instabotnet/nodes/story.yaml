@@ -1,0 +1,250 @@
+properties:
+    ad_action: {}
+    attribution:
+        properties:
+            name:
+                type: string
+        required:
+            - name
+        type: object
+    story_app_attribution:
+        type: object
+        properties:
+            content_url:
+                type: string
+    can_reply:
+        type: boolean
+    can_reshare:
+        type: boolean
+    can_viewer_save:
+        type: boolean
+    caption:
+        type: 'null'
+    caption_is_edited:
+        type: boolean
+    caption_position:
+        type: number
+    client_cache_key:
+        type: string
+    code:
+        type: string
+    creative_config:
+        properties:
+            camera_facing: {}
+            capture_type: {}
+            persisted_effect_metadata_json:
+                type: string
+            should_render_try_it_on: {}
+        # required:
+        #     - should_render_try_it_on
+        #     - camera_facing
+        #     - capture_type
+    device_timestamp:
+        type: integer
+    expiring_at:
+        type: integer
+    filter_type:
+        type: integer
+    has_audio:
+        type: boolean
+    has_shared_to_fb:
+        type: integer
+    id:
+        type: string
+    image_versions2:
+        anyOf:
+            -
+                properties:
+                    candidates:
+                        properties:
+                            height:
+                                type: integer
+                            url:
+                                type: string
+                            width:
+                                type: integer
+                        required:
+                            - url
+                        type:
+                            - object
+                            - 'null'
+                type: object
+            -
+                type: array
+                items:
+                    properties:
+                        height:
+                            type: integer
+                        url:
+                            type: string
+                        width:
+                            type: integer
+                    required:
+                        - url
+                    type: object
+            - type: 'null'
+            - type: array
+              items:
+                  type: string # bug on instagram imo
+            - {}
+    imported_taken_at:
+        type: integer
+    is_dash_eligible:
+        type: integer
+    is_reel_media:
+        type: boolean
+    link_text: {}
+    media_type:
+        type: integer
+    number_of_qualities:
+        type: integer
+    organic_tracking_token:
+        type: string
+    original_height:
+        type: integer
+    original_width:
+        type: integer
+    photo_of_you:
+        type: boolean
+    pk:
+        type: integer
+    reel_mentions:
+        properties:
+            height:
+                type: number
+            is_hidden:
+                type: integer
+            is_pinned:
+                type: integer
+            rotation:
+                type: number
+            user:
+                $ref: user_schema
+            width:
+                type: number
+            x:
+                type: number
+            y:
+                type: number
+            z:
+                type: integer
+        required:
+            - user
+        type: object
+    show_one_tap_fb_share_tooltip:
+        type: boolean
+    story_countdowns: {}
+    story_cta:
+        properties:
+            felix_deep_link:
+                type: string
+            links:
+                properties:
+                    androidClass: {}
+                    appInstallObjectiveInvalidationBehavior: {}
+                    callToActionTitle: {}
+                    deeplinkUri: {}
+                    igUserId: {}
+                    leadGenFormId: {}
+                    linkType: {}
+                    package: {}
+                    redirectUri: {}
+                    webUri: {}
+                required:
+                    - redirectUri
+                    - linkType
+                    - deeplinkUri
+                    - webUri
+        required:
+            - felix_deep_link
+            - links
+    story_hashtags:
+        properties:
+            attribution:
+                type: string
+            custom_title:
+                type: string
+            hashtag:
+                properties:
+                    id: {}
+                    name: {}
+                required:
+                    - id
+                    - name
+            height: {}
+            is_hidden: {}
+            is_pinned: {}
+            rotation: {}
+            width: {}
+            x: {}
+            y: {}
+            z: {}
+        required:
+            - hashtag
+    story_locations:
+        type: array
+        items:
+            properties:
+                height:
+                    type: number
+                is_hidden:
+                    type: integer
+                is_pinned:
+                    type: integer
+                location:
+                    $ref:  geotag_schema
+    story_music_stickers: {}
+    story_sliders: {}
+    supports_reel_reactions:
+        type: boolean
+    taken_at:
+        type: integer
+    user:
+         $ref: user_schema
+    video_codec:
+        type: string
+    video_dash_manifest:
+        type: string
+    video_duration:
+        type: number
+    video_versions:
+        properties:
+            height:
+                type: integer
+            id:
+                type: string
+            type:
+                type: integer
+            url:
+                type: string
+            width:
+                type: integer
+        required:
+            - url
+        type: object
+required:
+    # - show_one_tap_fb_share_tooltip
+    # - caption_is_edited
+    # - client_cache_key
+    # - has_shared_to_fb
+    # - original_height
+    # - can_viewer_save
+    # - filter_type
+    # - code
+    # - original_width
+    # - caption_position
+    # - expiring_at
+    # - media_type
+    # - organic_tracking_token
+    # - device_timestamp
+    # - photo_of_you
+    # - can_reshare
+    - user
+    # - supports_reel_reactions
+    - pk
+    # - image_versions2
+    # - caption
+    # - taken_at
+    # - can_reply
+    # - is_reel_media
+    # - id

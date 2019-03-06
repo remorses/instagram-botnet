@@ -8,17 +8,21 @@ from .common import decorate
 
 @decorate(accepts=(User, Hashtag, Geotag,), returns=Media)
 def feed(bot, nodes, args):
-    first = next(iter(nodes), None)
-    nodes = chain([first], nodes)
     
+    if isinstance(nodes, (list, tuple)):
+        first = nodes[0]
+    else:
+        first = next(iter(nodes), None)
+        nodes = chain([first], nodes)
+
     switch = {
         isinstance(first, User): user_feed,
         isinstance(first, Hashtag): hashtag_feed,
         isinstance(first, Geotag): geotag_feed,
     }
-    
+
     if True in switch:
-        return switch[True](bot, nodes, args)  
-        
+        return switch[True](bot, nodes, args)
+
     else:
-        return []
+        return [], {}

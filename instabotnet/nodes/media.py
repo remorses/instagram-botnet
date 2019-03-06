@@ -1,169 +1,81 @@
 
-from funcy import rcompose, ignore
+from funcy import rcompose, ignore, fallback, mapcat
 from .node import Node
-from .user import User
-from .geotag import Geotag
-from .hashtag import Hashtag
+from .schemas import media_schema
+from modeller import Model
+from .common import get_image_url, get_manifest, get_video_url
+import traceback
 
 
 
-attributes = lambda media: (media._url, media._id, media._data)
-
-class Media(Node):
-
-    __slots__ = ['_url', '_id', '_data']
-
-    def __init__(self, *, generic=False, url=False, id=False, data={}):
-
-        self._url = url
-        self._id = id
-        self._data = data
-
-        if generic:
-            self._url = generic
-
-    def __repr__(self):
-        url, id, data = attributes(self)
-        if url:
-            return 'Media(url=\'{}\')'.format(url)
-        elif id:
-            return 'Media(id={})'.format(id)
-        elif data:
-            return 'Media(data=\'{...}\')'
-
-    @property
-    def id(self):
-        url, id, data = attributes(self)
-        if id:
-            return id
-        elif url:
-            return id_from_url(url)
-        else:
-            raise Exception('can\'t retrieve id, not enought data')
-
-    @property
-    def url(self):
-        url, id, data = attributes(self)
-        if url:
-            return url
-        elif id:
-            return url_from_id(id)
-        elif data:
-            return data['media_id']
-        else:
-            raise Exception
-
-    def get_data(self, bot):
-        url, id, data = attributes(self)
-        if id:
-            bot.api.media_info(id)
-            bot.sleep('usual')
-            if 'items' in bot.last:
-                self._data = bot.last["items"][0]
-                return self._data
-        elif data:
-            if 'media_id' in data:
-                self._id = data['media_id']
-                return self.get_data(bot)
-            else:
-                return {}
-        elif url:
-            id = id_from_url(url)
-            self._id = id
-            return self.get_data(bot)
-
-        else:
-            return {}
 
 
-    def get_author(self, bot):
-        _, _, data = attributes(self)
-        if 'user' in data:
-            user = data["user"]
-            return User(
-                data=user,
-                id=user['pk'],
-                username=user['username']
-            )
-        else:
-            data = self.get_data(bot)
-            user = data["user"]
-            return User(
-                data=user,
-                id=user['pk'],
-                username=user['username']
-            )
+class Media(Node, Model):
 
-    def get_like_count(self, bot):
-        _, _, data = attributes(self)
-        if 'like_count' in data:
-            return data['like_count']
-        else:
-            data = self.get_data(bot)
-            return data['like_count']
-
-    def get_comment_count(self, bot):
-        _, _, data = attributes(self)
-        if 'comment_count' in data:
-            return data['comment_count']
-        else:
-            data = self.get_data(bot)
-            if 'comment_count' in data:
-                return data['comment_count']
-            else:
-                return False
-
-    @ignore(TypeError)
-    def get_caption(self, bot):
-        _, _, data = attributes(self)
-        if 'caption' in data:
-            return data['caption']['text']
-        else:
-            data = self.get_data(bot)
-            return data['caption']['text']
-
-
-    def get_geotag(self, bot):
-        _, _, data = attributes(self)
-        if 'location' in data:
-            return data['location']
-        else:
-            data = self.get_data(bot)
-            if 'location' in data:
-                return  Geotag(
-                    name=data['name'],
-                    id=data['pk'],
-                    data=data
-                )
-            else:
-                return False
-
-    def get_usertags(self, bot):
-        _, _, data = attributes(self)
-        pack_user = rcompose(
-            lambda data: data['user'],
-            lambda data: User(username=data['username'], id=data['pk'], data=data)
-        )
-
+    def _on_init(self):
         try:
-            if 'usertags' in data:
-                items =  data["usertags"]["in"]
-                yield from (pack_user(item) for item in items)
-            else:
-                data = self.get_data(bot)
-                if 'usertags' in data:
-                    items =  data["usertags"]["in"]
-                    yield from (pack_user(item) for item in items)
-                else:
-                    return False
-        except KeyError:
-            return False
+            self._validate()
+        except:
+            print('ERROR in validation:')
+            print()
+            traceback.print_exc()
+            print()
+            print(self._yaml())
+            print()
 
-    def get_hashtags(self, bot):
-        text = self.get_caption(bot)
-        raw_tags = set(part[1:] for part in text.split() if part.startswith('#'))
-        tags = (Hashtag(name=tag) for tag in raw_tags)
-        yield from tags
+    _schema = media_schema
+
+    __repr__ = lambda self: f'Media(url={self.url})'
+
+    # id = property(lambda self: self.pk)
+
+    url = property(lambda self: url_from_id(self.pk))
+
+    # for image data, for video posts returns the thumbnail
+    images = property(lambda self:  \
+        list(map(get_image_url, self['carousel_media'])) if self['carousel_media'] \
+        else [get_image_url(self)] or
+        []
+    )
+
+    # for videos, it is a MDP, if it is long it needs to be recomposed
+    mpd = property(lambda self:  \
+        list(map(get_manifest, self['carousel_media'] or [])) if self['carousel_media'] \
+        else [get_manifest(self)] or
+        []
+    )
+
+    videos = property(lambda self:  \
+        list(map(get_video_url, self['carousel_media'] or [])) if self['carousel_media'] \
+        else [get_video_url(self)] or
+        []
+    )
+
+
+
+
+    # def fallback(*args):
+    #     first = lambda arr: arr[1:] if len(arr) > 0 else lambda: None
+    #     rest = lambda arr: arr[:1]if len(arr) > 0 else []
+    #     return  first(args)() or fallback(rest(args))
+
+    _usertags = property(lambda self: fallback(
+        lambda : self['usertags']['in']['user'],
+        lambda : list(map(lambda x: x['user'], self['usertags']['in'])),
+        lambda : list(map(lambda x: x['user'], self['caption']['usertags']['in'])),
+        lambda: list(mapcat(lambda data: map(lambda x: x['user'], data['usertags']['in']), self['carousel_media'] or [])),
+        lambda: list(mapcat(lambda data: map(lambda x: x['user'], data['caption']['usertags']['in']), self['carousel_media'] or [])),
+        lambda: []
+    ))
+
+    # geotag = property(lambda self: self['location'])
+
+
+
+
+
+
+
 
 
 

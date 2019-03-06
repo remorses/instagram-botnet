@@ -1,0 +1,19 @@
+
+name: upload single image
+bot:
+    username: {{ USERNAME }}
+    password: {{ PASSWORD }}
+    latitude: 53.2734
+    longitude: -7.77832031
+
+actions:
+    -
+        name: upload
+        from: media
+        nodes:
+            - https://www.instagram.com/p/Bt_ZIhzDhMv/
+        edges:
+            - upload_post:
+                caption: hey
+                geotag: monaco
+                disable_comments: true

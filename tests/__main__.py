@@ -1,71 +1,62 @@
 import sys
-from pathlib import Path
+from . import credentials
+import time
+import os.path
+sys.path.append( os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+from instabotnet import execute
+import yaml
 import json
 
-from instabotnet import execute
+def load(path):
+    with open(path) as f:
+        return f.read()
 
-from .parse import parse
-from .unmask import unmask
 
-
-################################################################################
-
-SCRIPTS = [
-    # parse('tests/hashtags.yml'),
-    # parse('tests/geotag_feed.yml'),
-    # parse('tests/geotag.yml'),
-    # parse('tests/usertags.yml'),
-    # parse('tests/like.yml'),
-    # parse('tests/authors.yml'),
-    # parse('tests/hashtag_feed.yml'),
-    # parse('tests/followers.yml'),
-    # parse('tests/user_feed.yml'),
-    # parse('tests/likers.yml'),
-    # parse('tests/complex.yml'),
-    # parse('tests/scrape.yml'),
-    # parse('tests/upload.yml'),
-    # parse('tests/delete.yml'),
-    # parse('tests/set_profile.yml'),
-    # parse('tests/network_bandwidth.yml'),
-    # parse('tests/stories.yml'),
-    # parse('tests/text.yml'),
-    parse('tests/comment.yml'),
-    #parse('tests/unfollow_non_followers.yml'),
-
+tests = [
+    # 'tests/basic.yml',
+    # 'tests/upload_single_post.yml',
+    # 'tests/upload_carousel_post.yml',
+    # 'tests/upload_video_post.yml',
+    # 'tests/delete_last_post.yml',
+    # 'tests/print_user_stories.yml',
+    # 'tests/scrape_users.yml',
+    # 'tests/print_users_feed.yml',
+    # 'tests/message_some_urls.yml',
+    'tests/repost_routine.yml',
 ]
 
-################################################################################
 
 
-if __name__ or '__main__':
+class Dumper(yaml.Dumper):
+    def increase_indent(self, flow=False, indentless=False):
+        return super(Dumper, self).increase_indent(flow, False)
 
+for path in tests:
+    print()
+    print()
+    print()
+    print()
+    print()
+    print()
 
-
-        # net_logger = Network_logger()
-        # net_logger.daemon = True
-        # net_logger.start()
-
-        data = {}
-        for script in SCRIPTS:
-            data[script['name']] = execute(script)
-
-        # for name, raw in data.items():
-        #
-        #     ok = False
-        #
-        #     with open('tests/artifacts/{}.json'.format(name), 'w+') as file:
-        #         content = file.read()
-        #         dumped = json.dumps(raw, indent=4)
-        #         if len(dumped) > len(content):
-        #             ok = True
-        #             file.write(dumped)
-        #         else:
-        #             file.write(content)
-        #
-        #     with open('tests/artifacts/{}.graphql'.format(name), 'w+') as file:
-        #         content = file.read()
-        #
-        #         if ok:
-        #             file.write(unmask(raw))
-        #         else:
-        #             file.write(content)
+    data = execute(
+        load(path),
+        {
+            'USERNAME': credentials.USER,
+            'username': credentials.USER,
+            'PASSWORD': credentials.PASS,
+            'password': credentials.PASS,
+             # 'settings': open(credentials.USER + '_settings.json').read())
+            'competitors': ['instagram'],
+            'inspirations': ['archillect.png'],
+            'captions': ['hey', 'bruh'],
+            'hashtags': ['pizza'],
+            'geotags': ['monaco'],
+            'comments': ['wow', 'awesome'],
+            'proxy': None,
+            
+        }
+    )
+    # print(yaml.dump(data, Dumper=Dumper, default_flow_style=False))
+    print(json.dumps(data, indent=4))
+    time.sleep(3)

@@ -1,11 +1,14 @@
 from .methods import methods
 from .nodes import Arg, Media, node_classes
 from .support import dotdict
+from funcy import rcompose
+from instagram_private_api.utils import InstagramID
+from instagram_private_api import Client
 from functools import reduce
 
 
 
-def nodes_edges(body):
+def nodes_edges(body, bot):
 
     nodes = []
     edges = []
@@ -33,7 +36,7 @@ def nodes_edges(body):
 
     edges += [dotdict(type='evaluate', args=dict(info=info))]
 
-    nodes = initialize_nodes(nodes, edges, body)
+    nodes = initialize_nodes(nodes, body['from'], bot)
 
     return nodes, edges
 
@@ -45,19 +48,25 @@ def calc_total_nodes(acc, edge):
     return amount * acc if acc <= max else max
 
 
-def initialize_nodes(nodes, edges, data):
-    if 'from_type' in data:
-        Class = node_classes[data['from_type'].lower()]
-    elif 'from' in data:
-        Class = node_classes[data['from'].lower()]
-    else:
-        first_method = methods.get(edges[0]['type'], None)
-        if not first_method:
-            raise Exception('can\'t find {} edge in available edges methods')
-        Class = first_method.accepts
-        Class = Class if Class.__name__ != 'Node' else \
-            Media if 'instagram.com' in nodes[0] else Arg
+def initialize_nodes(nodes, from_type, bot):
 
-    return [Class(generic=value) for value in nodes]
+    api: Client = bot.api
+
+    Class = node_classes[from_type.lower()]
+
+    switch = {
+        'User': lambda username: api.username_info(username)['user'],
+        'Media': rcompose(
+            lambda url: [x for x in url.split('/') if x][-1],
+            lambda short: InstagramID.expand_code(short),
+            lambda id: api.media_info(id),
+            lambda data: data['items'][0],
+            # lambda x: print(x) or x
+        ),
+        'Hashtag': lambda name: {'name': name},
+        'Arg': lambda v: {'value': v},
+        'Geotag': lambda name: api.location_search(bot.latitude, bot.longitude, query=name,)['venues'][0]
+    }
 
 
+    return (Class(**switch[Class.__name__](value)) for value in nodes)

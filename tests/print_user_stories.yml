@@ -1,0 +1,30 @@
+
+name: upload single image
+bot:
+    username: {{ USERNAME }}
+    password: {{ PASSWORD }}
+    latitude: 53.2734
+    longitude: -7.77832031
+
+actions:
+    -
+        name: upload
+        from: user
+        nodes:
+            - instagram
+            - therealgue
+            - ttipane
+        edges:
+            - stories:
+                amount: 90
+            - print:
+                model:
+                    # images: x.images
+                    # videos: x.videos
+                    mpd: (x.mpd or '')[:10] 
+                    # all: x._serialize()
+                    #
+                    # manifest: x.mpd
+                    # url: x.image
+                    # swipeup: x.swipeup_url
+                    # spotify: x.spotify_song

@@ -1,9 +1,11 @@
-FROM python:3.6-alpine
+FROM python:3.7-alpine
 
-RUN apk  add --no-cache build-base jpeg-dev zlib-dev freetype-dev
+RUN apk  add --no-cache build-base git jpeg-dev zlib-dev freetype-dev musl sdl ffmpeg-libs ffmpeg
 
-COPY requirements.txt /
+COPY . /src
 
-RUN pip install --no-cache-dir -r /requirements.txt
+WORKDIR /src
 
-RUN rm /requirements.txt
+RUN pip install .
+
+RUN rm -Rf /src

@@ -15,7 +15,7 @@ from colorama import init, Fore
 def _print(bot: Bot, nodes,  args):
 
     try:
-        max = float(args['max']) if 'max' in args else float('inf')
+        max = args.get('max')
         model = args['model']
 
     except KeyError as exc:
@@ -40,23 +40,16 @@ def _print(bot: Bot, nodes,  args):
         print()
         return node
 
-    max = ignore(OverflowError, None)(lambda: int(max))()
-    nodes = map(process, islice(nodes, max))
+    nodes = map(process, nodes)
 
     return nodes, {}
 
 
 
 def evaluate(expr, node, bot):
-    x = node._data or node.get_data(bot)
-    x = dotdict(**x)
-    value = xeval(expr, x)
-    if not value:
-        x = node.get_data(bot)
-        x = dotdict(**x)
-        return xeval(expr, x)
-    else:
-        return value
+    x = node
+    return xeval(expr, x)
+
 
 def xeval(expr, x):
     try:

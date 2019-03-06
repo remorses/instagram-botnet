@@ -1,5 +1,58 @@
 from .node import Node
 from .user import User
+from funcy import fallback, silent, compose
+from .schemas import story_schema
+from modeller import Model
+from .common import get_image_url, get_manifest, get_video_url
+import traceback
+
+
+
+
+# def fallback(*args):
+#     first = lambda arr: arr[1:] if len(arr) > 0 else lambda: None
+#     rest = lambda arr: arr[:1]if len(arr) > 0 else []
+#     return  first(args)() or fallback(rest(args))
+
+
+
+class Story(Node, Model):
+    _schema = story_schema
+
+    def _on_init(self):
+        try:
+            self._validate()
+        except:
+            print('ERROR in validation:')
+            print()
+            traceback.print_exc()
+            print()
+            print(self._yaml())
+            print()
+
+
+    mpd = property(lambda self: get_manifest(self))
+
+    image = property(lambda self: get_image_url(self))
+
+    image = property(lambda self: get_video_url(self))
+
+    __repr__ = lambda self: f'Story(pk={self.pk})'
+
+    location = property(lambda self: fallback(
+        lambda: self['story_locations'][0]['location'],
+        lambda: self['story_locations']['location'],
+        lambda: None
+    ))
+
+    geotag: compose(property, silent)(lambda self: self['story_locations'][0]['location'])
+
+    swipeup_url = property(silent(lambda self: self['story_cta'][0]['links'][0]['webUri']))
+
+    spotyfy_song = property(lambda self: self['story_app_attribution']['content_url'])
+
+
+
 
 
 """
@@ -110,50 +163,3 @@ from .user import User
     status
 }
 """
-attributes = lambda x: (x._id, x._data)
-
-
-class Story(Node):
-    __slots__ = ['_id', '_data']
-
-    def __init__(self, *, generic=None, id=None, data=None,):
-        self._id = id
-        self._data = data
-
-        if generic:
-            self._data = generic
-
-    def __repr__(self):
-            url = self.get_url()
-            return 'Story(id=\'{}\', url=\'{}\')'.format(self._id, url)
-
-    def get_data(self, bot):
-        return self._data
-
-    def get_expiring_at(self):
-        data = self._data
-        if 'expiring_at' in data:
-            return data['expiring_at']
-        else:
-            return None
-
-    def get_taken_at(self):
-        data = self._data
-        if 'taken_at' in data:
-            return data['taken_at']
-        else:
-            return None
-
-    def get_url(self):
-        data = self._data
-        if 'video_versions' and 'video_duration' in data:
-            return data['video_versions'][0]['url']
-        elif 'image_versions2' in data:
-            return data['image_versions2']['candidates'][0]['url']
-        else:
-            return None
-    
-    @property
-    def author(self):
-        data = self._data
-        return User(data=data['user'])

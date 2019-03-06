@@ -12,6 +12,7 @@ def scrape(bot: Bot, nodes,  args):
 
     try:
         max = float(args['max']) if 'max' in args else float('inf')
+        key = args.get('key', 'data')
         model = args['model']
 
     except:
@@ -25,7 +26,7 @@ def scrape(bot: Bot, nodes,  args):
         nonlocal count
         count += 1
 
-
+    data = []
 
     def process(node):
         """
@@ -38,34 +39,25 @@ def scrape(bot: Bot, nodes,  args):
         for name, expr in model.items():
             insertion[name] = evaluate(expr, node, bot=bot)
 
+        data.append(insertion)
+        bot.logger.info('scraped node {} '.format(node, ))
+
         if count <= max:
-            bot.logger.info('scraped node {} '.format(node, ))
+
             increment()
             yield node
 
         else:
              return
 
-
     nodes = mapcat(process, nodes)
 
-
-    return nodes, {}
+    return nodes, {key: data}
 
 
 
 def evaluate(expr, node, bot):
-    x = node._data or node.get_data(bot)
-    x = dotdict(**x)
-    value = xeval(expr, x)
-    if not value:
-        x = node.get_data(bot)
-        x = dotdict(**x)
-        return xeval(expr, x)
-    else:
-        return value
-
-def xeval(expr, x):
+    x = node
     try:
         return eval(expr, dict(x=x,
             # User=User,
@@ -76,4 +68,6 @@ def xeval(expr, x):
         ))
 
     except (KeyError, AttributeError):
+        bot.logger.error(f'error evaluating expression {expr}')
+        bot.logger.error(treaceback.format_exc())
         return None

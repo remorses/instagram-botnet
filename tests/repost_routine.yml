@@ -1,0 +1,86 @@
+
+name:                            routine
+version:                         1
+
+
+
+bot:
+        username:                {{ username }}
+        password:                {{ password }}
+        latitude: 53.2734
+        longitude: -7.77832031
+        
+
+
+
+filter:
+        user:
+            followers:           x > 50 and x < 1000
+            following:           x < 500
+        media:
+            likers:              x < 1000
+            hastags:             not x in ["sex", "porn", "child"]
+
+delay:
+    unfollow:                    5
+
+
+actions:
+
+
+    -
+        name:                    geotag interactions
+        from:               geotag
+        nodes:
+            - {{ random.choice(geotags) }}
+        edges:
+            - feed:
+                amount:          1
+            - likers:
+                amount:          30
+            - feed:
+                amount:          5
+            - like
+            - comment:
+                comments:
+                    - {{ comments }}
+
+
+
+
+    -
+        name:                    repost a photo from inspirations
+        from:               user
+        nodes:
+            - {{ random.choice(inspirations) }}
+        edges:
+            - feed:
+                amount:          10
+            - shuffle:
+                max:             1
+                batch:           10
+            - scrape:
+                key:             reposted_images
+                model:
+                    url:         x.sources[0]
+            - upload_post:
+                max:             1
+                caption:         {{ random.choice(captions) }}
+
+    -
+        name:                    interactions on competitors fans 
+        from:               user
+        nodes:
+            - {{ random.choice(competitors) }}
+        edges:
+            - feed:
+                amount:          10
+            - shuffle:
+                max:             1
+                batch:           10
+            - likers:
+                amount:          30
+            - follow
+            - feed:
+                amount:          1
+            - like

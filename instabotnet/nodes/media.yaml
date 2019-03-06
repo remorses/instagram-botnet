@@ -1,0 +1,176 @@
+properties:
+    can_see_insights_as_brand: {}
+    can_view_more_preview_comments: {}
+    can_viewer_reshare: {}
+    can_viewer_save: {}
+    caption:
+        properties:
+            bit_flags:
+                type: integer
+            content_type:
+                type: string
+            created_at:
+                type: integer
+            created_at_utc:
+                type: integer
+            did_report_as_spam:
+                type: boolean
+            has_translation: {}
+            media_id:
+                type: integer
+            pk:
+                type: integer
+            share_enabled:
+                type: boolean
+            status:
+                type: string
+            text:
+                type: string
+            type:
+                type: integer
+            user:
+                $ref: user_schema
+            user_id:
+                type: integer
+        required:
+            - text
+        type: object
+    caption_is_edited: {}
+    carousel_media:
+        properties:
+            carousel_parent_id: {}
+            id: {}
+            image_versions2: {}
+            is_dash_eligible: {}
+            media_type: {}
+            number_of_qualities: {}
+            original_height: {}
+            original_width: {}
+            pk: {}
+            usertags:
+                properties:
+                    in:
+                        properties:
+                            duration_in_video_in_sec:
+                                type: 'null'
+                            position:
+                                items:
+                                    type: number
+                                type: array
+                            start_time_in_video_in_sec:
+                                type: 'null'
+                            user:
+                                $ref: user_schema
+                        required:
+                            - user
+                        type: object
+                required:
+                    - in
+                type: object
+            video_codec: {}
+            video_dash_manifest: {}
+            video_duration: {}
+            video_versions:
+                properties:
+                    height: {}
+                    id: {}
+                    type: {}
+                    url: {}
+                    width: {}
+                required:
+                    - url
+    carousel_media_count: {}
+    client_cache_key: {}
+    code: {}
+    comment_count: {}
+    comment_likes_enabled: {}
+    comment_threading_enabled: {}
+    commenting_disabled_for_viewer:
+        type: boolean
+    comments_disabled:
+        type: boolean
+    device_timestamp: {}
+    direct_reply_to_author_enabled:
+        type: boolean
+    facepile_top_likers: {}
+    filter_type: {}
+    has_audio:
+        type: boolean
+    has_liked: {}
+    has_more_comments: {}
+    id: {}
+    image_versions2: {}
+    inline_composer_display_condition: {}
+    inline_composer_imp_trigger_time: {}
+    is_dash_eligible: {}
+    lat:
+        type: number
+    like_count: {}
+    likers:
+        $ref: user_schema
+    lng:
+        type: number
+    location:
+        $ref: geotag_schema
+    max_num_visible_preview_comments: {}
+    media_type: {}
+    next_max_id:
+        type: integer
+    number_of_qualities: {}
+    organic_tracking_token: {}
+    original_height: {}
+    original_width: {}
+    photo_of_you: {}
+    pk: {}
+    preview_comments:
+        $ref: comment_schema
+    taken_at: {}
+    top_likers:
+        items:
+            type: string
+    user:
+        $ref: user_schema
+    usertags: {}
+    video_codec: {}
+    video_dash_manifest: {}
+    video_duration:
+        type: number
+    video_versions:
+        properties:
+            height:
+                type: integer
+            id:
+                type: string
+            type:
+                type: integer
+            url:
+                type: string
+            width:
+                type: integer
+        required:
+            - height
+            - width
+            - url
+            - type
+            - id
+        type: object
+    view_count:
+        type: number
+required:
+    # - can_viewer_save
+    # - photo_of_you
+    # - caption # some photos don't have one
+    # - filter_type
+    - user
+    # - has_liked
+    # - organic_tracking_token
+    # - caption_is_edited
+    # - code
+    # - can_viewer_reshare
+    # - like_count
+    # - taken_at
+    # - client_cache_key
+    - pk
+    - media_type
+    # - id
+    # - device_timestamp

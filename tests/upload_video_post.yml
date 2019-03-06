@@ -1,0 +1,19 @@
+
+name: upload single image
+bot:
+    username: {{ USERNAME }}
+    password: {{ PASSWORD }}
+    latitude: 53.2734
+    longitude: -7.77832031
+
+actions:
+    -
+        name: upload
+        from: arg
+        nodes:
+            - https://scontent-mxp1-1.cdninstagram.com/vp/8bc67ec8cfe6daf1cd6f47d7ea688f30/5C7E3168/t50.2886-16/50431121_594924300920837_38858319701395766_n.mp4?_nc_ht=scontent-mxp1-1.cdninstagram.com
+        edges:
+            - upload_post:
+                caption: hey
+                geotag: monaco
+                disable_comments: true

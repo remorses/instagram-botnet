@@ -1,0 +1,29 @@
+properties:
+    address:
+        type: string
+    city:
+        type: string
+    external_source:
+        type: string
+    facebook_places_id:
+        type: integer
+    lat:
+        type: number
+    lng:
+        type: number
+    name:
+        type: string
+    pk:
+        type: integer
+    short_name:
+        type: string
+required:
+    # - city
+    # - facebook_places_id
+    - lat
+    - lng
+    # - pk
+    # - short_name
+    - name
+    # - external_source
+    # - address

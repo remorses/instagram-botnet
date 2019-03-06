@@ -14,7 +14,6 @@ def unfollow(bot: Bot, nodes,  args):
     count = 0
 
     def increment():
-        bot.total['unfollows'] += 1
         nonlocal count
         count += 1
 
@@ -40,14 +39,7 @@ def unfollow(bot: Bot, nodes,  args):
 
 
 def unfollow_user(user, bot):
-    bot.api.unfollow(user.id)
-    if bot.last['status'] != 'ok':
-        bot.logger.warn('request didn\'t return "ok" following {}'.format(user.username))
-        bot.sleep('error')
-        return None
-    else:
-        bot.total['unfollows'] += 1
-
-        bot.logger.info('unfollowed %s' % user)
-        bot.sleep('unfollow')
-        return user
+    bot.api.friendships_destroy(user.pk)
+    bot.total['unfollows'] += 1
+    bot.logger.info('unfollowed %s' % user)
+    bot.sleep('unfollow')

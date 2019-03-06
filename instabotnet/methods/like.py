@@ -7,14 +7,11 @@ from ..nodes import Media
 
 @decorate(accepts=Media, returns=Media)
 def like(bot, nodes,  args):
-
-
     max = float(args['max']) if 'max' in args else float('inf')
 
     count = 0
 
     def increment():
-        bot.total['likes'] += 1
         nonlocal count
         count += 1
 
@@ -38,14 +35,8 @@ def like(bot, nodes,  args):
 
 
 def like_media(media, bot):
-        bot.api.like(media.id)
-        if bot.last['status'] != 'ok':
-            bot.logger.warn('request didn\'t return "ok" liking {}'.format(media.url))
-            bot.sleep('error')
-            return None
-        else:
-            bot.total['likes'] += 1
-
-            bot.logger.debug('liked %s' % media.url)
-            bot.sleep('like')
-            return media
+        bot.api.post_like(media.pk)
+        bot.logger.info(f'liked media {media}')
+        bot.total['likes'] += 1
+        bot.sleep('like')
+        return media

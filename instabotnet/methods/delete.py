@@ -1,29 +1,21 @@
 from .common import decorate
 from ..nodes import Media
-
+from ..bot import Bot
 
 
 
 @decorate(accepts=Media, returns=Media)
-def delete(bot, nodes,  args):
+def delete(bot: Bot, nodes,  args):
 
 
     for node in nodes:
+        res = bot.api.delete_media(node.id)
 
-        if 'instagram.com' in node.url:
-            try:
-                media_id = node.id
-                bot.api.media_info(media_id)
-                media = bot.last['items'][0]
-                if not bot.api.delete_media(media):
-                    bot.logger.warn('deletion didn\'t go well')
-            except (KeyError, TypeError):
-                bot.logger.warn('cannot delete media {}'.format(node.url))
-
+        if not res.get('did_delete'):
+            bot.logger.warn(f'can\'t delete media {node}')
         else:
-            raise Exception('`delete` needs urls of photos to delete')
+            bot.logger.info(f'deleted {node}')
 
-        bot.logger.debug('sleeping some time')
         bot.sleep('delete')
 
 

@@ -1,41 +1,28 @@
-
-from typing import List
-from funcy import  rcompose, mapcat
-
-from ..nodes import Story, User
+from .geotag_stories import geotag_stories
+from .user_stories import user_stories
+from .hashtag_stories import hashtag_stories
+from ..nodes import Geotag, Hashtag, Media, User
+from itertools import chain
 from .common import decorate
 
 
-
-
-
-@decorate(accepts=User, returns=Story)
-def stories(bot, nodes,  args) -> List[Story]:
-
-    amount = args.get('amount')
-    pack_story = lambda data: Story(id=data['pk'], data=data)
-    # unmasked = lambda: unmask(bot.last)
-    # log_unmasked = lambda: bot.logger.warn(unmasked())
-    # bot.logger.warn([x for x in nodes])
-
-
-    process = rcompose(
-        lambda user: user.id if user.id else user.get_id(bot),
-        # lambda id: tap(id, lambda: bot.api.get_user_stories(id)),
-        # lambda x: tap(x, lambda: print(x)),
-        lambda id: get_stories(bot, id),
-        # lambda x: tap(x, lambda: print(x)),
-        lambda gen: map(pack_story, gen)
-    )
-
-    stories = mapcat(process, nodes)
-
-    return stories, {}
-
-def get_stories(bot, user_id, amount,):
-    count = 0
-    bot.api.get_user_stories(user_id)
-    if 'reel' in bot.last:
-        yield from bot.last['reel']['items'][:amount]
+@decorate(accepts=(User, Hashtag, Geotag,), returns=Media)
+def stories(bot, nodes, args):
+    
+    if isinstance(nodes, (tuple, list)):
+        first = nodes[0]
     else:
-        yield from []
+        first = next(iter(nodes), None)
+        nodes = chain([first], nodes)
+
+    switch = {
+        isinstance(first, User): user_stories,
+        isinstance(first, Hashtag): hashtag_stories,
+        isinstance(first, Geotag): geotag_stories,
+    }
+
+    if True in switch:
+        return switch[True](bot, nodes, args)
+
+    else:
+        return [], {}

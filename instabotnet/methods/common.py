@@ -1,6 +1,9 @@
 from datetime import datetime
 import re
-
+import inspect
+import traceback
+import os
+from random import random
 
 def accepts(Class, returns):
 
@@ -33,48 +36,94 @@ def parse_date(date):
 
 
 
-
-
 def cycled_api_call(amount, bot, api_method, api_argument, key):
 
     amount = amount or 9999
 
-    next_max_id = ''
     sleep_track = 0
     done = 0
+    next_max_id = ''
+
+    rank_token = bot.api.generate_uuid()
 
 
     while True:
         bot.logger.debug('new get cycle with %s' % api_method.__name__)
-        try:
-            api_method(api_argument, max_id=next_max_id)
-            items = bot.last[key] if key in bot.last else []
-            size = len(items)
+        # try:
 
-            if any([
-                'next_max_id' not in bot.last,
-                "more_available" in bot.last and not bot.last["more_available"],
-                "big_list" in bot.last and not bot.last['big_list']
-            ]):
-                yield from items[:amount - done]
-                done += size
+        all_params = {}
+
+        if 'rank_token' in inspect.signature(api_method).parameters:
+            all_params.update(dict(rank_token=rank_token))
+
+        if next_max_id:
+            all_params.update(dict(max_id=next_max_id))
+
+
+        if isinstance(api_argument, dict):
+            data = api_method(
+                **api_argument,
+                **all_params,
+            )
+
+        elif isinstance(api_argument, (tuple, list)):
+            data = api_method(
+                *api_argument,
+                **all_params,
+            )
+
+        else:
+            data = api_method(
+                api_argument,
+                **all_params,
+            )
+
+        if type(key) == tuple or type(key) == list:
+            items = data
+            for k in key:
+                if not items:
+                    items = []
+                    break
+                if isinstance(k, int):
+                    try:
+                        items = items[k]
+                    except:
+                        items = []
+                        break
+                else:
+                    items = items.get(k, {})
+        else:
+            items = data.get(key)
+
+        items = items or []
+
+        next_max_id = (data.get("next_max_id", "") or (len(items) and items[-1].get("next_max_id", "")))
+
+        size = len(items)
+
+        if any([
+            not next_max_id,
+            "more_available" in data and not data["more_available"],
+            "big_list" in data and not data['big_list']
+        ]):
+            yield from items[:amount - done]
+            done +=  amount - done if amount - done <= size else size
+            return
+
+        # elif (done + size) >= max:
+        #     yield from items[:(max - done)]
+        #     done += size
+        #     return
+
+        else:
+            yield from items[:amount - done]
+            done +=  amount - done if amount - done <= size else size
+            if done >= amount:
                 return
 
-            # elif (done + size) >= max:
-            #     yield from items[:(max - done)]
-            #     done += size
-            #     return
-
-            else:
-                yield from items[:amount - done]
-                done += size
-                if done > amount:
-                    return
-
-        except Exception as exc:
-            bot.logger.error('exception in cycled_api_call: {}'.format(exc))
-            yield from []
-            return
+        # except Exception as exc:
+        #    bot.logger.error('exception in cycled_api_call:\n {}'.format(traceback.format_exc()))
+        #    return
 
         if sleep_track > 10:
             bot.logger.debug('sleeping some time while getting')
@@ -82,7 +131,8 @@ def cycled_api_call(amount, bot, api_method, api_argument, key):
             sleep_track = 0
 
         bot.sleep('usual')
-        next_max_id = bot.last.get("next_max_id", "")
+
+        # next_max_id = data.get("next_max_id", "") or (len(items) and items[-1].get("next_max_id", ""))
         sleep_track += 1
 
 
@@ -112,3 +162,17 @@ def extract_urls(text):
 
 effify = lambda non_f_str: f'{non_f_str}'
 substitute_vars = lambda txt, **kwds: effify(txt).format(**kwds)
+
+
+
+
+class temporary_write:
+        def __init__(self,  data, path=str(random())[3:]):
+                self.path = path
+                self.data = data
+                f = open(self.path, 'a+b')
+                f.write(self.data)
+                f.close()
+
+        __enter__ = lambda self: self.path
+        __exit__ = lambda self, a, b, c: os.remove(self.path)

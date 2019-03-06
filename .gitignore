@@ -2,7 +2,7 @@
 __pycache__/
 *.py[cod]
 *$py.class
-
+credentials.py
 # C extensions
 *.so
 test_memory.py
@@ -17,6 +17,8 @@ eggs/
 lib/
 lib64/
 parts/
+*_settings.json
+
 sdist/
 var/
 wheels/

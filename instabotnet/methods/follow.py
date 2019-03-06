@@ -14,7 +14,6 @@ def follow(bot: Bot, nodes,  args):
     count = 0
 
     def increment():
-        bot.total['follows'] += 1
         nonlocal count
         count += 1
 
@@ -40,14 +39,8 @@ def follow(bot: Bot, nodes,  args):
 
 
 def follow_user(user, bot):
-    bot.api.follow(user.id)
-    if bot.last['status'] != 'ok':
-        bot.logger.warn('request didn\'t return "ok" following {}'.format(user.username))
-        bot.sleep('error')
-        return None
-    else:
-        bot.total['follows'] += 1
-
-        bot.logger.info('followed %s' % user)
-        bot.sleep('follow')
-        return user
+    bot.api.friendships_create(user.pk)
+    bot.total['follows'] += 1
+    bot.logger.info(f'followed {user}')
+    bot.sleep('follow')
+    return user

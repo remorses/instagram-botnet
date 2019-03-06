@@ -1,0 +1,51 @@
+properties:
+    bit_flags:
+        type: integer
+    comment_like_count:
+        type: integer
+    content_type:
+        type: string
+    created_at:
+        type: integer
+    created_at_utc:
+        type: integer
+    did_report_as_spam:
+        type: boolean
+    has_liked_comment:
+        type: boolean
+    has_translation:
+        type: boolean
+    media_id:
+        type: integer
+    parent_comment_id:
+        type: integer
+    pk:
+        type: integer
+    share_enabled:
+        type: boolean
+    status:
+        type: string
+    text:
+        type: string
+    type:
+        type: integer
+    user:
+        $ref: user_schema
+    user_id:
+        type: integer
+required:
+    - user
+    # - created_at
+    - text
+    # - did_report_as_spam
+    # - share_enabled
+    # - user_id
+    # - comment_like_count
+    # - content_type
+    # - bit_flags
+    # - has_liked_comment
+    # - pk
+    # - status
+    # - created_at_utc
+    # - type
+    # - media_id

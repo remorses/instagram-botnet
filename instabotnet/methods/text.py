@@ -2,12 +2,12 @@ from funcy import ignore, raiser, rcompose
 from random import choice
 from ..bot import Bot
 from .common import decorate, extract_urls, substitute_vars, tap
-from ..nodes import Media, Node
+from ..nodes import User, Node
 
 
 
 
-@decorate(accepts=Media, returns=Node)
+@decorate(accepts=User, returns=Node)
 def text(bot, nodes,  args):
 
 
@@ -69,7 +69,7 @@ def send_message(bot: Bot, text, node, thread_id=None):
         bio=node.get_bio(bot),
     )
 
-    user_id = node.id if node.id else node.get_id(bot)
+    user_id = node.pk if node.pk else node.get_id(bot)
     urls = extract_urls(text)
     item_type = 'link' if urls else 'text'
 

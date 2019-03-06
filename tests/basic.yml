@@ -1,0 +1,22 @@
+
+
+bot:
+    username: {{ USERNAME }}
+    password: {{ PASSWORD }}
+    latitude: 53.2734
+    longitude: -7.77832031
+
+actions:
+    -
+        name: test
+        from: user
+        nodes:
+            - ttipane
+        edges:
+            - feed:
+                amount: 10
+            - usertags:
+                amount: 90
+            - print:
+                model:
+                    x: x.username

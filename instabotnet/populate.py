@@ -1,6 +1,8 @@
 from colorama import init, Fore
-
+import os
 from string import Formatter
+import random
+from .support import merge
 
 def get_field_value(field_name, mapping):
     try:
@@ -69,28 +71,38 @@ def populate_string( yaml_string, data={}):
     import random
 
     def replace_in_line(line):
-        if '{{' in line and '}}' in line:
+        if '{{' in line and '}}' in line and not ('#' in line and line.index('#') < line.index('{{')):
             begin = line.index('{{')
             end = line.index('}}', begin)
             variable_name = line[begin:end].strip().replace('{{','').replace('}}','').strip()
-            if variable_name in data:
+            try:
                 return (
                     line[:begin].replace('{{','').replace('}}','') +
-                    str(xeval(variable_name)) +
+                    str(xeval(variable_name, merge(data, os.environ))) +
                     line[end:].replace('}}','').replace('{{','')
                 )
-            else:
-                return line
+            except:
+                var = locate_variable(line)
+                raise Exception('yaml file needs all data to be evaluated: {{{{ {} }}}}'.format(variable_name))
+
+
         else:
             return line
 
-    new_lines = map(replace_in_line, yaml_string.splitlines())
+    new_lines = list(map(replace_in_line, yaml_string.splitlines()))
     return '\n'.join(new_lines)
+
+
+def locate_variable(script):
+    begin = script.index('{{')
+    end = script.index('}}', begin )
+    return script[begin:end].replace('{{', '').strip()
 
 def xeval(expr, data):
     try:
         return eval(expr, dict(
             random=random,
+            env=os.environ,
             **data,
             # User=User,
             # Story=Story,
@@ -100,5 +112,5 @@ def xeval(expr, data):
         ))
 
     except Exception as e:
-        print(f'error in xeval {e}'
-        return None
+        print(f'error {e} in xeval for {expr}')
+        raise

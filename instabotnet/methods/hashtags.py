@@ -8,8 +8,14 @@ from .common import decorate
 def hashtags(bot, nodes,  args):
 
     amount = args.get('amount')
-    process = lambda media: media.get_hashtags(bot)
+
+    def process(node,):
+        text = node['caption']['text']
+        raw_tags = set(part[1:] for part in text.split() if part.startswith('#'))
+        tags = [Hashtag(name=tag) for tag in raw_tags]
+        yield from islice(tags, amount)
+
     result = mapcat(process, nodes)
-    result = islice(result, amount)
+    # result =
 
     return result, {}
