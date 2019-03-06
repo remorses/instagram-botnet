@@ -6,6 +6,6 @@ COPY . /src
 
 WORKDIR /src
 
-RUN pip install .
+RUN pip install -e .
 
 RUN rm -Rf /src
