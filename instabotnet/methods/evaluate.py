@@ -41,7 +41,7 @@ def evaluate(bot, nodes,  args) -> Node:
         except StopIteration:
             break
 
-        except:
+        except Exception:
             raise
 
         else:
