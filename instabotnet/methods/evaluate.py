@@ -41,7 +41,8 @@ def evaluate(bot, nodes,  args) -> Node:
             bot.sleep()
             continue
 
-        except Exception:
+        except Exception as e:
+            bot.logger.error('unexpected exception {e}')
             raise
 
         else:
@@ -49,8 +50,6 @@ def evaluate(bot, nodes,  args) -> Node:
             percentage = (str(int(count / total * 100)) + '%').center(5)
             bot.logger.info( f'{percentage}:  {count} nodes out of {total}')
             
-        finally:
-            continue
 
     # bot.logger.warn(nodes[:3])
 
