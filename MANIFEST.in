@@ -1,2 +1,1 @@
-include *.yml *.yaml
-recursive-include instabotnet *.txt *.py
+recursive-include instabotnet *
