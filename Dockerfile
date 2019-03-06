@@ -6,4 +6,4 @@ COPY . /src
 
 RUN pip3 install /src
 
-RUN rm /src
+RUN rm -Rf /src
