@@ -4,6 +4,6 @@ RUN apk  add --no-cache build-base git jpeg-dev zlib-dev freetype-dev musl sdl f
 
 COPY . /src
 
-RUN pip3 install .
+RUN pip3 install /src
 
 RUN rm /src
