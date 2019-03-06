@@ -1,5 +1,6 @@
 set -ex
-cd `dirname ${BASH_SOURCE[0]}`
+cd `dirname $0`
+ech $BASH_SOURCE[0]
 echo $PWD
 
 ./deploy_pypi.sh
