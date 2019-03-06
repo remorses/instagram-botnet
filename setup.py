@@ -32,7 +32,7 @@ setup(
     install_requires=[
         *requirements,
     ],
-    package_data={'': ['*.yaml', '*.json'],
+    package_data={'': ['*.yaml', '*.json']},
     include_package_data=True,
     classifiers=[
         # How mature is this project? Common values are
