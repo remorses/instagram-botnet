@@ -8,12 +8,12 @@ from collections import deque
 from functools import reduce
 import traceback
 import os
+import re
+import yaml
 
-
-from ruamel.yaml import YAML
-
-yaml = YAML()
-
+yaml.reader.Reader.NON_PRINTABLE = re.compile(
+    u'[^\x09\x0A\x0D\x20-\x7E\x85\xA0-\uD7FF\uE000-\uFFFD\U00010000-\U0010FFFF]')
+    
 
 DEBUG = bool(os.environ.get('DEBUG'))
 
