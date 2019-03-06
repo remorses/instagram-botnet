@@ -23,7 +23,7 @@ class Story(Node, Model):
         try:
             self._validate()
         except:
-            print('ERROR in validation:')
+            print('ERROR in validation for Story:')
             print()
             traceback.print_exc()
             print()

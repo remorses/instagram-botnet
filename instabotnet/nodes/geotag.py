@@ -2,10 +2,22 @@ from .node import Node
 from funcy import fallback
 from modeller import Model
 from .schemas import geotag_schema
+import traceback
 
 class Geotag(Node, Model):
     _schema = geotag_schema
 
+    def _on_init(self):
+        try:
+            self._validate()
+        except:
+            print('ERROR in validation for Geotag:')
+            print()
+            traceback.print_exc()
+            print()
+            print(self._yaml())
+            print()
+            
     __repr__ = lambda self: f'Geotag(pk={self.id}'
 
     id = property(lambda self:
