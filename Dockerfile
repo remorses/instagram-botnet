@@ -2,8 +2,8 @@ FROM python:3.6-alpine
 
 RUN apk  add --no-cache build-base git jpeg-dev zlib-dev freetype-dev musl sdl ffmpeg-libs ffmpeg
 
-COPY src /src
+COPY ./requirements.txt /
 
-RUN python /src/setup.py install
+RUN pip3 install -r /requirements.txt
 
-RUN rm /src
+RUN rm /requirements.txt
