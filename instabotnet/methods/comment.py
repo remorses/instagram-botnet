@@ -39,8 +39,8 @@ def comment(bot: Bot, nodes,  args):
 
     do_comment_from_groups = lambda node: map(
             lambda cmnts: do_comment(bot, choice(cmnts), node),
-            comments) \
-         if node else []
+            comments) and node \
+         if node else None
 
 
 
@@ -49,7 +49,6 @@ def comment(bot: Bot, nodes,  args):
         # return_if_suitable,
         # discard_if_reached_limit,
         do_comment_from_groups,
-        lambda arr: list(arr)[0] if arr else None,
         lambda x: tap(x, increment) if x else None,
     )
 
@@ -65,11 +64,12 @@ def comment(bot: Bot, nodes,  args):
 def do_comment(bot: Bot, text, node, thread_id=None):
 
     media_id = node.pk
+    print('caption', node.caption._yaml())
     evaluated_text = substitute_vars(text,
         author=ignore(Exception, '')(
             lambda: User(**node.user).username
         )(),
-        caption=node['caption']['text'],
+        # caption=node['caption']['text'],
         geotag=ignore(Exception, '')(
             lambda: Geotag(**node.location).name or ''
         )(),

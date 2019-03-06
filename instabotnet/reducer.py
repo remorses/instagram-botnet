@@ -40,7 +40,8 @@ def reducer(state: dotdict, edge: dotdict):
 
     if len(state.errors) > 1:
         # tried multiple times
-        bot.logger.error('trying to solve errors: {}, bot: {}'.format(state.errors, bot))
+        bot.logger.warn('got lots of errors: {}, bot: {}'.format(state.errors, bot))
+        state.errors = []
         # send_bot_to_phone_verifier
         # change_bot_if_neccessary
         # resolve_captcha_if_necessary
@@ -87,7 +88,7 @@ def reducer(state: dotdict, edge: dotdict):
         bot.logger.error('error reducing edge {}: \"{}\" \n {}'.format(
             edge.type,
             exc.__class__.__name__,
-            traceback.format_exc()))
+            exc))
         bot.sleep('error')
 
         errored_state = dotdict(**merge(state, dotdict(errors=state.errors + [exc])))
