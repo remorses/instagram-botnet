@@ -32,7 +32,6 @@ setup(
     install_requires=[
         *requirements,
     ],
-    dependency_links = ['git+https://git@github.com/ping/instagram_private_api.git@1.6.0#egg=instagram_private_api==1.6.0'],
     classifiers=[
         # How mature is this project? Common values are
         # 'Development Status :: 5 - Production/Stable',
