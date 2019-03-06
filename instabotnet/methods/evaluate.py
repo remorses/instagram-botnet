@@ -25,6 +25,9 @@ def evaluate(bot, nodes,  args) -> Node:
         try:
             next(iter(nodes))
 
+        except StopIteration:
+            break
+
         except ClientLoginRequiredError:
             bot.logger.error('\n' + traceback.format_exc())
             bot.relogin()
@@ -37,9 +40,6 @@ def evaluate(bot, nodes,  args) -> Node:
             bot.logger.error('\n' + traceback.format_exc())
             bot.sleep()
             continue
-            
-        except StopIteration:
-            break
 
         except Exception:
             raise
@@ -48,6 +48,9 @@ def evaluate(bot, nodes,  args) -> Node:
             count += 1
             percentage = (str(int(count / total * 100)) + '%').center(5)
             bot.logger.info( f'{percentage}:  {count} nodes out of {total}')
+            
+        finally:
+            continue
 
     # bot.logger.warn(nodes[:3])
 
