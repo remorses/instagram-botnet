@@ -36,7 +36,7 @@ def execute(script, variables={}) -> [dict]:
             bot.logger.info(f'# ACTION {action_name}')
 
             nodes, edges = nodes_edges(action, bot)
-            begin_state = dotdict(nodes=nodes, bot=bot, data=deque([]), errors=[])
+            begin_state = dotdict(nodes=(node for node in nodes), bot=bot, data=deque([]), errors=[])
             bot.logger.info(f'# with nodes {nodes}')
 
             end_state = reduce(reducer, edges, begin_state)
