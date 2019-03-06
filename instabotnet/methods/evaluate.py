@@ -24,9 +24,6 @@ def evaluate(bot, nodes,  args) -> Node:
 
         try:
             next(iter(nodes))
-        
-        except ClientError:
-            continue
 
         except StopIteration:
             break
@@ -35,11 +32,7 @@ def evaluate(bot, nodes,  args) -> Node:
             bot.logger.error('\n' + traceback.format_exc())
             bot.relogin()
 
-        except (
-            ClientConnectionError,
-            ClientReqHeadersTooLargeError,
-            ClientThrottledError
-        ):
+        except (ClientConnectionError, ClientReqHeadersTooLargeError, ClientThrottledError):
             bot.logger.error('\n' + traceback.format_exc())
             bot.sleep(5 * 60)
             
