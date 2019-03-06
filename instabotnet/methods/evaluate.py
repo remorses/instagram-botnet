@@ -23,7 +23,10 @@ def evaluate(bot, nodes,  args) -> Node:
     while True:
 
         try:
-            next(nodes)
+            next(iter(nodes))
+        
+        except ClientError:
+            continue
 
         except StopIteration:
             break
