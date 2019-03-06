@@ -69,4 +69,4 @@ def initialize_nodes(nodes, from_type, bot):
     }
 
 
-    return [Class(**switch[Class.__name__](value))for value in nodes)
+    return [Class(**switch[Class.__name__](value))for value in nodes]

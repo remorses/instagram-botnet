@@ -9,10 +9,10 @@ class Comment(Node, Model):
     def _on_init(self):
         try:
             self._validate()
-        except:
+        except Exception as e:
             print('ERROR in validation for Comment:')
             print()
-            traceback.print_exc()
+            print(str(e))
             print()
             print(self._yaml())
             print()

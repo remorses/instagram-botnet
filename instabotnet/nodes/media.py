@@ -15,10 +15,10 @@ class Media(Node, Model):
     def _on_init(self):
         try:
             self._validate()
-        except:
+        except Exception as e:
             print('ERROR in validation for Media:')
             print()
-            traceback.print_exc()
+            print(str(e))
             print()
             print(self._yaml())
             print()
