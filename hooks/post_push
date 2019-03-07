@@ -2,6 +2,8 @@
 
 cd `dirname $DOCKERFILE_PATH`
 
+set -ex
+
 rm -rf *.egg-info
 rm -rf dist
 rm -rf build
