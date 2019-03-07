@@ -1,0 +1,16 @@
+#!/bin/bash
+
+cd `dirname $DOCKERFILE_PATH`
+
+rm -rf *.egg-info
+rm -rf dist
+rm -rf build
+
+python3 setup.py sdist bdist_wheel
+python3 -m twine --user $PYPI_USERNAME --password $PYPI_PASSWORD upload  dist/*
+
+
+rm -rf *.egg-info
+rm -rf dist
+rm -rf build
+
