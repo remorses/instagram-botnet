@@ -9,7 +9,7 @@ services:
         volumes:
             - ./tests:/tests
             
-        environement:
+        environment:
             TEST: "true"
             IG_USERNAME:
             IG_PASSWORD:
