@@ -12,8 +12,8 @@ with open(path.join(here, 'README.md'), encoding='utf-8') as f:
 with open(path.join(here, 'requirements.txt'), encoding='utf-8') as f:
     requirements = list(set(f.read().split('\n')) - set(['', '\n']))
 
-with open(path.join(here, 'VERSION'), 'r') as f:
-    version = f.read().strip()
+
+version = os.environ.get('DOCKER_TAG') 
 
 setup(
     name='instabotnet',
