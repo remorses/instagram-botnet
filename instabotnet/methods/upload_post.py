@@ -7,7 +7,7 @@ import ffmpeg
 from .common import decorate, temporary_write
 from ..bot import Bot
 from ..nodes import Arg, Media
-
+import traceback
 
 
 SUPPORTED_IMAGE_EXT = ['jpg']

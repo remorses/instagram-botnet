@@ -79,10 +79,6 @@ def reducer(state: dotdict, edge: dotdict):
         bot.logger.error('error reducing edge {}: \"{}\" {}' \
             .format(edge.type, e.__class__.__name__, e))
         return dotdict(nodes=[], bot=bot, errors=state.errors + [e], data=state.data)
-        
-    except ClientError as e:
-        bot.logger.error(e)
-        return dotdict(nodes=[], bot=bot, errors=state.errors + [e], data=state.data)
 
     except Exception as exc:
         bot.logger.error('error reducing edge {}: \"{}\" \n {}'.format(
@@ -91,8 +87,9 @@ def reducer(state: dotdict, edge: dotdict):
             exc))
         bot.sleep('error')
 
-        errored_state = dotdict(**merge(state, dotdict(errors=state.errors + [exc])))
-        return reducer(errored_state, edge)
+        # errored_state = dotdict(**merge(state, dotdict(errors=state.errors + [exc])))
+        # return reducer(errored_state, edge)
+        return dotdict(nodes=[], bot=bot, errors=state.errors + [e], data=state.data)
 
     else:
         # all is right, no exceptions

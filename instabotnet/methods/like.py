@@ -14,6 +14,7 @@ def like(bot, nodes,  args):
     def increment():
         nonlocal count
         count += 1
+        return True
 
     stop = raiser(StopIteration)
 
@@ -24,7 +25,7 @@ def like(bot, nodes,  args):
         #     else tap(None,lambda: bot.logger.warn('{} not suitable'.format(node))),
         lambda node: like_media(node, bot=bot) \
             if node else None,
-        lambda x: tap(x, increment) if x else None,
+        lambda x: x and increment() and x,
     )
 
 

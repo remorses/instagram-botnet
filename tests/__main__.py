@@ -1,5 +1,5 @@
 import sys
-from . import credentials
+
 import time
 import os.path
 sys.path.append( os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
@@ -10,6 +10,15 @@ import json
 def load(path):
     with open(path) as f:
         return f.read()
+
+try:
+    from . import credentials
+
+except:
+    class credentials:
+        USER = os.environ.get('IG_USERNAME')
+        PASS = os.environ.get('IG_PASSWORD')
+
 
 
 tests = [

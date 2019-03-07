@@ -12,7 +12,7 @@ def feed(bot, nodes, args):
     if isinstance(nodes, (list, tuple)):
         first = nodes[0]
     else:
-        first = next(iter(nodes), None)
+        first = next(nodes, None)
         nodes = chain([first], nodes)
 
     switch = {

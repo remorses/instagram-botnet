@@ -1,6 +1,6 @@
 from .common import decorate
 from ..nodes import Node, node_classes
-
+import json
 from .common import dotdict
 from ..bot import Bot
 from funcy import mapcat
@@ -38,6 +38,8 @@ def scrape(bot: Bot, nodes,  args):
         insertion = dotdict()
         for name, expr in model.items():
             insertion[name] = evaluate(expr, node, bot=bot)
+        
+        print(json.dumps(insertion, indent=4))
 
         data.append(insertion)
         bot.logger.info('scraped node {} '.format(node, ))

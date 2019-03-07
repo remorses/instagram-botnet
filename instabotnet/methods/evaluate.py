@@ -18,12 +18,13 @@ def evaluate(bot, nodes,  args) -> Node:
 
     total = args['info']['total_nodes']
     count = 0
+    nodes = iter(nodes)
 
 
     while True:
 
         try:
-            next(iter(nodes))
+            next(nodes)
 
         except StopIteration:
             break

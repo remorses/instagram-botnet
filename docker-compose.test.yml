@@ -1,0 +1,19 @@
+version: '3.7'
+
+
+
+services:
+    suto:
+        build: .
+        command: sh -c "cd / && python -m tests"
+        volumes:
+            - ./tests:/tests
+            
+        environement:
+            TEST: "true"
+            IG_USERNAME:
+            IG_PASSWORD:
+            
+            
+        
+            
