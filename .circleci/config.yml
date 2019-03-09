@@ -32,7 +32,7 @@ jobs:
             docker save -o ~/docker-layers.tar $DOCKER_LAYERS
       - run:
           name: Test with docker-compose
-          command: docker-compose -p $CIRCLE_PROJECT_REPONAME -f docker-compose.test.yaml up --exit-code-from tester
+          command: docker-compose -p $CIRCLE_PROJECT_REPONAME -f docker-compose.test.yaml -e USERNAME up --exit-code-from tester
           environment: 
             SCRIPT:   << parameters.script >>
 
