@@ -6,11 +6,7 @@ jobs:
         type: string
     docker:
       - image: docker/compose:1.23.2
-    working_directory: /src/
-    environment:
-      TEST_RESULTS: /tmp/test-results
-      USERNAME: $(eval echo ${USERNAME})
-      PASSWORD: $(eval echo ${PASSWORD})
+    working_directory: /src
 
     steps:
       - checkout
@@ -39,8 +35,7 @@ jobs:
           command: docker-compose -p $CIRCLE_PROJECT_REPONAME -f docker-compose.test.yaml up --exit-code-from tester
           environment: 
             SCRIPT:   << parameters.script >>
-            USERNAME: $(eval echo ${USERNAME})
-            PASSWORD: $(eval echo ${PASSWORD})
+
       - save_cache:
           key: v1-docker-{{ .Branch }}
           paths:
