@@ -14,3 +14,5 @@ jobs:
       - run:
           name: Test with docker.compose
           command: docker-compose -f docker-compose.test.yaml up --build --exit-code-from tester
+          environment:
+            IG_USERNAME: remors.redhence
