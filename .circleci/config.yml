@@ -9,8 +9,8 @@ jobs:
     working_directory: /src/
     environment:
       TEST_RESULTS: /tmp/test-results
-      USERNAME: $USERNAME
-      PASSWORD: $PASSWORD
+      USERNAME: $(eval echo ${USERNAME})
+      PASSWORD: $(eval echo ${PASSWORD})
 
     steps:
       - checkout
