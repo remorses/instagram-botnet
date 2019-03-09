@@ -36,7 +36,7 @@ jobs:
           name: Test with docker-compose
           command: docker-compose -p $CIRCLE_PROJECT_REPONAME -f docker-compose.test.yaml up --exit-code-from tester
           environment: 
-            SCRIPT:   << script >>
+            SCRIPT:   << parameters.script >>
       - save_cache:
           key: v1-docker-{{ .Branch }}
           paths:
