@@ -6,11 +6,9 @@ services:
     tester:
         build: .
         command: sh -c "python -m tests"
-        volumes:
-            - ./tests:/tests
             
         environment:
-            TEST: "true"
+            SCRIPT:
             IG_USERNAME:
             IG_PASSWORD:
             
