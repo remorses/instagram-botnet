@@ -6,13 +6,12 @@ services:
     tester:
         build: .
         command: sh -c "python -m tests"
-        volumes:
-            - ./tests:/tests
             
         environment:
             SCRIPT:
             USERNAME:
             PASSWORD:
+
             
             
         
