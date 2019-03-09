@@ -9,6 +9,8 @@ jobs:
     working_directory: /src/
     environment:
       TEST_RESULTS: /tmp/test-results
+      USERNAME: $USERNAME
+      PASSWORD: $PASSWORD
 
     steps:
       - checkout
@@ -37,6 +39,8 @@ jobs:
           command: docker-compose -p $CIRCLE_PROJECT_REPONAME -f docker-compose.test.yaml up --exit-code-from tester
           environment: 
             SCRIPT:   << parameters.script >>
+            USERNAME: $USERNAME
+            PASSWORD: $PASSWORD
       - save_cache:
           key: v1-docker-{{ .Branch }}
           paths:
