@@ -1,0 +1,20 @@
+from instabotnet import execute
+import os
+import yaml
+
+path = os.environ['SCRIPT']
+
+def load(path):
+    with open(path) as f:
+        return f.read()
+
+class Dumper(yaml.Dumper):
+    def increase_indent(self, flow=False, indentless=False):
+        return super(Dumper, self).increase_indent(flow, False)
+
+data = execute(
+    load(path),
+    os.environ
+)
+print('returned data:')
+print(yaml.dump(data, Dumper=Dumper, default_flow_style=False))
