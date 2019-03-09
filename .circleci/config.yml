@@ -3,7 +3,7 @@ jobs:
   build:
     docker:
       # using custom image, see .circleci/images/primary/Dockerfile
-      - image: docker/compose
+      - image: docker/compose:1.23.2
     working_directory: /src/
     environment:
       TEST_RESULTS: /tmp/test-results
