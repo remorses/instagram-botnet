@@ -13,4 +13,4 @@ jobs:
       - setup_remote_docker
       - run:
           name: Test with docker.compose
-          command: docker-compose -f docker-compose.test.yaml up 
+          command: docker-compose -f docker-compose.test.yaml up --build --exit-code-from tester
