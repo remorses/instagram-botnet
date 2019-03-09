@@ -3,9 +3,9 @@ version: '3.6'
 
 
 services:
-    suto:
+    tester:
         build: .
-        command: sh -c "cd / && python -m tests"
+        command: sh -c "python -m tests"
         volumes:
             - ./tests:/tests
             
