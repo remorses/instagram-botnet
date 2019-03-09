@@ -25,7 +25,7 @@ jobs:
           name: Build Docker images
           command: docker-compose -p $CIRCLE_PROJECT_REPONAME -f docker-compose.test.yaml build
           environment: 
-            SCRIPT:   << SCRIPT >>
+            SCRIPT:   << script >>
       - run:
           name: Save Docker layers cache
           command: |
@@ -36,7 +36,7 @@ jobs:
           name: Test with docker-compose
           command: docker-compose -p $CIRCLE_PROJECT_REPONAME -f docker-compose.test.yaml up --exit-code-from tester
           environment: 
-            SCRIPT:   << SCRIPT >>
+            SCRIPT:   << script >>
       - save_cache:
           key: v1-docker-{{ .Branch }}
           paths:
@@ -45,6 +45,6 @@ jobs:
 workflows:
   jobs:
     - test:
-        script: tests/test_single_upload.yaml
+        script: tests/upload_single_post.yaml
     - test:
-        script: tests/test_like.yaml
+        script: tests/print_users_feed.yaml
