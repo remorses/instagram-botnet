@@ -1,8 +1,10 @@
 version: 2
 jobs:
-  build:
+  test:
+    parameters:
+      compose_file:
+        type: string
     docker:
-      # using custom image, see .circleci/images/primary/Dockerfile
       - image: docker/compose:1.23.2
     working_directory: /src/
     environment:
@@ -11,8 +13,34 @@ jobs:
     steps:
       - checkout
       - setup_remote_docker
+      - restore_cache:
+          keys:
+            - v1-docker-{{ .Branch }}
       - run:
-          name: Test with docker.compose
-          command: docker-compose -f docker-compose.test.yaml up --build --exit-code-from tester
-          environment:
-            IG_USERNAME: remors.redhence
+          name: Load Docker layers cache
+          command: |
+            set +o pipefail
+            docker load -i ~/docker-layers.tar | true
+      - run:
+          name: Build Docker images
+          command: docker-compose -p $CIRCLE_PROJECT_REPONAME -f << compose_file >> build
+      - run:
+          name: Save Docker layers cache
+          command: |
+            DOCKER_IMAGES=$(docker images --format "{{.Repository}}" --filter=reference="${CIRCLE_PROJECT_REPONAME}_*")
+            DOCKER_LAYERS=$(for image in $DOCKER_IMAGES; do docker history $image -q | grep -v missing; done)
+            docker save -o ~/docker-layers.tar $DOCKER_LAYERS
+      - run:
+          name: Test with docker-compose
+          command: docker-compose -p $CIRCLE_PROJECT_REPONAME -f << compose_file >> up --exit-code-from tester
+      - save_cache:
+          key: v1-docker-{{ .Branch }}
+          paths:
+            - ~/docker-layers.tar
+
+workflows:
+  jobs:
+    - test:
+        compose_file: docker_tests/test_upload.yaml
+    - test:
+        compose_file: docker_tests/test_like.yaml
