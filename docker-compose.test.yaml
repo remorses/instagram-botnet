@@ -10,9 +10,9 @@ services:
             - ./tests:/tests
             
         environment:
-            TEST: "true"
-            IG_USERNAME:
-            IG_PASSWORD:
+            SCRIPT:
+            USERNAME:
+            PASSWORD:
             
             
         
