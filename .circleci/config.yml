@@ -44,8 +44,9 @@ jobs:
 
 workflows:
   version: 2
-  jobs:
-    - test:
-        script: tests/upload_single_post.yaml
-    - test:
-        script: tests/print_users_feed.yaml
+  build_test:
+    jobs:
+      - test:
+          script: tests/upload_single_post.yml
+      - test:
+          script: tests/print_users_feed.yml
