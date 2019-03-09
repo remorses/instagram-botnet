@@ -8,4 +8,4 @@ WORKDIR /src
 
 RUN pip install  .
 
-RUN rm -Rf /src
+# RUN rm -Rf /src
