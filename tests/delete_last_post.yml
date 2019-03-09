@@ -17,5 +17,5 @@ actions:
             - {{ USERNAME }}
         edges:
             - feed:
-                amount: 36
+                amount: 1
             - delete

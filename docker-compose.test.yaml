@@ -9,8 +9,9 @@ services:
             
         environment:
             SCRIPT:
-            IG_USERNAME:
-            IG_PASSWORD:
+            USERNAME:
+            PASSWORD:
+
             
             
         
