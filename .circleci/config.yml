@@ -39,8 +39,8 @@ jobs:
           command: docker-compose -p $CIRCLE_PROJECT_REPONAME -f docker-compose.test.yaml up --exit-code-from tester
           environment: 
             SCRIPT:   << parameters.script >>
-            USERNAME: $USERNAME
-            PASSWORD: $PASSWORD
+            USERNAME: $(eval echo ${USERNAME})
+            PASSWORD: $(eval echo ${PASSWORD})
       - save_cache:
           key: v1-docker-{{ .Branch }}
           paths:
