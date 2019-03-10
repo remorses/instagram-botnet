@@ -6,7 +6,7 @@ cd ../src
 git config credential.helper 'cache --timeout=120'
 git config user.email $GITHUBEMAIL
 git config user.name $GITHUBPASSWORD
-
+git checkout master
 git status
 git branch master
 git add VERSION
