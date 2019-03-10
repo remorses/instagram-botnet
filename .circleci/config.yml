@@ -5,7 +5,12 @@ workflows:
   version: 2
   test-deploy:
     jobs:
-      - build
+      - build:
+          filters:
+              branches:
+                  ignore: /.*/
+              tags:
+                  ignore: /version/
       # - test:
       #     name: upload_single_post
       #     script: tests/upload_single_post.yml
