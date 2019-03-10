@@ -39,8 +39,12 @@ jobs:
       steps:
           - checkout
           - run: pip install twine bumpversion
-          - run: ./scripts/deploy_pypi.sh
           - run: ./scripts/bump_version.sh
+          # - run: ./scripts/deploy_pypi.sh # git dependency is not allowed on pypi
+          - run: ./scripts/deploy_docker.sh
+          - run: ./scripts/commit_version.sh
+
+
 
   test:
     parameters:
