@@ -13,7 +13,7 @@ jobs:
       - setup_remote_docker
       - restore_cache:
           keys:
-            - v1-docker-{{ .Branch }}
+            - v2-docker-{{ .Branch }}
       - run:
           name: Load Docker layers cache
           command: |
@@ -24,6 +24,11 @@ jobs:
           command: docker-compose -p $CIRCLE_PROJECT_REPONAME -f .circleci/docker-compose.yaml build
           environment: 
             SCRIPT:   << script >>
+      - run:
+          name: Debug docker images
+          command: |
+            DOCKER_IMAGES=$(docker images --format "{{.Repository}}" --filter=reference="${CIRCLE_PROJECT_REPONAME}_*")
+            for image in $DOCKER_IMAGES; do docker history $image -q | grep -v missing; done
       - run:
           name: Save Docker layers cache
           command: |
@@ -37,7 +42,7 @@ jobs:
             SCRIPT:   << parameters.script >>
 
       - save_cache:
-          key: v1-docker-{{ .Branch }}
+          key: v2-docker-{{ .Branch }}
           paths:
             - ~/docker-layers.tar
 
@@ -46,8 +51,17 @@ workflows:
   build:
     jobs:
       - test:
-          name: test image single upload
+          name: upload_single_post
           script: tests/upload_single_post.yml
+      - test:
+          name: print_users_feed
+          script: tests/print_users_feed.yml
       - test:
           name: test prints of user feed
           script: tests/print_users_feed.yml
+      - test:
+          name: print_users_stories
+          script: tests/print_users_stories.yml
+      - test:
+          name: message_some_urls
+          script: tests/message_some_urls.yml
