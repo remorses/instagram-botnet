@@ -8,7 +8,7 @@ docker create -v /app --name configs alpine:3.4 /bin/true
 docker cp . configs:/app
 
 docker run --rm  --volumes-from configs treeder/bump patch
-docker copy treeder/bump:/app/VERSION VERSION
+docker cp treeder/bump:/app/VERSION VERSION
 
 
 git config credential.helper 'cache --timeout=120'
