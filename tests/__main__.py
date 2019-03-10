@@ -12,11 +12,10 @@ class Dumper(yaml.Dumper):
     def increase_indent(self, flow=False, indentless=False):
         return super(Dumper, self).increase_indent(flow, False)
         
-print(yaml.dump(os.environ, Dumper=Dumper, default_flow_style=False))
+print(yaml.dump(dict(**os.environ), Dumper=Dumper, default_flow_style=False))
 
 data = execute(
     load(path),
-    os.environ
 )
 print('returned data:')
 print(yaml.dump(data, Dumper=Dumper, default_flow_style=False))
