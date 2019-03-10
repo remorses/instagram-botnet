@@ -39,7 +39,10 @@ workflows:
 
 jobs:
   build:
-      steps: []
+      docker:
+          - image: alpine:latest
+      steps:
+          - run: echo "starting"
 
 
   deploy:
