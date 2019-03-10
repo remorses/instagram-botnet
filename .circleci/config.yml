@@ -25,12 +25,6 @@ jobs:
           command: |
             DOCKER_IMAGES=$(docker images --format "{{.Repository}}" --filter=reference="${CIRCLE_PROJECT_REPONAME}_*")
             for image in $DOCKER_IMAGES; do docker history $image; done
-      - run:
-          name: Save Docker layers cache
-          command: |
-            DOCKER_IMAGES=$(docker images --format "{{.Repository}}" --filter=reference="${CIRCLE_PROJECT_REPONAME}_*")
-            DOCKER_LAYERS=$(for image in $DOCKER_IMAGES; do docker history $image -q | grep -v missing; done)
-            docker save -o ~/docker-layers.tar $DOCKER_LAYERS
 
       - run:
           name: Test with docker-compose
