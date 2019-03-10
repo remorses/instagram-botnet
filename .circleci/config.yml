@@ -43,6 +43,7 @@ jobs:
           - run: ./scripts/bump_version.sh
           # - run: ./scripts/deploy_pypi.sh # git dependency is not allowed on pypi
           - run: ./scripts/deploy_docker.sh
+          - run: apk add git
           - run: ./scripts/commit_version.sh
 
 
