@@ -8,7 +8,7 @@ version=`cat VERSION`
 
 echo $DOCKERUSERNAME/instagram-botnet:$version
 
-docker build -t $DOCKERUSERNAME/instagram-botnet:latest .
+docker build -t $DOCKERUSERNAME/instagram-botnet:latest ../
 
 docker tag $DOCKERUSERNAME/instagram-botnet:latest $DOCKERUSERNAME/instagram-botnet:$version
 
