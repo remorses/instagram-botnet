@@ -37,6 +37,7 @@ jobs:
       docker:
         - image: python:3.7-alpine
       steps:
+          - checkout
           - run: pip install twine bumpversion
           - run: ./scripts/deploy_pypi.sh
           - run: ./scripts/bump_version.sh
