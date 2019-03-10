@@ -13,24 +13,12 @@ jobs:
       - setup_remote_docker
       - restore_cache:
           keys:
-            - v2-docker-{{ .Branch }}
-      - restore_cache:
-          keys:
-            - v2-docker-list-{{ .Branch }}
+            - v3-docker-{{ .Branch }}
       - run:
           name: Load Docker layers cache
           command: |
             set +o pipefail
             docker load -i ~/docker-layers.tar | true
-      - run:
-          name: Tag Docker images
-          command: |
-            set +o pipefail
-            while read REPOSITORY TAG IMAGE_ID
-            do
-                    echo "Tagging $REPOSITORY $TAG $IMAGE_ID"
-                    docker tag "$IMAGE_ID" "$REPOSITORY:$TAG"
-            done < ~/dockersimages.txt | true
       - run:
           name: Build Docker images
           command: docker-compose -p $CIRCLE_PROJECT_REPONAME -f .circleci/docker-compose.yaml build
@@ -47,16 +35,10 @@ jobs:
             DOCKER_IMAGES=$(docker images --format "{{.Repository}}" --filter=reference="${CIRCLE_PROJECT_REPONAME}_*")
             DOCKER_LAYERS=$(for image in $DOCKER_IMAGES; do docker history $image -q | grep -v missing; done)
             docker save -o ~/docker-layers.tar $DOCKER_LAYERS
-            docker images | sed '1d' | awk '{print $1 " " $2 " " $3}' > ~/dockersimages.txt
       - save_cache:
-          key: v2-docker-{{ .Branch }}
+          key: v3-docker-{{ .Branch }}
           paths:
             - ~/docker-layers.tar
-
-      - save_cache:
-          key: v2-docker-list-{{ .Branch }}
-          paths:
-            - ~/dockersimages.txt
       - run:
           name: Test with docker-compose
           command: docker-compose -p $CIRCLE_PROJECT_REPONAME -f .circleci/docker-compose.yaml up --exit-code-from tester 
