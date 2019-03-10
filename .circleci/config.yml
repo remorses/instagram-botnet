@@ -25,9 +25,6 @@ workflows:
       #     name: message_some_urls
       #     script: tests/message_some_urls.yml
       - deploy:
-          filters:
-              branches:
-                  only: master
           requires:
             - build
 
