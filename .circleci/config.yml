@@ -13,7 +13,7 @@ jobs:
       - setup_remote_docker
       - restore_cache:
           keys:
-            - v4-docker-{{ .Branch }}
+            - v5-docker-{{ .Branch }}
       - run:
           name: Load Docker layers cache
           command: |
@@ -27,11 +27,9 @@ jobs:
             for image in $DOCKER_IMAGES; do docker history $image; done
 
       - run:
-          name: Test with docker-compose
-          command: docker-compose -p $CIRCLE_PROJECT_REPONAME -f .circleci/docker-compose.yaml up --exit-code-from tester 
-          environment: 
-            SCRIPT:   << parameters.script >>
-            
+          name: Build with docker-compose
+          command: docker-compose -p $CIRCLE_PROJECT_REPONAME -f .circleci/docker-compose.yaml build
+
       - run:
           name: Debug docker images after
           command: |
@@ -45,9 +43,14 @@ jobs:
             docker save -o ~/docker-layers.tar $DOCKER_LAYERS
 
       - save_cache:
-          key: v4-docker-{{ .Branch }}
+          key: v5-docker-{{ .Branch }}
           paths:
             - ~/docker-layers.tar
+      - run:
+          name: Test with docker-compose
+          command: docker-compose -p $CIRCLE_PROJECT_REPONAME -f .circleci/docker-compose.yaml up --exit-code-from tester
+          environment:
+            SCRIPT:   << parameters.script >>
 
 workflows:
   version: 2
@@ -56,4 +59,3 @@ workflows:
       - test:
           name: upload_single_post
           script: tests/upload_single_post.yml
-
