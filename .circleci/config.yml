@@ -10,7 +10,7 @@ jobs:
 
     steps:
       - checkout
-      # - setup_remote_docker
+      - setup_remote_docker
       - restore_cache:
           keys:
             - v6-docker-{{ .Branch }}
