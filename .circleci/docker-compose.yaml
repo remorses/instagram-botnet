@@ -6,11 +6,10 @@ services:
     tester:
         container_name: tester
         build: ../
-        command: sh -c "cd /src && ls -1 tests && python -m tests.circleci"
+        command: sh -c "cd /src && ls -1 tests/tests && python -m tests.circleci"
         volumes:
             - ../tests:/src/tests
         environment:
             SCRIPT:
             USERNAME:
             PASSWORD:
- 
