@@ -4,7 +4,7 @@ version: '3.6'
 
 services:
     tester:
-        build: .
+        build: ../
         command: sh -c "python -m tests.circleci"
             
         environment:
