@@ -16,10 +16,10 @@ git config credential.helper 'cache --timeout=120'
 git config user.email $GITHUBEMAIL
 git config user.name $GITHUBPASSWORD
 
-ssh-add -D
-ssh-keyscan github.com >> githubKey
-ssh-keygen -lf githubKey
-cat githubKey >> ~/.ssh/known_hosts
+# ssh-add -D
+# ssh-keyscan github.com >> githubKey
+# ssh-keygen -lf githubKey
+# cat githubKey >> ~/.ssh/known_hosts
 
 git checkout master
 git status
@@ -29,4 +29,4 @@ version=`cat VERSION`
 git add VERSION
 git commit -m "version $version"
 git tag -a "$version" -m "version $version"
-git push https://${GITHUB_PERSONAL_TOKEN}@github.com/xmorse/instagram-botnet.git master
+git push https://${GITHUB_PERSONAL_TOKEN}@github.com/remorses/instagram-botnet.git master
