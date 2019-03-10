@@ -31,13 +31,15 @@ workflows:
 
 
 jobs:
+
+
   deploy:
       docker:
         - image: python:3.7-alpine
       steps:
           - run: pip install twine bumpversion
-          - run: src/upload_pypi.sh
-          - run: src/bump_version.sh
+          - run: scripts/upload_pypi.sh
+          - run: scripts/bump_version.sh
 
   test:
     parameters:
