@@ -50,7 +50,7 @@ jobs:
           name: Test with docker-compose
           command: |
             docker-compose -p $CIRCLE_PROJECT_REPONAME -f .circleci/docker-compose.yaml up --no-start
-            docker cp ./tests tester:/src/tests # because circleci doesn't support volumes
+            docker cp ./tests tester:/src/ # because circleci doesn't support volumes
             docker-compose -p $CIRCLE_PROJECT_REPONAME -f .circleci/docker-compose.yaml up --abort-on-container-exit --exit-code-from tester
           environment:
             SCRIPT:   << parameters.script >>
