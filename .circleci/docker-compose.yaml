@@ -5,7 +5,9 @@ version: '3.6'
 services:
     tester:
         build: ../
-        command: sh -c "pip install portalocker && python -m tests.circleci"
+        command: sh -c "cd /tests && python -m tests.circleci"
+        volumes: 
+            - ../tests/:/tests
             
         environment:
             SCRIPT:
