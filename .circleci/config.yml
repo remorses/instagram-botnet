@@ -13,19 +13,15 @@ jobs:
       - setup_remote_docker
       - restore_cache:
           keys:
-            - v3-docker-{{ .Branch }}
+            - v4-docker-{{ .Branch }}
       - run:
           name: Load Docker layers cache
           command: |
             set +o pipefail
             docker load -i ~/docker-layers.tar | true
+
       - run:
-          name: Build Docker images
-          command: docker-compose -p $CIRCLE_PROJECT_REPONAME -f .circleci/docker-compose.yaml build
-          environment: 
-            SCRIPT:   << script >>
-      - run:
-          name: Debug docker images
+          name: Debug docker images before
           command: |
             DOCKER_IMAGES=$(docker images --format "{{.Repository}}" --filter=reference="${CIRCLE_PROJECT_REPONAME}_*")
             for image in $DOCKER_IMAGES; do docker history $image; done
@@ -35,16 +31,29 @@ jobs:
             DOCKER_IMAGES=$(docker images --format "{{.Repository}}" --filter=reference="${CIRCLE_PROJECT_REPONAME}_*")
             DOCKER_LAYERS=$(for image in $DOCKER_IMAGES; do docker history $image -q | grep -v missing; done)
             docker save -o ~/docker-layers.tar $DOCKER_LAYERS
-      - save_cache:
-          key: v3-docker-{{ .Branch }}
-          paths:
-            - ~/docker-layers.tar
+
       - run:
           name: Test with docker-compose
           command: docker-compose -p $CIRCLE_PROJECT_REPONAME -f .circleci/docker-compose.yaml up --exit-code-from tester 
           environment: 
             SCRIPT:   << parameters.script >>
+            
+      - run:
+          name: Debug docker images after
+          command: |
+            DOCKER_IMAGES=$(docker images --format "{{.Repository}}" --filter=reference="${CIRCLE_PROJECT_REPONAME}_*")
+            for image in $DOCKER_IMAGES; do docker history $image; done
+      - run:
+          name: Save Docker layers cache
+          command: |
+            DOCKER_IMAGES=$(docker images --format "{{.Repository}}" --filter=reference="${CIRCLE_PROJECT_REPONAME}_*")
+            DOCKER_LAYERS=$(for image in $DOCKER_IMAGES; do docker history $image -q | grep -v missing; done)
+            docker save -o ~/docker-layers.tar $DOCKER_LAYERS
 
+      - save_cache:
+          key: v4-docker-{{ .Branch }}
+          paths:
+            - ~/docker-layers.tar
 
 workflows:
   version: 2
