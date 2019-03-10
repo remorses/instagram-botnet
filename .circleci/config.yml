@@ -8,7 +8,7 @@ workflows:
       - build:
           filters:
               tags:
-                  ignore: /.*version.*/
+                  ignore: /^version*/
       # - test:
       #     name: upload_single_post
       #     script: tests/upload_single_post.yml
