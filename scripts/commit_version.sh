@@ -9,7 +9,7 @@ git config user.name $GITHUBPASSWORD
 
 git checkout master
 git status
-git branch master
+
 git add VERSION
 git commit -m "version $version"
 git tag -a "$version" -m "version $version"
