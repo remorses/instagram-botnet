@@ -2,6 +2,7 @@ from instabotnet import execute
 import os
 import yaml
 
+
 path = os.environ['SCRIPT']
 
 def load(path):

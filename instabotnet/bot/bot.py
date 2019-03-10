@@ -6,7 +6,8 @@ from instagram_private_api import  ClientCookieExpiredError, ClientLoginRequired
 from .support import to_json, from_json
 from .settings import DELAY, TOTAL, MAX_PER_DAY
 import json
-
+import portalocker
+import os
 
 
 
@@ -45,11 +46,13 @@ class Bot:
 
         def on_login(api, ):
             cache_settings = api.settings
-            with open(self.settings_file, 'w') as outfile:
+            with portalocker.Lock(self.settings_file, 'w', timeout=10) as outfile:
                 json.dump(cache_settings, outfile, default=to_json)
                 print('SAVED: {0!s}'.format(self.settings_file))
+                outfile.flush()
+                os.fsync(outfile.fileno())
         
-        with open(self.settings_file) as file_data:
+        with open(self.settings_file, 'r') as file_data:
             settings = json.load(file_data, object_hook=from_json)
             print('Reusing settings: {0!s}'.format(self.settings_file))
             
