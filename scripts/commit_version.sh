@@ -7,6 +7,8 @@ git config credential.helper 'cache --timeout=120'
 git config user.email $GITHUBEMAIL
 git config user.name $GITHUBPASSWORD
 
+git status
+git branch master
 git add VERSION
 git commit -m "version $version"
 git tag -a "$version" -m "version $version"
