@@ -16,12 +16,13 @@ actions:
             - ttipane
         edges:
             - stories:
-                amount: 90
-            - print:
+                amount: 10
+            - scrape:
+                key: scraped_manifests
                 model:
                     # images: x.images
                     # videos: x.videos
-                    mpd: (x.mpd or '')[:10] 
+                    mpd: (x.mpd or '')[:10]
                     # all: x._serialize()
                     #
                     # manifest: x.mpd

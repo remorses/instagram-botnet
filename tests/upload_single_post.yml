@@ -9,11 +9,17 @@ bot:
 actions:
     -
         name: upload
-        from: media
+        from: user
         nodes:
-            - https://www.instagram.com/p/Bu0v-n9n02y/
+            - archillect
         edges:
+            - feed:
+                amount: 10
+            - shuffle:
+                batch: 10
+                max: 1
             - upload_post:
+                max: 1
                 caption: hey
                 geotag: monaco
                 disable_comments: true

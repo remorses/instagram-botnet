@@ -16,5 +16,4 @@ actions:
             - message:
                 messages:
                     - ['hey bro', 'ciao']
-                    - ['prova un po sta merda google.com', 'http://google.com']
-          
+                    - ['sto testando instagram-bot e sono vivo!',]

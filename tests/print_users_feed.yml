@@ -16,8 +16,9 @@ actions:
             - ttipane
         edges:
             - feed:
-                amount: 90
-            - print:
+                amount: 10
+            - scrape:
+                key: feed_sources
                 model:
                     images: x.images
                     videos: x.videos

@@ -1,32 +1,28 @@
 version: 2.1
 
 
-commands:
-    save_tests_cache:
-        steps:
-          - run:
-              name: Save Docker layers cache
-              command: |
-                DOCKER_IMAGES=$(docker images --format "{{.Repository}}" --filter=reference="${CIRCLE_PROJECT_REPONAME}_*")
-                DOCKER_LAYERS=$(for image in $DOCKER_IMAGES; do docker history $image -q | grep -v missing; done)
-                docker save -o ~/docker-layers.tar $DOCKER_LAYERS
-          - save_cache:
-              key: v6-docker-{{ .Branch }}
-              paths:
-                - ~/docker-layers.tar
-
-    load_tests_cache:
-        steps:
-          - restore_cache:
-              keys:
-                - v6-docker-{{ .Branch }}
-          - run:
-              name: Load Docker layers cache
-              command: |
-                set +o pipefail
-                docker load -i ~/docker-layers.tar | true
-
-
+workflows:
+  version: 2
+  build:
+    jobs:
+      - test:
+          name: upload_single_post
+          script: tests/upload_single_post.yml
+      - test:
+          name: delete_last_post.ym
+          script: tests/delete_last_post.yml
+      - test:
+          name: print_users_feed
+          script: tests/print_users_feed.yml
+      - test:
+          name: test prints of user feed
+          script: tests/print_users_feed.yml
+      - test:
+          name: print_users_stories
+          script: tests/print_users_stories.yml
+      - test:
+          name: message_some_urls
+          script: tests/message_some_urls.yml
 
 jobs:
   test:
@@ -54,10 +50,27 @@ jobs:
           environment:
             SCRIPT:   << parameters.script >>
 
-workflows:
-  version: 2
-  build:
-    jobs:
-      - test:
-          name: upload_single_post
-          script: tests/upload_single_post.yml
+commands:
+    save_tests_cache:
+        steps:
+          - run:
+              name: Save Docker layers cache
+              command: |
+                DOCKER_IMAGES=$(docker images --format "{{.Repository}}" --filter=reference="${CIRCLE_PROJECT_REPONAME}_*")
+                DOCKER_LAYERS=$(for image in $DOCKER_IMAGES; do docker history $image -q | grep -v missing; done)
+                docker save -o ~/docker-layers.tar $DOCKER_LAYERS
+          - save_cache:
+              key: v6-docker-{{ .Branch }}
+              paths:
+                - ~/docker-layers.tar
+
+    load_tests_cache:
+        steps:
+          - restore_cache:
+              keys:
+                - v6-docker-{{ .Branch }}
+          - run:
+              name: Load Docker layers cache
+              command: |
+                set +o pipefail
+                docker load -i ~/docker-layers.tar | true
