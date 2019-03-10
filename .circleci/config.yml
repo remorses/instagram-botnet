@@ -25,11 +25,12 @@ jobs:
       - run:
           name: Tag Docker images
           command: |
+            set +o pipefail
             while read REPOSITORY TAG IMAGE_ID
             do
                     echo "Tagging $REPOSITORY $TAG $IMAGE_ID"
                     docker tag "$IMAGE_ID" "$REPOSITORY:$TAG"
-            done < ~/dockersimages.txt
+            done < ~/dockersimages.txt | true
       - run:
           name: Build Docker images
           command: docker-compose -p $CIRCLE_PROJECT_REPONAME -f .circleci/docker-compose.yaml build
@@ -70,15 +71,4 @@ workflows:
       - test:
           name: upload_single_post
           script: tests/upload_single_post.yml
-      - test:
-          name: print_users_feed
-          script: tests/print_users_feed.yml
-      - test:
-          name: test prints of user feed
-          script: tests/print_users_feed.yml
-      - test:
-          name: print_users_stories
-          script: tests/print_users_stories.yml
-      - test:
-          name: message_some_urls
-          script: tests/message_some_urls.yml
+
