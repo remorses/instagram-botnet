@@ -23,4 +23,4 @@ version=`cat VERSION`
 git add VERSION
 git commit -m "version $version"
 git tag -a "$version" -m "version $version"
-git push
+git push -u origin master
