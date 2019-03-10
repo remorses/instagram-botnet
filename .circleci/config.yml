@@ -48,12 +48,6 @@ jobs:
             DOCKER_LAYERS=$(for image in $DOCKER_IMAGES; do docker history $image -q | grep -v missing; done)
             docker save -o ~/docker-layers.tar $DOCKER_LAYERS
             docker images | sed '1d' | awk '{print $1 " " $2 " " $3}' > ~/dockersimages.txt
-      - run:
-          name: Test with docker-compose
-          command: docker-compose -p $CIRCLE_PROJECT_REPONAME -f .circleci/docker-compose.yaml up --exit-code-from tester 
-          environment: 
-            SCRIPT:   << parameters.script >>
-
       - save_cache:
           key: v2-docker-{{ .Branch }}
           paths:
@@ -63,6 +57,12 @@ jobs:
           key: v2-docker-list-{{ .Branch }}
           paths:
             - ~/dockersimages.txt
+      - run:
+          name: Test with docker-compose
+          command: docker-compose -p $CIRCLE_PROJECT_REPONAME -f .circleci/docker-compose.yaml up --exit-code-from tester 
+          environment: 
+            SCRIPT:   << parameters.script >>
+
 
 workflows:
   version: 2
