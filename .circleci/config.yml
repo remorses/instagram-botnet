@@ -5,16 +5,18 @@ workflows:
   version: 2
   test-deploy:
     jobs:
-      - build:
+      - test:
+          name: upload_single_post
+          script: tests/upload_single_post.yml
           filters:
               tags:
-                  ignore: /.*/
-      # - test:
-      #     name: upload_single_post
-      #     script: tests/upload_single_post.yml
-      # - test:
-      #     name: delete_last_post.ym
-      #     script: tests/delete_last_post.yml
+                  ignore: /^version.*/
+      - test:
+          name: delete_last_post.ym
+          script: tests/delete_last_post.yml
+          filters:
+              tags:
+                  ignore: /^version.*/
       # - test:
       #     name: print_users_feed
       #     script: tests/print_users_feed.yml
@@ -27,7 +29,13 @@ workflows:
       # - test:
       #     name: message_some_urls
       #     script: tests/message_some_urls.yml
-      - deploy
+      - deploy:
+          requires:
+              - upload_single_post
+              - delete_last_post
+          filters:
+              tags:
+                  ignore: /^version.*/
 
 
 
