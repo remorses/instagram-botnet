@@ -6,6 +6,8 @@ test -f ./VERSION || (echo "file VERSION containing current version is needed" &
 
 version=`cat VERSION`
 
+echo $DOCKERUSERNAME/instagram-botnet:$version
+
 docker build -t $DOCKERUSERNAME/instagram-botnet:latest .
 
 docker tag $DOCKERUSERNAME/instagram-botnet:latest $DOCKERUSERNAME/instagram-botnet:$version
