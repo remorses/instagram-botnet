@@ -5,8 +5,10 @@ from setuptools import setup, find_packages
 
 here = path.abspath(path.dirname(__file__))
 
+print(here)
+
 # Get the long description from the README file
-with open(path.join(here, 'README.md'), encoding='utf-8') as f:
+with open(path.join(here, './README.md'), encoding='utf-8') as f:
     long_description = f.read()
 
 # Get the requirements
@@ -14,7 +16,7 @@ with open(path.join(here, 'requirements.txt'), encoding='utf-8') as f:
     requirements = list(set(f.read().split('\n')) - set(['', '\n']))
 
 
-version = os.environ.get('DOCKER_TAG') 
+version = os.environ.get('DOCKER_TAG')
 
 setup(
     name='instabotnet',

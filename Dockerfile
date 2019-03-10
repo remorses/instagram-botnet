@@ -4,7 +4,7 @@ RUN apk  add --no-cache build-base git jpeg-dev zlib-dev freetype-dev musl sdl f
 
 COPY src /src
 
-COPY README.md /src
+COPY README.md /
 
 WORKDIR /src
 

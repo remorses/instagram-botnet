@@ -29,9 +29,9 @@ tests = [
     # 'tests/delete_last_post.yml',
     # 'tests/print_user_stories.yml',
     # 'tests/scrape_users.yml',
-    # 'tests/print_users_feed.yml',
+    'tests/print_users_feed.yml',
     # 'tests/message_some_urls.yml',
-    'tests/repost_routine.yml',
+    # 'tests/repost_routine.yml',
 ]
 
 
@@ -63,9 +63,11 @@ for path in tests:
             'geotags': ['monaco'],
             'comments': ['wow', 'awesome'],
             'proxy': None,
-            
+
         }
     )
     # print(yaml.dump(data, Dumper=Dumper, default_flow_style=False))
-    print(json.dumps(data, indent=4))
+
+    print('returned data:')
+    print(json.dumps(dict(**data), indent=8))
     time.sleep(3)

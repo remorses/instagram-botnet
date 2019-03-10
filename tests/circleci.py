@@ -1,7 +1,7 @@
 from instabotnet import execute
 import os
 import yaml
-
+import json
 
 path = os.environ['SCRIPT']
 
@@ -12,7 +12,7 @@ def load(path):
 class Dumper(yaml.Dumper):
     def increase_indent(self, flow=False, indentless=False):
         return super(Dumper, self).increase_indent(flow, False)
-        
+
 # print(yaml.dump(dict(**os.environ), Dumper=Dumper, default_flow_style=False))
 
 data = execute(
@@ -20,4 +20,4 @@ data = execute(
     os.environ
 )
 print('returned data:')
-print(yaml.dump(data, Dumper=Dumper, default_flow_style=False))
+print(json.dumps(dict(**data), indent=4))
