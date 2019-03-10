@@ -7,8 +7,6 @@ workflows:
     jobs:
       - build:
           filters:
-              branches:
-                  ignore: /.*/
               tags:
                   ignore: /version/
       # - test:
