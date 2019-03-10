@@ -16,6 +16,7 @@ print(yaml.dump(dict(**os.environ), Dumper=Dumper, default_flow_style=False))
 
 data = execute(
     load(path),
+    os.environ
 )
 print('returned data:')
 print(yaml.dump(data, Dumper=Dumper, default_flow_style=False))

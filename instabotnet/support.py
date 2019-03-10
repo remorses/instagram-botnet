@@ -8,7 +8,7 @@ class dotdict(dict):
 
 
 def merge(a, b):
-    result = dict()
+    result = dict(**a)
 
     [result.update({x: dict(**a[x], **b[x])}) for x in set(a.keys()) & set(b.keys())
         if isinstance(a[x], dict) and isinstance(b[x], dict)]
