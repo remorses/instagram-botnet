@@ -14,6 +14,6 @@ docker tag $DOCKERUSERNAME/instagram-botnet:latest $DOCKERUSERNAME/instagram-bot
 
 docker push $DOCKERUSERNAME/instagram-botnet:latest
 
-docker push $DOCKERUSERNAME/instagram-botnet:$version
-
 docker login -u $DOCKERUSERNAME -p $DOCKERPASSWORD
+
+docker push $DOCKERUSERNAME/instagram-botnet:$version
