@@ -5,9 +5,9 @@ workflows:
   version: 2
   test-deploy:
     jobs:
-      - test:
-          name: upload_single_post
-          script: tests/upload_single_post.yml
+      # - test:
+      #     name: upload_single_post
+      #     script: tests/upload_single_post.yml
       # - test:
       #     name: delete_last_post.ym
       #     script: tests/delete_last_post.yml
@@ -23,9 +23,9 @@ workflows:
       # - test:
       #     name: message_some_urls
       #     script: tests/message_some_urls.yml
-      - deploy:
-          requires:
-            - upload_single_post
+      - deploy
+          # requires:
+          #   - upload_single_post
 
 
 
@@ -38,8 +38,8 @@ jobs:
         - image: python:3.7-alpine
       steps:
           - run: pip install twine bumpversion
-          - run: scripts/deploy_pypi.sh
-          - run: scripts/bump_version.sh
+          - run: ./scripts/deploy_pypi.sh
+          - run: ./scripts/bump_version.sh
 
   test:
     parameters:
