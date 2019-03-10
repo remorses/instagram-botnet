@@ -7,7 +7,7 @@ services:
         build: ../
         command: sh -c "cd /src && ls -1 tests && python -m tests.circleci"
         volumes: 
-            - ../tests:/src/tests
+            - ./tests:/src/tests
             
         environment:
             SCRIPT:
