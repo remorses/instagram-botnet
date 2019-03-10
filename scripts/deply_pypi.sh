@@ -7,6 +7,3 @@ test -f ./VERSION || (echo "file VERSION containing current version is needed" &
 python3 setup.py sdist bdist_wheel
 
 python3 -m twine upload  dist/*
-
-version=`cat VERSION`
-
