@@ -35,9 +35,10 @@ jobs:
 
   deploy:
       docker:
-        - image: python:3.7-alpine
+        - image: docker/compose:1.23.2
       steps:
           - checkout
+          - setup_remote_docker
           - run: pip install twine bumpversion
           - run: ./scripts/bump_version.sh
           # - run: ./scripts/deploy_pypi.sh # git dependency is not allowed on pypi
