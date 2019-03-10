@@ -89,7 +89,7 @@ def reducer(state: dotdict, edge: dotdict):
 
         # errored_state = dotdict(**merge(state, dotdict(errors=state.errors + [exc])))
         # return reducer(errored_state, edge)
-        return dotdict(nodes=[], bot=bot, errors=state.errors + [e], data=state.data)
+        return dotdict(nodes=[], bot=bot, errors=state.errors + [exc], data=state.data)
 
     else:
         # all is right, no exceptions
