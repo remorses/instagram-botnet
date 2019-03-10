@@ -24,9 +24,7 @@ workflows:
       # - test:
       #     name: message_some_urls
       #     script: tests/message_some_urls.yml
-      - deploy:
-          requires:
-            - build
+      - deploy
 
 
 
