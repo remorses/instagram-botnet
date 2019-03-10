@@ -21,11 +21,10 @@ git config user.name $GITHUBPASSWORD
 # cat githubKey >> ~/.ssh/known_hosts
 
 git checkout master
-git status
 
 version=`cat VERSION`
 
 git add VERSION
 git commit -m "version $version"
-git tag -a "$version" -m "version $version"
+git tag -a "version $version" -m "version $version"
 git push https://${GITHUB_PERSONAL_TOKEN}@github.com/remorses/instagram-botnet.git master
