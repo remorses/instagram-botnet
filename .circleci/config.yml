@@ -5,6 +5,10 @@ workflows:
   version: 2
   test-deploy:
     jobs:
+      - build:
+          filters:
+              tags:
+                  ignore: /skip|version/
       # - test:
       #     name: upload_single_post
       #     script: tests/upload_single_post.yml
@@ -23,14 +27,19 @@ workflows:
       # - test:
       #     name: message_some_urls
       #     script: tests/message_some_urls.yml
-      - deploy
-          # requires:
-          #   - upload_single_post
+      - deploy:
+          filters:
+              branches:
+                  only: master
+          requires:
+            - build
 
 
 
 
 jobs:
+  build:
+      steps: []
 
 
   deploy:
@@ -44,7 +53,7 @@ jobs:
           - run: ./scripts/bump_version.sh
           # - run: ./scripts/deploy_pypi.sh # git dependency is not allowed on pypi
           - run: ./scripts/deploy_docker.sh
-      
+
 
 
 

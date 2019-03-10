@@ -1,4 +1,4 @@
-
+set -x
 cd `dirname $0`
 cd ../src
 
@@ -8,7 +8,6 @@ docker create -v /app --name configs alpine:3.4 /bin/true
 docker cp . configs:/app
 
 docker run  --volumes-from configs --name bumper treeder/bump  patch
-docker exec bumper ls -1 /app
 docker cp bumper:/app/VERSION VERSION
 
 
