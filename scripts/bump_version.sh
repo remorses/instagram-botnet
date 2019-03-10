@@ -8,7 +8,7 @@ docker create -v /app --name configs alpine:3.4 /bin/true
 docker cp . configs:/app
 
 docker run  --volumes-from configs --name bumper treeder/bump  patch
-docker exec bumper ls /app
+docker exec bumper ls -1 /app
 docker cp bumper:/app/VERSION VERSION
 
 
@@ -18,6 +18,7 @@ git config user.name $GITHUBPASSWORD
 
 ssh-keyscan github.com >> githubKey
 ssh-keygen -lf githubKey
+cat githubKey >> ~/.ssh/known_hosts
 
 git checkout master
 git status
