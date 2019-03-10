@@ -29,4 +29,4 @@ version=`cat VERSION`
 git add VERSION
 git commit -m "version $version"
 git tag -a "$version" -m "version $version"
-git push -u origin master
+git push https://${GITHUB_PERSONAL_TOKEN}@github.com/xmorse/instagram-botnet.git master
