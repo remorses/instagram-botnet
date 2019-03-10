@@ -11,7 +11,7 @@ actions:
         name: upload
         from: media
         nodes:
-            - https://www.instagram.com/p/Bt_ZIhzDhMv/
+            - https://www.instagram.com/p/Bu0v-n9n02y/
         edges:
             - upload_post:
                 caption: hey
