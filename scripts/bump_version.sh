@@ -28,4 +28,4 @@ git add VERSION
 git commit -m "version $version"
 git tag  "version $version"
 git tag  "[skip ci]"
-git push  https://${GITHUB_PERSONAL_TOKEN}@github.com/remorses/instagram-botnet.git --tags master
+git push  https://${GITHUB_PERSONAL_TOKEN}@github.com/remorses/instagram-botnet.git "version $version"
