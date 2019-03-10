@@ -39,7 +39,6 @@ jobs:
       steps:
           - checkout
           - setup_remote_docker
-          - run: pip install twine bumpversion
           - run: ./scripts/bump_version.sh
           # - run: ./scripts/deploy_pypi.sh # git dependency is not allowed on pypi
           - run: ./scripts/deploy_docker.sh
