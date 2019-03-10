@@ -8,15 +8,11 @@ workflows:
       - test:
           name: upload_single_post
           script: tests/upload_single_post.yml
-          filters:
-              tags:
-                  ignore: /^version.*/
+
       - test:
           name: delete_last_post
           script: tests/delete_last_post.yml
-          filters:
-              tags:
-                  ignore: /^version.*/
+
       # - test:
       #     name: print_users_feed
       #     script: tests/print_users_feed.yml
@@ -33,9 +29,6 @@ workflows:
           requires:
               - upload_single_post
               - delete_last_post
-          filters:
-              tags:
-                  ignore: /^version.*/
 
 
 
