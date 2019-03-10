@@ -12,7 +12,7 @@ workflows:
               tags:
                   ignore: /^version.*/
       - test:
-          name: delete_last_post.ym
+          name: delete_last_post
           script: tests/delete_last_post.yml
           filters:
               tags:
