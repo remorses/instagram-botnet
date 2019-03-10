@@ -7,8 +7,9 @@ version=`cat VERSION`
 docker create -v /app --name configs alpine:3.4 /bin/true
 docker cp . configs:/app
 
-docker run --rm  --volumes-from configs treeder/bump patch
-docker cp treeder/bump:/app/VERSION VERSION
+docker run  --volumes-from configs --name bumper treeder/bump  patch
+docker exec bumper ls /app
+docker cp bumper:/app/VERSION VERSION
 
 
 git config credential.helper 'cache --timeout=120'
