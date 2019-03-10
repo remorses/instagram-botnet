@@ -5,9 +5,9 @@ version: '3.6'
 services:
     tester:
         build: ../
-        command: sh -c "cd / && python -m tests.circleci"
+        command: sh -c "cd /src && ls -1 && python -m tests.circleci"
         volumes: 
-            - ../tests/:/tests
+            - ../tests:/src/tests
             
         environment:
             SCRIPT:
