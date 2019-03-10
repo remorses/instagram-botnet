@@ -13,7 +13,7 @@ jobs:
       - setup_remote_docker
       - restore_cache:
           keys:
-            - v5-docker-{{ .Branch }}
+            - v6-docker-{{ .Branch }}
       - run:
           name: Load Docker layers cache
           command: |
@@ -43,12 +43,12 @@ jobs:
             docker save -o ~/docker-layers.tar $DOCKER_LAYERS
 
       - save_cache:
-          key: v5-docker-{{ .Branch }}
+          key: v6-docker-{{ .Branch }}
           paths:
             - ~/docker-layers.tar
       - run:
           name: Test with docker-compose
-          command: docker-compose -p $CIRCLE_PROJECT_REPONAME -f .circleci/docker-compose.yaml up --exit-code-from tester
+          command: docker-compose -p $CIRCLE_PROJECT_REPONAME -f .circleci/docker-compose.yaml up --abort-on-container-exit --exit-code-from tester
           environment:
             SCRIPT:   << parameters.script >>
 
