@@ -4,17 +4,12 @@ version: '3.6'
 
 services:
     tester:
+        container_name: tester
         build: ../
         command: sh -c "cd /src && ls -1 tests && python -m tests.circleci"
-        volumes: 
+        volumes:
             - ../tests:/src/tests
-            
         environment:
             SCRIPT:
             USERNAME:
             PASSWORD:
-
-            
-            
-        
-            
