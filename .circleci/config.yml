@@ -40,7 +40,7 @@ jobs:
           - checkout
           - setup_remote_docker
           - load_tests_cache
-          - run: apk add git
+          - run: apk add git openssh-client
           - run: ./scripts/bump_version.sh
           # - run: ./scripts/deploy_pypi.sh # git dependency is not allowed on pypi
           - run: ./scripts/deploy_docker.sh
