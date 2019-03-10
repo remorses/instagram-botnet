@@ -46,6 +46,8 @@ workflows:
   build:
     jobs:
       - test:
+          name: test image single upload
           script: tests/upload_single_post.yml
       - test:
+          name: test prints of user feed
           script: tests/print_users_feed.yml
