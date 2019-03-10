@@ -4,6 +4,8 @@ RUN apk  add --no-cache build-base git jpeg-dev zlib-dev freetype-dev musl sdl f
 
 COPY src /src
 
+COPY README.md /src
+
 WORKDIR /src
 
 RUN pip install  .
