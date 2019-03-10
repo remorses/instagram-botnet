@@ -6,4 +6,4 @@ test -f ./VERSION || (echo "file VERSION containing current version is needed" &
 
 python3 setup.py sdist bdist_wheel
 
-python3 -m twine upload  dist/*
+python3 -m twine upload -u $PYPIUSERNAME -p $PYPIPASSWORD  dist/*

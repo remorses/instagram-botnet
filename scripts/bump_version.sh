@@ -5,7 +5,7 @@ cd ../src
 
 version=`cat VERSION`
 
-bumpversion --current-version version minor VERSION
+bumpversion --current-version $version minor ./VERSION
 
 git add VERSION
 git commit -m "version $version"
