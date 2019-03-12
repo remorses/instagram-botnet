@@ -13,7 +13,7 @@ docker cp bumper:/app/VERSION VERSION
 
 git config credential.helper 'cache --timeout=120'
 git config user.email $GITHUBEMAIL
-git config user.name $GITHUBPASSWORD
+git config user.password $GITHUBPASSWORD
 
 # ssh-add -D
 # ssh-keyscan github.com >> githubKey
