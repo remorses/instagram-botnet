@@ -11,10 +11,6 @@ docker run  --volumes-from configs --name bumper treeder/bump  patch
 docker cp bumper:/app/VERSION VERSION
 
 
-git config credential.helper 'cache --timeout=120'
-git config user.email $GITHUBEMAIL
-git config user.password $GITHUBPASSWORD
-
 # ssh-add -D
 # ssh-keyscan github.com >> githubKey
 # ssh-keygen -lf githubKey
