@@ -2,6 +2,8 @@ set -x
 cd `dirname $0`
 cd ../src
 
+git checkout master
+
 version=`cat VERSION`
 
 docker create -v /app --name configs alpine:3.4 /bin/true
@@ -16,12 +18,11 @@ docker cp bumper:/app/VERSION VERSION
 # ssh-keygen -lf githubKey
 # cat githubKey >> ~/.ssh/known_hosts
 
-git checkout master
+
 
 version=`cat VERSION`
 
 git add VERSION
 git commit -m "version $version"
 git tag  "$version"
-git tag  "[skip ci]"
 git push  https://${GITHUB_PERSONAL_TOKEN}@github.com/remorses/instagram-botnet.git --tags
