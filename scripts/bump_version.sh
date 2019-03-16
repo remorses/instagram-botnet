@@ -4,6 +4,8 @@ cd ../src
 
 git checkout master
 
+git pull
+
 version=`cat VERSION`
 
 docker create -v /app --name configs alpine:3.4 /bin/true
