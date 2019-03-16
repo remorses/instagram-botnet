@@ -4,7 +4,7 @@ cd ../src
 
 git checkout master
 
-git pull
+git pull https://${GITHUB_PERSONAL_TOKEN}@github.com/remorses/instagram-botnet.git
 
 version=`cat VERSION`
 
@@ -29,4 +29,4 @@ version=`cat VERSION`
 git add VERSION
 git commit -m "[skip ci] version $version"
 git tag  -a "$version" -m "[skip ci]"
-git push --tags  https://${GITHUB_PERSONAL_TOKEN}@github.com/remorses/instagram-botnet.git  HEAD
+git push --tags  https://${GITHUB_PERSONAL_TOKEN}@github.com/remorses/instagram-botnet.git  HEAD --no-verify
