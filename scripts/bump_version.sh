@@ -26,5 +26,5 @@ version=`cat VERSION`
 
 git add VERSION
 git commit -m "version $version"
-git tag  "$version"
+git tag  -a "$version" -m "[skip ci]"
 git push --tags  https://${GITHUB_PERSONAL_TOKEN}@github.com/remorses/instagram-botnet.git  HEAD
