@@ -18,6 +18,8 @@ docker cp bumper:/app/VERSION VERSION
 # ssh-keygen -lf githubKey
 # cat githubKey >> ~/.ssh/known_hosts
 
+git config user.name "Tommaso De Rossi"
+git config user.email "beats.by.morse@gmail.com" 
 
 
 version=`cat VERSION`
@@ -25,4 +27,4 @@ version=`cat VERSION`
 git add VERSION
 git commit -m "version $version"
 git tag  "$version"
-git push  https://${GITHUB_PERSONAL_TOKEN}@github.com/remorses/instagram-botnet.git --tags
+git push --tags  https://${GITHUB_PERSONAL_TOKEN}@github.com/remorses/instagram-botnet.git  HEAD
