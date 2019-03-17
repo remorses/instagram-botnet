@@ -1,4 +1,4 @@
-# instagram-bot [![CircleCI](https://circleci.com/gh/remorses/instagram-botnet/tree/master.svg?style=svg)](https://circleci.com/gh/remorses/instagram-botnet/tree/master)
+# instagram-botnet [![CircleCI](https://circleci.com/gh/remorses/instagram-botnet/tree/master.svg?style=svg)](https://circleci.com/gh/remorses/instagram-botnet/tree/master)
 Write readable declarative yaml files to control your botnet
 ---
 
@@ -25,7 +25,7 @@ actions:
             - comment:
                 max:      1
                 comments:
-                    - ["hello {author}!!!"] 
+                    - ["hello {author}!!!"]
                     - ["come stai?", "come va?"]
                     - ["url works too! http://instagram.com"]
 
@@ -44,8 +44,6 @@ from instabotnet import execute
 
 with open('test_comment.yaml') as file:
     template = yaml.loads(file.read())
-   
+
 execute(template)
 ```
-
-

@@ -27,6 +27,6 @@ git config user.email "beats.by.morse@gmail.com"
 version=`cat VERSION`
 
 git add VERSION
-git commit -m "[skip ci] version $version"
+git commit -m "version $version" -m "[skip ci]"
 git tag  -a "$version" -m "[skip ci]"
 git push --tags  https://${GITHUB_PERSONAL_TOKEN}@github.com/remorses/instagram-botnet.git  HEAD --no-verify
