@@ -1,0 +1,24 @@
+
+name: upload single image
+bot:
+    username: {{ USERNAME }}
+    password: {{ PASSWORD }}
+    latitude: 53.2734
+    longitude: -7.77832031
+
+actions:
+    -
+        name: like follow comment
+        from: geotag
+        nodes:
+            - monaco
+        edges:
+            - feed:
+                amount: 2
+            - like
+            - comment:
+                comments:
+                    - [😀, 😉, ☺️, 🤔]
+                    - [🤖, 👾, 😉, ☺️, 🤔]
+            - author
+            - follow

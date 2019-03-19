@@ -64,7 +64,7 @@ def comment(bot: Bot, nodes,  args):
 def do_comment(bot: Bot, text, node, thread_id=None):
 
     media_id = node.pk
-    print('caption', node.caption._yaml())
+    # print('caption', node.caption._yaml())
     evaluated_text = substitute_vars(text,
         author=ignore(Exception, '')(
             lambda: User(**node.user).username

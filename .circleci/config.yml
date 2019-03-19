@@ -5,31 +5,44 @@ workflows:
   version: 2
   test-deploy:
     jobs:
-      # - test:
-      #     name: upload_single_post
-      #     script: tests/upload_single_post.yml
-
-      # - test:
-      #     name: delete_last_post
-      #     script: tests/delete_last_post.yml
-
-      # - test:
-      #     name: print_users_feed
-      #     script: tests/print_users_feed.yml
-      # - test:
-      #     name: print_users_feed
-      #     script: tests/print_users_feed.yml
-      # - test:
-      #     name: print_users_stories
-      #     script: tests/print_users_stories.yml
-      # - test:
-      #     name: message_some_urls
-      #     script: tests/message_some_urls.yml
-      - bump_version
-          # requires:
-          #     - upload_single_post
-          #     - delete_last_post
-      - deploy:
+       - test:
+           name: upload_single_post
+           script: tests/upload_single_post.yml
+       - test:
+           name: delete_last_post
+           script: tests/delete_last_post.yml
+       - test:
+           name: print_users_feed
+           script: tests/print_users_feed.yml
+       - test:
+           name: print_users_feed
+           script: tests/print_users_feed.yml
+       - test:
+           name: print_users_stories
+           script: tests/print_users_stories.yml
+       - test:
+           name: message_some_urls
+           script: tests/message_some_urls.yml
+       - test:
+           name: like_follow_comment_users_feed
+           script: tests/like_follow_comment_users_feed.yml
+       - test:
+           name: like_follow_comment_geotags_feed
+           script: tests/like_follow_comment_geotags_feed.yml
+       - test:
+           name: print_usertags
+           script: tests/print_usertags.yml
+           
+       - bump_version:
+           requires:
+               - upload_single_post
+               - delete_last_post
+               - print_users_feed
+               - print_users_stories
+               - message_some_urls
+               - like_follow_comment_users_feed
+               - like_follow_comment_geotags_feed
+       - deploy:
            requires:
               - bump_version
 

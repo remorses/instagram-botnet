@@ -1,0 +1,23 @@
+
+name: upload single image
+bot:
+    username: {{ USERNAME }}
+    password: {{ PASSWORD }}
+    latitude: 53.2734
+    longitude: -7.77832031
+
+actions:
+    -
+        name: print usertags
+        from: user
+        nodes:
+            - instagram
+        edges:
+            - feed:
+                amount: 10
+            - scrape:
+                key: blocks
+                model:
+                    usertags: x._usertags
+                    # mpd: x.mpd
+                    # all: x._serialize()
