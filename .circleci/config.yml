@@ -43,13 +43,13 @@ jobs:
       steps:
           - checkout
           - setup_remote_docker
-          - run: USERNAME=$DOCKERUSERNAME PASSWORD=$DOCKERPASSWORD IMAGE_NAME=instagram-botnet /deploy
+          - run: cd src && USERNAME=$DOCKERUSERNAME PASSWORD=$DOCKERPASSWORD IMAGE_NAME=instagram-botnet /deploy
   bump_version:
       docker:
         - image: xmorse/bump-version
       steps:
         - checkout
-        - run: GITHUB_TOKEN=$GITHUB_PERSONAL_TOKEN /bump
+        - run: cd src && GITHUB_TOKEN=$GITHUB_PERSONAL_TOKEN /bump
 
   test:
     parameters:
