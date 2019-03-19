@@ -15,9 +15,6 @@ workflows:
            name: print_users_feed
            script: tests/print_users_feed.yml
        - test:
-           name: print_users_feed
-           script: tests/print_users_feed.yml
-       - test:
            name: print_users_stories
            script: tests/print_users_stories.yml
        - test:
@@ -32,9 +29,8 @@ workflows:
        - test:
            name: print_usertags
            script: tests/print_usertags.yml
-           
        - bump_version:
-           requires:
+           requires:
                - upload_single_post
                - delete_last_post
                - print_users_feed
