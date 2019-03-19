@@ -46,7 +46,7 @@ jobs:
           - run: cd src && USERNAME=$DOCKERUSERNAME PASSWORD=$DOCKERPASSWORD IMAGE_NAME=instagram-botnet /deploy
   bump_version:
       docker:
-        - image: xmorse/bump-version:0.1.0
+        - image: xmorse/bump-version:0.2.0
       steps:
         - checkout
         - run: cd src && GITHUB_TOKEN=$GITHUB_PERSONAL_TOKEN /bump
