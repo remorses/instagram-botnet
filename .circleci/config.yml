@@ -25,36 +25,31 @@ workflows:
       # - test:
       #     name: message_some_urls
       #     script: tests/message_some_urls.yml
-      - deploy:
+      - bump_version:
           requires:
               - upload_single_post
               - delete_last_post
+      - deploy:
+           requires:
+              - bump_version
 
 
 
 
 jobs:
-  build:
-      docker:
-          - image: alpine:latest
-      steps:
-          - run: echo "starting"
-
-
   deploy:
       docker:
-        - image: docker/compose:1.23.2
+        - image: xmorse/deploy-dockerhub
       steps:
           - checkout
           - setup_remote_docker
-          - load_tests_cache
-          - run: apk add git openssh-client
-          - run: ./scripts/bump_version.sh
-          # - run: ./scripts/deploy_pypi.sh # git dependency is not allowed on pypi
-          - run: ./scripts/deploy_docker.sh
-
-
-
+          - run: USERNAME=$DOCKERUSERNAME PASSWORD=$DOCKERPASSWORD IMAGE_NAME=instagram-botnet /deploy
+  bump_version:
+      docker:
+        - image: xmorse/bump-version
+      steps:
+        - checkout
+        - run: GITHUB_TOKEN=$GITHUB_PERSONAL_TOKEN /bump
 
   test:
     parameters:
