@@ -7,7 +7,7 @@ from ..nodes import Comment, Media, User, Geotag
 
 
 
-@decorate(accepts=Media, returns=Comment)
+@decorate(accepts=Media, returns=Media)
 def comment(bot: Bot, nodes,  args):
 
     try:
