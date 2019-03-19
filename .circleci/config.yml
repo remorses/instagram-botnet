@@ -39,14 +39,14 @@ workflows:
 jobs:
   deploy:
       docker:
-        - image: xmorse/deploy-dockerhub
+        - image: xmorse/deploy-dockerhub:0.0.0
       steps:
           - checkout
           - setup_remote_docker
           - run: cd src && USERNAME=$DOCKERUSERNAME PASSWORD=$DOCKERPASSWORD IMAGE_NAME=instagram-botnet /deploy
   bump_version:
       docker:
-        - image: xmorse/bump-version
+        - image: xmorse/bump-version:0.0.0
       steps:
         - checkout
         - run: cd src && GITHUB_TOKEN=$GITHUB_PERSONAL_TOKEN /bump
