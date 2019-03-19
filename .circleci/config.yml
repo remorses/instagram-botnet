@@ -5,13 +5,13 @@ workflows:
   version: 2
   test-deploy:
     jobs:
-      - test:
-          name: upload_single_post
-          script: tests/upload_single_post.yml
+      # - test:
+      #     name: upload_single_post
+      #     script: tests/upload_single_post.yml
 
-      - test:
-          name: delete_last_post
-          script: tests/delete_last_post.yml
+      # - test:
+      #     name: delete_last_post
+      #     script: tests/delete_last_post.yml
 
       # - test:
       #     name: print_users_feed
@@ -26,9 +26,9 @@ workflows:
       #     name: message_some_urls
       #     script: tests/message_some_urls.yml
       - bump_version:
-          requires:
-              - upload_single_post
-              - delete_last_post
+          # requires:
+          #     - upload_single_post
+          #     - delete_last_post
       - deploy:
            requires:
               - bump_version
@@ -46,7 +46,7 @@ jobs:
           - run: cd src && USERNAME=$DOCKERUSERNAME PASSWORD=$DOCKERPASSWORD IMAGE_NAME=instagram-botnet /deploy
   bump_version:
       docker:
-        - image: xmorse/bump-version:0.0.5
+        - image: xmorse/bump-version:0.1.0
       steps:
         - checkout
         - run: cd src && GITHUB_TOKEN=$GITHUB_PERSONAL_TOKEN /bump
