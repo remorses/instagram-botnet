@@ -44,11 +44,11 @@ jobs:
           - checkout
           - setup_remote_docker
           - run: |
-            USERNAME=$DOCKERUSERNAME \
-            PASSWORD=$DOCKERPASSWORD \
-            IMAGE_NAME=instagram-botnet \
-            TAG_FILE=./src/VERSION \
-            /deploy
+                  USERNAME=$DOCKERUSERNAME \
+                  PASSWORD=$DOCKERPASSWORD \
+                  IMAGE_NAME=instagram-botnet \
+                  TAG_FILE=./src/VERSION \
+                  /deploy
             
   bump_version:
       docker:
