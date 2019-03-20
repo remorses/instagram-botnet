@@ -65,7 +65,7 @@ def execute(script, variables={}) -> [dict]:
 def obj_from_yaml(script, variables):
     if isinstance(script, str):
         script = populate_string(script, variables)
-        return yaml.load(script)
+        return yaml.safe_load(script)
     else:
         return populate_object(script, variables)
 
