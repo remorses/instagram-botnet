@@ -68,5 +68,8 @@ def initialize_nodes(nodes, from_type, bot):
         'Geotag': lambda name: api.location_search(bot.latitude, bot.longitude, query=name,)['venues'][0]
     }
 
-
-    return [Class(**switch[Class.__name__](value))for value in nodes]
+    try:
+        return [Class(**switch[Class.__name__](value)) for value in nodes]
+    except Exception as e:
+        bot.logger.error(f'error initializing nodes {nodes}: {e}')
+        return []
