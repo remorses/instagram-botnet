@@ -8,31 +8,31 @@ workflows:
        - test:
            name: upload_single_post
            script: tests/upload_single_post.yml
-       - test:
-           name: delete_last_post
-           script: tests/delete_last_post.yml
+       # - test:
+       #     name: delete_last_post
+       #     script: tests/delete_last_post.yml
        - test:
            name: print_users_feed
            script: tests/print_users_feed.yml
-       - test:
-           name: print_users_stories
-           script: tests/print_users_stories.yml
-       - test:
-           name: message_some_urls
-           script: tests/message_some_urls.yml
-       - test:
-           name: like_follow_comment_users_feed
-           script: tests/like_follow_comment_users_feed.yml
-       - test:
-           name: like_follow_comment_geotags_feed
-           script: tests/like_follow_comment_geotags_feed.yml
-       - test:
-           name: print_usertags
-           script: tests/print_usertags.yml
+       # - test:
+       #     name: print_users_stories
+       #     script: tests/print_users_stories.yml
+       # - test:
+       #     name: message_some_urls
+       #     script: tests/message_some_urls.yml
+       # - test:
+       #     name: like_follow_comment_users_feed
+       #     script: tests/like_follow_comment_users_feed.yml
+       # - test:
+       #     name: like_follow_comment_geotags_feed
+       #     script: tests/like_follow_comment_geotags_feed.yml
+       # - test:
+       #     name: print_usertags
+       #     script: tests/print_usertags.yml
        - bump_version:
            requires:
                - upload_single_post
-               - delete_last_post
+               # - delete_last_post
                - print_users_feed
                # - print_users_stories
                # - message_some_urls
