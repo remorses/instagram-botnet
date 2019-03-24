@@ -52,12 +52,15 @@ jobs:
       steps:
           - checkout
           - setup_remote_docker
+          - load_tests_cache
           - run: |
                   USERNAME=$DOCKERUSERNAME \
                   PASSWORD=$DOCKERPASSWORD \
                   IMAGE_NAME=instagram-botnet \
                   TAG_FILE=./src/VERSION \
+                  REGISTRY=docker.io
                   /deploy
+
 
   bump_version:
       docker:
