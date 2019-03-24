@@ -5,9 +5,9 @@ workflows:
   version: 2
   test-deploy:
     jobs:
-       - test:
-           name: upload_single_post
-           script: tests/upload_single_post.yml
+       # - test:
+       #     name: upload_single_post
+       #     script: tests/upload_single_post.yml
        # - test:
        #     name: delete_last_post
        #     script: tests/delete_last_post.yml
@@ -31,7 +31,7 @@ workflows:
        #     script: tests/print_usertags.yml
        - bump_version:
            requires:
-               - upload_single_post
+               # - upload_single_post
                # - delete_last_post
                - print_users_feed
                # - print_users_stories
@@ -58,7 +58,7 @@ jobs:
                   PASSWORD=$DOCKERPASSWORD \
                   IMAGE_NAME=instagram-botnet \
                   TAG_FILE=./src/VERSION \
-                  REGISTRY=docker.io
+                  REGISTRY=docker.io \
                   /deploy
 
 
