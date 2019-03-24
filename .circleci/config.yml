@@ -56,7 +56,7 @@ jobs:
           - run: |
                   USERNAME=$DOCKERUSERNAME \
                   PASSWORD=$DOCKERPASSWORD \
-                  IMAGE_NAME=instagram-botnet \
+                  IMAGE_NAME=xmorse/instagram-botnet \
                   TAG_FILE=./src/VERSION \
                   REGISTRY=docker.io \
                   /deploy
