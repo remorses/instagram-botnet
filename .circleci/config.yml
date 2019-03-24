@@ -48,7 +48,7 @@ workflows:
 jobs:
   deploy:
       docker:
-        - image: xmorse/deploy-dockerhub:0.0.0
+        - image: cistuff/deploy-docker
       steps:
           - checkout
           - setup_remote_docker
@@ -61,7 +61,7 @@ jobs:
 
   bump_version:
       docker:
-        - image: xmorse/bump-version:0.2.0
+        - image: cistuff/bump-version:0.1.1
       steps:
         - checkout
         - run: cd src && GITHUB_TOKEN=$GITHUB_PERSONAL_TOKEN /bump
