@@ -34,10 +34,10 @@ workflows:
                - upload_single_post
                - delete_last_post
                - print_users_feed
-               - print_users_stories
-               - message_some_urls
-               - like_follow_comment_users_feed
-               - like_follow_comment_geotags_feed
+               # - print_users_stories
+               # - message_some_urls
+               # - like_follow_comment_users_feed
+               # - like_follow_comment_geotags_feed
        - deploy:
            requires:
               - bump_version
@@ -58,7 +58,7 @@ jobs:
                   IMAGE_NAME=instagram-botnet \
                   TAG_FILE=./src/VERSION \
                   /deploy
-            
+
   bump_version:
       docker:
         - image: xmorse/bump-version:0.2.0
