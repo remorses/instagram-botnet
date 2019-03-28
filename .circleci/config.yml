@@ -104,7 +104,7 @@ commands:
                 DOCKER_LAYERS=$(for image in $DOCKER_IMAGES; do docker history $image -q | grep -v missing; done)
                 docker save -o ~/docker-layers.tar $DOCKER_LAYERS
           - save_cache:
-              key: v6-docker-{{ .Branch }}
+              key: v7-docker-{{ .Branch }}
               paths:
                 - ~/docker-layers.tar
 
