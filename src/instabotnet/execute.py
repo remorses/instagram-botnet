@@ -6,10 +6,23 @@ from .reducer import  reducer
 from .support import dotdict, merge
 from collections import deque
 from functools import reduce
+import time
 import traceback
 import os
 import re
 import yaml
+from instagram_private_api.errors import (
+    ClientError,
+    ClientLoginRequiredError,
+    ClientCookieExpiredError,
+    ClientConnectionError,
+    ClientThrottledError,
+    ClientReqHeadersTooLargeError,
+    ClientCheckpoint,
+    ClientCheckpointRequiredError,
+    ClientChallengeRequiredError,
+    ClientSentryBlockError,
+)
 
 yaml.reader.Reader.NON_PRINTABLE = re.compile(
     u'[^\x09\x0A\x0D\x20-\x7E\x85\xA0-\uD7FF\uE000-\uFFFD\U00010000-\U0010FFFF]')
@@ -17,13 +30,36 @@ yaml.reader.Reader.NON_PRINTABLE = re.compile(
 
 DEBUG = bool(os.environ.get('DEBUG'))
 
-def execute(script, variables={}) -> [dict]:
+def execute(script_string, variables={}) -> [dict]:
 
-    script = obj_from_yaml(script, variables)
+    script = obj_from_yaml(script_string, variables)
 
     assert_good_script(script)
+    
+    try:
+        bot = make_bots(script)[0]
+        
+    except (ClientConnectionError, ClientLoginError, ClientCookieExpiredError) as e:
+        time.sleep(5)
+        return execute(script_string, variables)
+        
+    except ClientCheckpointRequiredError as e:
+        print(str(e))
+        raise e fron None
+        
+    except ClientChallengeRequiredError as e:
+        print(str(e))
+        raise e fron None
+        
+    except ClientSentryBlockError as e:
+        print(str(e))
+        raise e fron None
+        
+    except ClientError as e:
+        print(str(e))
+        raise e fron None
 
-    bot = make_bots(script)[0]
+
 
     script_name = script['name'] if 'name' in script else 'unnmaed script'
     bot.logger.info(f'# SCRIPT {script_name}')
