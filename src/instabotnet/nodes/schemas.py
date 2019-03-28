@@ -10,7 +10,7 @@ def load(path):
     current = os.path.dirname(os.path.abspath(__file__))
     path = os.path.join(current, path)
     with open(path, encoding="utf-8") as f:
-        return yaml.load(f.read())
+        return yaml.safe_load(f.read())
 
 geotag_schema = load('geotag.yaml')
 user_schema = load('user.yaml')
