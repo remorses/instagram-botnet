@@ -112,7 +112,7 @@ commands:
         steps:
           - restore_cache:
               keys:
-                - v6-docker-{{ .Branch }}
+                - v7-docker-{{ .Branch }}
           - run:
               name: Load Docker layers cache
               command: |
