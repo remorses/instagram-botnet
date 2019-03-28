@@ -45,19 +45,19 @@ def execute(script_string, variables={}) -> [dict]:
         
     except ClientCheckpointRequiredError as e:
         print(str(e))
-        raise e fron None
+        raise e from None
         
     except ClientChallengeRequiredError as e:
         print(str(e))
-        raise e fron None
+        raise e from None
         
     except ClientSentryBlockError as e:
         print(str(e))
-        raise e fron None
+        raise e from None
         
     except ClientError as e:
         print(str(e))
-        raise e fron None
+        raise e from None
 
 
 
