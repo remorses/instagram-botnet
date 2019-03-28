@@ -17,6 +17,7 @@ from instagram_private_api.errors import (
     ClientCookieExpiredError,
     ClientConnectionError,
     ClientThrottledError,
+    ClientLoginError
     ClientReqHeadersTooLargeError,
     ClientCheckpointRequiredError,
     ClientChallengeRequiredError,
