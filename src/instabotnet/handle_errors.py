@@ -1,7 +1,4 @@
-import os
-import traceback
-from ..nodes import Node, node_classes
-from .common import decorate
+
 from instagram_private_api.errors import (
     ClientError,
     ClientLoginRequiredError,
@@ -11,24 +8,9 @@ from instagram_private_api.errors import (
     ClientReqHeadersTooLargeError,
 )
 
-DEBUG = bool(os.environ.get('DEBUG'))
-
-@decorate(accepts=(*node_classes.values(),), returns=Node)
-def evaluate(bot, nodes,  args) -> Node:
-
-    total = args['info']['total_nodes']
-    count = 0
-    nodes = iter(nodes)
-
-
-    while True:
-
+def handle(func, bot):
         try:
-            next(nodes)
-
-        except StopIteration:
-            break
-
+            return func()
         except ClientLoginRequiredError as e:
             bot.logger.error(str(e))
             bot.relogin()
@@ -48,12 +30,12 @@ def evaluate(bot, nodes,  args) -> Node:
             bot.logger.error('unexpected exception {e}')
             raise e from None
 
-        else:
-            count += 1
-            percentage = (str(int(count / total * 100)) + '%').center(5)
-            bot.logger.info( f'{percentage}:  {count} nodes out of {total}')
-
-
-    # bot.logger.warn(nodes[:3])
-
-    return nodes, {}
+        except ClientError as e:
+            if 'consent_required' in str(e):
+                print('catched', str(e))
+                bot.api.agree_consent1()
+                bot.api.agree_consent2()
+                bot.api.agree_consent3()
+                bot.api.do_login()
+            else:
+                raise e from None
