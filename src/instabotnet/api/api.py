@@ -31,6 +31,8 @@ class API(Client):
             jar = ClientCookieJar()
             jar._cookies = deserialize_cookie_jar(cookies)
             kwargs['settings']['cookie'] = jar.dump()
+            if not 'uuid' in kwargs['settings']:
+                kwargs['settings']['uuid'] = self.generate_uuid(False, seed=kwargs['username'])
 
         super().__init__(**kwargs)
 
