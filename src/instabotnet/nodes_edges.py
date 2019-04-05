@@ -73,4 +73,5 @@ def initialize_nodes(nodes, from_type, bot):
 
     except Exception as e:
         bot.logger.error(f'error initializing nodes {nodes}: {e}')
+        raise e from None
         return []

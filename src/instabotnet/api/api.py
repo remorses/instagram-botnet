@@ -5,10 +5,12 @@ from instagram_private_api import (
     ClientError,
     ClientLoginError
 )
+from ..bot.support import deserialize_cookie_jar
 from colorlog import ColoredFormatter
 import logging
 import os
 import json
+from instagram_private_api.http import ClientCookieJar
 
 
 class LoggerAdapter(logging.LoggerAdapter):
@@ -23,6 +25,13 @@ Client.login = lambda self: None
 
 class API(Client):
     def __init__(self,**kwargs):
+
+        if 'cookies' in kwargs['settings']:
+            cookies = kwargs['settings']['cookies']
+            jar = ClientCookieJar()
+            jar._cookies = deserialize_cookie_jar(cookies)
+            kwargs['settings']['cookie'] = jar.dump()
+
         super().__init__(**kwargs)
 
         # Setup logging
