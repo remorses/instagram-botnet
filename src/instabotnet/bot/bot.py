@@ -57,7 +57,7 @@ class Bot:
                 os.fsync(outfile.fileno())
 
         with open(self.settings_file, 'r') as file_data:
-            settings = json.load(file_data, default=from_json)
+            settings = json.load(file_data, )
             print('Reusing settings: {0!s}'.format(self.settings_file))
 
         try:
