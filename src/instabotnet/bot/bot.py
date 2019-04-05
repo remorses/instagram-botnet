@@ -49,7 +49,7 @@ class Bot:
             cookies = api.opener.cookie_jar._cookies
             cookies = serialize_cookie_jar(cookies)
             cache_settings['cookies'] = cookies
-            # del cache_settings['cookie']
+            del cache_settings['cookie']
             with portalocker.Lock(self.settings_file, 'w', timeout=10) as outfile:
                 json.dump(cache_settings, outfile, default=to_json)
                 print('SAVED: {0!s}'.format(self.settings_file))
@@ -69,7 +69,8 @@ class Bot:
                 proxy=proxy,
                 settings=settings,
             )
-            self.api.do_login()
+            if not settings.get('cookies'):
+                self.api.do_login()
 
         except (ClientCookieExpiredError, ClientLoginRequiredError) as e:
             print('ClientCookieExpiredError/ClientLoginRequiredError: {0!s}'.format(e))
