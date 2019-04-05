@@ -25,12 +25,12 @@ class Bot:
                  username,
                  password,
                  # cookie_file=None,
-                 settings_file=None,
+                 settings_path=None,
                  proxy=None,
                  device=None):
 
         # self.cookie_file = make_cookie_file(cookie_file, username + '_cookie.json')
-        self.settings_file = make_file(settings_file, username + '_settings.json', initial='{}')
+        self.settings_file = make_file(settings_path, username + '_settings.json', initial='{}')
 
         self.id = Bot.id
         self.username = username
@@ -49,7 +49,7 @@ class Bot:
             cookies = api.opener.cookie_jar._cookies
             cookies = serialize_cookie_jar(cookies)
             cache_settings['cookies'] = cookies
-            del cache_settings['cookie']
+            # del cache_settings['cookie']
             with portalocker.Lock(self.settings_file, 'w', timeout=10) as outfile:
                 json.dump(cache_settings, outfile, default=to_json)
                 print('SAVED: {0!s}'.format(self.settings_file))
@@ -57,7 +57,7 @@ class Bot:
                 os.fsync(outfile.fileno())
 
         with open(self.settings_file, 'r') as file_data:
-            settings = json.load(file_data, )
+            settings = json.load(file_data, default=from_json)
             print('Reusing settings: {0!s}'.format(self.settings_file))
 
         try:

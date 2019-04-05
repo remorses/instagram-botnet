@@ -81,7 +81,7 @@ def write(data):
 
 params = lambda data: dict(
         # cookie_file=data['cookie'] if 'cookie' in data else None,
-        settings_file=data['settings_file'] if 'settings_file' in data else 
+        settings_path=data['settings_path'] if 'settings_path' in data else 
             write(data['settings']) if 'settings' in data and data else None,
         username=data['username'] if 'username' in data \
             else error(Exception('username necessary')),
