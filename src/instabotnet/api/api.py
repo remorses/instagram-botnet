@@ -26,7 +26,7 @@ Client.login = lambda self: None
 class API(Client):
     def __init__(self,**kwargs):
 
-        if 'cookies' in kwargs['settings']:
+        if 'settings' in kwargs and 'cookies' in kwargs['settings']:
             cookies = kwargs['settings']['cookies']
             jar = ClientCookieJar()
             jar._cookies = deserialize_cookie_jar(cookies)

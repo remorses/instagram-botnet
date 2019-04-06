@@ -90,6 +90,7 @@ class Bot:
                 password=password,
                 proxy=proxy,
                 device_id=settings.get('device_id'),
+                settings={},
                 on_login=on_login
             )
             self.api.do_login()
