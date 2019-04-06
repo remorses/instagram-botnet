@@ -2,7 +2,18 @@ import datetime
 from pathlib import Path
 import time
 from ..api import API
-from instagram_private_api import  ClientCookieExpiredError, ClientLoginRequiredError, ClientError
+from instagram_private_api import  (
+    ClientError,
+    ClientLoginRequiredError,
+    ClientCookieExpiredError,
+    ClientConnectionError,
+    ClientThrottledError,
+    ClientLoginError,
+    ClientReqHeadersTooLargeError,
+    ClientCheckpointRequiredError,
+    ClientChallengeRequiredError,
+    ClientSentryBlockError,
+)
 from .support import to_json, from_json, serialize_cookie_jar
 from .settings import DELAY, TOTAL, MAX_PER_DAY
 import json
@@ -72,7 +83,7 @@ class Bot:
             if not settings.get('cookies'):
                 self.api.do_login()
 
-        except (ClientCookieExpiredError, ClientLoginRequiredError) as e:
+        except (ClientCookieExpiredError, ClientLoginRequiredError, ClientLoginError, ClientConnectionError) as e:
             print('ClientCookieExpiredError/ClientLoginRequiredError: {0!s}'.format(e))
             self.api = API(
                 username=username,
