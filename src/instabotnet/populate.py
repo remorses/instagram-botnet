@@ -68,8 +68,6 @@ def populate_string( yaml_string, data={}):
     """
     max one {{  }} per line!
     """
-    import random
-
     def replace_in_line(line):
         if '{{' in line and '}}' in line and not ('#' in line and line.index('#') < line.index('{{')):
             begin = line.index('{{')
@@ -78,11 +76,10 @@ def populate_string( yaml_string, data={}):
             try:
                 return (
                     line[:begin].replace('{{','').replace('}}','') +
-                    str(xeval(variable_name, merge(data, os.environ))) +
+                    repr(xeval(variable_name, merge(data, os.environ))) +
                     line[end:].replace('}}','').replace('{{','')
                 )
             except:
-                var = locate_variable(line)
                 raise Exception('yaml file needs all data to be evaluated: {{{{ {} }}}}'.format(variable_name))
 
 
