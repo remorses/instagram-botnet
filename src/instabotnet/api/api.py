@@ -9,6 +9,7 @@ from ..bot.support import deserialize_cookie_jar
 from colorlog import ColoredFormatter
 import logging
 import os
+import time
 import json
 from instagram_private_api.http import ClientCookieJar
 
@@ -172,6 +173,95 @@ class API(Client):
         }
         return self._call_api('consent/existing_user_flow/', params=params,)# unsigned=True)
 
+    def post_album(self, medias, caption='', location=None, **kwargs):
+        """
+        Post an album of up to 10 photos/videos.
+
+        :param medias: an iterable list/collection of media dict objects
+
+            .. code-block:: javascript
+
+                medias = [
+                    {"type": "image", "size": (720, 720), "data": "..."},
+                    {
+                        "type": "image", "size": (720, 720),
+                        "usertags": [{"user_id":4292127751, "position":[0.625347,0.4384531]}],
+                        "data": "..."
+                    },
+                    {"type": "video", "size": (720, 720), "duration": 12.4, "thumbnail": "...", "data": "..."}
+                ]
+
+        :param caption:
+        :param location:
+        :return:
+        """
+        album_upload_id = str(int(time.time() * 1000))
+        children_metadata = []
+        for media in medias:
+            if len(children_metadata) >= 10:
+                continue
+            if media.get('type', '') not in ['image', 'video']:
+                raise ValueError('Invalid media type: {0!s}'.format(media.get('type', '')))
+            if not media.get('data'):
+                raise ValueError('Data not specified.')
+            if not media.get('size'):
+                raise ValueError('Size not specified.')
+            if media['type'] == 'video':
+                if not media.get('duration'):
+                    raise ValueError('Duration not specified.')
+                if not media.get('thumbnail'):
+                    raise ValueError('Thumbnail not specified.')
+            if not self.compatible_aspect_ratio(media['size']):
+                raise ValueError('Invalid media aspect ratio.')
+
+            if media['type'] == 'video':
+                metadata = self.post_video(
+                    video_data=media['data'],
+                    size=media['size'],
+                    duration=media['duration'],
+                    thumbnail_data=media['thumbnail'],
+                    is_sidecar=True
+                )
+            else:
+                metadata = self.post_photo(
+                    photo_data=media['data'],
+                    size=media['size'],
+                    is_sidecar=True,
+                )
+                if media.get('usertags'):
+                    usertags = media['usertags']
+                    utags = {'in': [{'user_id': str(u['user_id']), 'position': u['position']} for u in usertags]}
+                    metadata['usertags'] = json.dumps(utags, separators=(',', ':'))
+            children_metadata.append(metadata)
+
+        if len(children_metadata) <= 1:
+            raise ValueError('Invalid number of media objects: {0:d}'.format(len(children_metadata)))
+
+        # configure as sidecar
+        endpoint = 'media/configure_sidecar/'
+        params = {
+            'caption': caption,
+            'client_sidecar_id': album_upload_id,
+            'children_metadata': children_metadata
+        }
+        if location:
+            media_loc = self._validate_location(location)
+            params['location'] = json.dumps(media_loc)
+            if 'lat' in location and 'lng' in location:
+                params['geotag_enabled'] = '1'
+                params['exif_latitude'] = '0.0'
+                params['exif_longitude'] = '0.0'
+                params['posting_latitude'] = str(location['lat'])
+                params['posting_longitude'] = str(location['lng'])
+                params['media_latitude'] = str(location['lat'])
+                params['media_latitude'] = str(location['lng'])
+        disable_comments = kwargs.pop('disable_comments', False)
+        if disable_comments:
+            params['disable_comments'] = '1'
+
+        params.update(self.authenticated_params)
+        res = self._call_api(endpoint, params=params)
+        return res
 
 
 
