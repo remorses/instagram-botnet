@@ -46,7 +46,7 @@ def make_bots(script, settings):
 
     elif 'bot' in script:
         data = script['bot']
-        print(json.dumps(params(data), indent=4))
+        # print(json.dumps(params(data), indent=4))
         bot = Bot(**({**params(data), 'settings': settings} if settings else params(data))) # TODO: here i use the settings from variables to be able to mutate it 
         if 'latitude' in data and 'longitude' in data:
             bot.latitude = data['latitude']
