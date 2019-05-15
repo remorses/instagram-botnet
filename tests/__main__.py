@@ -7,6 +7,13 @@ from instabotnet import execute
 import yaml
 import json
 
+class dotdict(dict):
+    """dot.notation access to dictionary attributes"""
+    __getattr__ = dict.get
+    __setattr__ = dict.__setitem__
+    __delattr__ = dict.__delitem__
+
+
 def load(path):
     with open(path) as f:
         return f.read()
@@ -47,7 +54,7 @@ for path in tests:
     print()
     print()
     print()
-    config = {
+    config = dotdict(**{
             'USERNAME': credentials.USER,
             'username': credentials.USER,
             'PASSWORD': credentials.PASS,
@@ -62,7 +69,7 @@ for path in tests:
             'comments': ['wow', 'awesome'],
             'proxy': None,
 
-    }
+    })
     data = execute(
         load(path),
         config

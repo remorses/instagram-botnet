@@ -36,7 +36,7 @@ bot:
     latitude: 53.2734
     longitude: -7.77832031
 
-_: {{ locals().update({'settings_path': 'ciaoo'}) }}
+_: {{ data.update({'settings_path': 'ciaoo'}) }}
 
 actions:
     -

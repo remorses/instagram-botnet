@@ -2,7 +2,8 @@ from colorama import init, Fore
 import os
 from string import Formatter
 import random
-from .support import merge
+from .support import merge, dotdict
+import funcy
 
 def get_field_value(field_name, mapping):
     try:
@@ -76,7 +77,7 @@ def populate_string( yaml_string, data={}):
             try:
                 return (
                     line[:begin].replace('{{','').replace('}}','') +
-                    repr(xeval(variable_name, merge(data, os.environ))) +
+                    repr(xeval(variable_name, data)) +
                     line[end:].replace('}}','').replace('{{','')
                 )
             except:
@@ -101,6 +102,8 @@ def xeval(expr, data):
             random=random,
             env=os.environ,
             **data,
+            data=data,
+            **{name: getattr(funcy, name) for name in funcy.__all__}
             # User=User,
             # Story=Story,
             # Media=Media,
