@@ -1,5 +1,6 @@
 from colorama import init, Fore
 import os
+import operator
 from string import Formatter
 import random
 from .support import merge, dotdict
@@ -101,6 +102,7 @@ def xeval(expr, data):
         return eval(expr, dict(
             random=random,
             env=os.environ,
+            operator=operator,
             **data,
             data=data,
             **{name: getattr(funcy, name) for name in funcy.__all__}
@@ -112,5 +114,5 @@ def xeval(expr, data):
         ))
 
     except Exception as e:
-        print(f'error {e} in xeval for {expr}')
+        print(f'error {e} in xeval for "{expr}""')
         raise
