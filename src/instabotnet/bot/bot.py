@@ -10,12 +10,6 @@ import portalocker
 import os
 
 
-
-
-
-
-
-
 class Bot:
 
     id = 0
@@ -44,18 +38,18 @@ class Bot:
 
 
 
-        def on_login(api, ):
+        def on_login(api: API, ):
             cache_settings = api.settings
             with portalocker.Lock(self.settings_file, 'w', timeout=10) as outfile:
                 json.dump(cache_settings, outfile, default=to_json)
                 print('SAVED: {0!s}'.format(self.settings_file))
                 outfile.flush()
                 os.fsync(outfile.fileno())
-        
+
         with open(self.settings_file, 'r') as file_data:
             settings = json.load(file_data, object_hook=from_json)
-            print('Reusing settings: {0!s}'.format(self.settings_file))
-            
+            # print('Reusing settings: {0!s}'.format(self.settings_file))
+
         try:
             self.api = API(
                 username=username,
@@ -167,14 +161,6 @@ def make_file( file, name, initial=''):
              f.write(initial)
     return str(file.resolve())
 
-
-def make_settings_file( file, name):
-    if not file:
-        file = Path(str(Path('.') / '_settings' / name)).resolve()
-        file.parent.exists() or file.parent.mkdir()
-    file = Path(file)
-    file.exists() or file.touch()
-    return str(file.resolve())
 
 
 
