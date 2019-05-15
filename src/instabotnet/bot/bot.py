@@ -31,11 +31,20 @@ class Bot:
                  password,
                  # cookie_file=None,
                  settings_path=None,
+                 settings=None,
                  proxy=None,
                  device=None):
 
-        # self.cookie_file = make_cookie_file(cookie_file, username + '_cookie.json')
-        self.settings_file = make_file(settings_path, username + '_settings.json', initial='{}')
+        # TODO this is horrible
+        if settings_path and not settings:
+            self.settings_file = make_file(settings_path, username + '_settings.json', initial='{}')
+            with open(self.settings_file, 'r') as file_data:
+                settings = json.load(file_data, )
+                print('Reusing settings: {0!s}'.format(self.settings_file))
+        elif settings is not None:
+            self.settings_file = None
+        else:
+            raise Exception('neither settings or settings_file present')
 
         self.id = Bot.id
         self.username = username
@@ -50,20 +59,19 @@ class Bot:
 
 
         def on_login(api: API, ):
-            cache_settings = api.settings
+            nonlocal settings
+            settings.update({**settings, **api.settings})
             cookies = api.opener.cookie_jar._cookies
             cookies = serialize_cookie_jar(cookies)
-            cache_settings['cookies'] = cookies
-            del cache_settings['cookie']
-            with portalocker.Lock(self.settings_file, 'w', timeout=10) as outfile:
-                json.dump(cache_settings, outfile, default=to_json)
-                print('SAVED: {0!s}'.format(self.settings_file))
-                outfile.flush()
-                os.fsync(outfile.fileno())
-
-        with open(self.settings_file, 'r') as file_data:
-            settings = json.load(file_data, )
-            print('Reusing settings: {0!s}'.format(self.settings_file))
+            settings['cookies'] = cookies
+            del settings['cookie']
+            if self.settings_file:
+                with portalocker.Lock(self.settings_file, 'w', timeout=10) as outfile:
+                    json.dump(settings, outfile, default=to_json)
+                    print('SAVED: {0!s}'.format(self.settings_file))
+                    outfile.flush()
+                    os.fsync(outfile.fileno())
+            
 
         try:
             self.api = API(

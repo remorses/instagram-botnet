@@ -47,15 +47,12 @@ for path in tests:
     print()
     print()
     print()
-
-    data = execute(
-        load(path),
-        {
+    config = {
             'USERNAME': credentials.USER,
             'username': credentials.USER,
             'PASSWORD': credentials.PASS,
             'password': credentials.PASS,
-             # 'settings': open(credentials.USER + '_settings.json').read())
+            'settings': json.load(open(credentials.USER + '_settings.json', 'r')),
             'competitors': ['instagram'],
             'inspirations': ['archillect.png'],
             'captions': ['hey', 'bruh'],
@@ -64,10 +61,15 @@ for path in tests:
             'comments': ['wow', 'awesome'],
             'proxy': None,
 
-        }
+    }
+    data = execute(
+        load(path),
+        config
     )
-    # print(yaml.dump(data, Dumper=Dumper, default_flow_style=False))
+    # print('data: \n', yaml.dump(data, Dumper=Dumper, default_flow_style=False))
 
     print('returned data:')
-    print(json.dumps(dict(**data), indent=8))
+    print(json.dumps(dict(**data), indent=4))
+    print('config:')
+    print(json.dumps(config, indent=4))
     time.sleep(3)

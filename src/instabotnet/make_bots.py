@@ -1,11 +1,11 @@
 from .make_predicate import make_predicate
 from .bot import Bot
 from random import random
+import json
 
 
 
-
-def make_bots(script):
+def make_bots(script, settings):
     """
 
 
@@ -33,12 +33,12 @@ def make_bots(script):
         ...
 
     """
-
+    
     bots = []
 
     if 'bots' in script:
         for data in script['bots']:
-            bot = Bot(**params(data))
+            bot = Bot(**({**params(data), 'settings': settings} if settings else params(data))) # TODO: here i use the settings from variables to be able to mutate it 
             if 'latitude' in data and 'longitude' in data:
                 bot.latitude = data['latitude']
                 bot.longitude = data['longitude']
@@ -46,7 +46,8 @@ def make_bots(script):
 
     elif 'bot' in script:
         data = script['bot']
-        bot = Bot(**params(data))
+        print(json.dumps(params(data), indent=4))
+        bot = Bot(**({**params(data), 'settings': settings} if settings else params(data))) # TODO: here i use the settings from variables to be able to mutate it 
         if 'latitude' in data and 'longitude' in data:
             bot.latitude = data['latitude']
             bot.longitude = data['longitude']
@@ -76,6 +77,7 @@ def write(data):
 params = lambda data: dict(
         # cookie_file=data['cookie'] if 'cookie' in data else None,
         settings_path=data['settings_path'] if 'settings_path' in data else None,
+        settings=data['settings'] if 'settings' in data else None,
         username=data['username'] if 'username' in data \
             else error(Exception('username necessary')),
         password=data['password'] if 'password' in data \

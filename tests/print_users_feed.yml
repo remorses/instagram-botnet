@@ -3,6 +3,7 @@ name: upload single image
 bot:
     username: {{ USERNAME }}
     password: {{ PASSWORD }}
+    settings: {{ settings }}
     latitude: 53.2734
     longitude: -7.77832031
 
@@ -16,7 +17,7 @@ actions:
             - ttipane
         edges:
             - feed:
-                amount: 10
+                amount: 1
             - scrape:
                 key: feed_sources
                 model:
