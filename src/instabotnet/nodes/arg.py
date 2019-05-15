@@ -3,7 +3,7 @@ from modeller import Model
 
 
 
-class Arg(Node, Model):
+class Arg(Model, Node):
     _schema = {
         'properties':
             {

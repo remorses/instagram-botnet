@@ -5,7 +5,7 @@ from modeller import Model
 
 attributes = lambda x: (x._name, x._data)
 
-class Hashtag(Node, Model):
+class Hashtag(Model, Node):
     _schema = {
         'properties':
             {

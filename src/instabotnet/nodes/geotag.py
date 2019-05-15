@@ -4,7 +4,7 @@ from modeller import Model
 from .schemas import geotag_schema
 import traceback
 
-class Geotag(Node, Model):
+class Geotag(Model, Node):
     _schema = geotag_schema
 
     def _on_init(self):

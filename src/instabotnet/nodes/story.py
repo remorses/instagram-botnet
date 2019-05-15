@@ -16,7 +16,7 @@ import traceback
 
 
 
-class Story(Node, Model):
+class Story(Model, Node):
     _schema = story_schema
 
     def _on_init(self):

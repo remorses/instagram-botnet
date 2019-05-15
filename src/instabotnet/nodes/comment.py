@@ -4,7 +4,7 @@ from .schemas import comment_schema
 import traceback
 
 
-class Comment(Node, Model):
+class Comment(Model, Node):
 
     def _on_init(self):
         try:

@@ -5,7 +5,7 @@ import traceback
 
 
 
-class User(Node, Model):
+class User(Model, Node):
     def _on_init(self):
         try:
             self._validate()

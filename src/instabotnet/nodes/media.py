@@ -10,7 +10,7 @@ import traceback
 
 
 
-class Media(Node, Model):
+class Media(Model, Node):
 
     def _on_init(self):
         try:
