@@ -32,6 +32,15 @@ DEBUG = bool(os.environ.get('DEBUG'))
 
 def execute(script_string, variables={}) -> [dict]:
 
+    if "---" in script_string:
+        scripts = script_string.split('---')
+        def _reducer(acc, script):
+            nonlocal variables
+            # variables.update(acc[0])
+            return merge(acc, execute(script, variables))
+        return reduce(_reducer, scripts, {})
+
+    
     script = obj_from_yaml(script_string, variables)
 
     assert_good_script(script)

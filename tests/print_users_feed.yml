@@ -1,11 +1,42 @@
 
-name: upload single image
+name: upload single image 1
 bot:
     username: {{ USERNAME }}
     password: {{ PASSWORD }}
-    settings: {{ settings }}
+    settings_path: {{ settings_path }}
     latitude: 53.2734
     longitude: -7.77832031
+
+actions:
+    -
+        name: upload
+        from: user
+        nodes:
+            - instagram
+            - therealgue
+            - ttipane
+        edges:
+            - feed:
+                amount: 1
+            - scrape:
+                key: feed_sources
+                model:
+                    images: x.images
+                    videos: x.videos
+                    # mpd: x.mpd
+                    # all: x._serialize()
+
+---
+
+name: upload single image 2
+bot:
+    username: {{ USERNAME }}
+    password: {{ PASSWORD }}
+    settings_path: {{ settings_path }}
+    latitude: 53.2734
+    longitude: -7.77832031
+
+_: {{ locals().update({'settings_path': 'ciaoo'}) }}
 
 actions:
     -
