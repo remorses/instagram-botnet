@@ -43,3 +43,4 @@ def unfollow_user(user, bot):
     bot.total['unfollows'] += 1
     bot.logger.info('unfollowed %s' % user)
     bot.sleep('unfollow')
+    return user

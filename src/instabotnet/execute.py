@@ -26,7 +26,7 @@ from instagram_private_api.errors import (
 
 yaml.reader.Reader.NON_PRINTABLE = re.compile(
     u'[^\x09\x0A\x0D\x20-\x7E\x85\xA0-\uD7FF\uE000-\uFFFD\U00010000-\U0010FFFF]')
-    
+
 
 DEBUG = bool(os.environ.get('DEBUG'))
 
@@ -35,13 +35,9 @@ def execute(script_string, variables={}) -> [dict]:
     script = obj_from_yaml(script_string, variables)
 
     assert_good_script(script)
-    
+
     try:
         bot = make_bots(script)[0]
-        
-    except (ClientConnectionError, ClientLoginError, ClientCookieExpiredError) as e:
-        time.sleep(5)
-        return execute(script_string, variables)
         
     except ClientCheckpointRequiredError as e:
         print(str(e))
@@ -54,7 +50,7 @@ def execute(script_string, variables={}) -> [dict]:
     except ClientSentryBlockError as e:
         print(str(e))
         raise e from None
-        
+
     except ClientError as e:
         print(str(e))
         raise e from None

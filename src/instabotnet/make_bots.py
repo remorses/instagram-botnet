@@ -13,15 +13,9 @@ def make_bots(script):
         -
             username:           '{username}'
             password:           qwerty
-            cache:              ./cache.db
-            log:                ./logs.html
-            cookie:             ./cookie.json
         -
             username:           giovanotti
             password:           qwerty
-            cache:              ./cache.db
-            log:                ./logs.html
-            cookie:             ./cookie.json
 
     bot:
         username: sds
@@ -81,8 +75,7 @@ def write(data):
 
 params = lambda data: dict(
         # cookie_file=data['cookie'] if 'cookie' in data else None,
-        settings_file=data['settings_file'] if 'settings_file' in data else 
-            write(data['settings']) if 'settings' in data and data else None,
+        settings_path=data['settings_path'] if 'settings_path' in data else None,
         username=data['username'] if 'username' in data \
             else error(Exception('username necessary')),
         password=data['password'] if 'password' in data \

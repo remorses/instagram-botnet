@@ -2,8 +2,19 @@ import datetime
 from pathlib import Path
 import time
 from ..api import API
-from instagram_private_api import  ClientCookieExpiredError, ClientLoginRequiredError
-from .support import to_json, from_json
+from instagram_private_api import  (
+    ClientError,
+    ClientLoginRequiredError,
+    ClientCookieExpiredError,
+    ClientConnectionError,
+    ClientThrottledError,
+    ClientLoginError,
+    ClientReqHeadersTooLargeError,
+    ClientCheckpointRequiredError,
+    ClientChallengeRequiredError,
+    ClientSentryBlockError,
+)
+from .support import to_json, from_json, serialize_cookie_jar
 from .settings import DELAY, TOTAL, MAX_PER_DAY
 import json
 import portalocker
@@ -19,12 +30,12 @@ class Bot:
                  username,
                  password,
                  # cookie_file=None,
-                 settings_file=None,
+                 settings_path=None,
                  proxy=None,
                  device=None):
 
         # self.cookie_file = make_cookie_file(cookie_file, username + '_cookie.json')
-        self.settings_file = make_file(settings_file, username + '_settings.json', initial='{}')
+        self.settings_file = make_file(settings_path, username + '_settings.json', initial='{}')
 
         self.id = Bot.id
         self.username = username
@@ -40,6 +51,10 @@ class Bot:
 
         def on_login(api: API, ):
             cache_settings = api.settings
+            cookies = api.opener.cookie_jar._cookies
+            cookies = serialize_cookie_jar(cookies)
+            cache_settings['cookies'] = cookies
+            del cache_settings['cookie']
             with portalocker.Lock(self.settings_file, 'w', timeout=10) as outfile:
                 json.dump(cache_settings, outfile, default=to_json)
                 print('SAVED: {0!s}'.format(self.settings_file))
@@ -47,8 +62,8 @@ class Bot:
                 os.fsync(outfile.fileno())
 
         with open(self.settings_file, 'r') as file_data:
-            settings = json.load(file_data, object_hook=from_json)
-            # print('Reusing settings: {0!s}'.format(self.settings_file))
+            settings = json.load(file_data, )
+            print('Reusing settings: {0!s}'.format(self.settings_file))
 
         try:
             self.api = API(
@@ -59,16 +74,30 @@ class Bot:
                 proxy=proxy,
                 settings=settings,
             )
+            if not settings.get('cookies'):
+                self.api.do_login()
 
-        except (ClientCookieExpiredError, ClientLoginRequiredError) as e:
+        except (ClientCookieExpiredError, ClientLoginRequiredError, ClientLoginError, ClientConnectionError) as e:
             print('ClientCookieExpiredError/ClientLoginRequiredError: {0!s}'.format(e))
             self.api = API(
                 username=username,
                 password=password,
                 proxy=proxy,
                 device_id=settings.get('device_id'),
+                settings={},
                 on_login=on_login
             )
+            self.api.do_login()
+
+        except ClientError as e:
+            if 'consent_required' in str(e):
+                print('catched', str(e))
+                self.api.agree_consent1()
+                self.api.agree_consent2()
+                self.api.agree_consent3()
+                self.api.do_login()
+            else:
+                raise e from None
 
         self.logger = self.api.logger
 
@@ -85,7 +114,7 @@ class Bot:
 
 
     def relogin(self):
-        self.api.login()
+        self.api.do_login()
 
 
     def reached_limit(self, key):

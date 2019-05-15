@@ -19,7 +19,7 @@ def upload_post(bot: Bot, nodes,  args):
 
     def download_media(url):
         data = urllib.request.urlopen(url).read()
-        print(fleep.get(data[:300]).extension)
+        # print(fleep.get(data[:300]).extension)
         return data
 
     def binary_data(node):

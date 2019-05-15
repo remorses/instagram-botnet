@@ -8,7 +8,6 @@ from .execute import execute
 
 """
 python -m src /etc/template.yml --data-file /etc/data.json
-
 """
 import click
 # from instamob import execute
