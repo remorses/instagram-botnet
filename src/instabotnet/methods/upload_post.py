@@ -8,6 +8,7 @@ from .common import decorate, temporary_write
 from ..bot import Bot
 from ..nodes import Arg, Media
 import traceback
+from datetime import datetime
 
 
 SUPPORTED_IMAGE_EXT = ['jpg']
@@ -85,7 +86,17 @@ def upload_post(bot: Bot, nodes,  args):
                       raise RuntimeError(f'unsupportd media type {fleep.get(data[:128]).extension} for {node}')
 
                 bot.logger.info(f'uploaded media {uploaded_media}')
-                return [uploaded_media], {}
+                
+                events = [{
+                    'type': 'upload_post',
+                    'metadata': bot.metadata,
+                    'node': {
+                        'url': uploaded_media.url,
+                        'is_album': False,
+                    },
+                    'timestamp': str(datetime.utcnow()),
+                }]
+                return [uploaded_media], { 'events': events }
 
 
 
@@ -123,8 +134,16 @@ def upload_post(bot: Bot, nodes,  args):
         res = bot.api.post_album(**kwargs)
         uploaded_media = Media(**res.get('media',{}))
         bot.logger.info(f'uploaded album {uploaded_media}')
-
-        return [uploaded_media], {}
+        events = [{
+                    'type': 'upload_post',
+                    'metadata': bot.metadata,
+                    'node': {
+                        'url': uploaded_media.url,
+                        'is_album': True,
+                    },
+                    'timestamp': str(datetime.utcnow()),
+        }]
+        return [uploaded_media], { 'events': events }
 
 
 

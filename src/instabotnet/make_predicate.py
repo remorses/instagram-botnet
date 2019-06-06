@@ -1,6 +1,6 @@
 from .nodes import Media, User, Geotag, Hashtag
 
-def make_predicate(script, bot):
+def make_predicate(script, bot): # TODO this is fucked up
     """
     filter:
 

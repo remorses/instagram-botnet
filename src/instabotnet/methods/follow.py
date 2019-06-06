@@ -1,9 +1,10 @@
 from .common import decorate
 from ..nodes import User
-
+from datetime import datetime
 from .common import tap
 from ..bot import Bot
 from funcy import raiser, rcompose
+
 
 
 
@@ -12,10 +13,23 @@ def follow(bot: Bot, nodes,  args):
 
     max = float(args['max']) if 'max' in args else float('inf')
     count = 0
+    events = []
 
     def increment():
         nonlocal count
         count += 1
+        
+    def add_event(node: User):
+        events.append({
+            'type': 'follow',
+            'metadata': bot.metadata,
+            'node': {
+                'type': 'user',
+                'username': node.username,
+            },
+            'timestamp': str(datetime.utcnow())
+        })
+        return node
 
     stop = raiser(StopIteration)
 
@@ -24,13 +38,14 @@ def follow(bot: Bot, nodes,  args):
         lambda node: follow_user(node, bot=bot) \
             if node else None,
         lambda x: tap(x, increment) if x else None,
+        lambda x: add_event(x) if x else None,
     )
 
 
     followed = map(process, nodes)
     followed = filter(lambda x: x, followed)
 
-    return followed, {}
+    return followed, { 'events': events }
 
 
 

@@ -1,7 +1,7 @@
 from funcy import raiser, rcompose
 from .common import decorate, tap
 from ..nodes import Media
-
+from datetime import datetime
 
 
 
@@ -10,11 +10,24 @@ def like(bot, nodes,  args):
     max = float(args['max']) if 'max' in args else float('inf')
 
     count = 0
+    events = []
 
     def increment():
         nonlocal count
         count += 1
         return True
+
+    def add_event(node: Media):
+        events.append({
+            'type': 'like',
+            'metadata': bot.metadata,
+            'node': {
+                'type': 'media',
+                'url': node.url,
+            },
+            'timestamp': str(datetime.utcnow())
+        })
+        return node
 
     stop = raiser(StopIteration)
 
@@ -26,13 +39,14 @@ def like(bot, nodes,  args):
         lambda node: like_media(node, bot=bot) \
             if node else None,
         lambda x: x and increment() and x,
+        lambda x: x and add_event(x),
     )
 
 
     liked = map(process, nodes)
     liked = filter(lambda x: x, liked)
 
-    return liked, {}
+    return liked, { 'events': events }
 
 
 def like_media(media, bot):

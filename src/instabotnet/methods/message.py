@@ -4,7 +4,7 @@ from ..bot import Bot
 from .common import decorate, extract_urls, substitute_vars, tap
 from ..nodes import User, Node
 import json
-
+from datetime import datetime
 
 
 @decorate(accepts=User, returns=Node)
@@ -21,29 +21,48 @@ def message(bot, nodes,  args):
         return [], {}
 
     count = 0
+    events = []
 
     def increment():
         nonlocal count
         count += 1
         return True
 
+    def add_event(pair):
+        node, text = pair
+        events.append({
+            'type': 'message',
+            'metadata': bot.metadata,
+            'args': {
+                'text': text,
+            },
+            'node': {
+                'type': 'user',
+                'username': node.username,
+            },
+            'timestamp': str(datetime.utcnow())
+        })
+        return node
+
     stop = raiser(StopIteration)
 
-    send_msg_from_groups = lambda node: list(map(
-            lambda msgs: send_message(bot, choice(msgs), node),
-            messages
-        )) if node else []
+    listmap = rcompose(map, list)
 
     process = rcompose(
         lambda x: stop() if x and count >= max else x,
-        send_msg_from_groups,
-        lambda x: len(x) and x[0] and increment(),
+        lambda x: (x, listmap(choice, messages)),
+        lambda pair: listmap(lambda m: send_message(bot, m, pair[0]), pair[1]),
+        # lambda x: print(x) or x,
+        lambda x: listmap(add_event, x),
+        lambda x: x and x[0],
+        lambda x: x and increment() and x,
+        
     )
 
     result = map(process, nodes)
     result = filter(lambda x: x, result)
 
-    return result, {}
+    return result, { 'events': events }
 
 
 
@@ -71,7 +90,7 @@ def send_message(bot: Bot, text, node, thread_id=None):
     bot.logger.info('messaged %s' % node)
     bot.total['messages'] += 1
     bot.sleep('message')
-    return node
+    return (node, text)
 
 
 # def send_messages(bot, text, user_ids):

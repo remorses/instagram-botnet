@@ -1,5 +1,5 @@
 from .nodes_edges import nodes_edges
-from .make_bots import make_bots
+from .make_bot import make_bot
 from .populate import populate_object, populate_string
 from .assert_good_script import assert_good_script
 from .reducer import  reducer
@@ -46,7 +46,7 @@ def execute(script_string, variables={}) -> [dict]:
     assert_good_script(script)
 
     try:
-        bot = make_bots(script, variables.get('settings', None))[0]
+        bot = make_bot(script, variables.get('settings', None))
         
     except ClientCheckpointRequiredError as e:
         print(str(e))

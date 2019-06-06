@@ -33,7 +33,14 @@ class Bot:
                  settings_path=None,
                  settings=None,
                  proxy=None,
-                 device=None):
+                 device=None,
+                 max_per_day={},
+                 latitude=0,
+                 longitude=0,
+                 filter_predicates=[],
+                 delay={},
+                 ):
+        
 
         # TODO this is horrible
         if settings_path and not settings:
@@ -50,11 +57,18 @@ class Bot:
         self.username = username
         self.password = password
         self.proxy = proxy
+        self.predicates = filter_predicates or []
+        self.total = TOTAL
+        self.delay = {**DELAY, **delay}
+        self.lat = latitude or 0
+        self.lng = longitude or 0
+        self.max_per_day = {**MAX_PER_DAY, **max_per_day}
+
         Bot.id += 1
 
-        self.predicates = [] # [partial(not_in_cache, self), ]
+        
 
-        self.start_time = datetime.datetime.now()
+        self.start_time = datetime.datetime.utcnow()
 
 
 
@@ -67,7 +81,7 @@ class Bot:
             del settings['cookie']
             if self.settings_file:
                 with portalocker.Lock(self.settings_file, 'w', timeout=10) as outfile:
-                    json.dump(settings, outfile, default=to_json)
+                    json.dump(settings, outfile, default=to_json, indent=4)
                     print('SAVED: {0!s}'.format(self.settings_file))
                     outfile.flush()
                     os.fsync(outfile.fileno())
@@ -109,9 +123,7 @@ class Bot:
 
         self.logger = self.api.logger
 
-        self.total = TOTAL
-        self.delay = DELAY
-        self.max_per_day = MAX_PER_DAY
+        
 
         # self.api.login()
 
@@ -132,7 +144,16 @@ class Bot:
             self._reset_counters()
         return self.max_per_day[key] - self.total[key] < 0
 
-
+    @property
+    def metadata(self):
+        return {
+            'username': self.username,
+            'proxy': self.proxy,
+            'lng': self.lng,
+            'lat': self.lat,
+            'start_time': str(self.start_time),
+            'totals': self.total,
+        }
 
     def filter(self, nodes):
         """
