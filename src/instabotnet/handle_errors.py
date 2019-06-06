@@ -26,10 +26,6 @@ def handle(func, bot):
             bot.logger.error(str(e))
             bot.sleep()
 
-        except Exception as e:
-            bot.logger.error('unexpected exception {e}')
-            raise e from None
-
         except ClientError as e:
             if 'consent_required' in str(e):
                 print('catched', str(e))
@@ -39,3 +35,6 @@ def handle(func, bot):
                 bot.api.do_login()
             else:
                 raise e from None
+        except Exception as e:
+            bot.logger.error('unexpected exception {e}')
+            raise e from None

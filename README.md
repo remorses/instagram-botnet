@@ -2,6 +2,15 @@
 Write readable declarative yaml files to control your botnet
 ---
 
+## TODO
+
+- emit events for every action
+- emit events for new followers, new comments, comment references, usertag references in notifications at login time
+- rewrite tests using pytest
+- use drone for ci
+
+
+
 ## Shell usage
 
 The main module works on yaml script like these:
@@ -64,30 +73,21 @@ A limitation of the code inside {{ }} is that it must consist only of one state
 
 Every action inside a template will emit an event, all these events are avaliable in the object returned by execute:
 ```json
-template_name: test_follow,
-action_name: test_follow_famous_people,
-type: follow
-node: kimkarkdashian
-args: {}
-metadatat: { 
-username:
-proxy:
-}
-```
-another example for message
-```
-type: message
-...
-args: {
-messages: ["ciao"],
+"template_name": "test_follow",
+"action_name": "test_follow_famous_people",
+"type": "follow",
+"node": "kimkarkdashian",
+"args": {},
+"metadata": { 
+    "username": "",
+    "proxy": ""
 }
 ```
 
 Other events are emitted, for example when someone followes you:
 ```
-type: got_followed,
-node: username,
-...
+"type": "got_followed",
+"node": "username"
 ```
 
 
