@@ -60,8 +60,8 @@ class Bot:
         self.predicates = filter_predicates or []
         self.total = TOTAL
         self.delay = {**DELAY, **delay}
-        self.lat = latitude or 0
-        self.lng = longitude or 0
+        self.latitude = latitude or 0
+        self.longitude = longitude or 0
         self.max_per_day = {**MAX_PER_DAY, **max_per_day}
 
         Bot.id += 1
@@ -149,8 +149,8 @@ class Bot:
         return {
             'username': self.username,
             'proxy': self.proxy,
-            'lng': self.lng,
-            'lat': self.lat,
+            'lng': self.longitude,
+            'lat': self.latitude,
             'start_time': str(self.start_time),
             'totals': self.total,
         }

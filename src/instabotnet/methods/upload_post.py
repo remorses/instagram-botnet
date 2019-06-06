@@ -17,7 +17,13 @@ SUPPORTED_VIDEO_EXT = ['mov', 'mp4']
 
 @decorate(accepts=(Arg, Media), returns=Media)
 def upload_post(bot: Bot, nodes,  args):
+    max = args.get('max') or 1
+    caption = args.get('caption') or ''
+    geotag = args.get('geotag')
+    disable_comments = bool(args.get('disable_comments'))
 
+    nodes = take(max, nodes)
+    
     def download_media(url):
         data = urllib.request.urlopen(url).read()
         # print(fleep.get(data[:300]).extension)
@@ -38,12 +44,7 @@ def upload_post(bot: Bot, nodes,  args):
     def get_geotag_data(name):
         return bot.api.location_search(bot.latitude, bot.longitude, query=name,)['venues'][0]
 
-    max = args.get('max') or 1
-    caption = args.get('caption') or ''
-    geotag = args.get('geotag')
-    disable_comments = bool(args.get('disable_comments'))
 
-    nodes = take(max, nodes)
 
     if len(nodes) == 0:
         bot.logger.error('no medias to upload')
