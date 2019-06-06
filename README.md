@@ -54,6 +54,10 @@ from instabotnet import execute
 execute('test_comment.yaml', {'username': 'user', 'some_variables': 'bo'})
 ```
 
+
+Environment variables are accessible under the env object
+
+
 The variables passed to execute can be mutated, the execute function returns an object that contains the data collected from he `scrape` action.
 The variables are mutated to support the multi script feature, where many templates are chained one after another in a single file and can pass data to the next template mutating the variables.
 It is also useful to mutate the settings variable to update the cookies and other data for the next bot iteration.

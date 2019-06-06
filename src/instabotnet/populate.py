@@ -101,7 +101,7 @@ def xeval(expr, data):
     try:
         return eval(expr, dict(
             random=random,
-            env=os.environ,
+            env=dotdict(**os.environ),
             operator=operator,
             **data,
             data=data,
