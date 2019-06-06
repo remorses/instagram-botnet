@@ -20,11 +20,7 @@ def follow(bot: Bot, nodes,  args):
     stop = raiser(StopIteration)
 
     process = rcompose(
-        # lambda x: tap(x, lambda: bot.logger.warn('{}._data: \n{}'.format(x, unmask(x._data)))),
         lambda x: stop() if x and count >= max else x,
-        # lambda node: node \
-        #     if bot.suitable(node) \
-        #     else tap(None,lambda: bot.logger.warn('{} not suitable'.format(node))),
         lambda node: follow_user(node, bot=bot) \
             if node else None,
         lambda x: tap(x, increment) if x else None,

@@ -39,18 +39,17 @@ def scrape(bot: Bot, nodes,  args):
         for name, expr in model.items():
             insertion[name] = evaluate(expr, node, bot=bot)
         
-        print(json.dumps(insertion, indent=4))
+        # print(json.dumps(insertion, indent=4))
 
         data.append(insertion)
         bot.logger.info('scraped node {} '.format(node, ))
 
         if count <= max:
-
             increment()
             yield node
 
         else:
-             return
+             return None
 
     nodes = mapcat(process, nodes)
 
@@ -59,9 +58,8 @@ def scrape(bot: Bot, nodes,  args):
 
 
 def evaluate(expr, node, bot):
-    x = node
     try:
-        return eval(expr, dict(x=x,
+        return eval(expr, dict(x=node,
             # User=User,
             # Story=Story,
             # Media=Media,
@@ -69,7 +67,8 @@ def evaluate(expr, node, bot):
             # Geotag=Geotag
         ))
 
-    except (KeyError, AttributeError):
+    except (KeyError, AttributeError) as e:
         bot.logger.error(f'error evaluating expression {expr}')
-        bot.logger.error(treaceback.format_exc())
+        bot.logger.error(e)
+        # bot.logger.error(treaceback.format_exc())
         return None
