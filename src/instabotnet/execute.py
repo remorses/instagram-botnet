@@ -11,7 +11,7 @@ import traceback
 import os
 import re
 import yaml
-from notification_events import notification_events
+from .notification_events import notification_events
 from instagram_private_api.errors import (
     ClientError,
     ClientLoginRequiredError,
