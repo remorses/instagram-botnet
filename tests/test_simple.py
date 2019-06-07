@@ -12,8 +12,9 @@ def test_upload():
         -
             name: 1
             nodes:
-                - 'https://images1.apartments.com/i2/nKi28WK6ehLQFaC7840rel_Yj1KkegXMz6vtF7iyhZM/111/panorama-tower-miami-fl-primary-photo.jpg'
-            from: arg
+                # - 'https://images1.apartments.com/i2/nKi28WK6ehLQFaC7840rel_Yj1KkegXMz6vtF7iyhZM/111/panorama-tower-miami-fl-primary-photo.jpg'
+                - 'https://www.instagram.com/p/BxkxjB-HQ0v/'
+            from: media
             edges:
                 - upload_post:
                     max: 1

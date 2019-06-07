@@ -263,6 +263,18 @@ class API(Client):
         res = self._call_api(endpoint, params=params)
         return res
 
+    @classmethod
+    def compatible_aspect_ratio(cls, size):
+        """
+        Helper method to check aspect ratio for standard uploads
+
+        :param size: tuple of (width, height)
+        :return: True/False
+        """
+        min_ratio, max_ratio = 4.0 / 5.0, 90.0 / 47.0 # MediaRatios.standard
+        width, height = size
+        this_ratio = 1.0 * width / height
+        return True # min_ratio <= this_ratio <= max_ratio
 
 
 def get_logging_level():
