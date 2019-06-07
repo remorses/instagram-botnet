@@ -1,3 +1,6 @@
+from funcy import take
+from datetime import datetime
+
 
 switch = {
     'comments': { 
@@ -20,18 +23,22 @@ def notification_events(bot):
     events = []
     notifications = data['new_stories']
     # get number of notifications unread
-    for notification_type, count in data['counts']:
-        if notification_type in switch:
+    for notification_type, count in data['counts'].items():
+        if notification_type in switch and count > 0:
             filtered = [n for n in notifications if n['story_type'] in switch[notification_type].keys()]
-            filtered = sorted(filtered, lambda x: x['timestamp'])
+            filtered = sorted(filtered, key=lambda x: x['args']['timestamp'])
+            filtered = take(count, reversed(filtered))
+            
+
             for n in filtered:
+                date = str(datetime.utcfromtimestamp(n['args']['timestamp']))
                 events.append({
                     'type': switch[notification_type][n['story_type']],
                     'metadata': bot.metadata,
                     'args': {
-                        'notification': n['text'],
+                        'notification': n['args']['text'],
                     },
-                    'timestamp': n['timestamp'],
+                    'timestamp': date,
                 })
     return events
 
