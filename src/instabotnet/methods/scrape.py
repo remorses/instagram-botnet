@@ -35,9 +35,12 @@ def scrape(bot: Bot, nodes,  args):
             id:        x.pk
             followers: x.followers_count
         """
-        insertion = dotdict()
-        for name, expr in model.items():
-            insertion[name] = evaluate(expr, node, bot=bot)
+        if isinstance(model, dict):
+            insertion = dotdict()
+            for name, expr in model.items():
+                insertion[name] = evaluate(expr, node, bot=bot)
+        elif isinstance(model, str):
+            insertion = evaluate(model, node, bot=bot)
         
         # print(json.dumps(insertion, indent=4))
 

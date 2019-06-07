@@ -27,6 +27,29 @@ from support import *
 #     print(json.dumps(result, indent=4))
 
 
+def test_scrape_all():
+    template = """
+    bot:
+        username: {{ env.username }}
+        password: {{ env.password }}
+        settings_path: {{ env.username + '_settings.json' }}
+    actions:
+        -
+            name: 1
+            nodes: [mongodb]
+            from: user
+            edges:
+                - followers:
+                    amount: 2000
+                - scrape:
+                    model: x.username
+                    key: users
+    """
+    data = dotdict()
+    result = execute(template, data)
+    print(json.dumps(result, indent=4))
+
+
 def test_message():
     template = """
     bot:

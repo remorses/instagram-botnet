@@ -5,6 +5,8 @@ from instagram_private_api import (
     ClientError,
     ClientLoginError
 )
+import gzip
+from io import BytesIO
 from ..bot.support import deserialize_cookie_jar
 from colorlog import ColoredFormatter
 import logging
@@ -55,6 +57,23 @@ class API(Client):
 
     def login(self):
         return
+
+    @staticmethod
+    def _read_response(response):
+        """
+        Extract the response body from a http response.
+        :param response:
+        :return:
+        """
+        if response.info().get('Content-Encoding') == 'gzip':
+            buf = BytesIO(response.read())
+            res = gzip.GzipFile(fileobj=buf).read().decode('utf8')
+        else:
+            res = response.read().decode('utf8')
+        if 'DEBUG' in os.environ:
+            res = json.loads(res)
+            res = json.dumps(res, indent=4)
+        return res
 
     def do_login(self):
         """Login."""
