@@ -40,7 +40,7 @@ def test_scrape_all():
             from: user
             edges:
                 - followers:
-                    amount: 2000
+                    amount: 2
                 - scrape:
                     model: x.username
                     key: users

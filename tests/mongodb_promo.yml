@@ -1,0 +1,64 @@
+
+
+bot:
+    username: {{ env.username }}
+    password: {{ env.password }}
+    settings_path: {{ env.username + '_settings.json' }}
+
+actions:
+    -
+        name: 1
+        nodes: [mongodb]
+        from: user
+        edges:
+            - followers:
+                amount: 2000
+			- filter:
+				user:
+					is_private: false
+            - scrape:
+                model: x.username
+                key: users
+
+---
+
+actions:
+    -
+        name: 1
+        nodes: {{ users }}
+        from: user
+        edges:
+            - follow
+			- feed:
+				amount: 2
+			- like
+
+
+---
+
+actions:
+    -
+        name: 1
+        nodes: {{ username }}
+        from: user
+        edges:
+            - followers:
+				amount: inf
+			- scrape:
+				model: x.username
+				key: followers
+---
+	
+actions:
+    -
+        name: 1
+        nodes: {{ users }}
+        from: user
+        edges:
+            - filter:
+				user:
+					username: "x in {{ followers }}"
+			- message:
+				messages:
+					- {{ random.choice(messages) }}
+				

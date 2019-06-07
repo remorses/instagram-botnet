@@ -37,7 +37,7 @@ def execute(script_string, variables={}) -> [dict]:
         scripts = script_string.split('---')
         def _reducer(acc, script):
             nonlocal variables
-            # variables.update(acc[0])
+            variables.update(acc)
             return merge(acc, execute(script, variables))
         return reduce(_reducer, scripts, {})
 
