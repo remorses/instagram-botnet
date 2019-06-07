@@ -13,7 +13,7 @@ def comment(bot: Bot, nodes,  args):
     try:
         max = float(args['max']) if 'max' in args else float('inf')
         comments = args['comments']
-    except:
+    except Exception:
         bot.logger.error('please add all necessary args, {} isn\'t enought'.format(args))
         return [], {}
 

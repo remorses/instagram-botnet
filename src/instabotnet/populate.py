@@ -17,7 +17,7 @@ def get_field_value(field_name, mapping):
                     return recursive_get(".".join(attrs[1:]), mapping[attrs[0]])
         return recursive_get(field_name, mapping)
 
-    except:
+    except Exception:
         # traceback.print_exc()
         return field_name, False
 
@@ -81,7 +81,7 @@ def populate_string( yaml_string, data={}):
                     repr(xeval(variable_name, data)) +
                     line[end:].replace('}}','').replace('{{','')
                 )
-            except:
+            except Exception:
                 raise Exception('yaml file needs all data to be evaluated: {{{{ {} }}}}'.format(variable_name))
 
 

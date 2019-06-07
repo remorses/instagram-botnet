@@ -15,7 +15,7 @@ def scrape(bot: Bot, nodes,  args):
         key = args.get('key', 'data')
         model = args['model']
 
-    except:
+    except Exception:
         bot.logger.error('please add all necessary args, {} isn\'t enought'.format(args))
         return [], {}
 

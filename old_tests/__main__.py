@@ -21,7 +21,7 @@ def load(path):
 try:
     from . import credentials
 
-except:
+except Exception:
     class credentials:
         USER = os.environ.get('IG_USERNAME')
         PASS = os.environ.get('IG_PASSWORD')

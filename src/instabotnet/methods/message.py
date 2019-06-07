@@ -16,7 +16,7 @@ def message(bot, nodes,  args):
         media = args.get('media_share')
         profile = args.get('profile')
         hashtag = args.get('hashtag')
-    except:
+    except Exception:
         bot.logger.error('please add all necessary args, {} isn\'t enought'.format(args))
         return [], {}
 

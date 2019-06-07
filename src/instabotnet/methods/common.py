@@ -87,7 +87,7 @@ def cycled_api_call(amount, bot, api_method, api_argument, key):
                 if isinstance(k, int):
                     try:
                         items = items[k]
-                    except:
+                    except Exception:
                         items = []
                         break
                 else:
