@@ -4,10 +4,10 @@ Write readable declarative yaml files to control your botnet
 
 ## TODO
 
-- emit events for every action
+- ~~emit events for every action~~
 - emit events for new followers, new comments, comment references, usertag references in notifications at login time
-- rewrite tests using pytest
-- use drone for ci
+- ~~rewrite tests using pytest~~
+- ~~use drone for ci~~
 
 
 

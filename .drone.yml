@@ -10,9 +10,9 @@ steps:
     password:
       from_secret: password
   commands:
-  - apk add --no-cache build-base git 
-  - pip install ./src
-  - pip install pytest
+  - apk add --no-cache build-base git > /dev/null
+  - pip install ./src  > /dev/null
+  - pip install pytest > /dev/null
   - pytest
 - image: python:3.7-alpine
   name: second
