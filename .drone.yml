@@ -1,0 +1,19 @@
+kind: pipeline
+name: default
+
+steps:
+- image: python:3.7-alpine
+  name: test
+  environment:
+    username:
+      from_secret: username
+    password:
+      from_secret: password
+  commands:
+  - pip install ./src
+  - pip install pytest
+  - pytest
+- image: python:3.7-alpine
+  name: second
+  commands:
+  - echo ciao
