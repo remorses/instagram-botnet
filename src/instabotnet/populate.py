@@ -71,7 +71,7 @@ def populate_string( yaml_string, data={}):
     max one {{  }} per line!
     """
     def replace_in_line(line):
-        if '{{' in line and '}}' in line and not ('#' in line and line.index('#') < line.index('{{')):
+        if '{{' in line and '}}' in line and not ('#' in line and line.index('#') < line.index('{{')): 
             begin = line.index('{{')
             end = line.index('}}', begin)
             variable_name = line[begin:end].strip().replace('{{','').replace('}}','').strip()
@@ -83,13 +83,32 @@ def populate_string( yaml_string, data={}):
                 )
             except Exception:
                 raise Exception('yaml file needs all data to be evaluated: {{{{ {} }}}}'.format(variable_name))
-
-
         else:
             return line
+    def replace_multiline(string):
+        result = ''
+        parts = string.split('{{')
+        if len(parts) > 1:
+            for part in parts:
+                if not '}}' in part:
+                    result += part
+                else:
+                    index = part.index('}}')
+                    expr = part[0:index]
+                    expr = '\n'.join([line.strip() for line in expr.splitlines()])
+                    # print(repr(expr))
+                    # print(expr)
+                    value = repr(xeval(expr, data))
+                    result += value + part[index:].replace('}}', '')
+            return result
+        else:
+            return string
+        
 
-    new_lines = list(map(replace_in_line, yaml_string.splitlines()))
-    return '\n'.join(new_lines)
+
+    result = '\n'.join(map(replace_in_line, yaml_string.splitlines()))
+    result = replace_multiline(result)
+    return result
 
 
 def locate_variable(script):
@@ -116,3 +135,20 @@ def xeval(expr, data):
     except Exception as e:
         print(f'error {e} in xeval for "{expr}""')
         raise
+
+
+if __name__ == '__main__':
+    s = """
+    ciao: ok
+    other: 
+        key: {{
+                str(
+                    'sdfsdf"sdfsdf'
+                )
+            }}
+        another:
+            obj:
+                ciao: 4
+    another: ok ok
+    """
+    print(populate_string(s))

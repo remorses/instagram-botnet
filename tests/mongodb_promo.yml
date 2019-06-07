@@ -48,16 +48,21 @@ actions:
 				model: x.username
 				key: followers
 ---
-	
+# requires bots_amount bot_index users
 actions:
     -
         name: 1
-        nodes: {{ users }}
+        nodes: {{ 
+			list(
+				set(user for (i, user) in enumerate(users) if i % bots_amount == bot_index) & \
+				set(followers)
+			) 
+		}}
         from: user
         edges:
-            - filter:
-				user:
-					username: "x in {{ followers }}"
+            # - filter:
+			# 	user:
+			# 		username: "x in {{ followers }}"
 			- message:
 				messages:
 					- {{ random.choice(messages) }}
