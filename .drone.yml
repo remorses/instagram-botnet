@@ -10,6 +10,7 @@ steps:
     password:
       from_secret: password
   commands:
+  - apk add --no-cache build-base git 
   - pip install ./src
   - pip install pytest
   - pytest
