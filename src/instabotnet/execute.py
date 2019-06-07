@@ -11,6 +11,7 @@ import traceback
 import os
 import re
 import yaml
+from notification_events import notification_events
 from instagram_private_api.errors import (
     ClientError,
     ClientLoginRequiredError,
@@ -77,7 +78,9 @@ def execute(script_string, variables={}) -> [dict]:
             bot.logger.info(f'# ACTION {action_name}')
 
             nodes, edges = nodes_edges(action, bot)
-            begin_state = dotdict(nodes=(node for node in nodes), bot=bot, data=deque([]), errors=[])
+            start_data = { 'events': notification_events(bot) }
+
+            begin_state = dotdict(nodes=(node for node in nodes), bot=bot, data=deque([start_data]), errors=[])
             bot.logger.info(f'# with nodes {nodes}')
 
             end_state = reduce(reducer, edges, begin_state)

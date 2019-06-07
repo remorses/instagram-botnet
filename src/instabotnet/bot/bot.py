@@ -155,6 +155,8 @@ class Bot:
             'totals': self.total,
         }
 
+    
+
     def filter(self, nodes):
         """
         this filters every node before an interaction,
