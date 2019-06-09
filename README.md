@@ -1,4 +1,4 @@
-# instagram-botnet [![CircleCI](https://circleci.com/gh/remorses/instagram-botnet/tree/master.svg?style=svg)](https://circleci.com/gh/remorses/instagram-botnet/tree/master)
+# instagram-botnet [![Build Status](http://fuckclubs.club/api/badges/remorses/instagram-botnet/status.svg)](http://fuckclubs.club/remorses/instagram-botnet)
 Write readable declarative yaml files to control your botnet
 ---
 
