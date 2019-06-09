@@ -27,6 +27,27 @@ from support import *
 #     print(json.dumps(result, indent=4))
 
 
+def test_private_follow():
+    template = """
+    bot:
+        username: {{ env.username }}
+        password: {{ env.password }}
+        settings_path: {{ env.username + '_settings.json' }}
+    actions:
+        -
+            name: 1
+            nodes: [patelvaibhav6992]
+            from: user
+            edges:
+                - feed:
+                    amount: 1
+                - like
+    """
+    data = dotdict()
+    result = execute(template, data)
+    print(json.dumps(result, indent=4))
+    
+
 def test_scrape_all():
     template = """
     bot:
@@ -85,7 +106,7 @@ def test_scrape():
             from: user
             edges:
                 - followers:
-                    amount: 5
+                    amount: 2
                 - scrape:
                     model:
                         username: x.username

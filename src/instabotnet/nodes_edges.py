@@ -5,7 +5,7 @@ from funcy import rcompose
 from instagram_private_api.utils import InstagramID
 from instagram_private_api import Client
 from functools import reduce
-# from .handle_errors import handle
+from .handle_errors import handle
 
 
 def nodes_edges(body, bot):
@@ -69,7 +69,7 @@ def initialize_nodes(nodes, from_type, bot):
     }
 
     try:
-        return [Class(**switch[Class.__name__](value)) for value in nodes]
+        return handle(lambda: [Class(**switch[Class.__name__](value)) for value in nodes], bot)
 
     except Exception as e:
         bot.logger.error(f'error initializing nodes {nodes}: {e}')

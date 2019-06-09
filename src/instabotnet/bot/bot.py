@@ -91,7 +91,6 @@ class Bot:
             self.api = API(
                 username=username,
                 password=password,
-                # cookie=load(self.cookie_file),
                 on_login=on_login,
                 proxy=proxy,
                 settings=settings,
@@ -105,21 +104,10 @@ class Bot:
                 username=username,
                 password=password,
                 proxy=proxy,
-                device_id=settings.get('device_id'),
-                settings={},
+                settings=settings.update({'cookies': {}}),
                 on_login=on_login
             )
             self.api.do_login()
-
-        except ClientError as e:
-            if 'consent_required' in str(e):
-                print('catched', str(e))
-                self.api.agree_consent1()
-                self.api.agree_consent2()
-                self.api.agree_consent3()
-                self.api.do_login()
-            else:
-                raise e from None
 
         self.logger = self.api.logger
 

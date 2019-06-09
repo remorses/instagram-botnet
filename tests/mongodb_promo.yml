@@ -25,7 +25,12 @@ actions:
 actions:
     -
         name: 1
-        nodes: {{ users }}
+        nodes: {{ 
+			list(
+				set(user for (i, user) in enumerate(users) if i % bots_number == bot_index) & \
+				set(followers)
+			) 
+		}}
         from: user
         edges:
             - follow
@@ -48,13 +53,13 @@ actions:
 				model: x.username
 				key: followers
 ---
-# requires bots_amount bot_index users
+# requires bots_number bot_index users
 actions:
     -
         name: 1
         nodes: {{ 
 			list(
-				set(user for (i, user) in enumerate(users) if i % bots_amount == bot_index) & \
+				set(user for (i, user) in enumerate(users) if i % bots_number == bot_index) & \
 				set(followers)
 			) 
 		}}

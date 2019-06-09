@@ -53,10 +53,6 @@ def execute(script_string, variables={}) -> [dict]:
         print(str(e))
         raise e from None
         
-    # except ClientChallengeRequiredError as e:
-    #     print(str(e))
-    #     raise e from None
-        
     except ClientSentryBlockError as e:
         print(str(e))
         raise e from None

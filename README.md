@@ -5,9 +5,12 @@ Write readable declarative yaml files to control your botnet
 ## TODO
 
 - ~~emit events for every action~~
-- emit events for new followers, new comments, comment references, usertag references in notifications at login time
+- ~~emit events for new followers, new comments, comment references, usertag references in notifications at login time~~
 - ~~rewrite tests using pytest~~
 - ~~use drone for ci~~
+- emit event at login, adding info like followers nuber, posts number, following, timestamp (so i can later analyse using time window consisting of begin and end sessions)
+- emit event at task end
+- fix filter, filter should request a model data if given data is not sufficient
 
 
 
