@@ -1,4 +1,23 @@
-from .nodes import Media, User, Geotag, Hashtag
+from .nodes import Media, User, Geotag, Hashtag, Node
+from .bot import Bot
+from modeller import Model
+
+def access(node, string, bot: Bot): # attr1.attr2
+    obj = node
+    for attr in string.split('.'):
+        if isinstance(obj, Node) and not attr in obj:
+            if isinstance(obj, User):
+                data = bot.api.user_info(node.pk)
+                data = data['user']
+                node.__init__(**data)
+            elif isinstance(obj, Media):
+                data = bot.api.media_info(node.pk)
+                data = data['items'][0]
+                node.__init__(**data)
+        obj = obj[attr]
+
+    return obj
+
 
 def make_predicate(script, bot): # TODO this is fucked up
     """
@@ -27,93 +46,25 @@ def make_predicate(script, bot): # TODO this is fucked up
 
 
     """
-    def check(lazy_expr, lazy_var):
-        try:
-            expr = lazy_expr()
-            var = lazy_var()
-            result = eval(expr, dict(x=var, bot=bot))
-            # print("{} == {} for x={}".format(expr, result, var))
-            return result
-
-        except (KeyError, AttributeError):
-            # bot.logger.error('failed to check expression')
-            return True
-
     def predicate(node, **kwargs):
+        res = True
+        for (k, expr) in script.items():
+            try:
+                val = access(node, k, bot)
+                if val is None:
+                    bot.logger.error(f'failed access to {k}')
+                    continue
+                new_res = res and eval(expr, dict(x=val,))
+                if res and not new_res:
+                    bot.logger.info('{} not suitable for {}'.format(node, expr))
+                res = new_res
+            except (KeyError, AttributeError) as e:
+                bot.logger.error(f'failed to check expression in filter: {e} for {k}')
 
-
-        bool = True
-
-        if isinstance(node, Media):
-            bool = bool and check(
-                lambda: script['media']['likes'],
-                lambda: node.get_like_count(bot)
-            )
-            bool = bool and check(
-                lambda: script['media']['comments'],
-                lambda: node.get_comment_count(bot)
-            )
-            bool = bool and check(
-                lambda: script['media']['hashtags'],
-                lambda: node.get_hashtags(bot)
-            )
-            bool = bool and check(
-                lambda: script['media']['caption'],
-                lambda: node.get_caption(bot)
-            )
-        elif isinstance(node, User):
-            bool = bool and check(
-                lambda: script['user']['id'],
-                lambda: node.get_id(bot)
-            )
-            bool = bool and check(
-                lambda: script['user']['followers'],
-                lambda: node.get_followers_count(bot)
-            )
-            bool = bool and check(
-                lambda: script['user']['following'],
-                lambda: node.get_following_count(bot)
-            )
-            bool = bool and check(
-                lambda: script['user']['bio'],
-                lambda: node.get_bio(bot)
-            )
-            bool = bool and check(
-                lambda: script['user']['is_private'],
-                lambda: node.get_is_private(bot)
-            )
-            bool = bool and check(
-                lambda: script['user']['is_business'],
-                lambda: node.get_is_business(bot)
-            )
-            bool = bool and check(
-                lambda: script['user']['is_verified'],
-                lambda: node.get_is_verified(bot)
-            )
-        elif isinstance(node, Geotag):
-            bool = bool and check(
-                lambda: script['geotag']['name'],
-                lambda: node.name
-            )
-            bool = bool and check(
-                lambda: script['geotag']['lat'],
-                lambda: node.get_coordinates(bot)[0])
-            bool = bool and check(
-                lambda: script['geotag']['lng'],
-                lambda: node.get_coordinates(bot)[1]
-            )
-        elif isinstance(node, Hashtag):
-            bool = bool and check(
-                lambda: script['hashtag']['name'],
-                lambda: node.name
-            )
-
-        else:
-            return True
-
-        if not bool:
-            bot.logger.debug('{} not suitable, very sorry'.format(node))
-
-        return bool
+        return res
 
     return predicate
+
+
+
+

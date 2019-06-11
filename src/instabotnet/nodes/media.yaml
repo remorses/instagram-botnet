@@ -32,8 +32,7 @@ properties:
                 $ref: user_schema
             user_id:
                 type: integer
-        required:
-            - text
+        required: [] # [text]
         type: object
     caption_is_edited: {}
     carousel_media:

@@ -42,4 +42,9 @@ required:
     # - is_verified
     - pk
     # - full_name
-    # - profile_pic_url"""
+    # - profile_pic_url
+    # - biography
+    # - is_business
+    # - following_count
+    # - follower_count
+    # - has_anonymous_profile_picture

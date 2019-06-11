@@ -31,7 +31,7 @@ def evaluate(bot: Bot, nodes,  args) -> Node:
         except StopIteration:
             break
         except Exception as e:
-            bot.logger.error('unexpected exception {e}')
+            # bot.logger.error(f'unexpected exception {e}')
             raise e from None
         else:
             count += 1

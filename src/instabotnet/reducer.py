@@ -84,7 +84,7 @@ def reducer(state: dotdict, edge: dotdict):
         bot.logger.error('error reducing edge {}: \"{}\" \n {}'.format(
             edge.type,
             exc.__class__.__name__,
-            exc))
+            traceback.format_exc()))
         bot.sleep('error')
 
         # errored_state = dotdict(**merge(state, dotdict(errors=state.errors + [exc])))
