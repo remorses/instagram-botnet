@@ -13,9 +13,9 @@ actions:
         edges:
             - followers:
                 amount: 2000
-			- filter:
-				user:
-					is_private: false
+            - filter:
+                user:
+                    is_private: 'false'
             - scrape:
                 model: x.username
                 key: users
@@ -26,17 +26,17 @@ actions:
     -
         name: 1
         nodes: {{ 
-			list(
-				set(user for (i, user) in enumerate(users) if i % bots_number == bot_index) & \
-				set(followers)
-			) 
-		}}
+            list(
+                set(user for (i, user) in enumerate(users) if i % bots_number == bot_index) & \
+                set(followers)
+            ) 
+        }}
         from: user
         edges:
             - follow
-			- feed:
-				amount: 2
-			- like
+            - feed:
+                amount: 2
+            - like
 
 
 ---
@@ -48,27 +48,27 @@ actions:
         from: user
         edges:
             - followers:
-				amount: inf
-			- scrape:
-				model: x.username
-				key: followers
+                amount: inf
+            - scrape:
+                model: x.username
+                key: followers
 ---
 # requires bots_number bot_index users
 actions:
     -
         name: 1
         nodes: {{ 
-			list(
-				set(user for (i, user) in enumerate(users) if i % bots_number == bot_index) & \
-				set(followers)
-			) 
-		}}
+            list(
+                set(user for (i, user) in enumerate(users) if i % bots_number == bot_index) & \
+                set(followers)
+            ) 
+        }}
         from: user
         edges:
             # - filter:
-			# 	user:
-			# 		username: "x in {{ followers }}"
-			- message:
-				messages:
-					- {{ random.choice(messages) }}
-				
+            #     user:
+            #         username: "x in {{ followers }}"
+            - message:
+                messages:
+                    - {{ random.choice(messages) }}
+                
