@@ -1,4 +1,4 @@
-from instagram_private_api import (
+from .instagram_private_api import (
     Client,
     ClientCookieExpiredError,
     ClientLoginRequiredError,
@@ -13,7 +13,7 @@ import logging
 import os
 import time
 import json
-from instagram_private_api.http import ClientCookieJar
+from .instagram_private_api.http import ClientCookieJar
 
 
 class LoggerAdapter(logging.LoggerAdapter):

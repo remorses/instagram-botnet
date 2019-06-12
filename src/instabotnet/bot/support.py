@@ -1,6 +1,6 @@
 import codecs
 # from http.cookies import BaseCookie
-from instagram_private_api.compat import compat_cookiejar
+from ..api.instagram_private_api.compat import compat_cookiejar
 def to_json(python_object):
     if isinstance(python_object, bytes):
         return {'__class__': 'bytes',

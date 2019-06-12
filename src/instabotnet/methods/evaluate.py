@@ -2,7 +2,7 @@ import os
 import traceback
 from ..nodes import Node, node_classes
 from .common import decorate
-from instagram_private_api.errors import (
+from ..api.instagram_private_api.errors import (
     ClientError,
     ClientLoginRequiredError,
     ClientCookieExpiredError,

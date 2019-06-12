@@ -2,8 +2,8 @@ from .methods import methods
 from .nodes import Arg, Media, node_classes
 from .support import dotdict
 from funcy import rcompose
-from instagram_private_api.utils import InstagramID
-from instagram_private_api import Client
+from .api.instagram_private_api.utils import InstagramID
+from .api.instagram_private_api import Client
 from functools import reduce
 from .handle_errors import handle
 

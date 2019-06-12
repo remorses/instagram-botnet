@@ -1,0 +1,13 @@
+bot:
+  username: {{ env.username }}
+  password: {{ env.password }}
+  settings_path: _settings.json
+
+actions:
+  - 
+    name: post photo
+    nodes: 
+      - '/Users/morse/Downloads/img.jpg'
+    from: arg
+    edges:
+      - upload_post

@@ -1,5 +1,5 @@
 
-from instagram_private_api.errors import (
+from .api.instagram_private_api.errors import (
     ClientError,
     ClientLoginRequiredError,
     ClientCookieExpiredError,

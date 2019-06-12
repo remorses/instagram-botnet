@@ -2,7 +2,7 @@ import datetime
 from pathlib import Path
 import time
 from ..api import API
-from instagram_private_api import  (
+from ..api.instagram_private_api import  (
     ClientError,
     ClientLoginRequiredError,
     ClientCookieExpiredError,
