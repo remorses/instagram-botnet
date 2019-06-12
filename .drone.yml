@@ -14,7 +14,19 @@ steps:
   - pip install ./src  > /dev/null
   - pip install pytest pytest-asyncio > /dev/null
   - pytest
-- image: python:3.7-alpine
-  name: second
-  commands:
-  - echo ciao
+- name: bump
+  image: xplugins/bump
+  settings:
+    github_token: 
+      from_secret: github_token
+    versionfile: src/VERSION
+- name: pypi_publish
+  image: plugins/pypi
+  settings:
+    username: xmorse
+    setupfile: src/setup.py
+    password:
+      from_secret: pypi_password
+    distributions:
+      - sdist
+      - bdist_wheel
