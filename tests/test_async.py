@@ -1,14 +1,10 @@
-
-
-
-
-
-
-
 from .support import *
 
 
-def test_scrape():
+
+
+@pytest.mark.asyncio
+async def test_async_scrape():
     template = """
     bot:
         username: {{ env.username }}
@@ -39,34 +35,6 @@ def test_scrape():
                 - follow
     """
     data = dotdict()
-    result = execute(template, data)
+    result = await async_execute(template, data)
     print(json.dumps(result, indent=4))
 
-
-def test_complex_eval():
-    template = """
-    bot:
-        username: {{ env.username }}
-        password: {{ env.password }}
-        settings_path: {{ env.username + '_settings.json' }}
-    actions:
-        -
-            name: 1
-            nodes: {{
-                list(
-                    set(['xmorse_']) |
-                    set([])
-                )
-            }}
-            from: user
-            edges:
-                - followers:
-                    amount: 5
-                - scrape:
-                    model: x.username
-                    key: users
-    
-    """
-    data = dotdict()
-    result = execute(template, data)
-    print(json.dumps(result, indent=4))

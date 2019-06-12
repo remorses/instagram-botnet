@@ -9,5 +9,7 @@ class dotdict(dict):
 
 import json
 
-from instabotnet import execute
+from instabotnet import execute, async_execute
+
+import pytest
 

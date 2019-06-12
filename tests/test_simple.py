@@ -1,6 +1,6 @@
 
 
-from support import *
+from .support import *
 
 # def test_upload():
 #     template = """

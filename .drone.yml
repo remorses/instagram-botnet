@@ -12,7 +12,7 @@ steps:
   commands:
   - apk add --no-cache build-base git > /dev/null
   - pip install ./src  > /dev/null
-  - pip install pytest > /dev/null
+  - pip install pytest pytest-asyncio > /dev/null
   - pytest
 - image: python:3.7-alpine
   name: second
