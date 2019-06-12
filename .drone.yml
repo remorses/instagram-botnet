@@ -1,6 +1,11 @@
 kind: pipeline
 name: default
 
+trigger:
+  event:
+    - push
+
+
 steps:
 - image: python:3.7-alpine
   name: test
