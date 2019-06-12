@@ -25,13 +25,13 @@ steps:
     github_token: 
       from_secret: github_token
     versionfile: src/VERSION
-- name: pypi_publish
-  image: plugins/pypi
-  settings:
-    username: xmorse
-    setupfile: src/setup.py
-    password:
-      from_secret: pypi_password
-    distributions:
-      - sdist
-      - bdist_wheel
+# - name: pypi_publish
+#   image: plugins/pypi
+#   settings:
+#     username: xmorse
+#     setupfile: src/setup.py
+#     password:
+#       from_secret: pypi_password
+#     distributions:
+#       - sdist
+#       - bdist_wheel
