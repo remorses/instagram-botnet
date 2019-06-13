@@ -63,7 +63,11 @@ def execute(script_string, variables={}) -> [dict]:
 
 
 
-    script_name = script['name'] if 'name' in script else 'unnmaed script'
+    script_name = script['name'] if 'name' in script else None
+    if not script_name:
+        bot.logger.warning('no script name')    
+    script_name = script_name or 'not named script'
+    
     bot.logger.info(f'# SCRIPT {script_name}')
 
     result = deque()

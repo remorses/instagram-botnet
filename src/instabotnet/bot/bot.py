@@ -41,6 +41,7 @@ class Bot:
                  filter_predicates=[],
                  delay={},
                  disable_logging=False,
+                 script_name='not named script',
                  ):
         
 
@@ -55,8 +56,9 @@ class Bot:
         else:
             raise Exception('neither settings or settings_file present')
 
-        self.id = Bot.id
+        # self.id = Bot.id
         self.username = username
+        
         self.password = password
         self.proxy = proxy
         self.predicates = filter_predicates or []
@@ -65,8 +67,7 @@ class Bot:
         self.latitude = latitude or 0
         self.longitude = longitude or 0
         self.max_per_day = {**MAX_PER_DAY, **max_per_day}
-
-        Bot.id += 1
+        self.script_name = script_name
 
         
 
@@ -110,7 +111,6 @@ class Bot:
                 on_login=on_login
             )
             self.api.do_login()
-
         self.logger = self.api.logger
         if disable_logging:
             self.logger.setLevel(logging.CRITICAL)
@@ -140,13 +140,19 @@ class Bot:
     def metadata(self):
         return {
             'username': self.username,
+            'pk': self.pk,
             'proxy': self.proxy,
             'lng': self.longitude,
             'lat': self.latitude,
             'start_time': str(self.start_time),
-            'totals': self.total,
+            'script_name': self.script_name,
+            # 'action_name': self.action_name,
+            # 'totals': self.total,
         }
 
+    @property
+    def pk(self):
+        return self.api.authenticated_user_id()
     
 
     def filter(self, nodes):

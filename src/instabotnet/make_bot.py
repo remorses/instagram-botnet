@@ -37,6 +37,7 @@ def make_bot(script, variables):
         else:
             return None
 
+    
     bot = Bot(
         settings_path=get('settings_path'),
         settings=get('settings'),
@@ -48,6 +49,7 @@ def make_bot(script, variables):
         # filter_predicates= [make_predicate(script['filter'], bot)] if 'filter' in script else [], # TODO should not take bot as arg
         delay={key: value for key,value in script['delay'].items()} if 'delay' in script else {},
         disable_logging=script.get('disable_logging') or False,
+        script_name = script['name'] if 'name' in script else 'not named script',
     )
 
     if not bot.latitude or not bot.longitude:
