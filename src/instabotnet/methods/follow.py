@@ -23,6 +23,7 @@ def follow(bot: Bot, nodes,  args):
         events.append({
             'type': 'follow',
             'metadata': bot.metadata,
+            'args': {},
             'node': {
                 'type': 'user',
                 'username': node.username,

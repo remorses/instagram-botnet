@@ -21,6 +21,7 @@ def like(bot, nodes,  args):
         events.append({
             'type': 'like',
             'metadata': bot.metadata,
+            'args': {},
             'node': {
                 'type': 'media',
                 'url': node.url,

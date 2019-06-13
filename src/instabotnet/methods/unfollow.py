@@ -18,6 +18,7 @@ def unfollow(bot: Bot, nodes,  args):
         events.append({
             'type': 'unfollow',
             'metadata': bot.metadata,
+            'args': {},
             'node': {
                 'type': 'user',
                 'username': node.username,

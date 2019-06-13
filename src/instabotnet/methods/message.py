@@ -34,7 +34,7 @@ def message(bot, nodes,  args):
             'type': 'message',
             'metadata': bot.metadata,
             'args': {
-                'text': text,
+                'message': text,
             },
             'node': {
                 'type': 'user',

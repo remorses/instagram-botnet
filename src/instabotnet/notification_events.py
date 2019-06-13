@@ -38,6 +38,7 @@ def notification_events(bot):
                     'args': {
                         'notification': n['args']['text'],
                     },
+                    'node': {},
                     'timestamp': date,
                 })
     return events

@@ -91,12 +91,19 @@ def upload_post(bot: Bot, nodes,  args):
                 events = [{
                     'type': 'upload_post',
                     'metadata': bot.metadata,
+                    'args': {
+                        'caption': caption,
+                        'geotag': geotag,
+                        'caption': caption,
+                        'disable_comments': disable_comments,
+                    },
                     'node': {
                         'url': uploaded_media.url,
                         'is_album': False,
+                        'type': 'media',
                     },
                     'timestamp': str(datetime.utcnow()),
-                }]
+        }]
                 return [uploaded_media], { 'events': events }
 
 
@@ -138,9 +145,16 @@ def upload_post(bot: Bot, nodes,  args):
         events = [{
                     'type': 'upload_post',
                     'metadata': bot.metadata,
+                    'args': {
+                        'caption': caption,
+                        'geotag': geotag,
+                        'caption': caption,
+                        'disable_comments': disable_comments,
+                    },
                     'node': {
                         'url': uploaded_media.url,
                         'is_album': True,
+                        'type': 'media',
                     },
                     'timestamp': str(datetime.utcnow()),
         }]
