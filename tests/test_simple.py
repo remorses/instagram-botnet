@@ -1,7 +1,7 @@
 
 
 from .support import *
-
+import os
 # def test_upload():
 #     template = """
 #     bot:
@@ -32,10 +32,7 @@ from .support import *
 
 def test_edit():
     template = """
-    bot:
-        username: {{ env.username }}
-        password: {{ env.password }}
-        settings_path: {{ env.username + '_settings.json' }}
+
     actions:
         -
             name: 1
@@ -53,10 +50,17 @@ def test_edit():
                 - scrape:
                     key: edited
                     model: "{**x}"
+    _: {{ data.update({'to_mutate': 0}) }}
     """
-    data = dotdict()
+    data = {
+        'username': os.getenv('username'),
+        'password': os.getenv('password'),
+        'settings': {},
+        'to_mutate': 1,
+    }
     result = execute(template, data)
     print(json.dumps(result, indent=4))
+    assert data['to_mutate'] == 0
     
 
 

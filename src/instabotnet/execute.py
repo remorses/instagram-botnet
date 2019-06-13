@@ -47,7 +47,7 @@ def execute(script_string, variables={}) -> [dict]:
     assert_good_script(script)
 
     try:
-        bot = make_bot(script, variables.get('settings', None))
+        bot = make_bot(script, variables)
         
     except ClientCheckpointRequiredError as e:
         print(str(e))
