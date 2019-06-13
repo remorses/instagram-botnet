@@ -27,6 +27,39 @@ from .support import *
 #     print(json.dumps(result, indent=4))
 
 
+
+
+
+def test_edit():
+    template = """
+    bot:
+        username: {{ env.username }}
+        password: {{ env.password }}
+        settings_path: {{ env.username + '_settings.json' }}
+    actions:
+        -
+            name: 1
+            nodes: [{{ env.username }}]
+            from: user
+            edges:
+                - edit_profile:
+                    first_name: Magic Mark
+                    gender: MALE
+                    email: asdasd@fuckclubs.club
+                    privacy: private
+                    biography: imma good guy
+                    profile_picture: 'https://upload.wikimedia.org/wikipedia/en/9/95/Test_image.jpg'
+                    external_url: google.com
+                - scrape:
+                    key: edited
+                    model: "{**x}"
+    """
+    data = dotdict()
+    result = execute(template, data)
+    print(json.dumps(result, indent=4))
+    
+
+
 def test_private_follow():
     template = """
     bot:
