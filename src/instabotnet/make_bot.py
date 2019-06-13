@@ -47,10 +47,11 @@ def make_bot(script, variables):
         max_per_day={key: value for key, value in script['max_per_day'].items()} if 'max_per_day' in script else {},
         # filter_predicates= [make_predicate(script['filter'], bot)] if 'filter' in script else [], # TODO should not take bot as arg
         delay={key: value for key,value in script['delay'].items()} if 'delay' in script else {},
+        disable_logging=script.get('disable_logging') or False,
     )
 
     if not bot.latitude or not bot.longitude:
-        bot.logger.warn(
+        bot.logger.warning(
             'no latitude and longitude in script, geotag searches will probably fail')
 
     return bot

@@ -19,6 +19,7 @@ from .settings import DELAY, TOTAL, MAX_PER_DAY
 import json
 import portalocker
 import os
+import logging
 
 
 class Bot:
@@ -39,6 +40,7 @@ class Bot:
                  longitude=0,
                  filter_predicates=[],
                  delay={},
+                 disable_logging=False,
                  ):
         
 
@@ -110,6 +112,8 @@ class Bot:
             self.api.do_login()
 
         self.logger = self.api.logger
+        if disable_logging:
+            self.logger.setLevel(logging.CRITICAL)
 
         
 

@@ -41,7 +41,7 @@ def evaluate(bot: Bot, nodes,  args) -> Node:
         
 
 
-    # bot.logger.warn(nodes[:3])
+    # bot.logger.warning(nodes[:3])
 
     return nodes, {}
 

@@ -83,7 +83,7 @@ def execute(script_string, variables={}) -> [dict]:
             result.extend(end_state['data'])
 
     except (KeyboardInterrupt, SystemExit):
-        bot.logger.warn('keyboard interrupt')
+        bot.logger.warning('keyboard interrupt')
         raise
 
     except Exception as exc:

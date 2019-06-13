@@ -31,7 +31,7 @@ def comment(bot: Bot, nodes,  args):
 
     return_if_suitable = lambda node: node \
         if bot.suitable(node, table='commented', specifier=str(comments)) \
-        else tap(None,lambda: bot.logger.warn('{} not suitable'.format(node)))
+        else tap(None,lambda: bot.logger.warning('{} not suitable'.format(node)))
 
     discard_if_reached_limit = lambda node: node \
         if not bot.reached_limit('comments') \

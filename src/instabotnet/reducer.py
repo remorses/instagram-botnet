@@ -40,7 +40,7 @@ def reducer(state: dotdict, edge: dotdict):
 
     if len(state.errors) > 1:
         # tried multiple times
-        bot.logger.warn('got lots of errors: {}, bot: {}'.format(state.errors, bot))
+        bot.logger.warning('got lots of errors: {}, bot: {}'.format(state.errors, bot))
         state.errors = []
         # send_bot_to_phone_verifier
         # change_bot_if_neccessary
@@ -93,6 +93,6 @@ def reducer(state: dotdict, edge: dotdict):
 
     else:
         # all is right, no exceptions
-        # bot.logger.warn(state.data)
-        # bot.logger.warn(next_data)
+        # bot.logger.warning(state.data)
+        # bot.logger.warning(next_data)
         return dotdict(nodes=next_nodes, bot=bot, errors=[], data=state.data)

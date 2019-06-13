@@ -32,6 +32,7 @@ import os
 
 def test_edit():
     template = """
+    disable_logging: true
 
     actions:
         -

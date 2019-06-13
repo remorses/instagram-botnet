@@ -14,8 +14,8 @@ def user_stories(bot, nodes,  args) -> List[Story]:
     amount = args.get('amount') or 1
     pack_story = lambda data: Story(**data)
     # unmasked = lambda: unmask(bot.last)
-    # log_unmasked = lambda: bot.logger.warn(unmasked())
-    # bot.logger.warn([x for x in nodes])
+    # log_unmasked = lambda: bot.logger.warning(unmasked())
+    # bot.logger.warning([x for x in nodes])
 
 
     process = rcompose(

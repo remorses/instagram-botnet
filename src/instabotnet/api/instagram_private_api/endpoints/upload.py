@@ -639,7 +639,7 @@ class UploadEndpointsMixin(object):
 
             except ClientConnectionError as cce:
                 # connectivity prob, so let's just continue with another attempt
-                self.logger.warn('ClientConnectionError posting chunks: {}'.format(
+                self.logger.warning('ClientConnectionError posting chunks: {}'.format(
                     str(cce)))
                 continue
 
@@ -662,7 +662,7 @@ class UploadEndpointsMixin(object):
                 return result
             except ClientConnectionError as cce:
                 if i < configure_retry_max:
-                    self.logger.warn(
+                    self.logger.warning(
                         'Retry configure after {0:f} seconds: {1:s}'.format(
                             configure_delay, cce.msg))
                     time.sleep(configure_delay)
@@ -670,7 +670,7 @@ class UploadEndpointsMixin(object):
                     raise
             except ClientError as ce:
                 if (ce.code == 202 or ce.msg == 'Transcode timeout') and i < configure_retry_max:
-                    self.logger.warn('Retry configure after {0:f} seconds'.format(configure_delay))
+                    self.logger.warning('Retry configure after {0:f} seconds'.format(configure_delay))
                     time.sleep(configure_delay)
                 else:
                     raise

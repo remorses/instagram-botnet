@@ -12,7 +12,7 @@ def delete(bot: Bot, nodes,  args):
         res = bot.api.delete_media(node.id)
 
         if not res.get('did_delete'):
-            bot.logger.warn(f'can\'t delete media {node}')
+            bot.logger.warning(f'can\'t delete media {node}')
         else:
             bot.logger.info(f'deleted {node}')
 

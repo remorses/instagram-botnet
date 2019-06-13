@@ -35,7 +35,7 @@ def like(bot, nodes,  args):
         lambda x: stop() if x and count >= max else x,
         # lambda node: node \
         #     if bot.suitable(node) \
-        #     else tap(None,lambda: bot.logger.warn('{} not suitable'.format(node))),
+        #     else tap(None,lambda: bot.logger.warning('{} not suitable'.format(node))),
         lambda node: like_media(node, bot=bot) \
             if node else None,
         lambda x: x and increment() and x,
