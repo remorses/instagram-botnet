@@ -65,6 +65,17 @@ def test_edit():
     
 
 
+
+
+def test_empty():
+    template = """
+    """
+    data = {}
+    result = execute(template, data)
+    print(json.dumps(result, indent=4))
+    
+
+
 def test_private_follow():
     template = """
     bot:
