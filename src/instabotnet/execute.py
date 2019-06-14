@@ -43,9 +43,9 @@ def execute(script_string, variables={}) -> [dict]:
 
     
     script = obj_from_yaml(script_string, variables)
-    
+
     if not script:
-        return {}
+        return { 'events': [] }
 
     assert_good_script(script)
 

@@ -1,19 +1,10 @@
 
-
-
-
-
-
-
+import os
 from .support import *
 
 
-def test_scrape():
+def test_scrape_chain():
     template = """
-    bot:
-        username: {{ env.username }}
-        password: {{ env.password }}
-        settings_path: {{ env.username + '_settings.json' }}
     actions:
         -
             name: 1
@@ -26,10 +17,6 @@ def test_scrape():
                     model: x.username
                     key: users
     ---
-    bot:
-        username: {{ env.username }}
-        password: {{ env.password }}
-        settings_path: {{ env.username + '_settings.json' }}
     actions:
         -
             name: 1
@@ -38,7 +25,12 @@ def test_scrape():
             edges:
                 - follow
     """
-    data = dotdict()
+    assert os.getenv('username')
+    data = dotdict(
+        username=os.getenv('username'),
+        password=os.getenv('password'),
+        settings_path=os.getenv('username')+'_settings.json'
+    )
     result = execute(template, data)
     print(json.dumps(result, indent=4))
 
