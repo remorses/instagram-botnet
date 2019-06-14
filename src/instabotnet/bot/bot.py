@@ -152,7 +152,7 @@ class Bot:
 
     @property
     def pk(self):
-        return self.api.authenticated_user_id()
+        return self.api.authenticated_user_id
     
 
     def filter(self, nodes):
