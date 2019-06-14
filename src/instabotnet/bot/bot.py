@@ -140,10 +140,10 @@ class Bot:
     def metadata(self):
         return {
             'username': self.username,
-            'pk': self.pk,
+            'pk': str(self.pk),
             'proxy': self.proxy,
-            'lng': self.longitude,
-            'lat': self.latitude,
+            'lng': float(self.longitude),
+            'lat': float(self.latitude),
             'start_time': str(self.start_time),
             'script_name': self.script_name,
             # 'action_name': self.action_name,
