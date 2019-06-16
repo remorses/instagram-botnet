@@ -14,4 +14,3 @@ async def async_execute(script, variables={}, Executor=concurrent.futures.Thread
     return await loop.run_in_executor(Executor, lambda: execute(script, variables))
 
 
-(Bot, execute)

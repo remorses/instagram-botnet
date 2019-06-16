@@ -2,7 +2,7 @@ from os import path
 import os
 from codecs import open
 from setuptools import setup, find_packages
-
+import os.path
 here = path.abspath(path.dirname(__file__))
 
 # Get the long description from the README file
@@ -54,5 +54,6 @@ setup(
         'Programming Language :: Python :: 3.6',
         'Programming Language :: Python :: 3.7',
     ],
-    packages=find_packages(exclude=['tests']),
+    packages=['instabotnet'],
 )
+

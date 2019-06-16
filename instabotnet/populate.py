@@ -76,9 +76,11 @@ def populate_string( yaml_string, data={}):
             end = line.index('}}', begin)
             variable_name = line[begin:end].strip().replace('{{','').replace('}}','').strip()
             try:
+                value = xeval(variable_name, data)
                 return (
                     line[:begin].replace('{{','').replace('}}','') +
-                    repr(xeval(variable_name, data)) +
+                    # value if isinstance(value, (int, float)) else repr(value) +
+                    repr(value) +
                     line[end:].replace('}}','').replace('{{','')
                 )
             except Exception:

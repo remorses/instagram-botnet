@@ -22,7 +22,7 @@ def nodes_edges(body, bot):
             if isinstance(edge, dict):
                 type = list(edge.keys())[0]
                 args = list(edge.values())[0]
-                args = args if isinstance(args, dict) else {}
+                # args = args if isinstance(args, dict) else {} # support sleep: Int
                 edges += [dotdict(type=type, args=args)]
             else:
                 edges += [dotdict(type=edge, args={})]
@@ -43,8 +43,8 @@ def nodes_edges(body, bot):
 
 
 def calc_total_nodes(acc, edge):
-    amount  = edge.args.get('amount', 1)
-    max = edge.args.get('max', acc)
+    amount  = int(edge.args.get('amount', 1)) if isinstance(edge.args, dict) else 1
+    max = edge.args.get('max', acc) if isinstance(edge.rgs, dict) else acc
     return amount * acc if acc <= max else max
 
 
