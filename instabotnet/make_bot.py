@@ -49,6 +49,7 @@ def make_bot(script, variables):
         # filter_predicates= [make_predicate(script['filter'], bot)] if 'filter' in script else [], # TODO should not take bot as arg
         delay={key: value for key,value in script['delay'].items()} if 'delay' in script else {},
         disable_logging=script.get('disable_logging') or False,
+        log_level=script.get('log_level') or 'INFO',
         script_name = script['name'] if 'name' in script else 'not named script',
     )
 

@@ -42,6 +42,7 @@ class Bot:
                  delay={},
                  disable_logging=False,
                  script_name='not named script',
+                 log_level='INFO',
                  ):
         
 
@@ -112,9 +113,14 @@ class Bot:
             )
             self.api.do_login()
         self.logger = self.api.logger
+
+        self.logger.setLevel(getattr(logging, log_level))
+
         if disable_logging:
             self.logger.setLevel(logging.CRITICAL)
-
+            
+        if os.getenv('DEBUG'):
+            self.logger.setLevel(logging.DEBUG)
         
 
         # self.api.login()

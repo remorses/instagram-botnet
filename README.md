@@ -10,7 +10,7 @@ Write readable declarative yaml files to control your botnet
 - ~~use drone for ci~~
 - emit event at login, adding info like followers nuber, posts number, following, timestamp (so i can later analyse using time window consisting of begin and end sessions)
 - emit event at task end
-- fix filter, filter should request a model data if given data is not sufficient
+- ~~fix filter, filter should request a model data if given data is not sufficient~~
 
 
 
@@ -21,8 +21,7 @@ The main module works on yaml script like these:
 
 name:                     test_comment
 
-bots:
-    -
+bot:
         username:         username
         password:         password
 
