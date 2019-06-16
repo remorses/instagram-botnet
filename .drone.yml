@@ -27,9 +27,10 @@ steps:
     versionfile: src/VERSION
 - name: pypi_publish
   image: plugins/pypi
+  working_dir: src
   settings:
     username: xmorse
-    setupfile: src/setup.py
+    setupfile: setup.py
     password:
       from_secret: pypi_password
     distributions:

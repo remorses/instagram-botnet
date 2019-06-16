@@ -2,9 +2,9 @@ from os import path
 import os
 from codecs import open
 from setuptools import setup, find_packages
-
+import os.path
 here = path.abspath(path.dirname(__file__))
-
+print(os.path.abspath('./instabotnet'))
 # Get the long description from the README file
 with open(path.join(here, './README.md'), encoding='utf-8') as f:
     long_description = f.read()
@@ -54,5 +54,6 @@ setup(
         'Programming Language :: Python :: 3.6',
         'Programming Language :: Python :: 3.7',
     ],
-    packages=['src/instabotnet'],
+    packages=['instabotnet'],
 )
+
