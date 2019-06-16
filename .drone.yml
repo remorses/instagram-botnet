@@ -16,7 +16,7 @@ steps:
       from_secret: password
   commands:
   - apk add --no-cache build-base git > /dev/null
-  - pip install ./src  > /dev/null
+  - pip install ./  > /dev/null
   - pip install pytest pytest-asyncio > /dev/null
   - pytest -sv
 - name: bump
@@ -24,10 +24,9 @@ steps:
   settings:
     github_token: 
       from_secret: github_token
-    versionfile: src/VERSION
+    versionfile: VERSION
 - name: pypi_publish
   image: plugins/pypi
-  working_dir: src
   settings:
     username: xmorse
     setupfile: setup.py

@@ -30,6 +30,34 @@ import os
 
 
 
+def test_sleep():
+    template = """
+    disable_logging: true
+
+    actions:
+        -
+            name: 1
+            nodes: [{{ username }}]
+            from: user
+            edges:
+                - sleep: 10
+                - followers:
+                    amount: 1
+                - scrape:
+                    key: mine
+                    model: x.username
+    """
+    assert os.getenv('username')
+    data = {
+        'username': os.getenv('username'),
+        'password': os.getenv('password'),
+        'settings': {},
+        'to_mutate': 1,
+    }
+    result = execute(template, data)
+    print(json.dumps(result, indent=4))
+
+
 def test_edit():
     template = """
     disable_logging: true

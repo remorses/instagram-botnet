@@ -12,6 +12,7 @@ from .geotag_feed import geotag_feed
 from .filter import filter
 from .stories import stories
 from .feed import feed
+from .sleep import sleep
 
 from .like import like
 from .follow import follow
@@ -41,7 +42,7 @@ methods = dict(
    filter=filter,
    stories=stories,
    feed=feed,
-
+   sleep=sleep,
    follow=follow,
    unfollow=unfollow,
    like=like,
