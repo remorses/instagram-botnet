@@ -1,5 +1,6 @@
 import datetime
 from pathlib import Path
+import urllib.request
 import time
 from ..api import API
 from ..api.instagram_private_api import  (
@@ -32,7 +33,7 @@ class Bot:
                  password,
                  # cookie_file=None,
                  settings_path=None,
-                 settings=None,
+                 settings={},
                  proxy=None,
                  device=None,
                  max_per_day={},
@@ -74,9 +75,18 @@ class Bot:
 
         self.start_time = datetime.datetime.utcnow()
 
+        if proxy:
+            print('using proxy')
+            proxy_handler = urllib.request.ProxyHandler({
+                'http': proxy,
+                'https': proxy,
+            })
+        else:
+            proxy_handler = None
 
 
         def on_login(api: API, ):
+            api.logger.debug('called on_login')
             nonlocal settings
             settings.update({**settings, **api.settings})
             cookies = api.opener.cookie_jar._cookies
@@ -96,7 +106,7 @@ class Bot:
                 username=username,
                 password=password,
                 on_login=on_login,
-                proxy=proxy,
+                proxy_handler=proxy_handler,
                 settings=settings,
             )
             if not settings.get('cookies'):
@@ -107,8 +117,8 @@ class Bot:
             self.api = API(
                 username=username,
                 password=password,
-                proxy=proxy,
-                settings=settings.update({'cookies': {}}),
+                proxy_handler=proxy_handler,
+                settings=settings.update({'cookies': {}}) if settings else {},
                 on_login=on_login
             )
             self.api.do_login()

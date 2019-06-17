@@ -1,4 +1,6 @@
+from dotenv import load_dotenv
 
+load_dotenv()
 
 class dotdict(dict):
     """dot.notation access to dictionary attributes"""

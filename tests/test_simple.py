@@ -30,6 +30,34 @@ import os
 
 
 
+def test_proxy():
+    template = """
+    log_level: DEBUG
+
+    actions:
+        -
+            name: 1
+            nodes: [{{ username }}]
+            from: user
+            edges:
+                - followers:
+                    amount: 1
+                - scrape:
+                    key: mine
+                    model: x.username
+    """
+    assert os.getenv('username')
+    data = {
+        'username': os.getenv('username'),
+        'password': os.getenv('password'),
+        # 'settings': {},
+        'proxy': os.getenv('proxy'),
+        'settings_path': os.getenv('username') + '_settings.json',
+        'to_mutate': 1,
+    }
+    result = execute(template, data)
+    print(json.dumps(result, indent=4))
+
 def test_sleep():
     template = """
     log_level: DEBUG

@@ -77,6 +77,7 @@ class API(Client):
 
     def do_login(self):
         """Login."""
+        self.logger.warning('logging in')
 
         prelogin_params = self._call_api(
             'si/fetch_headers/',

@@ -37,9 +37,17 @@ def make_bot(script, variables):
         else:
             return None
 
+    def get_from_script(var):
+        if var in variables:
+            return variables[var]
+        elif var in script:
+            return data[var]
+        else:
+            return None
+
     
     bot = Bot(
-        settings_path=get('settings_path'),
+        settings_path=get('settings_path') or {},
         settings=get('settings'),
         username=get('username') or error(Exception('username necessary')),
         password=get('password') or error(Exception('password necessary')),
@@ -50,7 +58,8 @@ def make_bot(script, variables):
         delay={key: value for key,value in script['delay'].items()} if 'delay' in script else {},
         disable_logging=script.get('disable_logging') or False,
         log_level=script.get('log_level') or 'INFO',
-        script_name = script['name'] if 'name' in script else 'not named script',
+        script_name=get_from_script('name') or 'not named script',
+        proxy=get_from_script('proxy') or None,
     )
 
     if not bot.latitude or not bot.longitude:
