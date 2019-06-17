@@ -5,6 +5,8 @@ from string import Formatter
 import random
 from .support import merge, dotdict
 import funcy
+import json
+import datetime
 
 def get_field_value(field_name, mapping):
     try:
@@ -126,7 +128,10 @@ def xeval(expr, data):
             operator=operator,
             **data,
             data=data,
-            **{name: getattr(funcy, name) for name in funcy.__all__}
+            **{name: getattr(funcy, name) for name in funcy.__all__},
+            datetime=datetime.datetime,
+            timedelta=datetime.timedelta,
+            json=json,
             # User=User,
             # Story=Story,
             # Media=Media,

@@ -32,7 +32,7 @@ import os
 
 def test_sleep():
     template = """
-    disable_logging: true
+    log_level: DEBUG
 
     actions:
         -

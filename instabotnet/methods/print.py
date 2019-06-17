@@ -14,14 +14,6 @@ from colorama import init, Fore
 @decorate(accepts=(*node_classes.values(),), returns=Node)
 def _print(bot: Bot, nodes,  args):
 
-    try:
-        max = args.get('max')
-        model = args['model']
-
-    except KeyError as exc:
-        bot.logger.error('please add all necessary args, {}'.format( exc))
-        return [], {}
-
 
     def process(node):
         """
@@ -30,13 +22,12 @@ def _print(bot: Bot, nodes,  args):
             id:        x.pk
             followers: x.followers_count
         """
-        insertion = dotdict()
-        for name, expr in model.items():
-            insertion[name] = evaluate(expr, node, bot=bot)
+        assert isinstance(args, str)
+        value = evaluate(args, node, bot=bot)
 
         init()
         print()
-        print(Fore.CYAN + json.dumps(insertion, indent=4))
+        print(Fore.CYAN + json.dumps(value, indent=4))
         print()
         return node
 
