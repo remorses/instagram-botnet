@@ -30,6 +30,25 @@ import os
 
 
 
+def test_no_nodes():
+    template = """
+    actions:
+        -
+            name: 1
+            edges:
+                - sleep: 1
+    """
+    assert os.getenv('username')
+    data = {
+        'username': os.getenv('username'),
+        'password': os.getenv('password'),
+        'settings': {},
+        'to_mutate': 1,
+    }
+    result = execute(template, data)
+    print(json.dumps(result, indent=4))
+    print(json.dumps(data['settings'], indent=4))
+
 def test_sleep():
     template = """
     disable_logging: true
@@ -40,7 +59,7 @@ def test_sleep():
             nodes: [{{ username }}]
             from: user
             edges:
-                - sleep: 10
+                - sleep: 1
                 - followers:
                     amount: 1
                 - scrape:
@@ -56,6 +75,7 @@ def test_sleep():
     }
     result = execute(template, data)
     print(json.dumps(result, indent=4))
+    print(json.dumps(data['settings'], indent=4))
 
 
 def test_edit():

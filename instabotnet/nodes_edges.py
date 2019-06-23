@@ -36,7 +36,7 @@ def nodes_edges(body, bot):
 
     edges += [dotdict(type='evaluate', args=dict(info=info))]
 
-    nodes = initialize_nodes(nodes, body['from'], bot)
+    nodes = initialize_nodes(nodes, body.get('from', 'arg'), bot)
 
     return nodes, edges
 
