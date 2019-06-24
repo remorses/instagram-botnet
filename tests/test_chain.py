@@ -26,12 +26,7 @@ def test_scrape_chain():
                 - follow
     """
     assert os.getenv('username')
-    data = dotdict(
-        username=os.getenv('username'),
-        password=os.getenv('password'),
-        settings_path=os.getenv('username')+'_settings.json'
-    )
-    result = execute(template, data)
+    result = execute(template, os.environ,)
     print(json.dumps(result, indent=4))
 
 
@@ -40,7 +35,7 @@ def test_complex_eval():
     bot:
         username: {{ env.username }}
         password: {{ env.password }}
-        settings_path: {{ env.username + '_settings.json' }}
+        # settings_path: {{ env.username + '_settings.json' }}
     actions:
         -
             name: 1
@@ -60,5 +55,5 @@ def test_complex_eval():
     
     """
     data = dotdict()
-    result = execute(template, data)
+    result = execute(template, os.environ,)
     print(json.dumps(result, indent=4))

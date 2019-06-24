@@ -55,7 +55,7 @@ class Bot:
         elif settings is not None:
             self.settings_file = None
         else:
-            raise Exception('neither settings or settings_file present')
+            raise Exception('neither settings or settings_path present')
 
         # self.id = Bot.id
         self.username = username

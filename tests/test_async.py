@@ -9,7 +9,7 @@ async def test_async_scrape():
     bot:
         username: {{ env.username }}
         password: {{ env.password }}
-        settings_path: {{ env.username + '_settings.json' }}
+        # settings_path: {{ env.username + '_settings.json' }}
     actions:
         -
             name: 1
@@ -25,7 +25,7 @@ async def test_async_scrape():
     bot:
         username: {{ env.username }}
         password: {{ env.password }}
-        settings_path: {{ env.username + '_settings.json' }}
+        # settings_path: {{ env.username + '_settings.json' }}
     actions:
         -
             name: 1
@@ -35,6 +35,6 @@ async def test_async_scrape():
                 - follow
     """
     data = dotdict()
-    result = await async_execute(template, data)
+    result = await async_execute(template, os.environ,)
     print(json.dumps(result, indent=4))
 

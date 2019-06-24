@@ -7,7 +7,7 @@ import os
 #     bot:
 #         username: {{ env.username }}
 #         password: {{ env.password }}
-#         settings_path: {{ env.username + '_settings.json' }}
+#         # settings: {{ env.username + '_settings.json' }}
 #     actions:
 #         -
 #             name: 1
@@ -42,17 +42,16 @@ def test_no_nodes():
     data = {
         'username': os.getenv('username'),
         'password': os.getenv('password'),
-        'settings': {},
+        # 'settings': {},
         'to_mutate': 1,
     }
     result = execute(template, data)
     print(json.dumps(result, indent=4))
-    print(json.dumps(data['settings'], indent=4))
+    # print(json.dumps(data['settings'], indent=4))
 
 def test_sleep():
     template = """
     disable_logging: true
-
     actions:
         -
             name: 1
@@ -70,12 +69,12 @@ def test_sleep():
     data = {
         'username': os.getenv('username'),
         'password': os.getenv('password'),
-        'settings': {},
+        **os.environ,
         'to_mutate': 1,
     }
     result = execute(template, data)
     print(json.dumps(result, indent=4))
-    print(json.dumps(data['settings'], indent=4))
+    # print(json.dumps(data['settings'], indent=4))
 
 
 def test_edit():
@@ -104,7 +103,7 @@ def test_edit():
     data = {
         'username': os.getenv('username'),
         'password': os.getenv('password'),
-        'settings': {},
+        **os.environ,
         'to_mutate': 1,
     }
     result = execute(template, data)
@@ -129,7 +128,7 @@ def test_private_follow():
     bot:
         username: {{ env.username }}
         password: {{ env.password }}
-        settings_path: {{ env.username + '_settings.json' }}
+        # settings: {{ env.username + '_settings.json' }}
     actions:
         -
             name: 1
@@ -150,7 +149,7 @@ def test_scrape_all():
     bot:
         username: {{ env.username }}
         password: {{ env.password }}
-        settings_path: {{ env.username + '_settings.json' }}
+        # settings: {{ env.username + '_settings.json' }}
     actions:
         -
             name: 1
@@ -173,7 +172,7 @@ def test_message():
     bot:
         username: {{ env.username }}
         password: {{ env.password }}
-        settings_path: {{ env.username + '_settings.json' }}
+        # settings_path: {{ env.username + '_settings.json' }}
     actions:
         -
             name: 1
@@ -195,7 +194,7 @@ def test_scrape():
     bot:
         username: {{ env.username }}
         password: {{ env.password }}
-        settings_path: {{ env.username + '_settings.json' }}
+        # settings: {{ env.username + '_settings.json' }}
     actions:
         -
             name: 1
@@ -218,7 +217,7 @@ def test_follow():
     bot:
         username: {{ env.username }}
         password: {{ env.password }}
-        settings_path: {{ env.username + '_settings.json' }}
+        # settings: {{ env.username + '_settings.json' }}
     actions:
         -
             name: 1
@@ -236,7 +235,7 @@ def test_like():
     bot:
         username: {{ env.username }}
         password: {{ env.password }}
-        settings_path: {{ env.username + '_settings.json' }}
+        # settings: {{ env.username + '_settings.json' }}
     actions:
         -
             name: 1

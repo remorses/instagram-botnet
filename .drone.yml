@@ -9,6 +9,9 @@ trigger:
 steps:
 - image: python:3.7-alpine
   name: test
+  volumes:
+    - name: bot_configs
+      path: /etc/bot_configs
   environment:
     username:
       from_secret: username
@@ -35,3 +38,10 @@ steps:
     distributions:
       - sdist
       - bdist_wheel
+
+
+
+volumes:
+- name: bot_configs
+  host:
+    path: /etc/bot_configs
