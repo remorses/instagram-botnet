@@ -18,7 +18,7 @@ steps:
   - apk add --no-cache build-base git > /dev/null
   - pip install ./  > /dev/null
   - pip install pytest pytest-asyncio > /dev/null
-  - pytest -sv -x
+  - pytest -sv -x -k sleep
 - name: bump
   image: xplugins/bump
   settings:
