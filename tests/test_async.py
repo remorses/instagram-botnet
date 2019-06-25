@@ -24,9 +24,6 @@ async def test_async_scrape():
 
     """
     data = {
-        'settings': {
-            'cookies': {}
-        },
         **env,
     }
     result = await async_execute(template, data)
