@@ -31,9 +31,7 @@ def serialize_cookie_jar(jar, ):
         if isinstance(v, compat_cookiejar.Cookie):
             result[k] = serialize_cookie(v)
         elif isinstance(v, dict):
-            result[k] = serialize_cookie_jar(v, )
-        else:
-            result[k] = v
+            result.update(serialize_cookie_jar(v, ))
     return result
 
 def deserialize_cookie(cookie):
