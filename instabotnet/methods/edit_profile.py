@@ -56,7 +56,9 @@ def edit_profile(bot: Bot, nodes,  args):
     
     if profile_pic:
         if 'http' in profile_pic:
-            bot.api.change_profile_picture(download_media(profile_pic, bot.logger.error))
+            data = download_media(profile_pic, bot.logger.error)
+            if data:
+                bot.api.change_profile_picture(data)
         else:
             bot.api.change_profile_picture(load(profile_pic))
 

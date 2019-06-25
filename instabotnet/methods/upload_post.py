@@ -64,6 +64,9 @@ def upload_post(bot: Bot, nodes,  args):
               kwargs.update(dict(disable_comments=disable_comments))
 
         data = binary_data(node)
+        if not data:
+            bot.logger.error('skipping everything')
+            return [], {}
         with temporary_write(data) as path:
                 extensions = fleep.get(data[:128]).extension
                 ext = extensions[0] if len(extensions) > 0 else None
@@ -112,6 +115,9 @@ def upload_post(bot: Bot, nodes,  args):
         for node in nodes:
 
             data = binary_data(node)
+            if not data:
+                bot.logger.error('skipping everything')
+                return [], {}
 
             with temporary_write(data) as path:
                 extensions = fleep.get(data[:128]).extension
