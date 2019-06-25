@@ -112,7 +112,13 @@ def execute(script_string, variables={}) -> [dict]:
 def obj_from_yaml(script, variables):
     if isinstance(script, str):
         script = populate_string(script, variables)
-        return yaml.safe_load(script)
+        try:
+            data = yaml.safe_load(script)
+            if not isinstance(data, dict):
+                return {}
+            return data
+        except Exception:
+            return {}
     else:
         return populate_object(script, variables)
 
