@@ -4,7 +4,7 @@ import fleep
 import json
 import urllib.request
 import ffmpeg
-from .common import decorate, temporary_write
+from .common import decorate, temporary_write, download_media
 from ..bot import Bot
 from ..nodes import Arg, Media
 import traceback
@@ -24,10 +24,7 @@ def upload_post(bot: Bot, nodes,  args):
 
     nodes = take(max, nodes)
     
-    def download_media(url):
-        data = urllib.request.urlopen(url).read()
-        # print(fleep.get(data[:300]).extension)
-        return data
+
 
     def binary_data(node):
         is_url = isinstance(node, Arg) and 'http' in node.value
@@ -36,7 +33,7 @@ def upload_post(bot: Bot, nodes,  args):
         switch = {
             is_url: lambda: download_media(node.value),
             is_path: lambda: load(node.value),
-            is_media: lambda: download_media(node.images[0]),
+            is_media: lambda: download_media(node.images[0], bot.logger.error),
         }
         return switch[True]()
 
