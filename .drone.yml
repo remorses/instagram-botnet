@@ -19,7 +19,7 @@ steps:
       from_secret: password
   commands:
   - echo 'using settings:'
-  - for x in /etc/bot_configs/*.json; do cat $x; done
+  - '(for x in /etc/bot_configs/*.json; do cat $x; done) || :'
   - echo ''
   - apk add --no-cache build-base git > /dev/null
   - pip install ./  > /dev/null
