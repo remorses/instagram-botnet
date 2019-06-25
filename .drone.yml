@@ -17,6 +17,9 @@ steps:
       from_secret: username
     password:
       from_secret: password
+    settings_path:
+      from_secret: settings_path
+
   commands:
   - echo 'using settings:'
   - '(for x in /etc/bot_configs/*.json; do cat $x; done) || :'
