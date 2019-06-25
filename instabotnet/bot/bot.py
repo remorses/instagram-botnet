@@ -78,7 +78,7 @@ class Bot:
 
         def on_login(api: API, ):
             nonlocal settings
-            settings.update({**settings, **api.settings})
+            settings.update({**api.settings})
             cookies = api.opener.cookie_jar._cookies
             cookies = serialize_cookie_jar(cookies)
             settings['cookies'] = cookies

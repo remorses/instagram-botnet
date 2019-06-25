@@ -21,8 +21,9 @@ async def test_only_evaluation():
 async def test_exiting():
     template = """
     {{ print('sto per uscire bro')}}
+    {{ False }}
     ---
-    {{exit()}}
+    {{ exit(0) if True else None}}
     """
     data = {
         **env,
