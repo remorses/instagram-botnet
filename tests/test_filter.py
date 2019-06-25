@@ -29,5 +29,5 @@ def test_scrape():
                     model: x.url
     """
     data = dotdict()
-    result = execute(template, os.environ,)
+    result = execute(template, env,)
     print(json.dumps(result, indent=4))

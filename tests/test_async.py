@@ -35,6 +35,6 @@ async def test_async_scrape():
                 - follow
     """
     data = dotdict()
-    result = await async_execute(template, os.environ,)
+    result = await async_execute(template, env,)
     print(json.dumps(result, indent=4))
 

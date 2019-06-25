@@ -26,7 +26,7 @@ def test_scrape_chain():
                 - follow
     """
     assert os.getenv('username')
-    result = execute(template, os.environ,)
+    result = execute(template, env,)
     print(json.dumps(result, indent=4))
 
 
@@ -55,5 +55,5 @@ def test_complex_eval():
     
     """
     data = dotdict()
-    result = execute(template, os.environ,)
+    result = execute(template, env,)
     print(json.dumps(result, indent=4))
