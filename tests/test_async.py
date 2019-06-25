@@ -27,6 +27,6 @@ async def test_async_scrape():
         **env,
     }
     result = await async_execute(template, data)
-    print(json.dumps(data['settings'], indent=4))
+    # print(json.dumps(data['settings'], indent=4))
     print(json.dumps(result, indent=4))
 
