@@ -42,10 +42,8 @@ def execute(script_string, variables={}) -> [dict]:
             return merge(acc, execute(script, variables))
         return reduce(_reducer, scripts, {})
 
-    try:
-        script = obj_from_yaml(script_string, variables)
-    except Stop:
-        return { 'events': [] }
+
+    script = obj_from_yaml(script_string, variables)
 
     if not script:
         return { 'events': [] }

@@ -73,47 +73,50 @@ def populate_string( yaml_string, data={}):
     """
     max one {{  }} per line!
     """
-    def replace_in_line(line):
-        if '{{' in line and '}}' in line and not ('#' in line and line.index('#') < line.index('{{')): 
-            begin = line.index('{{')
-            end = line.index('}}', begin)
-            variable_name = line[begin:end].strip().replace('{{','').replace('}}','').strip()
-            try:
-                value = xeval(variable_name, data)
-                return (
-                    line[:begin].replace('{{','').replace('}}','') +
-                    # value if isinstance(value, (int, float)) else repr(value) +
-                    repr(value) +
-                    line[end:].replace('}}','').replace('{{','')
-                )
-            except Exception:
-                raise Exception('yaml file needs all data to be evaluated: {{{{ {} }}}}'.format(variable_name))
-        else:
-            return line
-    def replace_multiline(string):
-        result = ''
-        parts = string.split('{{')
-        if len(parts) > 1:
-            for part in parts:
-                if not '}}' in part:
-                    result += part
-                else:
-                    index = part.index('}}')
-                    expr = part[0:index]
-                    expr = '\n'.join([line.strip() for line in expr.splitlines()])
-                    # print(repr(expr))
-                    # print(expr)
-                    value = repr(xeval(expr, data))
-                    result += value + part[index:].replace('}}', '')
-            return result
-        else:
-            return string
-        
+    try:
+        def replace_in_line(line):
+            if '{{' in line and '}}' in line and not ('#' in line and line.index('#') < line.index('{{')): 
+                begin = line.index('{{')
+                end = line.index('}}', begin)
+                variable_name = line[begin:end].strip().replace('{{','').replace('}}','').strip()
+                try:
+                    value = xeval(variable_name, data)
+                    return (
+                        line[:begin].replace('{{','').replace('}}','') +
+                        # value if isinstance(value, (int, float)) else repr(value) +
+                        repr(value) +
+                        line[end:].replace('}}','').replace('{{','')
+                    )
+                except Exception:
+                    raise Exception('yaml file needs all data to be evaluated: {{{{ {} }}}}'.format(variable_name))
+            else:
+                return line
+        def replace_multiline(string):
+            result = ''
+            parts = string.split('{{')
+            if len(parts) > 1:
+                for part in parts:
+                    if not '}}' in part:
+                        result += part
+                    else:
+                        index = part.index('}}')
+                        expr = part[0:index]
+                        expr = '\n'.join([line.strip() for line in expr.splitlines()])
+                        # print(repr(expr))
+                        # print(expr)
+                        value = repr(xeval(expr, data))
+                        result += value + part[index:].replace('}}', '')
+                return result
+            else:
+                return string
+            
 
 
-    result = '\n'.join(map(replace_in_line, yaml_string.splitlines()))
-    result = replace_multiline(result)
-    return result
+        result = '\n'.join(map(replace_in_line, yaml_string.splitlines()))
+        result = replace_multiline(result)
+        return result
+    except Stop:
+        return {}
 
 
 def locate_variable(script):
