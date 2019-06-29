@@ -40,6 +40,7 @@ def test_no_nodes():
         'username': os.getenv('username'),
         'password': os.getenv('password'),
         # 'settings': {},
+        **env,
         'to_mutate': 1,
     }
     result = execute(template, data)
@@ -68,6 +69,7 @@ def test_proxy():
         'username': os.getenv('username'),
         'password': os.getenv('password'),
         # 'settings': {},
+        **env,
         'proxy': os.getenv('proxy'),
         # 'settings_path': os.getenv('username') + '_settings.json',
         'to_mutate': 1,
