@@ -142,10 +142,10 @@ def xeval(expr, data):
             # Geotag=Geotag
         })
     except Stop:
-        pass
+        raise
     except Exception as e:
         print(f'error {e} in xeval for "{expr}""')
-        raise
+        raise e from None
 
 
 if __name__ == '__main__':

@@ -12,7 +12,7 @@ import os
 import re
 import yaml
 from .notification_events import notification_events
-from .api.instagram_private_api.errors import (
+from .errors import (
     ClientError,
     ClientLoginRequiredError,
     ClientCookieExpiredError,
@@ -23,6 +23,7 @@ from .api.instagram_private_api.errors import (
     ClientCheckpointRequiredError,
     ClientChallengeRequiredError,
     ClientSentryBlockError,
+    Stop,
 )
 
 yaml.reader.Reader.NON_PRINTABLE = re.compile(
@@ -41,8 +42,10 @@ def execute(script_string, variables={}) -> [dict]:
             return merge(acc, execute(script, variables))
         return reduce(_reducer, scripts, {})
 
-    
-    script = obj_from_yaml(script_string, variables)
+    try:
+        script = obj_from_yaml(script_string, variables)
+    except Stop:
+        return { 'events': [] }
 
     if not script:
         return { 'events': [] }
