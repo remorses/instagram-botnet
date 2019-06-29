@@ -56,7 +56,7 @@ class Bot:
         elif settings is not None:
             self.settings_file = None
         else:
-            raise Exception('neither settings or settings_file present')
+            raise Exception('neither settings or settings_path present')
 
         # self.id = Bot.id
         self.username = username
@@ -88,7 +88,7 @@ class Bot:
         def on_login(api: API, ):
             api.logger.debug('called on_login')
             nonlocal settings
-            settings.update({**settings, **api.settings})
+            settings.update({**api.settings})
             cookies = api.opener.cookie_jar._cookies
             cookies = serialize_cookie_jar(cookies)
             settings['cookies'] = cookies

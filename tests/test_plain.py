@@ -30,7 +30,7 @@ def test_scrape_chain():
     print(json.dumps(result, indent=4))
 
 
-def test_complex_eval():
+def test_chain_works():
     template = """
     bot:
         username: {{ env.username }}
@@ -47,13 +47,17 @@ def test_complex_eval():
             }}
             from: user
             edges:
-                - followers:
-                    amount: 5
                 - scrape:
                     model: x.username
-                    key: users
+                    key: key
+    ---
+    {{ print(key) }}
+    ---
+    {{ data.update({'to_mutate': to_mutate + 3})}}
     
     """
-    data = dotdict()
-    result = execute(template, env,)
+    to_mutate = 1
+    data = {'to_mutate': to_mutate, **env}
+    result = execute(template, data,)
+    assert data['to_mutate'] != to_mutate
     print(json.dumps(result, indent=4))

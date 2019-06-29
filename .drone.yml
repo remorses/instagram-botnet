@@ -9,16 +9,25 @@ trigger:
 steps:
 - image: python:3.7-alpine
   name: test
+  volumes:
+    - name: bot_configs
+      path: /etc/bot_configs
   environment:
     username:
       from_secret: username
     password:
       from_secret: password
+    settings_path:
+      from_secret: settings_path
+
   commands:
+  - echo 'using settings:'
+  - '(for x in /etc/bot_configs/*.json; do cat $x; done) || :'
+  - echo ''
   - apk add --no-cache build-base git > /dev/null
   - pip install ./  > /dev/null
   - pip install pytest pytest-asyncio > /dev/null
-  - pytest -sv -x
+  - pytest -sv -x -k sleep
 - name: bump
   image: xplugins/bump
   settings:
@@ -35,3 +44,10 @@ steps:
     distributions:
       - sdist
       - bdist_wheel
+
+
+
+volumes:
+- name: bot_configs
+  host:
+    path: /etc/bot_configs

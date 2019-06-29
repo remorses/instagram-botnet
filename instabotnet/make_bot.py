@@ -47,8 +47,8 @@ def make_bot(script, variables):
 
     
     bot = Bot(
-        settings_path=get('settings_path') or {},
-        settings=get('settings'),
+        settings_path=get('settings_path'),
+        settings=get('settings') or None,
         username=get('username') or error(Exception('username necessary')),
         password=get('password') or error(Exception('password necessary')),
         latitude=get('latitude') or 0,

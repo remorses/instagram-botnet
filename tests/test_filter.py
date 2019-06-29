@@ -7,7 +7,7 @@ def test_scrape():
     bot:
         username: {{ env.username }}
         password: {{ env.password }}
-        settings_path: {{ env.username + '_settings.json' }}
+        # settings_path: {{ env.username + '_settings.json' }}
     actions:
         -
             name: 1
@@ -29,5 +29,5 @@ def test_scrape():
                     model: x.url
     """
     data = dotdict()
-    result = execute(template, data)
+    result = execute(template, env,)
     print(json.dumps(result, indent=4))

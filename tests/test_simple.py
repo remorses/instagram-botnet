@@ -7,7 +7,7 @@ import os
 #     bot:
 #         username: {{ env.username }}
 #         password: {{ env.password }}
-#         settings_path: {{ env.username + '_settings.json' }}
+#         # settings: {{ env.username + '_settings.json' }}
 #     actions:
 #         -
 #             name: 1
@@ -27,7 +27,24 @@ import os
 #     print(json.dumps(result, indent=4))
 
 
-
+def test_no_nodes():
+    template = """
+    actions:
+        -
+            name: 1
+            edges:
+                - sleep: 1
+    """
+    assert os.getenv('username')
+    data = {
+        'username': os.getenv('username'),
+        'password': os.getenv('password'),
+        # 'settings': {},
+        'to_mutate': 1,
+    }
+    result = execute(template, data)
+    print(json.dumps(result, indent=4))
+    # print(json.dumps(data['settings'], indent=4))
 
 
 def test_proxy():
@@ -52,7 +69,7 @@ def test_proxy():
         'password': os.getenv('password'),
         # 'settings': {},
         'proxy': os.getenv('proxy'),
-        'settings_path': os.getenv('username') + '_settings.json',
+        # 'settings_path': os.getenv('username') + '_settings.json',
         'to_mutate': 1,
     }
     result = execute(template, data)
@@ -68,7 +85,7 @@ def test_sleep():
             nodes: [{{ username }}]
             from: user
             edges:
-                - sleep: 10
+                - sleep: 1
                 - followers:
                     amount: 1
                 - scrape:
@@ -79,11 +96,12 @@ def test_sleep():
     data = {
         'username': os.getenv('username'),
         'password': os.getenv('password'),
-        'settings': {},
+        **os.environ,
         'to_mutate': 1,
     }
     result = execute(template, data)
     print(json.dumps(result, indent=4))
+    # print(json.dumps(data['settings'], indent=4))
 
 
 def test_edit():
@@ -112,7 +130,7 @@ def test_edit():
     data = {
         'username': os.getenv('username'),
         'password': os.getenv('password'),
-        'settings': {},
+        **os.environ,
         'to_mutate': 1,
     }
     result = execute(template, data)
@@ -137,7 +155,7 @@ def test_private_follow():
     bot:
         username: {{ env.username }}
         password: {{ env.password }}
-        settings_path: {{ env.username + '_settings.json' }}
+        # settings: {{ env.username + '_settings.json' }}
     actions:
         -
             name: 1
@@ -158,7 +176,7 @@ def test_scrape_all():
     bot:
         username: {{ env.username }}
         password: {{ env.password }}
-        settings_path: {{ env.username + '_settings.json' }}
+        # settings: {{ env.username + '_settings.json' }}
     actions:
         -
             name: 1
@@ -181,7 +199,7 @@ def test_message():
     bot:
         username: {{ env.username }}
         password: {{ env.password }}
-        settings_path: {{ env.username + '_settings.json' }}
+        # settings_path: {{ env.username + '_settings.json' }}
     actions:
         -
             name: 1
@@ -203,7 +221,7 @@ def test_scrape():
     bot:
         username: {{ env.username }}
         password: {{ env.password }}
-        settings_path: {{ env.username + '_settings.json' }}
+        # settings: {{ env.username + '_settings.json' }}
     actions:
         -
             name: 1
@@ -226,7 +244,7 @@ def test_follow():
     bot:
         username: {{ env.username }}
         password: {{ env.password }}
-        settings_path: {{ env.username + '_settings.json' }}
+        # settings: {{ env.username + '_settings.json' }}
     actions:
         -
             name: 1
@@ -244,7 +262,7 @@ def test_like():
     bot:
         username: {{ env.username }}
         password: {{ env.password }}
-        settings_path: {{ env.username + '_settings.json' }}
+        # settings: {{ env.username + '_settings.json' }}
     actions:
         -
             name: 1

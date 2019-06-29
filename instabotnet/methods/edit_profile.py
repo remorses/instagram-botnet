@@ -1,13 +1,8 @@
 from funcy import ignore
 from ..bot import Bot
-from .common import decorate
+from .common import decorate, download_media
 from ..nodes import node_classes, User
 import urllib.request
-
-def download_media(url):
-        data = urllib.request.urlopen(url).read()
-        # print(fleep.get(data[:300]).extension)
-        return data
 
 
 def load(path):
@@ -61,7 +56,9 @@ def edit_profile(bot: Bot, nodes,  args):
     
     if profile_pic:
         if 'http' in profile_pic:
-            bot.api.change_profile_picture(download_media(profile_pic))
+            data = download_media(profile_pic, bot.logger.error)
+            if data:
+                bot.api.change_profile_picture(data)
         else:
             bot.api.change_profile_picture(load(profile_pic))
 

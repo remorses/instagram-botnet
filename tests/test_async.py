@@ -9,7 +9,7 @@ async def test_async_scrape():
     bot:
         username: {{ env.username }}
         password: {{ env.password }}
-        settings_path: {{ env.username + '_settings.json' }}
+        # settings_path: {{ env.username + '_settings.json' }}
     actions:
         -
             name: 1
@@ -21,20 +21,12 @@ async def test_async_scrape():
                 - scrape:
                     model: x.username
                     key: users
-    ---
-    bot:
-        username: {{ env.username }}
-        password: {{ env.password }}
-        settings_path: {{ env.username + '_settings.json' }}
-    actions:
-        -
-            name: 1
-            nodes: {{ users }}
-            from: user
-            edges:
-                - follow
+
     """
-    data = dotdict()
+    data = {
+        **env,
+    }
     result = await async_execute(template, data)
+    # print(json.dumps(data['settings'], indent=4))
     print(json.dumps(result, indent=4))
 

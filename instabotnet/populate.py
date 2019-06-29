@@ -122,22 +122,23 @@ def locate_variable(script):
 
 def xeval(expr, data):
     try:
-        return eval(expr, dict(
-            random=random,
-            env=dotdict(**os.environ),
-            operator=operator,
-            **data,
-            data=data,
+        return eval(expr, {
             **{name: getattr(funcy, name) for name in funcy.__all__},
-            datetime=datetime.datetime,
-            timedelta=datetime.timedelta,
-            json=json,
+            **os.environ,
+            'random': random,
+            'env': dotdict(**os.environ),
+            'operator': operator,
+            **data,
+            'data':data,
+            'datetime':datetime.datetime,
+            'timedelta':datetime.timedelta,
+            'json':json,
             # User=User,
             # Story=Story,
             # Media=Media,
             # Hashtag=Hashtag,
             # Geotag=Geotag
-        ))
+        })
 
     except Exception as e:
         print(f'error {e} in xeval for "{expr}""')

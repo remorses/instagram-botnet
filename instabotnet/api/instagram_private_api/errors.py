@@ -111,7 +111,7 @@ class ErrorHandler(object):
 
         try:
             error_obj = json.loads(error_response)
-            error_message_type = error_obj.get('error_type', '') or error_obj.get('message', '')
+            error_message_type = str(error_obj.get('error_type', '') or error_obj.get('message', ''))
             if http_error.code == ClientErrorCodes.TOO_MANY_REQUESTS:
                 raise ClientThrottledError(
                     error_obj.get('message'), code=http_error.code,
