@@ -118,7 +118,8 @@ def populate_string( yaml_string, data={}):
         result = replace_multiline(result)
         return result
     except Stop:
-        return {}
+        print('called stop() inside script')
+        return ''
 
 
 def locate_variable(script):
