@@ -87,6 +87,8 @@ def populate_string( yaml_string, data={}):
                         repr(value) +
                         line[end:].replace('}}','').replace('{{','')
                     )
+                except Stop:
+                    raise
                 except Exception:
                     raise Exception('yaml file needs all data to be evaluated: {{{{ {} }}}}'.format(variable_name))
             else:
