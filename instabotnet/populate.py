@@ -7,6 +7,7 @@ from .support import merge, dotdict
 import funcy
 import json
 import datetime
+from .errors import Stop
 
 def get_field_value(field_name, mapping):
     try:
@@ -133,13 +134,15 @@ def xeval(expr, data):
             'datetime':datetime.datetime,
             'timedelta':datetime.timedelta,
             'json':json,
+            'stop': funcy.raiser(Stop),
             # User=User,
             # Story=Story,
             # Media=Media,
             # Hashtag=Hashtag,
             # Geotag=Geotag
         })
-
+    except Stop:
+        pass
     except Exception as e:
         print(f'error {e} in xeval for "{expr}""')
         raise

@@ -4,3 +4,7 @@ from .api.instagram_private_api.errors import (
     ClientCheckpointRequiredError, ClientChallengeRequiredError,
     ClientSentryBlockError, ClientReqHeadersTooLargeError,
 )
+
+
+class Stop(Exception):
+    pass
