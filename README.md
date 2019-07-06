@@ -11,7 +11,97 @@ Write readable declarative yaml files to control your botnet
 - emit event at login, adding info like followers nuber, posts number, following, timestamp (so i can later analyse using time window consisting of begin and end sessions)
 - emit event at task end
 - ~~fix filter, filter should request a model data if given data is not sufficient~~
+- implement threads reading, at login time
+- implement thread read messages, emit every message as event
 
+direct_v2_inbox() ->
+```yaml
+Response:
+    viewer: User
+    inbox:
+        threads: [
+            thread_id: Str
+            thread_v2_id: Str
+            pending: Bool
+            read_state: ReadState
+            users: [User]
+            items: [
+                item_id: Int
+                item_type: "media_share" | "text" | "link"
+                timestamp: Int
+                user_id: Int
+                device_timestamp?: Int
+                media_share?: Media
+                text?: Str
+                link?:
+                    link_url: Str
+            ]
+            thread_type: private
+            has_newer: Bool
+            has_older: Bool
+            last_seen_at: Any
+            newest_cursor: Str
+            oldest_cursor: Str
+            is_spam: Bool
+            last_activity_at: Timestamp
+            last_seen_at:
+                [user_id]:
+                    timestamp: Timestamp
+                    item_id: Int
+        ]
+        
+        next_cursor:
+            cursor_thread_v2_id: Int
+            cursor_timestamp_seconds: Int
+        unseen_count: Int
+        unseen_count_ts: Int
+
+    pending_requests_total: int
+    status: "ok" | Str
+
+ReadState: 0 | 1
+```
+
+direct_v2_thread(thread_id) # not thread_v2_id ->
+```yaml
+Response:
+    thread: Thread
+
+```
+
+to get last unseen messages:
+1 call thread_v2_inbox()
+2 if res['inbox']['unseen_count'] > 0
+2 get the thread_ids where 
+
+```php
+            ->addParam('persistentBadging', 'true')
+            ->addParam('use_unified_inbox', 'true');
+    /**
+     * Marks an item from given thread as seen.
+     *
+     * @param string $threadId     Thread ID.
+     * @param string $threadItemId Thread item ID.
+     *
+     * @throws \InstagramAPI\Exception\InstagramException
+     *
+     * @return \InstagramAPI\Response\DirectSeenItemResponse
+     */
+    public function markItemSeen(
+        $threadId,
+        $threadItemId)
+    {
+        return $this->ig->request("direct_v2/threads/{$threadId}/items/{$threadItemId}/seen/")
+            ->addPost('use_unified_inbox', 'true')
+            ->addPost('action', 'mark_seen')
+            ->addPost('thread_id', $threadId)
+            ->addPost('item_id', $threadItemId)
+            ->addPost('_uuid', $this->ig->uuid)
+            ->addPost('_csrftoken', $this->ig->client->getToken())
+            ->setSignedPost(false)
+            ->getResponse(new Response\DirectSeenItemResponse());
+    }
+```
 
 
 ## Shell usage

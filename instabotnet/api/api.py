@@ -193,6 +193,31 @@ class API(Client):
         }
         return self._call_api('consent/existing_user_flow/', params=params,)# unsigned=True)
 
+    def mark_item_as_seen(self, thread_id, item_id):
+        params = {
+            'use_unified_inbox': 'true',
+            'action': 'mark_seen',
+            'thread_id': str(thread_id),
+            'item_id': str(item_id),
+            '_csrftoken': self.csrftoken,
+            # '_uid': self.authenticated_user_id,
+            '_uuid': self.uuid,
+        }
+        return self._call_api(f'direct_v2/threads/{thread_id}/items/{item_id}/seen/', params=params, unsigned=True)
+
+    def direct_v2_thread(self, thread_id, **kwargs):
+        """
+        Get v2 thread
+        :param thread:
+        :param kwargs:
+            - **cursor**: For pagination
+        :return:
+        """
+        endpoint = 'direct_v2/threads/{thread_id!s}/'.format(**{'thread_id': thread_id})
+        res = self._call_api(endpoint, query=kwargs)
+        return res
+
+
     def post_album(self, medias, caption='', location=None, **kwargs):
         """
         Post an album of up to 10 photos/videos.

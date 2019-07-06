@@ -12,6 +12,7 @@ import os
 import re
 import yaml
 from .notification_events import notification_events
+from .direct_inbox_events import direct_inbox_events
 from .errors import (
     ClientError,
     ClientLoginRequiredError,
@@ -82,7 +83,7 @@ def execute(script_string, variables={}) -> [dict]:
             bot.logger.info(f'# ACTION {action_name}')
 
             nodes, edges = nodes_edges(action, bot)
-            start_data = { 'events': notification_events(bot) }
+            start_data = { 'events': list(notification_events(bot)) + list(direct_inbox_events(bot)) }
 
             begin_state = dotdict(nodes=(node for node in nodes), bot=bot, data=deque([start_data]), errors=[])
             bot.logger.info(f'# with nodes {nodes}')
