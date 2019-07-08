@@ -78,23 +78,6 @@ class Media(Model, Node):
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 def id_from_url(link):
     if 'instagram.com/p/' not in link:
         # self.logger.error('Unexpected link')
@@ -138,3 +121,6 @@ def url_from_id(id):
         id, char = id // 64, id % 64
         result += list(alphabet.keys())[list(alphabet.values()).index(char)]
     return 'https://instagram.com/p/' + result[::-1] + '/'
+
+
+Media.id_from_url = id_from_url

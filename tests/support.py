@@ -9,7 +9,7 @@ class dotdict(dict):
     __setattr__ = dict.__setitem__
     __delattr__ = dict.__delitem__
 
-env = {**os.environ}
+env = dotdict(os.environ)
 
 import json
 
@@ -17,3 +17,7 @@ from instabotnet import execute, async_execute
 
 import pytest
 
+from instabotnet import Bot
+from instabotnet.nodes import Media, User
+
+log = lambda x: print(json.dumps(x, indent=4))

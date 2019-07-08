@@ -118,6 +118,49 @@ class API(Client):
             on_login_callback = self.on_login
             on_login_callback(self)
 
+
+    def statistics(self):
+        """
+        Get insights
+        :param day:
+        :return:
+        """
+
+        query = {
+            'locale': 'en_US',
+            'vc_policy': 'insights_policy',
+            'surface': 'account',
+        }
+        params = {
+            'variables': json.dumps({
+                'IgInsightsGridMediaImage_SIZE': 240,
+                'timezone': 'Etc/Greenwich',
+                'activityTab': 'true',
+                'audienceTab': 'true',
+                'contentTab': 'true',
+                'query_params': json.dumps({
+                    'access_token': '',
+                    'id': self.authenticated_user_id
+                })
+            }),
+            'doc_id': '1926322010754880',
+            'access_token': 'undefined',
+            'fb_api_caller_class': 'RelayModern',
+        }
+        res = self._call_api('ads/graphql/', query=query, params=params, unsigned=True)
+        if not res.get('data'):
+            raise ClientError(str(res),)
+        if len(res.get('errors', [])):
+            raise ClientError('probably not business account, \n' + str(res.get('errors')[0].get('message', '')),)
+        return res
+
+    def media_insights(self, media_id):
+        params = {
+            'ig_sig_key_version': self.key_version,
+        }
+        res = self._call_api(f'insights/media_organic_insights/{media_id}/', query=params,)
+        return res
+
     def send_direct_item(self, users, **options):
         data = {
             'client_context': self.generate_uuid(),

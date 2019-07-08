@@ -31,7 +31,6 @@ class Bot:
                  self,
                  username,
                  password,
-                 # cookie_file=None,
                  settings_path=None,
                  settings={},
                  proxy=None,

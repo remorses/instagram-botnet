@@ -523,7 +523,7 @@ class Client(AccountsEndpointsMixin, DiscoverEndpointsMixin, FeedEndpointsMixin,
             response = self.opener.open(req, timeout=self.timeout)
         except compat_urllib_error.HTTPError as e:
             error_response = self._read_response(e)
-            self.logger.debug('RESPONSE: {0:d} {1!s}'.format(e.code, error_response))
+            self.logger.debug('RESPONSE: {0:d} {1!s}'.format(e.code, json.dumps(json.loads(error_response), indent=4)))
             ErrorHandler.process(e, error_response)
 
         except (SSLError, timeout, SocketError,
@@ -537,7 +537,7 @@ class Client(AccountsEndpointsMixin, DiscoverEndpointsMixin, FeedEndpointsMixin,
             return response
 
         response_content = self._read_response(response)
-        self.logger.debug('RESPONSE: {0:d} {1!s}'.format(response.code, response_content))
+        self.logger.debug('RESPONSE: {0:d} {1!s}'.format(response.code, json.dumps(json.loads(response_content), indent=4)))
         json_response = json.loads(response_content)
 
         if json_response.get('message', '') == 'login_required':
@@ -545,8 +545,8 @@ class Client(AccountsEndpointsMixin, DiscoverEndpointsMixin, FeedEndpointsMixin,
                 json_response.get('message'), code=response.code,
                 error_response=json.dumps(json_response))
 
-        # not from oembed or an ok response
-        if not json_response.get('provider_url') and json_response.get('status', '') != 'ok':
+        # not from oembed or insights
+        if not json_response.get('data') and json_response.get('provider_url') and json_response.get('status', '') != 'ok':
             raise ClientError(
                 json_response.get('message', 'Unknown error'), code=response.code,
                 error_response=json.dumps(json_response))
