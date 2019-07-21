@@ -21,6 +21,6 @@ def sleep(bot: Bot, nodes,  args):
         'type': 'sleep',
         'metadata': bot.metadata,
         'node': {},
-        'timestamp': str(datetime.utcnow()),
+        'timestamp': int(datetime.utcnow().timestamp()),
     }]
     return nodes, { 'events': events }

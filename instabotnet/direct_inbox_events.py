@@ -1,6 +1,6 @@
 
 from .bot import Bot
-
+from datetime import datetime
 
 
 def direct_inbox_events(bot: Bot):
@@ -35,7 +35,7 @@ def direct_inbox_events(bot: Bot):
                                     'pk': pk,
                                     'username': username,
                                 },
-                                'timestamp': str(item['timestamp'])
+                                'timestamp': int(item['timestamp'])
                             })
                         else: # TODO
                             bot.logger.warning(f'skipping message of type {item_type} as not implemented')

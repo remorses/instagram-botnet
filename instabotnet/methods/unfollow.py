@@ -23,7 +23,7 @@ def unfollow(bot: Bot, nodes,  args):
                 'type': 'user',
                 'username': node.username,
             },
-            'timestamp': str(datetime.utcnow())
+            'timestamp': int(datetime.utcnow().timestamp())
         })
         return node
     

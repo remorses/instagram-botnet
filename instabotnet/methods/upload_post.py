@@ -102,7 +102,7 @@ def upload_post(bot: Bot, nodes,  args):
                         'is_album': False,
                         'type': 'media',
                     },
-                    'timestamp': str(datetime.utcnow()),
+                    'timestamp': int(datetime.utcnow().timestamp()),
         }]
                 return [uploaded_media], { 'events': events }
 
@@ -159,7 +159,7 @@ def upload_post(bot: Bot, nodes,  args):
                         'is_album': True,
                         'type': 'media',
                     },
-                    'timestamp': str(datetime.utcnow()),
+                    'timestamp': int(datetime.utcnow().timestamp()),
         }]
         return [uploaded_media], { 'events': events }
 

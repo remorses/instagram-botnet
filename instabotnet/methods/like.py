@@ -26,7 +26,7 @@ def like(bot, nodes,  args):
                 'type': 'media',
                 'url': node.url,
             },
-            'timestamp': str(datetime.utcnow())
+            'timestamp': int(datetime.utcnow().timestamp())
         })
         return node
 

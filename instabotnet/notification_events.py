@@ -31,7 +31,6 @@ def notification_events(bot):
             
 
             for n in filtered:
-                date = str(datetime.utcfromtimestamp(n['args']['timestamp']))
                 events.append({
                     'type': switch[notification_type][n['story_type']],
                     'metadata': bot.metadata,
@@ -39,7 +38,7 @@ def notification_events(bot):
                         'notification': n['args']['text'],
                     },
                     'node': {},
-                    'timestamp': date,
+                    'timestamp': int(n['args']['timestamp']),
                 })
     return events
 
