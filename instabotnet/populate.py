@@ -150,7 +150,7 @@ def xeval(expr, data):
     except Stop:
         raise
     except Exception as e:
-        print(f'error {e} in xeval for "{expr}""')
+        print(f'error `{e}` in xeval for expression "{expr}"')
         raise e from None
 
 
