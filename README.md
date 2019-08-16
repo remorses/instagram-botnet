@@ -2,6 +2,36 @@
 Write readable declarative yaml files to control your botnet
 ---
 
+
+template skema:
+```yaml
+Root:
+    bot?:
+        username: Str
+        password: Str
+        settings: Str
+        settings_path: Str
+    actions: [
+        name: Str
+        nodes: [Str] 
+        from: NodeType
+        edges: [Edge]
+    ]
+
+Edge: Followers | Likers | Like
+
+Followers:
+    type: "followers"
+    amount: Int
+    max: Int
+
+NodeType: "user" | "media" | "hashtag" | "geotag"
+```
+
+
+
+
+
 ## TODO
 
 - ~~emit events for every action~~

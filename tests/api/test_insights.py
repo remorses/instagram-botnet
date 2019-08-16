@@ -1,6 +1,6 @@
 
 
-from ..support import Bot, env, log, Media
+from .support import Bot, env, log, Media
 
 media_url = 'https://www.instagram.com/p/BzlK1m_okaZ/'
 
