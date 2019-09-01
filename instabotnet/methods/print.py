@@ -14,7 +14,7 @@ from colorama import init, Fore
 @decorate(accepts=(*node_classes.values(),), returns=Node)
 def _print(bot: Bot, nodes,  args):
 
-
+    expr = args['expr']
     def process(node):
         """
         model:
@@ -22,8 +22,7 @@ def _print(bot: Bot, nodes,  args):
             id:        x.pk
             followers: x.followers_count
         """
-        assert isinstance(args, str)
-        value = evaluate(args, node, bot=bot)
+        value = evaluate(expr, node, bot=bot)
 
         init()
         print()

@@ -20,8 +20,8 @@ def nodes_edges(body, bot):
         for edge in body['edges']:
 
             if isinstance(edge, dict):
-                type = list(edge.keys())[0]
-                args = list(edge.values())[0]
+                type = edge['type']
+                args = edge
                 # args = args if isinstance(args, dict) else {} # support sleep: Int
                 edges += [dotdict(type=type, args=args)]
             else:
@@ -60,7 +60,7 @@ def initialize_nodes(nodes, from_type, bot):
             lambda url: [x for x in url.split('/') if x][-1],
             lambda short: InstagramID.expand_code(short),
             lambda id: api.media_info(id),
-            lambda data: data['items'][0],
+            lambda data: data['items'][0] if data['items'] else {},
             # lambda x: print(x) or x
         ),
         'Hashtag': lambda name: {'name': name},

@@ -53,9 +53,9 @@ def make_bot(script, variables):
         password=get('password') or error(Exception('password necessary')),
         latitude=get('latitude') or 0,
         longitude=get('longitude') or 0,
-        max_per_day={key: value for key, value in script['max_per_day'].items()} if 'max_per_day' in script else {},
+        max_per_day={key: value for key, value in (get_from_script('max_per_day') or {}).items()},
         # filter_predicates= [make_predicate(script['filter'], bot)] if 'filter' in script else [], # TODO should not take bot as arg
-        delay={key: value for key,value in script['delay'].items()} if 'delay' in script else {},
+        delay={key: value for key,value in (get_from_script('delay') or {}).items()},
         disable_logging=script.get('disable_logging') or False,
         log_level=script.get('log_level') or 'INFO',
         script_name=get_from_script('name') or 'not named script',

@@ -1,11 +1,13 @@
 from .nodes_edges import nodes_edges
 from .make_bot import make_bot
-from .populate import populate_object, populate_string
+from .evaluate import evaluate
+# from .populate import populate_object
 from .assert_good_script import assert_good_script
 from .reducer import  reducer
 from .support import dotdict, merge
 from collections import deque
 from functools import reduce
+from populate import populate_string
 import time
 import traceback
 import os
@@ -33,20 +35,26 @@ yaml.reader.Reader.NON_PRINTABLE = re.compile(
 
 DEBUG = bool(os.environ.get('DEBUG'))
 
-def execute(script_string, variables={}) -> [dict]:
+def execute(script_string, variables={}, catch_stop=True) -> [dict]:
+    try:
 
-    if "---" in script_string:
-        scripts = script_string.split('---')
-        def _reducer(acc, script):
-            nonlocal variables
-            variables.update(acc)
-            return merge(acc, execute(script, variables))
-        return reduce(_reducer, scripts, {})
-
-
-    script = obj_from_yaml(script_string, variables)
+        if "---" in script_string:
+            scripts = script_string.split('---')
+            def _reducer(acc, script):
+                nonlocal variables
+                variables.update(acc)
+                return merge(acc, execute(script, variables, catch_stop=False))
+            return reduce(_reducer, scripts, {})
+        else:
+            script = obj_from_yaml(script_string, variables)
+    except Stop:
+        if catch_stop:
+            return { 'events': [] }
+        else:
+            raise
 
     if not script:
+        print('empty script')
         return { 'events': [] }
 
     assert_good_script(script)
@@ -111,18 +119,25 @@ def execute(script_string, variables={}) -> [dict]:
 
 
 
-def obj_from_yaml(script, variables):
+def obj_from_yaml(script, variables={}):
     if isinstance(script, str):
-        script = populate_string(script, variables)
+        script = populate_string(script, data=variables, do_repr=True, evaluator=evaluate, INDICATOR_START='{{', INDICATOR_END='}}')
+        print(script)
         try:
             data = yaml.safe_load(script)
             if not isinstance(data, dict):
+                print(f'script is not dict, {data}')
                 return {}
             return data
-        except Exception:
+        # except Stop:
+        #     print('script called stop()')
+        #     return {}
+        except Exception as e:
+            print(f'error loading the script, {e}')
             return {}
     else:
-        return populate_object(script, variables)
+        raise NotImplementedError()
+        # return populate_object(script, variables)
 
 
 

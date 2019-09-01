@@ -9,6 +9,7 @@ from collections.abc import Iterable
 class MalformedScript(Exception):
     pass
 
+get_name = lambda e: e['type'] if isinstance(e, dict) else e
 
 def assert_good_script(script):
     for action in script['actions']:
@@ -27,8 +28,6 @@ def assert_good_script(script):
         # if not 'nodes' in action:
         #     raise MalformedScript(f' missing `nodes` in action {name}')
         
-        
-        get_name = lambda e: list(e.keys())[0] if isinstance(e, dict) else e
         
         for edge in (get_name(edge) for edge in action['edges']):
             if not edge in methods:
@@ -60,9 +59,6 @@ def check_edges(edges, from_type,):
         if edges[-1] is not None \
         and  good_chain(meth[edges[-1]], meth[last]) \
         else edges + [None]
-        
-    
-    get_name = lambda e: list(e.keys())[0] if isinstance(e, dict) else e
         
     names = [get_name(edge) for edge in edges]
     

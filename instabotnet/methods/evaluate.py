@@ -27,7 +27,7 @@ def evaluate(bot: Bot, nodes,  args) -> Node:
 
     while True:
         try:
-            res = handle(lambda: next(nodes), bot)
+            res = handle(lambda: next(nodes), bot, )
         except StopIteration:
             break
         except Exception as e:
@@ -35,7 +35,7 @@ def evaluate(bot: Bot, nodes,  args) -> Node:
             raise e from None
         else:
             count += 1
-            percentage = int(count / ((total*100) or 1))
+            percentage = int((count / (total or 1)) * 100)
             percentage = (str(percentage) + '%').center(5)
             bot.logger.info( f'{percentage}:  {count} nodes out of {total}')
 

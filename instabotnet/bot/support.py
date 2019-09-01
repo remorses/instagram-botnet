@@ -1,4 +1,5 @@
 import codecs
+from dict_deep import deep_get, deep_set
 # from http.cookies import BaseCookie
 from ..api.instagram_private_api.compat import compat_cookiejar
 def to_json(python_object):
@@ -49,9 +50,14 @@ def deserialize_cookie_jar(jar):
     result={}
     for k, v in jar.items():
         if 'name' in v and 'version' in v:
-            result[k] = deserialize_cookie(v)
+            domain = v['domain']
+            path = v['path']
+            name = v['name']
+            deep_set(result, f'{domain};{path};{name}', deserialize_cookie(v), default=lambda: {}, sep=';')
         elif isinstance(v, dict):
+            raise NotImplementedError()
             result[k] = deserialize_cookie_jar(v, )
         else:
+            raise NotImplementedError()
             result[k] = v
     return result

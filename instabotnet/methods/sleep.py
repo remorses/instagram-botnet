@@ -12,7 +12,7 @@ from datetime import datetime
 @decorate(accepts=(*node_classes.values(),), returns=Node)
 def sleep(bot: Bot, nodes,  args):
     try:
-        amount = int(args)
+        amount = args['seconds']
     except Exception:
         bot.logger.error('wait argument must be a number (of seconds)')
     time.sleep(amount)

@@ -1,0 +1,747 @@
+"si/fetch_headers/": |
+    Root: Any
+"accounts/login/": |
+    Root: Any
+"users/{}/usernameinfo/": |
+    Root:
+        user:
+            pk: Int
+            username: Str
+            full_name: Str
+            is_private: Bool
+            profile_pic_url: Str
+            profile_pic_id: Str
+            is_verified: Bool
+            has_anonymous_profile_picture: Bool
+            media_count: Int
+            geo_media_count: Int
+            follower_count: Int
+            following_count: Int
+            following_tag_count: Int
+            biography: Str
+            biography_with_entities:
+                raw_text: Str
+                entities: [Any]
+            external_url: Str
+            external_lynx_url: Str
+            total_igtv_videos: Int
+            has_igtv_series: Bool
+            usertags_count: Int
+            is_favorite: Bool
+            is_favorite_for_stories: Bool
+            live_subscription_status: Str
+            has_recommend_accounts: Bool
+            has_chaining: Bool
+            hd_profile_pic_versions: [
+                width: Int
+                height: Int
+                url: Str
+            ]
+            hd_profile_pic_url_info:
+                url: Str
+                width: Int
+                height: Int
+            mutual_followers_count: Int
+            profile_context: Str
+            profile_context_links_with_user_ids: [Any]
+            profile_context_mutual_follow_ids: [Int]
+            is_business: Bool
+            account_type: Int
+            is_call_to_action_enabled: Any
+        status: Str
+"news/inbox/": |
+    Root:
+        aymf:
+            items: [
+                user:
+                    pk: Str
+                    username: Str
+                    full_name: Str
+                    is_private: Bool
+                    profile_pic_url: Str
+                    profile_pic_id: Str
+                    is_verified: Bool
+                    has_anonymous_profile_picture: Bool
+                algorithm: Str
+                social_context: Str
+                icon: Str
+                caption: Str
+                media_ids: [Any]
+                thumbnail_urls: [Any]
+                large_urls: [Any]
+                media_infos: [Any]
+                value: Float
+                followed_by: Bool
+                is_new_suggestion: Bool
+                uuid: Str
+            ]
+            more_available: Bool
+        counts:
+            comment_likes: Int
+            comments: Int
+            likes: Int
+            campaign_notification: Int
+            usertags: Int
+            relationships: Int
+            photos_of_you: Int
+            requests: Int
+        friend_request_stories: [Any]
+        new_stories: [Any]
+        old_stories: [
+            type: Int
+            story_type: Int
+            args:
+                text: Str
+                links: [
+                    start: Int
+                    end: Int
+                    type: Str
+                    id:  Int
+                ]
+                actions: [Str]
+                profile_id: Int
+                profile_image: Str
+                media: [
+                    id: Str
+                    image: Str
+                    comment_threading_enabled: Bool
+                ]
+                timestamp: Float
+                tuuid: Str
+                clicked: Bool
+                profile_name: Str
+                comment_id: Int
+                comment_ids: [Int]
+                latest_reel_media: Int
+                second_profile_id: Int
+                second_profile_image: Str
+                profile_image_destination: Str
+            counts: Any
+            pk: Str
+        ]
+        continuation_token: Int
+        subscription: Any
+        partition:
+            time_bucket:
+                headers: [Str]
+                indices: [Int]
+        ads_manager:
+            pending_count: Int
+        business_profile_reminder:
+            title: Str
+            subtitle: Str
+        status: Str
+"direct_v2/inbox/": |
+    Root:
+        viewer:
+            pk: Int
+            username: Str
+            full_name: Str
+            is_private: Bool
+            profile_pic_url: Str
+            profile_pic_id: Str
+            is_verified: Bool
+            has_anonymous_profile_picture: Bool
+            reel_auto_archive: Str
+            is_using_unified_inbox_for_direct: Bool
+        inbox:
+            threads: [
+                thread_id: Str
+                thread_v2_id: Str
+                users: [
+                    pk: Int
+                    username: Str
+                    full_name: Str
+                    is_private: Bool
+                    profile_pic_url: Str
+                    profile_pic_id: Str
+                    friendship_status:
+                        following: Bool
+                        blocking: Bool
+                        is_private: Bool
+                        incoming_request: Bool
+                        outgoing_request: Bool
+                        is_bestie: Bool
+                        is_restricted: Bool
+                    is_verified: Bool
+                    has_anonymous_profile_picture: Bool
+                    is_using_unified_inbox_for_direct: Bool
+                ]
+                left_users: [Any]
+                admin_user_ids: [Any]
+                items: [
+                    item_id: Str
+                    user_id: Int
+                    timestamp: Int
+                    item_type: Str
+                    link:
+                        text: Str
+                        link_context:
+                            link_url: Str
+                            link_title: Str
+                            link_summary: Str
+                            link_image_url: Str
+                        client_context: Str
+                        mutation_token: Str
+                    text: Str
+                ]
+                last_activity_at: Int
+                muted: Bool
+                is_pin: Bool
+                named: Bool
+                canonical: Bool
+                pending: Bool
+                archived: Bool
+                valued_request: Bool
+                thread_type: Str
+                viewer_id: Int
+                thread_title: Str
+                pending_score: Int
+                folder: Int
+                vc_muted: Bool
+                is_group: Bool
+                mentions_muted: Bool
+                approval_required_for_new_members: Bool
+                input_mode: Int
+                business_thread_folder: Int
+                read_state: Int
+                group_stories_muted: Bool
+                last_non_sender_item_at: Int
+                inviter:
+                    pk: Int
+                    username: Str
+                    full_name: Str
+                    is_private: Bool
+                    profile_pic_url: Str
+                    profile_pic_id: Str
+                    is_verified: Bool
+                    has_anonymous_profile_picture: Bool
+                has_older: Bool
+                has_newer: Bool
+                last_seen_at:
+                    7492331463:
+                        timestamp: Str
+                        item_id: Str
+                newest_cursor: Str
+                oldest_cursor: Str
+                next_cursor: Str
+                prev_cursor: Str
+                is_spam: Bool
+                last_permanent_item:
+                    item_id: Str
+                    user_id: Int
+                    timestamp: Int
+                    item_type: Str
+                    link:
+                        text: Str
+                        link_context:
+                            link_url: Str
+                            link_title: Str
+                            link_summary: Str
+                            link_image_url: Str
+                        client_context: Str
+                        mutation_token: Str
+                    text: Str
+            ]
+            has_older: Bool
+            unseen_count: Int
+            unseen_count_ts: Int
+            prev_cursor:
+                cursor_timestamp_seconds: Int
+                cursor_thread_v2_id: Int
+            next_cursor:
+                cursor_timestamp_seconds: Int
+                cursor_thread_v2_id: Int
+            blended_inbox_enabled: Bool
+        seq_id: Int
+        snapshot_at_ms: Int
+        pending_requests_total: Int
+        has_pending_top_requests: Bool
+        most_recent_inviter:
+            pk: Int
+            username: Str
+            full_name: Str
+            is_private: Bool
+            profile_pic_url: Str
+            profile_pic_id: Str
+            is_verified: Bool
+            has_anonymous_profile_picture: Bool
+        status: Str
+"friendships/{}/followers/": |
+    Root:
+        sections: Any
+        users: [
+            pk: Int
+            username: Str
+            full_name: Str
+            is_private: Bool
+            profile_pic_url: Str
+            profile_pic_id: Str
+            is_verified: Bool
+            has_anonymous_profile_picture: Bool
+            latest_reel_media: Int
+        ]
+        big_list: Bool
+        next_max_id: Str
+        page_size: Int
+        status: Str
+"feed/user/{}/username/": |
+    Root:
+        items: [
+            taken_at: Int
+            pk: Int
+            id: Str
+            device_timestamp: Int
+            media_type: Int
+            code: Str
+            client_cache_key: Str
+            filter_type: Int
+            image_versions2:
+                candidates: [
+                    width: Int
+                    height: Int
+                    url: Str
+                    estimated_scans_sizes: [Int]!
+                ]!
+            original_width: Int
+            original_height: Int
+            location:
+                pk: Int
+                name: Str
+                address: Str
+                city: Str
+                short_name: Str
+                lng: Float
+                lat: Float
+                external_source: Str
+                facebook_places_id: Int
+            lat: Float
+            lng: Float
+            user:
+                pk: Int
+                username: Str
+                full_name: Str
+                is_private: Bool
+                profile_pic_url: Str
+                profile_pic_id: Str
+                is_verified: Bool
+                has_anonymous_profile_picture: Bool
+                is_unpublished: Bool
+                is_favorite: Bool
+                latest_reel_media: Int
+            can_viewer_reshare: Bool
+            caption_is_edited: Bool
+            liker_config:
+                is_daisy: Bool
+                hide_view_count: Bool
+                show_count_in_likers_list: Bool
+                show_view_count_in_likers_list: Bool
+                show_daisy_liker_list_header: Bool
+                show_learn_more: Bool
+                disable_liker_list_navigation: Bool
+                show_author_view_likes_button: Bool
+            direct_reply_to_author_enabled: Bool
+            comment_likes_enabled: Bool
+            comment_threading_enabled: Bool
+            has_more_comments: Bool
+            next_max_id: Int
+            max_num_visible_preview_comments: Int
+            preview_comments: [
+                pk: Int
+                user_id: Int
+                text: Str
+                type: Int
+                created_at: Int
+                created_at_utc: Int
+                content_type: Str
+                status: Str
+                bit_flags: Int
+                user:
+                    pk: Int
+                    username: Str
+                    full_name: Str
+                    is_private: Bool
+                    profile_pic_url: Str
+                    is_verified: Bool
+                    profile_pic_id: Str
+                did_report_as_spam: Bool
+                share_enabled: Bool
+                media_id: Int
+                has_liked_comment: Bool
+                comment_like_count: Int
+                parent_comment_id: Int
+            ]!
+            can_view_more_preview_comments: Bool
+            comment_count: Int
+            inline_composer_display_condition: Str
+            inline_composer_imp_trigger_time: Int
+            like_count: Int
+            has_liked: Bool
+            top_likers: [Str]!
+            facepile_top_likers: [
+                pk: Int
+                username: Str
+                full_name: Str
+                is_private: Bool
+                profile_pic_url: Str
+                profile_pic_id: Str
+                is_verified: Bool
+            ]!
+            photo_of_you: Bool
+            usertags:
+                in: [
+                    user:
+                        pk: Int
+                        username: Str
+                        full_name: Str
+                        is_private: Bool
+                        profile_pic_url: Str
+                        profile_pic_id: Str
+                        is_verified: Bool
+                    position: [Float]!
+                    start_time_in_video_in_sec: Any
+                    duration_in_video_in_sec: Any
+                ]!
+            caption:
+                pk: Int
+                user_id: Int
+                text: Str
+                type: Int
+                created_at: Int
+                created_at_utc: Int
+                content_type: Str
+                status: Str
+                bit_flags: Int
+                user:
+                    pk: Int
+                    username: Str
+                    full_name: Str
+                    is_private: Bool
+                    profile_pic_url: Str
+                    profile_pic_id: Str
+                    is_verified: Bool
+                    has_anonymous_profile_picture: Bool
+                    is_unpublished: Bool
+                    is_favorite: Bool
+                    latest_reel_media: Int
+                did_report_as_spam: Bool
+                share_enabled: Bool
+                media_id: Int
+            can_viewer_save: Bool
+            organic_tracking_token: Str
+            is_dash_eligible: Int
+            video_dash_manifest: Str
+            video_codec: Str
+            number_of_qualities: Int
+            video_versions: [
+                type: Int
+                width: Int
+                height: Int
+                url: Str
+                id: Str
+            ]!
+            has_audio: Bool
+            video_duration: Float
+            view_count: Float
+            title: Str
+            product_type: Str
+            nearly_complete_copyright_match: Bool
+            media_cropping_info: Any
+            thumbnails:
+                video_length: Float
+                thumbnail_width: Int
+                thumbnail_height: Int
+                thumbnail_duration: Float
+                sprite_urls: [Str]!
+                thumbnails_per_row: Int
+                max_thumbnails_per_sprite: Int
+                sprite_width: Int
+                sprite_height: Int
+                rendered_width: Int
+            carousel_media_count: Int
+            carousel_media: [
+                id: Str
+                media_type: Int
+                image_versions2:
+                    candidates: [
+                        width: Int
+                        height: Int
+                        url: Str
+                        estimated_scans_sizes: [Int]!
+                    ]!
+                original_width: Int
+                original_height: Int
+                video_versions: [
+                    type: Int
+                    width: Int
+                    height: Int
+                    url: Str
+                    id: Str
+                ]!
+                video_duration: Float
+                is_dash_eligible: Int
+                video_dash_manifest: Str
+                video_codec: Str
+                number_of_qualities: Int
+                pk: Int
+                carousel_parent_id: Str
+            ]!
+            can_see_insights_as_brand: Bool
+        ]!
+        num_results: Int
+        more_available: Bool
+        next_max_id: Str
+        auto_load_more_enabled: Bool
+        status: Str
+"feed/user/{}/story/": |
+    Root:
+        broadcast: Any
+        reel:
+            items: Any
+        status: Str
+"media/{}/info/": |
+    Root:
+        items: [
+            taken_at: Int
+            pk: Int
+            id: Str
+            device_timestamp: Int
+            media_type: Int
+            code: Str
+            client_cache_key: Str
+            filter_type: Int
+            carousel_media_count: Int
+            carousel_media: [
+                id: Str
+                media_type: Int
+                image_versions2:
+                    candidates: [
+                        width: Int
+                        height: Int
+                        url: Str
+                        estimated_scans_sizes: [Int]!
+                    ]!
+                original_width: Int
+                original_height: Int
+                video_versions: [
+                    type: Int
+                    width: Int
+                    height: Int
+                    url: Str
+                    id: Str
+                ]!
+                video_duration: Float
+                is_dash_eligible: Int
+                video_dash_manifest: Str
+                video_codec: Str
+                number_of_qualities: Int
+                pk: Int
+                carousel_parent_id: Str
+            ]!
+            can_see_insights_as_brand: Bool
+            location:
+                pk: Int
+                name: Str
+                address: Str
+                city: Str
+                short_name: Str
+                lng: Float
+                lat: Float
+                external_source: Str
+                facebook_places_id: Int
+            lat: Float
+            lng: Float
+            user:
+                pk: Int
+                username: Str
+                full_name: Str
+                is_private: Bool
+                profile_pic_url: Str
+                profile_pic_id: Str
+                friendship_status:
+                    following: Bool
+                    outgoing_request: Bool
+                    is_bestie: Bool
+                    is_restricted: Bool
+                is_verified: Bool
+                has_anonymous_profile_picture: Bool
+                is_unpublished: Bool
+                is_favorite: Bool
+                latest_reel_media: Int
+            can_viewer_reshare: Bool
+            caption_is_edited: Bool
+            liker_config:
+                is_daisy: Bool
+                hide_view_count: Bool
+                show_count_in_likers_list: Bool
+                show_view_count_in_likers_list: Bool
+                show_daisy_liker_list_header: Bool
+                show_learn_more: Bool
+                disable_liker_list_navigation: Bool
+                show_author_view_likes_button: Bool
+            comment_likes_enabled: Bool
+            comment_threading_enabled: Bool
+            has_more_comments: Bool
+            max_num_visible_preview_comments: Int
+            preview_comments: [Any]!
+            can_view_more_preview_comments: Bool
+            comment_count: Int
+            inline_composer_display_condition: Str
+            inline_composer_imp_trigger_time: Int
+            like_count: Int
+            has_liked: Bool
+            top_likers: [Str]!
+            facepile_top_likers: [
+                pk: Int
+                username: Str
+                full_name: Str
+                is_private: Bool
+                profile_pic_url: Str
+                profile_pic_id: Str
+                is_verified: Bool
+            ]!
+            photo_of_you: Bool
+            caption:
+                pk: Int
+                user_id: Int
+                text: Str
+                type: Int
+                created_at: Int
+                created_at_utc: Int
+                content_type: Str
+                status: Str
+                bit_flags: Int
+                user:
+                    pk: Int
+                    username: Str
+                    full_name: Str
+                    is_private: Bool
+                    profile_pic_url: Str
+                    profile_pic_id: Str
+                    friendship_status:
+                        following: Bool
+                        outgoing_request: Bool
+                        is_bestie: Bool
+                        is_restricted: Bool
+                    is_verified: Bool
+                    has_anonymous_profile_picture: Bool
+                    is_unpublished: Bool
+                    is_favorite: Bool
+                    latest_reel_media: Int
+                did_report_as_spam: Bool
+                share_enabled: Bool
+                media_id: Int
+            can_viewer_save: Bool
+            organic_tracking_token: Str
+        ]!
+        num_results: Int
+        more_available: Bool
+        auto_load_more_enabled: Bool
+        status: Str
+"media/{}/likers/": |
+    Root:
+        users: [
+            pk: Int
+            username: Str
+            full_name: Str
+            is_private: Bool
+            profile_pic_url: Str
+            profile_pic_id: Str
+            is_verified: Bool
+            latest_reel_media: Int
+        ]!
+        user_count: Int
+        status: Str
+"friendships/create/{}/": |
+    Root:
+        friendship_status:
+            following: Bool
+            followed_by: Bool
+            blocking: Bool
+            muting: Bool
+            is_private: Bool
+            incoming_request: Bool
+            outgoing_request: Bool
+            is_bestie: Bool
+            is_restricted: Bool
+        status: Str
+"media/{}/like/": |
+    Root:
+        status: Str
+"users/{}/info/": |
+    Root:
+        user:
+            pk: Int
+            username: Str
+            full_name: Str
+            is_private: Bool
+            profile_pic_url: Str
+            profile_pic_id: Str
+            is_verified: Bool
+            has_anonymous_profile_picture: Bool
+            media_count: Int
+            geo_media_count: Int
+            follower_count: Int
+            following_count: Int
+            following_tag_count: Int
+            biography: Str
+            biography_with_entities:
+                raw_text: Str
+                entities: [Any]!
+            external_url: Str
+            total_igtv_videos: Int
+            total_ar_effects: Int
+            usertags_count: Int
+            is_favorite: Bool
+            is_favorite_for_stories: Bool
+            is_favorite_for_highlights: Bool
+            live_subscription_status: Str
+            is_interest_account: Bool
+            has_recommend_accounts: Bool
+            has_chaining: Bool
+            hd_profile_pic_versions: [
+                width: Int
+                height: Int
+                url: Str
+            ]!
+            hd_profile_pic_url_info:
+                url: Str
+                width: Int
+                height: Int
+            mutual_followers_count: Int
+            show_shoppable_feed: Bool
+            shoppable_posts_count: Int
+            can_be_reported_as_fraud: Bool
+            has_highlight_reels: Bool
+            direct_messaging: Str
+            fb_page_call_to_action_id: Str
+            address_street: Str
+            business_contact_method: Str
+            category: Str
+            city_id: Int
+            city_name: Str
+            contact_phone_number: Str
+            is_call_to_action_enabled: Bool
+            latitude: Float
+            longitude: Float
+            public_email: Str
+            public_phone_country_code: Str
+            public_phone_number: Str
+            zip: Str
+            instagram_location_id: Str
+            is_business: Bool
+            account_type: Int
+            can_hide_category: Bool
+            can_hide_public_contacts: Bool
+            should_show_category: Bool
+            should_show_public_contacts: Bool
+            include_direct_blacklist_status: Bool
+            is_potential_business: Bool
+            is_bestie: Bool
+            has_unseen_besties_media: Bool
+            show_account_transparency_details: Bool
+            auto_expand_chaining: Bool
+            highlight_reshare_disabled: Bool
+            show_post_insights_entry_point: Bool
+            show_post_insights_settings_entry_point: Bool
+        status: Str

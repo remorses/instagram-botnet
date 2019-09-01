@@ -2,6 +2,7 @@
 __pycache__/
 *.py[cod]
 *$py.class
+play*
 credentials.py
 # C extensions
 *.so

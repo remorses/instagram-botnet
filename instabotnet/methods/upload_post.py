@@ -23,8 +23,6 @@ def upload_post(bot: Bot, nodes,  args):
     disable_comments = bool(args.get('disable_comments'))
 
     nodes = take(max, nodes)
-    
-
 
     def binary_data(node):
         is_url = isinstance(node, Arg) and 'http' in node.value
@@ -87,7 +85,7 @@ def upload_post(bot: Bot, nodes,  args):
                       raise RuntimeError(f'unsupportd media type {fleep.get(data[:128]).extension} for {node}')
 
                 bot.logger.info(f'uploaded media {uploaded_media}')
-                
+                bot.sleep('upload')
                 events = [{
                     'type': 'upload_post',
                     'metadata': bot.metadata,
@@ -145,6 +143,7 @@ def upload_post(bot: Bot, nodes,  args):
         res = bot.api.post_album(**kwargs)
         uploaded_media = Media(**res.get('media',{}))
         bot.logger.info(f'uploaded album {uploaded_media}')
+        bot.sleep('upload')
         events = [{
                     'type': 'upload_post',
                     'metadata': bot.metadata,

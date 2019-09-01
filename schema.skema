@@ -1,0 +1,116 @@
+#!/usr/bin/env skema-gen python
+
+Root:
+    log_level?: "DEBUG" | "INFO" | "ERROR"
+    disable_logging?: Bool
+    name?: Str
+    proxy?: Str
+    delay?: DelayMap
+    max_per_day?: Any
+
+    bot?:
+        username: Str
+        password: Str
+        latitude?: Float
+        longitute?: Float
+        settings: Any
+        settings_path?: Str
+    
+    actions: [
+        name: Str
+        nodes: [Str]
+        from: NodeType
+        edges: [Edge]
+    ]
+
+DelayMap:
+    usual: Int
+    like: Int
+    follow: Int
+    comment: Int
+    delete: Int
+    message: Int
+    error: Int
+    unfolow: Int
+    upload: Int
+
+
+NodeType: "media" | "user" | "geotag" | "hashtag" | "comment" | "arg"
+
+Edge: GenericEdge | GenericInteractionEdge | ScrapeEdge | MessageEdge | CommentEdge | UploadPostEdge | UtilityEdge
+UtilityEdge: SleepEdge | PrintEdge | ShuffleEdge | FilterEdge | EditProfileEdge
+
+GenericEdge:
+    type: "followers" | "following" | "likers" | "feed" | "stories" | "hashtags" | "geotag" | "author"
+    amount?: Int
+
+GenericInteractionEdge:
+    type: "follow" | "like" | "unfollow" | "delete" 
+    max?: Int
+
+SleepEdge:
+    type: "sleep"
+    seconds: Int
+
+PrintEdge:
+    type: "print"
+    expr: Str
+
+ScrapeEdge:
+    type: "scrape"
+    max?: Int
+    key: Str
+    model: Str | Any
+
+ShuffleEdge:
+    type: "shuffle"
+    batch: Int
+    max?: Int
+
+MessageEdge:
+    type: "message"
+    max?: Int
+    messages: [[Str]]
+
+CommentEdge:
+    type: "comment"
+    max?: Int
+    comments: [[Str]]
+
+UploadPostEdge:
+    type: "upload_post"
+    max?: Int
+    caption?: Str
+    geotag?: Str
+    disable_comments?: Bool
+
+FilterEdge:
+    type: "filter"
+    user?: UserFilter
+    media?: MediaFilter
+
+UserFilter:
+    followers?: Str
+    following?: Str
+    biography?: Str
+    is_private?: Str
+    is_business?: Str
+    is_verified?: Str
+
+MediaFilter:
+    likes?: Str
+    comments?: Str
+    caption?: Str
+
+EditProfileEdge:
+    type: "edit_profile"
+    first_name?: Str
+    gender?: "MALE" | "FEMALE"
+    email?: Str
+    privacy?: "private" | "public"
+    biography?: Str
+    profile_picture?: Str
+    external_url?: Str
+
+
+

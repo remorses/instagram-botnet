@@ -35,7 +35,7 @@ class Story(Model, Node):
 
     image = property(lambda self: get_image_url(self))
 
-    image = property(lambda self: get_video_url(self))
+    video = property(lambda self: get_video_url(self))
 
     __repr__ = lambda self: f'Story(pk={self.pk})'
 

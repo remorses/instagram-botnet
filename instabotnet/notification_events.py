@@ -1,6 +1,6 @@
 from funcy import take
 from datetime import datetime
-
+from funcy import ignore
 
 switch = {
     'comments': { 
@@ -18,6 +18,7 @@ switch = {
     # 'comment_likes': {},
 }
 
+@ignore(Exception, default=[])
 def notification_events(bot):
     data = bot.api.news_inbox()
     events = []

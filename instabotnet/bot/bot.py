@@ -85,7 +85,7 @@ class Bot:
 
 
         def on_login(api: API, ):
-            api.logger.debug('called on_login')
+            api.logger.info('called on_login')
             nonlocal settings
             settings.update({**api.settings})
             cookies = api.opener.cookie_jar._cookies

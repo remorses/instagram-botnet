@@ -10,7 +10,7 @@ def hashtags(bot, nodes,  args):
     amount = args.get('amount')
 
     def process(node,):
-        text = node['caption']['text']
+        text = node['caption']['text'] or ''
         raw_tags = set(part[1:] for part in text.split() if part.startswith('#'))
         tags = [Hashtag(name=tag) for tag in raw_tags]
         yield from islice(tags, amount)

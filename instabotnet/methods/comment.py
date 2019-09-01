@@ -38,7 +38,7 @@ def comment(bot: Bot, nodes,  args):
         else tap(None, bot.logger.error('reached commenting daily limit'))
 
     do_comment_from_groups = lambda node: map(
-            lambda cmnts: do_comment(bot, choice(cmnts), node),
+                lambda cmnts: do_comment(bot, choice(cmnts), node),
             comments) and node \
          if node else None
 

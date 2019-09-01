@@ -7,20 +7,19 @@ from .support import *
 async def test_async_scrape():
     template = """
     bot:
-        username: {{ env.username }}
-        password: {{ env.password }}
-        # settings_path: {{ env.username + '_settings.json' }}
+      username: {{ env.username }}
+      password: {{ env.password }}
+      # settings_path: {{ env.username + '_settings.json' }}
     actions:
-        -
-            name: 1
-            nodes: [instagram]
-            from: user
-            edges:
-                - followers:
-                    amount: 2
-                - scrape:
-                    model: x.username
-                    key: users
+      - name: 1
+        nodes: [instagram]
+        from: user
+        edges:
+          - type: followers
+            amount: 2
+          - type: scrape
+            model: x.username
+            key: users
 
     """
     data = {

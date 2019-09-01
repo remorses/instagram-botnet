@@ -48,7 +48,11 @@ def make_predicate(script, bot): # TODO this is fucked up
     """
     def predicate(node, **kwargs):
         res = True
-        for (k, expr) in script.items():
+        if isinstance(node, User):
+            data = script.get('user', {})
+        elif isinstance(node, Media):
+            data = script.get('media', {})
+        for (k, expr) in data.items():
             try:
                 val = access(node, k, bot)
                 if val is None:
@@ -56,10 +60,10 @@ def make_predicate(script, bot): # TODO this is fucked up
                     continue
                 new_res = res and eval(expr, dict(x=val,))
                 if res and not new_res:
-                    bot.logger.info('{} not suitable for {}'.format(node, expr))
+                    bot.logger.info(f'{node} not suitable for {k}: {expr}')
                 res = new_res
             except (KeyError, AttributeError) as e:
-                bot.logger.error(f'failed to check expression in filter: {e} for {k}')
+                bot.logger.error(f'failed to check expression in filter: {k}, {e}')
 
         return res
 

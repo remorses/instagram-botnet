@@ -1,3 +1,4 @@
+import inspect
 from .instagram_private_api import (
     Client,
     ClientCookieExpiredError,
@@ -77,7 +78,7 @@ class API(Client):
 
     def do_login(self):
         """Login."""
-        self.logger.warning('logging in')
+        self.logger.warning(f'{inspect.stack()[1].function} requested logging in')
 
         prelogin_params = self._call_api(
             'si/fetch_headers/',
