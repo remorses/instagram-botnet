@@ -4,7 +4,7 @@ from random import random
 import json
 
 
-def make_bot(script, variables):
+def make_bot(script, variables, handlers):
     """
 
     bot:
@@ -60,6 +60,7 @@ def make_bot(script, variables):
         log_level=script.get('log_level') or 'INFO',
         script_name=get_from_script('name') or 'not named script',
         proxy=get_from_script('proxy') or None,
+        handlers=handlers,
     )
 
     if not bot.latitude or not bot.longitude:

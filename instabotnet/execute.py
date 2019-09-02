@@ -28,6 +28,7 @@ from .errors import (
     ClientSentryBlockError,
     Stop,
 )
+import logging
 
 yaml.reader.Reader.NON_PRINTABLE = re.compile(
     u'[^\x09\x0A\x0D\x20-\x7E\x85\xA0-\uD7FF\uE000-\uFFFD\U00010000-\U0010FFFF]')
@@ -35,7 +36,7 @@ yaml.reader.Reader.NON_PRINTABLE = re.compile(
 
 DEBUG = bool(os.environ.get('DEBUG'))
 
-def execute(script_string, variables={}, catch_stop=True) -> [dict]:
+def execute(script_string, variables={}, handlers=[logging.StreamHandler()], catch_stop=True) -> [dict]:
     try:
 
         if "---" in script_string:
@@ -43,7 +44,7 @@ def execute(script_string, variables={}, catch_stop=True) -> [dict]:
             def _reducer(acc, script):
                 nonlocal variables
                 variables.update(acc)
-                return merge(acc, execute(script, variables, catch_stop=False))
+                return merge(acc, execute(script, variables, handlers=handlers, catch_stop=False))
             return reduce(_reducer, scripts, {})
         else:
             script = obj_from_yaml(script_string, variables)
@@ -60,7 +61,7 @@ def execute(script_string, variables={}, catch_stop=True) -> [dict]:
     assert_good_script(script)
 
     try:
-        bot = make_bot(script, variables)
+        bot = make_bot(script, variables, handlers)
         
     except ClientCheckpointRequiredError as e:
         print(str(e))
@@ -119,7 +120,7 @@ def execute(script_string, variables={}, catch_stop=True) -> [dict]:
 
 
 
-def obj_from_yaml(script, variables={}):
+def obj_from_yaml(script, variables={}, ):
     if isinstance(script, str):
         script = populate_string(script, data=variables, do_repr=True, evaluator=evaluate, INDICATOR_START='{{', INDICATOR_END='}}')
         print(script)

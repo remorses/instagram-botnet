@@ -28,22 +28,23 @@ class Bot:
     id = 0
 
     def __init__(
-                 self,
-                 username,
-                 password,
-                 settings_path=None,
-                 settings={},
-                 proxy=None,
-                 device=None,
-                 max_per_day={},
-                 latitude=0,
-                 longitude=0,
-                 filter_predicates=[],
-                 delay={},
-                 disable_logging=False,
-                 script_name='not named script',
-                 log_level='INFO',
-                 ):
+                self,
+                username,
+                password,
+                settings_path=None,
+                settings={},
+                proxy=None,
+                device=None,
+                max_per_day={},
+                latitude=0,
+                longitude=0,
+                filter_predicates=[],
+                delay={},
+                disable_logging=False,
+                script_name='not named script',
+                log_level='INFO',
+                handlers=[],
+            ):
         
 
         # TODO this is horrible
@@ -107,6 +108,7 @@ class Bot:
                 on_login=on_login,
                 proxy_handler=proxy_handler,
                 settings=settings,
+                handlers=handlers,
             )
             if not settings.get('cookies'):
                 self.api.do_login()
@@ -118,7 +120,8 @@ class Bot:
                 password=password,
                 proxy_handler=proxy_handler,
                 settings=settings.update({'cookies': {}}) if settings else {},
-                on_login=on_login
+                on_login=on_login,
+                handlers=handlers,
             )
             self.api.do_login()
         self.logger = self.api.logger

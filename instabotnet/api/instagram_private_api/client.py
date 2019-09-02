@@ -203,7 +203,7 @@ class Client(AccountsEndpointsMixin, DiscoverEndpointsMixin, FeedEndpointsMixin,
             self.generate_adid())
 
         if not cookie_string:   # [TODO] There's probably a better way than to depend on cookie_string
-            self.logger.warn('no cookie_string')
+            print('no cookie_string')
             if not self.username or not self.password:
                 raise ClientLoginRequiredError('login_required', code=400)
             self.login()

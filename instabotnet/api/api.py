@@ -17,16 +17,16 @@ import json
 from .instagram_private_api.http import ClientCookieJar
 
 
-class LoggerAdapter(logging.LoggerAdapter):
+class PrefixLoggerAdapter(logging.LoggerAdapter):
     def __init__(self, logger, prefix):
-        super(LoggerAdapter, self).__init__(logger, {})
+        super().__init__(logger, {})
         self.prefix = prefix
 
     def process(self, msg, kwargs):
         return '[%s] %s' % (self.prefix, msg), kwargs
 
 Client.login = lambda self: None
-
+LOGGER_NAME = 'instabotnet.api'
 class API(Client):
     def __init__(self,**kwargs):
 
@@ -41,20 +41,20 @@ class API(Client):
         super().__init__(**kwargs)
 
         # Setup logging
-        self.logger = logging.getLogger(kwargs.get('username',''))
+        self.logger = logging.getLogger(LOGGER_NAME)
 
         # fh = HTMLFileHandler(title=self._id, file=logs_file, mode='w')
         # fh.setLevel(logging.INFO)
         # fh.setFormatter(file_formatter())
         # self.logger.addHandler(fh)
+        
         if not len(self.logger.handlers):
-            ch = logging.StreamHandler()
-            ch.setLevel(get_logging_level())
-            ch.setFormatter(colred_formatter())
-            self.logger.addHandler(ch)
-
+            for ch in kwargs.get('handlers', [logging.StreamHandler()]):
+                ch.setLevel(get_logging_level())
+                ch.setFormatter(colred_formatter())
+                self.logger.addHandler(ch)
             self.logger.setLevel(logging.DEBUG)
-            self.logger = LoggerAdapter(self.logger, kwargs['username'])
+            self.logger = PrefixLoggerAdapter(self.logger, kwargs['username'])
 
     def login(self):
         return
