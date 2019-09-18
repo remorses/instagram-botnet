@@ -45,6 +45,7 @@ def test_logging_handler(template):
                 with open(self.collection, 'a') as f:
                     f.write(record)
             def emit(self, record):
+                
                 try:
                     msg = self.format(record)
                     self.write_to_db(msg + '\n')
