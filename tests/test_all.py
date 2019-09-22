@@ -23,11 +23,11 @@ defaults = {
 
 
 def test_1(template):
-    mock.patch('instabotnet.api.API.do_login', new=lambda s: None).start()
-    with mock_method('instabotnet.api.instagram_private_api.client.Client', '_call_api', 'api.yaml', arg=1):
+    # mock.patch('instabotnet.api.API.do_login', new=lambda s: None).start()
+    # with mock_method('instabotnet.api.instagram_private_api.client.Client', '_call_api', 'api.yaml', arg=1):
         print('running')
         print(template)
-        result = execute(template, dotdict({**defaults, **os.environ}))
+        result = execute(template, ({**os.environ, 'settings': {'cookies': {}}}), logger_format='%(message)s')
         print(json.dumps(result, indent=4))
 
 def test_logging_handler(template):
@@ -52,5 +52,5 @@ def test_logging_handler(template):
                 except Exception:
                     self.handleError(record)
 
-        result = execute(template, dotdict({**defaults, **os.environ}), handlers=[FileHandler('play_logs.txt')])
+        result = execute(template, ({**defaults, **os.environ}), handlers=[FileHandler('play_logs.txt')])
         print(json.dumps(result, indent=4))

@@ -44,6 +44,7 @@ class Bot:
                 script_name='not named script',
                 log_level='INFO',
                 handlers=[],
+                logger_format=None
             ):
         
 
@@ -109,6 +110,7 @@ class Bot:
                 proxy_handler=proxy_handler,
                 settings=settings,
                 handlers=handlers,
+                logger_format=logger_format,
             )
             if not settings.get('cookies'):
                 self.api.do_login()
@@ -122,6 +124,7 @@ class Bot:
                 settings=settings.update({'cookies': {}}) if settings else {},
                 on_login=on_login,
                 handlers=handlers,
+                logger_format=logger_format,
             )
             self.api.do_login()
         self.logger = self.api.logger

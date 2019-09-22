@@ -1,6 +1,7 @@
 from .nodes_edges import nodes_edges
 from .make_bot import make_bot
 from .evaluate import evaluate
+from typing import *
 # from .populate import populate_object
 from .assert_good_script import assert_good_script
 from .reducer import  reducer
@@ -36,7 +37,7 @@ yaml.reader.Reader.NON_PRINTABLE = re.compile(
 
 DEBUG = bool(os.environ.get('DEBUG'))
 
-def execute(script_string, variables={}, handlers=[logging.StreamHandler()], catch_stop=True) -> [dict]:
+def execute(script_string, variables={}, handlers=[logging.StreamHandler()], logger_format='%(asctime)s | %(levelname)-8s | %(message)s', catch_stop=True) -> List[dict]:
     try:
 
         if "---" in script_string:
@@ -44,7 +45,7 @@ def execute(script_string, variables={}, handlers=[logging.StreamHandler()], cat
             def _reducer(acc, script):
                 nonlocal variables
                 variables.update(acc)
-                return merge(acc, execute(script, variables, handlers=handlers, catch_stop=False))
+                return merge(acc, execute(script, variables, handlers=handlers, logger_format=logger_format, catch_stop=False))
             return reduce(_reducer, scripts, {})
         else:
             script = obj_from_yaml(script_string, variables)
@@ -61,7 +62,7 @@ def execute(script_string, variables={}, handlers=[logging.StreamHandler()], cat
     assert_good_script(script)
 
     try:
-        bot = make_bot(script, variables, handlers)
+        bot = make_bot(script, variables, handlers, logger_format=logger_format,)
         
     except ClientCheckpointRequiredError as e:
         print(str(e))

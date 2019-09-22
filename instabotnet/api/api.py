@@ -51,7 +51,7 @@ class API(Client):
         if not len(self.logger.handlers):
             for ch in kwargs.get('handlers', [logging.StreamHandler()]):
                 ch.setLevel(get_logging_level())
-                ch.setFormatter(colred_formatter())
+                ch.setFormatter(colred_formatter(kwargs.get('logger_format')))
                 self.logger.addHandler(ch)
             self.logger.setLevel(logging.DEBUG)
             self.logger = PrefixLoggerAdapter(self.logger, kwargs['username'])
@@ -379,9 +379,9 @@ def get_logging_level():
             if 'LOGGING_LEVEL' in os.environ and os.environ['LOGGING_LEVEL'] in levels \
             else logging.DEBUG if 'DEBUG' in os.environ else 'INFO'
 
-def colred_formatter():
-    format = '%(asctime)s | %(levelname)-8s | %(message)s'
-    cformat = '%(log_color)s' + format
+def colred_formatter(logger_format):
+    logger_format = logger_format or '%(asctime)s | %(levelname)-8s | %(message)s'
+    cformat = '%(log_color)s' + logger_format
     date_format = '%Y-%m-%d %H:%M'
     return ColoredFormatter(cformat, date_format,
                             log_colors={'DEBUG': 'reset', 'INFO': 'green',
